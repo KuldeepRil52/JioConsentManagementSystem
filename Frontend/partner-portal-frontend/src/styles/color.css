@@ -1,0 +1,43 @@
+.container {
+    padding: 20px;
+    font-family: sans-serif;
+  }
+  
+  .section {
+    margin-bottom: 20px;
+  }
+  
+  .color-input-wrapper {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 6px;
+    margin-top: 6px;
+  }
+  
+  .color-picker {
+    border: none;
+    background: transparent;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+  }
+  
+  .hex-input {
+    border: none;
+    margin-left: 10px;
+    font-size: 14px;
+    outline: none;
+    flex: 1;
+  }
+  
+  .sample-button {
+    margin-top: 10px;
+    background: #333;
+    padding: 10px 16px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+  }
+  

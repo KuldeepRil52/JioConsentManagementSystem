@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: system-registry
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/?authSource=admin}
+      database: cms_db_admin
+
+server:
+  port: ${SERVER_PORT:9011}
+  servlet:
+    context-path: /registry
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+multi-tenant:
+  enabled: true
+  shared-database: cms_db_admin
+  tenant-database-prefix: tenant_db_
+
+# External Service Configuration
+notification:
+  service:
+    base:
+      url: ${NOTIFICATION_MODULE_APIS_URL:http://localhost:30005}
+    endpoints:
+      trigger-event: /notification/v1/events/trigger
+      missed-notification: /notification/v1/missed-notifications/{notificationId}/status
+
+audit:
+  service:
+    base:
+      url: ${AUDIT_MODULE_APIS_URL:http://localhost:30006}
+    endpoints: /audit/v1/audit

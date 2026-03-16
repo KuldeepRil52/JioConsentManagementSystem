@@ -1,0 +1,141 @@
+/* Page layout */
+.signup-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #fff;
+  }
+  
+  /* Card styling */
+  .signup-card {
+    width: 402px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 32px 26px;
+    font-family: Arial, sans-serif;
+  }
+
+  .resend-otp-link:not(.disabled):hover {
+  text-decoration: underline;
+  }
+  
+  /* Header section */
+  .logo-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .logo {
+    height: 28px;
+    width: 28px;
+    margin-right: 8px;
+  }
+  
+  .title-text {
+    font-size: 14px;
+    font-weight: 600;
+  }
+  
+  /* Headline */
+  .signup-card h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+  
+  /* Terms text */
+  .terms-text {
+    font-size: 12px;
+    color: #555;
+    margin-top: 16px;
+    line-height: 1.4;
+  }
+  
+  .terms-text a {
+    color: #0050d4;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  
+  /* Continue button */
+  .continue-btn {
+    width: 100%;
+    background-color: #0050d4;
+    color: #fff;
+    padding: 10px 0;
+    font-size: 14px;
+    font-weight: bold;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 16px;
+  }
+  
+  .continue-btn:hover {
+    background-color: #003bb5;
+  }
+
+  .logoDiv {
+    background-color: white;
+    display: flex;
+    align-items: center;
+    gap: 5;
+  }
+  
+  .logoStyle {
+    width: 30px !important;
+    height: 30px !important;
+  } 
+  
+  .container-header{
+    margin-top: 7%;
+    margin-bottom: 3%;
+  }
+
+  .container-header-otp{
+    margin-top: 7%;
+    margin-bottom: 0%;
+  }
+
+  .enter-otp{
+    margin-bottom: 0%;
+  }
+
+  .otp-button{
+    margin-top: 70%;
+  }
+
+  .container-links{
+    margin-top: 8%;
+    margin-bottom: 3%;
+    font-weight: bold;
+  }
+
+  .container-input-1, .container-input-2, .container-input-3, .container-input-4 {
+    margin-top: 5%;
+    margin-bottom: 3%;
+  }
+.focus-link {
+  color: #007bff;
+  text-decoration: none;
+  outline: none;
+}
+
+.focus-link:focus {
+  text-decoration: underline;      /* underline on tab focus */
+  outline-offset: 2px;
+}
+
+
+.focusable-link {
+  text-decoration: none;
+  outline: none;
+}
+
+.focusable-link:hover,
+.focusable-link:focus {
+  text-decoration: underline;
+}

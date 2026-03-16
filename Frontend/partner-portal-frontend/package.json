@@ -1,0 +1,68 @@
+{
+  "name": "negd-code-challenge",
+  "version": "1.0.0",
+  "description": "negd-code-challenge",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html",
+    "test": "jest",
+    "start:dev": "node --inspect --max-old-space-size=8192 ./node_modules/env-cmd/bin/env-cmd.js -f .env.dev parcel index.html --no-cache",
+    "start:nonprod": "node --inspect --max-old-space-size=8192 ./node_modules/env-cmd/bin/env-cmd.js -f .env.nonprod parcel index.html --no-cache",
+    "start:prod": "env-cmd -f .env.prod parcel index.html",
+    "build:dev": "env-cmd -f .env.dev parcel build index.html",
+    "build:nonprod": "env-cmd -f .env.nonprod parcel build index.html",
+    "build:prod": "env-cmd -f .env.prod parcel build index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://JPL-Limited@dev.azure.com/JPL-Limited/Jio%20Consent%20Manager/_git/NEGD_FrontEnd_Code"
+  },
+  "keywords": [
+    "negd"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@parcel/transformer-inline-string": "^2.15.4",
+    "@parcel/transformer-sass": "^2.15.4",
+    "autoprefixer": "^10.4.21",
+    "buffer": "^6.0.3",
+    "env-cmd": "^10.1.0",
+    "events": "^3.3.0",
+    "https-browserify": "^1.0.0",
+    "parcel": "^2.15.4",
+    "postcss": "^8.5.6",
+    "process": "^0.11.10",
+    "stream-http": "^3.2.0",
+    "tailwindcss": "^3.4.17",
+    "url": "^0.11.4"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
+    "axios": "^1.11.0",
+    "dompurify": "^3.2.7",
+    "framer-motion": "^12.23.24",
+    "jsencrypt": "^3.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hot-toast": "^2.6.0",
+    "react-icons": "^5.5.0",
+    "react-idle-timer": "^5.7.2",
+    "react-redux": "^9.2.0",
+    "react-router-dom": "^6.30.1",
+    "react-select": "^5.10.2",
+    "react-toastify": "^11.0.5",
+    "redux": "^5.0.1",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^3.1.0",
+    "sass": "^1.89.2",
+    "uuid": "^8.3.2"
+  },
+  "browserslist": [
+    "last 10  versions"
+  ],
+  "resolutions": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  }
+}

@@ -1,0 +1,113 @@
+/* Base text styles */
+.custom-text {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+}
+
+/* Heading Styles */
+.custom-text-heading-xxl {
+  font-size: 45px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.custom-text-heading-xl {
+  font-size: 40px;
+  font-weight: 900;
+  line-height: 1.2;
+}
+
+.custom-text-heading-l {
+  font-size: 35px;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+.custom-text-heading-m {
+  font-size: 30px;
+  font-weight: bold;
+  line-height: 1.3;
+}
+
+.custom-text-heading-s {
+  font-size: 25px;
+  font-weight: 900;
+  line-height: 1.4;
+}
+
+.custom-text-heading-xs {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.custom-text-heading-xxs {
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.5;
+} 
+
+/* Body Styles - Regular */
+.custom-text-body-l {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.custom-text-body-m {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.custom-text-body-s {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.custom-text-body-xs {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.custom-text-body-xxs {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Body Styles - Bold */
+.custom-text-body-l-bold {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.6;
+}
+
+.custom-text-body-m-bold {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.custom-text-body-s-bold {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.custom-text-body-xs-bold {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.custom-text-body-xxs-bold {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+

@@ -1,0 +1,211 @@
+.pii-container {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  gap: 20px;
+  padding: 20px;
+}
+
+.pii-left-column,
+.pii-right-column {
+  flex: 1; /* Allow columns to grow and shrink */
+  min-width: 300px; /* Minimum width before wrapping */
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.pii-card {
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  background-color: #fff; /* White background for cards */
+}
+
+.pii-header {
+  background-color: #f8f8f8; /* Light grey background for headings */
+  padding: 10px 15px;
+  margin: -20px -20px 20px -20px; /* Adjust to fill the card width */
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* Styles for the original pii-pannel-left and pii-pannel-right */
+.pii-pannel-left {
+  /* flex: 1; */ /* Removed as it's now within pii-left-column */
+  padding-bottom: 20px; /* Add some space at the bottom */
+}
+
+.pii-pannel-right {
+  /* flex: 1; */ /* Removed as it's now within pii-left-column */
+  padding-top: 20px; /* Add some space at the top */
+  border-top: 1px solid #e0e0e0; /* Separator between left and right panels within the card */
+  margin-top: 20px; /* Space from the above section */
+}
+
+.pii-chip {
+  background-color: #e0e7ff; /* Light blue */
+  color: #374151; /* Darker text */
+  font-size: 0.875rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px; /* Full rounded */
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.pii-chip-remove {
+  margin-left: 0.5rem;
+  color: #6b7280; /* Gray */
+  cursor: pointer;
+  font-weight: bold;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.pii-chip-remove:hover {
+  color: #1f2937; /* Darker gray on hover */
+}
+
+/* General utility classes (from previous PII.js) */
+.flex {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mt-8 {
+  margin-top: 2rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-blue-600 {
+  color: #2563eb;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.p-2 {
+  padding: 0.5rem;
+}
+
+.border {
+  border-width: 1px;
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+/* ========================================
+   RESPONSIVE STYLES FOR PII PAGE
+   ======================================== */
+
+/* Tablet view */
+@media (max-width: 1024px) {
+  .pii-container {
+    padding: 16px;
+    gap: 16px;
+  }
+  
+  .pii-left-column,
+  .pii-right-column {
+    min-width: 250px;
+    padding: 16px;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .pii-container {
+    padding: 12px;
+    gap: 12px;
+    flex-direction: column;
+  }
+  
+  .pii-left-column,
+  .pii-right-column {
+    min-width: 100%;
+    width: 100%;
+    padding: 16px;
+  }
+  
+  .pii-header {
+    margin: -16px -16px 16px -16px;
+    font-size: 14px;
+  }
+  
+  .pii-chip {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.6rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pii-container {
+    padding: 8px;
+  }
+  
+  .pii-left-column,
+  .pii-right-column {
+    padding: 12px;
+  }
+}

@@ -1,0 +1,256 @@
+/* ========================================
+   HAMBURGER MENU BUTTON
+   Mobile/Tablet Navigation Toggle
+   ======================================== */
+
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 101;
+  transition: transform 0.3s ease;
+}
+
+/* Show hamburger on tablets and mobile */
+@media (max-width: 1024px) {
+  .hamburger-menu {
+    display: flex;
+  }
+}
+
+.hamburger-menu:hover {
+  transform: scale(1.05);
+}
+
+.hamburger-menu:focus {
+  outline: 2px solid #0f3cc9;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Hamburger lines */
+.hamburger-menu span {
+  width: 24px;
+  height: 3px;
+  background-color: #333;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  transform-origin: center;
+}
+
+/* Active state - transform to X */
+.hamburger-menu.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-menu.active span:nth-child(2) {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.hamburger-menu.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Alternative hamburger styles */
+
+/* Style 2: Squeeze */
+.hamburger-squeeze {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 32px;
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+}
+
+@media (max-width: 1024px) {
+  .hamburger-squeeze {
+    display: flex;
+  }
+}
+
+.hamburger-squeeze span {
+  width: 100%;
+  height: 3px;
+  background-color: #333;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+  position: absolute;
+  left: 0;
+}
+
+.hamburger-squeeze span:nth-child(1) {
+  top: 0;
+}
+
+.hamburger-squeeze span:nth-child(2) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.hamburger-squeeze span:nth-child(3) {
+  bottom: 0;
+}
+
+.hamburger-squeeze.active span:nth-child(1) {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.hamburger-squeeze.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-squeeze.active span:nth-child(3) {
+  bottom: 50%;
+  transform: translateY(50%) rotate(-45deg);
+}
+
+/* Style 3: Elastic */
+.hamburger-elastic {
+  display: none;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 32px;
+  height: 32px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  z-index: 101;
+}
+
+@media (max-width: 1024px) {
+  .hamburger-elastic {
+    display: flex;
+  }
+}
+
+.hamburger-elastic span {
+  width: 24px;
+  height: 3px;
+  background-color: #333;
+  border-radius: 2px;
+  transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform-origin: center;
+}
+
+.hamburger-elastic.active span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-elastic.active span:nth-child(2) {
+  transform: scaleX(0);
+  opacity: 0;
+}
+
+.hamburger-elastic.active span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Container for hamburger button */
+.hamburger-container {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  margin-right: 12px;
+}
+
+@media (max-width: 1024px) {
+  .hamburger-container {
+    display: flex;
+  }
+}
+
+/* Light theme variant */
+.hamburger-menu.light span,
+.hamburger-squeeze.light span,
+.hamburger-elastic.light span {
+  background-color: #fff;
+}
+
+/* Dark theme variant */
+.hamburger-menu.dark span,
+.hamburger-squeeze.dark span,
+.hamburger-elastic.dark span {
+  background-color: #333;
+}
+
+/* Disabled state */
+.hamburger-menu:disabled,
+.hamburger-squeeze:disabled,
+.hamburger-elastic:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hamburger-menu:disabled span,
+.hamburger-squeeze:disabled span,
+.hamburger-elastic:disabled span {
+  background-color: #ccc;
+}
+
+/* Accessibility - show focus on keyboard navigation */
+.hamburger-menu:focus-visible,
+.hamburger-squeeze:focus-visible,
+.hamburger-elastic:focus-visible {
+  outline: 2px solid #0f3cc9;
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+/* Animation for screen readers */
+@media (prefers-reduced-motion: reduce) {
+  .hamburger-menu span,
+  .hamburger-squeeze span,
+  .hamburger-elastic span {
+    transition: none;
+  }
+}
+
+/* Backdrop overlay for sidebar */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 89;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+@media (max-width: 1024px) {
+  .sidebar-backdrop.show {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+/* Prevent body scroll when sidebar is open on mobile */
+body.sidebar-open {
+  overflow: hidden;
+}
+
+@media (min-width: 1025px) {
+  body.sidebar-open {
+    overflow: auto;
+  }
+}
+

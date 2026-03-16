@@ -1,0 +1,78 @@
+# ================= ConfigMap =================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: consent-core-apis-config
+data:
+  SERVER_PORT: "9001"
+  MONGODB_DATABASE: "cms_db_admin"
+  PROFILE: "dev"
+  VAULT_APIS_URL: "http://vault-apis:9010"
+  AUDIT_MODULE_APIS_URL: "http://audit-module-apis:9006"
+  NOTIFICATION_MODULE_APIS_URL: "http://notification-module-apis:9005"
+  AUTH_APIS_URL: "http://auth-apis:9009"
+  PARENTAL_CONSENT_REDIRECT_BASE_URL: "<parental-redirect-base-url>"
+  PARENTAL_CONSENT_CALLBACK_URL: "<parental-callback-url>"
+  PROXY_ENABLED: "true"
+  PROXY_HOST: "<proxy-host>"
+  PROXY_PORT: "8080"
+
+---
+# ================= Deployment =================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consent-core-apis
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: consent-core-apis
+  template:
+    metadata:
+      labels:
+        app: consent-core-apis
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: consent-core-apis
+          image: "$(IMAGE_URL)"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+          ports:
+            - containerPort: 9001
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          envFrom:
+            - configMapRef:
+                name: consent-core-apis-config
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: uri
+          volumeMounts:
+            - name: logs
+              mountPath: /opt/logs   # container writes logs here
+      volumes:
+        - name: logs
+          emptyDir: {}

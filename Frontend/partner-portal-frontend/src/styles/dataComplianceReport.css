@@ -1,0 +1,535 @@
+.compliance-report-container {
+  padding: 100px 24px 24px 24px; /* Added top padding to clear the header */
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.compliance-header {
+  padding-left: 20px;
+}
+
+.compliance-header Text:first-child {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.compliance-tabs-wrapper {
+  position: relative;
+  overflow: visible;
+  background-color: #FFFFFF;
+  padding: 16px 16px 0 16px;
+}
+
+.compliance-tabs {
+  background-color: #FFFFFF;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  width: 100%;
+}
+
+/* Ensure proper tab alignment and indicator positioning */
+.compliance-tabs [role="tablist"] {
+  display: flex;
+  align-items: center;
+  position: relative;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.compliance-tabs [role="tab"] {
+  position: relative;
+  padding: 12px 24px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Active tab styling with bottom border */
+.compliance-tabs [role="tab"][aria-selected="true"] {
+  border-bottom: 3px solid #3B82F6;
+  color: #000000;
+  font-weight: 600;
+}
+
+/* Inactive tab styling */
+.compliance-tabs [role="tab"][aria-selected="false"] {
+  color: #6B7280;
+  font-weight: 400;
+}
+
+/* Hide any navigation arrows and overlay elements from Tabs component - BUT keep the active tab indicator */
+.compliance-tabs-wrapper [class*="arrow"],
+.compliance-tabs [class*="arrow"],
+.compliance-tabs-wrapper button[class*="navigation"],
+.compliance-tabs-wrapper [class*="scroll"],
+.compliance-tabs-wrapper [class*="overlay"],
+.compliance-tabs-wrapper [class*="prev"],
+.compliance-tabs-wrapper [class*="next"],
+.compliance-tabs-wrapper [class*="chevron"],
+.compliance-tabs button[class*="navigation"],
+.compliance-tabs [class*="scroll"],
+.compliance-tabs [class*="overlay"],
+.compliance-tabs [class*="prev"],
+.compliance-tabs [class*="next"],
+.compliance-tabs [class*="chevron"],
+.compliance-tabs-wrapper button[class*="arrow"],
+.compliance-tabs-wrapper button[class*="nav"],
+.compliance-tabs-wrapper button[class*="prev"],
+.compliance-tabs-wrapper button[class*="next"],
+.compliance-tabs button[class*="arrow"],
+.compliance-tabs button[class*="nav"],
+.compliance-tabs button[class*="prev"],
+.compliance-tabs button[class*="next"],
+.compliance-tabs-wrapper svg[class*="arrow"],
+.compliance-tabs-wrapper svg[class*="triangle"],
+.compliance-tabs-wrapper svg[class*="chevron"],
+.compliance-tabs svg[class*="arrow"],
+.compliance-tabs svg[class*="triangle"],
+.compliance-tabs svg[class*="chevron"],
+.compliance-tabs-wrapper path[class*="arrow"],
+.compliance-tabs-wrapper path[class*="triangle"],
+.compliance-tabs path[class*="arrow"],
+.compliance-tabs path[class*="triangle"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Hide any icon elements that might be triangles */
+.compliance-tabs [class*="icon"],
+.compliance-tabs [class*="Icon"],
+.compliance-tabs [role="button"][aria-label*="arrow"],
+.compliance-tabs [role="button"][aria-label*="prev"],
+.compliance-tabs [role="button"][aria-label*="next"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Hide pseudo-elements that might create triangles or overlays - BUT allow tab indicators */
+.compliance-tabs button:not([role="tab"])::before,
+.compliance-tabs button:not([role="tab"])::after {
+  display: none !important;
+  content: none !important;
+  visibility: hidden !important;
+}
+
+/* Ensure tabs wrapper doesn't create overflow */
+.compliance-tabs > div {
+  overflow: visible !important;
+  position: relative;
+}
+
+/* Target all direct children and nested elements - BUT keep tab indicator */
+.compliance-tabs > * > * [class*="arrow"],
+.compliance-tabs > * > * button[class*="navigation"],
+.compliance-tabs > * > * button[aria-label*="arrow"],
+.compliance-tabs > * > * button[aria-label*="prev"],
+.compliance-tabs > * > * button[aria-label*="next"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Hide all buttons and clickable elements that might be navigation */
+.compliance-tabs button:not([class*="tab"]):not([class*="Tab"]),
+.compliance-tabs [role="button"]:not([class*="tab"]):not([class*="Tab"]) {
+  display: none !important;
+}
+
+/* Specifically target any scroll container or wrapper */
+.compliance-tabs [class*="scroll"],
+.compliance-tabs [class*="Scroll"],
+.compliance-tabs [class*="wrapper"],
+.compliance-tabs [class*="Wrapper"],
+.compliance-tabs [class*="container"]:not([class*="tabs-container"]) {
+  overflow: visible !important;
+}
+
+/* Hide any absolutely positioned elements that might be overlays - BUT allow tab indicator */
+.compliance-tabs button[style*="position: absolute"]:not([class*="indicator"]),
+.compliance-tabs button[style*="position:fixed"]:not([class*="indicator"]) {
+  display: none !important;
+}
+
+/* Target any SVG or icon elements */
+.compliance-tabs svg:not([class*="tab"]),
+.compliance-tabs [class*="icon"]:not([class*="tab"]),
+.compliance-tabs [class*="Icon"]:not([class*="tab"]) {
+  display: none !important;
+}
+
+/* Hide elements positioned on left or right (likely navigation arrows) */
+.compliance-tabs [style*="left: 0"],
+.compliance-tabs [style*="left:0"],
+.compliance-tabs [style*="right: 0"],
+.compliance-tabs [style*="right:0"],
+.compliance-tabs [style*="left:"],
+.compliance-tabs [style*="right:"] {
+  display: none !important;
+}
+
+/* Hide all button elements except tab buttons */
+.compliance-tabs button:not([class*="tab"]):not([class*="Tab"]):not([class*="item"]):not([class*="Item"]) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Hide any element with triangle-like shapes (polygon paths in SVG) */
+.compliance-tabs svg path[d*="M"][d*="L"],
+.compliance-tabs svg polygon,
+.compliance-tabs svg polyline {
+  display: none !important;
+}
+
+/* Universal rule: Hide all absolutely/fixed positioned elements that aren't tab content */
+/* Removed - this was hiding the tab indicator */
+
+/* Allow tab items and indicators to maintain their layout */
+.compliance-tabs [role="tab"],
+.compliance-tabs [role="tabpanel"],
+.compliance-tabs [class*="tab"][class*="item"],
+.compliance-tabs [class*="Tab"][class*="Item"],
+.compliance-tabs [class*="indicator"],
+.compliance-tabs [class*="Indicator"] {
+  position: relative !important;
+}
+
+/* Hide any element that's absolutely positioned (likely the overlay) - BUT allow tab indicator */
+.compliance-tabs-wrapper button[style*="position: absolute"],
+.compliance-tabs-wrapper button[style*="position:fixed"],
+.compliance-tabs button[style*="position: absolute"]:not([class*="indicator"]),
+.compliance-tabs button[style*="position:fixed"]:not([class*="indicator"]),
+.compliance-tabs-wrapper svg[style*="position: absolute"],
+.compliance-tabs svg[style*="position: absolute"]:not([class*="indicator"]) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Target specific JDS Tabs component classes if they exist - BUT keep the tab indicator */
+.compliance-tabs [class*="jds-tabs"] [class*="arrow"],
+.compliance-tabs [class*="jds-tabs"] button[class*="nav"] {
+  display: none !important;
+}
+
+/* Hide the tab indicator completely */
+.compliance-tabs [class*="indicator"],
+.compliance-tabs [class*="Indicator"],
+.compliance-tabs div[class*="indicator"],
+.compliance-tabs div[class*="Indicator"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+.compliance-content {
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  padding: 24px;
+  position: relative;
+  overflow: visible;
+  z-index: 1;
+}
+
+.compliance-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.compliance-error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  gap: 16px;
+}
+
+.retry-button:hover {
+  background-color: #0A2885 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(15, 60, 201, 0.3);
+}
+
+.compliance-section {
+  width: 100%;
+}
+
+.section-description {
+  padding: 16px;
+  background-color: #F3F4F6;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  border-left: 4px solid #3B82F6;
+}
+
+.compliance-table-container {
+  overflow-x: auto;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+}
+
+.compliance-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #FFFFFF;
+}
+
+.compliance-table thead {
+  background-color: #F9FAFB;
+  border-bottom: 2px solid #E5E7EB;
+}
+
+.compliance-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.compliance-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #F3F4F6;
+  vertical-align: middle;
+}
+
+.compliance-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.compliance-table tbody tr:hover {
+  background-color: #F9FAFB;
+}
+
+.compliance-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.percentage-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.overdue-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  background-color: #FEE2E2;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.overdue-row {
+  background-color: #FEF2F2;
+}
+
+.overdue-row:hover {
+  background-color: #FEE2E2 !important;
+}
+
+/* Deletion table specific styles */
+.deletion-table th:nth-child(2),
+.deletion-table th:nth-child(3),
+.deletion-table th:nth-child(5) {
+  min-width: 150px;
+}
+
+.deletion-table td:nth-child(3),
+.deletion-table td:nth-child(5) {
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+/* Sticky Logs column for deletion table */
+.deletion-table th.logs-column-sticky,
+.deletion-table td.logs-column-sticky {
+  position: sticky;
+  right: 0;
+  background-color: #FFFFFF;
+  z-index: 10;
+  box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.deletion-table thead th.logs-column-sticky {
+  background-color: #F9FAFB;
+  z-index: 11;
+}
+
+.deletion-table tbody tr:hover td.logs-column-sticky {
+  background-color: #F9FAFB;
+}
+
+.deletion-table tbody tr.overdue-row td.logs-column-sticky {
+  background-color: #FEF2F2;
+}
+
+.deletion-table tbody tr.overdue-row:hover td.logs-column-sticky {
+  background-color: #FEE2E2;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+  .compliance-table {
+    font-size: 13px;
+  }
+
+  .compliance-table th,
+  .compliance-table td {
+    padding: 10px 12px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .compliance-report-container {
+    padding: 100px 16px 16px 16px; /* Maintain top padding on smaller screens */
+  }
+
+  .compliance-table-container {
+    overflow-x: scroll;
+  }
+
+  .compliance-table {
+    min-width: 1000px;
+  }
+}
+
+/* Badge variants */
+.compliance-table .badge-info {
+  background-color: #DBEAFE;
+  color: #1E40AF;
+}
+
+.compliance-table .badge-warning {
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+
+.compliance-table .badge-success {
+  background-color: #D1FAE5;
+  color: #065F46;
+}
+
+.compliance-table .badge-error {
+  background-color: #FEE2E2;
+  color: #991B1B;
+}
+
+/* Two-column layout for table and charts */
+.compliance-two-column-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 32px;
+  width: 100%;
+}
+
+.compliance-table-column {
+  min-width: 0; /* Allow grid item to shrink below content size */
+}
+
+.compliance-charts-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Chart sections */
+.chart-section {
+  padding: 16px 0;
+  background-color: #FFFFFF;
+}
+
+/* Donut Chart */
+.donut-chart-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.donut-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+.donut-total-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  width: 100%;
+}
+
+
+/* Event Type Bar Chart */
+.event-type-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.event-bar-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.event-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.event-bar-wrapper {
+  flex: 1;
+  background-color: #F3F4F6;
+  border-radius: 4px;
+  height: 24px;
+  overflow: hidden;
+}
+
+.event-bar-simple {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+
+
+/* Responsive adjustments for two-column layout */
+@media (max-width: 1400px) {
+  .compliance-two-column-layout {
+    grid-template-columns: 1fr 350px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .compliance-two-column-layout {
+    grid-template-columns: 1fr;
+  }
+  
+  .compliance-charts-column {
+    order: -1; /* Show charts above table on smaller screens */
+  }
+}
+
+@media (max-width: 768px) {
+  .donut-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+

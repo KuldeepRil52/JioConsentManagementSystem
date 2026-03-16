@@ -1,0 +1,191 @@
+server:
+  port: ${SERVER_PORT} 
+  servlet:
+    context-path: /audit
+
+java:
+  security:
+    krb5:
+      conf: ${KRB5_CONFIG}
+
+kerberos:
+  keytab: ${KEYTAB_CONFIG}
+
+spring:
+  application:
+    name: auditModule
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+      database: ${MONGODB_DEFAULT_DATABASE:audit_db}
+      auto-index-creation: true
+  jackson:
+    time-zone: UTC
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    serialization:
+      write-dates-as-timestamps: false
+
+  # ========================================
+  # Kafka Configuration
+  # ========================================
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    security:
+      protocol: SASL_PLAINTEXT
+    properties:
+      # Kerberos SASL configuration for production
+      sasl.mechanism: GSSAPI
+      sasl.kerberos.service.name: kafka
+      sasl.jaas.config: |
+        com.sun.security.auth.module.Krb5LoginModule required
+        useKeyTab=true
+        storeKey=true
+        keyTab="${KEYTAB_CONFIG}"
+        principal="si_digigov@JIO.COM";
+      
+      # Client configuration
+      client.dns.lookup: use_all_dns_ips
+      acks: all
+
+    # Producer Configuration
+    producer:
+      acks: all
+      retries: 5
+      idempotence: true
+      batch-size: 32768
+      compression-type: snappy
+      linger-ms: 10
+      request-timeout-ms: 60000
+      delivery-timeout-ms: 180000
+      buffer-memory: 33554432    # 32 MB
+      max-block-ms: 60000        # 1 minute
+      connections-max-idle-ms: 540000  # 9 minutes
+      max-in-flight-requests: 5
+      max-request-size: ${KAFKA_MAX_REQUEST_SIZE:52428800}  # 50GB to match production topic size limit
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+    # Consumer Configuration
+    consumer:
+      group-id: ${KAFKA_GROUP:DEV_CMS_NOTIFICATION}
+      enable-auto-commit: false
+      auto-offset-reset: earliest
+      fetch-max-bytes: 52428800
+      max-partition-fetch-bytes: 52428800
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.jio, com.jio.digigov.auditmodule.entity
+        max.poll.records: 5
+        session.timeout.ms: 45000
+        heartbeat.interval.ms: 15000
+        max.poll.interval.ms: 300000
+
+    # Listener Configuration
+    listener:
+      ack-mode: manual
+      concurrency: 1  # Single consumer per partition for production
+
+# ========================================
+# Kafka Topic Configuration
+# ========================================
+kafka:
+  # Consumer Configuration
+  consumer:
+    group-id: ${KAFKA_GROUP:DEV_CMS_NOTIFICATION}
+
+  topics:
+    audit: ${AUDIT_TOPIC:DEV_CMS_NOTIFICATION_AUDIT}
+  #   test: DEV_CMS_NOTIFICATION_TEST
+  #   retry: DEV_CMS_NOTIFICATION_RETRY
+
+  # dlq:
+  #   sms: DEV_CMS_NOTIFICATION_SMS_DLQ
+  #   email: DEV_CMS_NOTIFICATION_EMAIL_DLQ
+  #   callback: DEV_CMS_NOTIFICATION_CALLBACK_DLQ
+
+  # Production Topic Configuration Properties
+  config:
+    partitions: 1  # Production requirement: 1 partition per topic
+    replicas: 3    # High availability with 3 replicas
+    retention-ms: 14400000  # 4 hours retention as per production requirement
+    max-message-bytes: 52428800  # 50MB limit as per production requirement
+    segment-bytes: 26214400  # 25MB segments for optimal storage
+    min-insync-replicas: 2  # Minimum 2 replicas in sync for durability
+    compression-type: snappy  # Efficient compression for production
+    cleanup-policy: delete   # Delete old messages, don't compact
+
+    # # DLQ specific configs
+    # dlq:
+    #   partitions: 1  # Single partition for DLQ
+    #   retention-ms: 86400000  # 24 hours retention for DLQ
+
+    # # Retry topic configs
+    # retry:
+    #   partitions: 1  # Single partition for retry
+    #   retention-ms: 43200000  # 12 hours retention for retries
+
+# ========================================
+# Retry Policy Configuration
+# ========================================
+retry:
+  # Channel-specific retry attempts
+  sms:
+    max-attempts: ${RETRY_SMS_MAX_ATTEMPTS:3}
+  email:
+    max-attempts: ${RETRY_EMAIL_MAX_ATTEMPTS:3}
+  callback:
+    max-attempts: ${RETRY_CALLBACK_MAX_ATTEMPTS:3}
+
+  # Global retry configuration
+  base-delay-ms: ${RETRY_BASE_DELAY_MS:2000}
+  multiplier: ${RETRY_MULTIPLIER:2.0}
+  max-delay-ms: ${RETRY_MAX_DELAY_MS:60000}
+  jitter-factor: ${RETRY_JITTER_FACTOR:0.25}
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+
+multi-tenant:
+  enabled: true
+  shared-database: tenant_db_shared
+  tenant-database-prefix: tenant_db_
+
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    root: INFO
+    com.jio.digigov: DEBUG
+    org.springdoc: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+vault:
+  service:
+    base:
+      url: ${VAULT_APIS_URL:http://localhost:30010}
+    endpoints:
+      encryptPayload: /client/encryptPayload
+      decryptPayload: /client/decryptedPayload
+
+signer:
+  keystore:
+    path: /path/to/cms_keystore.p12
+    password: changeit
+  key:
+    alias: cms_signer
+  output:
+    dir: /var/tmp/form65b   # or ${user.home}/Downloads
+
+
+notification:
+  service:
+    base:
+      url: ${NOTIFICATION_MODULE_APIS_URL:http://localhost:30005}
+    endpoints:
+      trigger-event: /notification/v1/events/trigger

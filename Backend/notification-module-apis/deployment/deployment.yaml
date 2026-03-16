@@ -1,0 +1,94 @@
+# ================= ConfigMap =================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notification-module-apis-config
+data:
+  SERVER_PORT: "9005"
+  MONGODB_DATABASE: "cms_db_admin"
+  PROFILE: "st"
+  KAFKA_GROUP: "DEV_CMS_NOTIFICATION"
+  SMS_TOPIC: "DEV_CMS_NOTIFICATION_SMS"
+  EMAIL_TOPIC: "DEV_CMS_NOTIFICATION_EMAIL"
+  CALLBACK_TOPIC: "DEV_CMS_NOTIFICATION_CALLBACK"
+  PATNER_PORTAL_APIS_URL: "http://patner-portal-apis:9002"
+  EMAIL_FROM: "<system-email-from>"
+  EMAIL_REPLYTO: "Jio.ConsentSupport@ril.com"
+  EMAIL_FROM_NAME: "Jio Consent Management System"
+  # Override via Secret in production: SYSTEM_DIGIGOV_CLIENT_ID, SYSTEM_DIGIGOV_CLIENT_SECRET
+  SYSTEM_DIGIGOV_CLIENT_ID: "<digigov-client-id>"
+  SYSTEM_DIGIGOV_CLIENT_SECRET: "<digigov-client-secret>"
+
+---
+# ================= Deployment =================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-module-apis
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: notification-module-apis
+  template:
+    metadata:
+      labels:
+        app: notification-module-apis
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: notification-module-apis
+          image: "$(IMAGE_URL)"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+          ports:
+            - containerPort: 9005
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          envFrom:
+            - configMapRef:
+                name: notification-module-apis-config
+          env:
+            - name: JAVA_OPTS
+              value: "-Djava.security.krb5.conf=/etc/krb5.conf"
+            - name: KRB5_CONFIG
+              value: /etc/krb5.conf
+            - name: KEYTAB_CONFIG
+              value: /etc/si_digigov.keytab
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: uri
+          volumeMounts:
+            - name: logs
+              mountPath: /opt/logs
+            - name: krb5-conf-volume
+              mountPath: /etc/krb5.conf
+              subPath: krb5.conf
+              readOnly: true
+            - name: krb5-keytab-volume
+              mountPath: /etc/si_digigov.keytab
+              subPath: si_digigov.keytab
+              readOnly: true
+      volumes:
+        - name: logs
+          emptyDir: {}

@@ -1,0 +1,3301 @@
+var cusId = "";
+var data = "";
+var overlay = "";
+var DigilockerData = "";
+var select = "";
+var option = "";
+var parentalFlow = false;
+var langRecieved = "ENGLISH";
+var langFlag = 0;
+var cburl = "";
+const keyTranslations = {
+  Purpose: "Purpose",
+  Duration: "Duration",
+  "Processing activity": "Processing activity",
+  "Used by": "Used by",
+  "Data item": "Data item",
+  Id: "Id",
+};
+
+var digilockerClientId = "";
+var digilockerSecret = "";
+var digilockercodeVerifier = "";
+var digilockerredirectUri = "";
+var finalSelectedLanguage = "ENGLISH";
+
+var backBtn = "";
+var checkbox = "";
+var btn1BackgroundColor = ""; //Save My choicves , Cancel
+var btn1FontColor = "";
+var btn2BackgroundColor = ""; //AllowAll,Verify,next
+var btn2FontColor = "";
+var cancelBtn = "";
+var nextBtn = "";
+var verifyBtn = "";
+var selectedKYCMethod = "";
+var doc_name = "";
+var doc_id = "";
+var TopDesc = "";
+var translatedLabel = "Customer ID";
+var labelSpan = "";
+var ConsentAllow = "";
+var withdrawLine = "";
+var clickHere = "";
+var requiredLabel = "";
+var documentLink = "";
+var label = "";
+var label2 = "";
+var title = "";
+var content = "";
+var content2 = "";
+var checkbox2 = "";
+var checkboxLabel = "";
+var badge = "";
+var pdfUrl = "";
+var topDesc = "";
+var rightsDesc = "";
+var permissionText = "";
+var parentalControl = "";
+var dataItemToBeShown = "";
+var processActivityNameToBeShown = "";
+var idshown = false;
+var processorNameToBeShown = "";
+var validitytoBeShown = "";
+var logoUrl = "";
+var saveBtn = "";
+var allowBtn = "";
+var isParental = false;
+var parentIdentity = "";
+var parentIdentityType = "";
+var parentName = "";
+var theme = "";
+var cardBackgroundColor = "";
+var buttonBackgroundColor = "";
+var cardFontColor = "";
+var buttonFontColor = "";
+var linkFontColor = "";
+var darkModeVisibility = "";
+var darkTheme = "";
+var lightTheme = "";
+var templateList1 = []; // has required accordion contents
+var templateList2 = []; // has others accordion contents
+var consentArray = {};
+var consentArray2 = {};
+var consentHandleId = "";
+var tenantId = "";
+var businessId = "";
+var secureId = "";
+let dotLoaderInterval; //loader constant
+let initDotLoaderInterval;
+var rowCheckboxes = [];
+let currentSourceLang = "en";
+
+function createToastContainer() {
+  if (!document.getElementById("toast-container")) {
+    const container = document.createElement("div");
+    Object.assign(container.style, {
+      position: "fixed",
+      bottom: "1rem",
+      left: "1rem",
+      zIndex: "9999",
+      display: "flex",
+      flexDirection: "column-reverse",
+      gap: "10px",
+      alignItems: "flex-start", // ensures left alignment
+    });
+    container.id = "toast-container";
+    document.body.appendChild(container);
+  }
+}
+
+function showToast(message, type = "success", duration = 3000) {
+  createToastContainer();
+
+  const toast = document.createElement("div");
+  Object.assign(toast.style, {
+    display: "flex",
+    alignItems: "center", // center vertically
+    justifyContent: "space-between",
+    gap: "10px",
+    minWidth: "260px",
+    maxWidth: "350px",
+    padding: "12px 16px",
+    borderRadius: "24px",
+    backgroundColor: "rgba(0,0,0,0.65)",
+    color: "#fff",
+    fontFamily: "system-ui",
+    fontSize: "14px",
+    fontWeight: "500",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+    opacity: "0",
+    transform: "translateY(20px)",
+    transition: "all 0.3s ease",
+  });
+
+  // Left icon
+  const icon1 = document.createElement("span");
+  icon1.innerHTML = `<svg width="25" height="25" viewBox="0 0 24 24" fill="none"
+    xmlns="http://www.w3.org/2000/svg">
+    ${
+      type === "success"
+        ? `<path d="M12 2a10 10 0 100 20 10 10 0 000-20zm5.21 7.71l-6 6a1.002 1.002 0 01-1.42 0l-3-3a1.003 1.003 0 111.42-1.42l2.29 2.3 5.29-5.3a1.004 1.004 0 011.42 1.42z" fill="#25AB21"></path>`
+        : `<path d="M12 2a10 10 0 100 20 10 10 0 000-20zm3.71 12.29a1.002 1.002 0 01-.325 1.639 1 1 0 01-1.095-.219L12 13.41l-2.29 2.3a1 1 0 01-1.639-.325 1 1 0 01.219-1.095l2.3-2.29-2.3-2.29a1.004 1.004 0 011.42-1.42l2.29 2.3 2.29-2.3a1.004 1.004 0 011.42 1.42L13.41 12l2.3 2.29z" fill="#F50031"></path>`
+    }
+  </svg>`;
+  Object.assign(icon1.style, {
+    display: "flex",
+    alignItems: "center",
+    flexShrink: 0,
+  });
+
+  // Message
+  const msg = document.createElement("span");
+  msg.innerText = message;
+  Object.assign(msg.style, {
+    flex: "1",
+    color: "#fff",
+    display: "flex",
+    alignItems: "center",
+    wordBreak: "break-word",
+  });
+
+  // Close icon
+  const closeBtn = document.createElement("span");
+  closeBtn.innerHTML = `<svg width="25" height="25" viewBox="0 0 24 24" fill="none"
+    xmlns="http://www.w3.org/2000/svg">
+    <path d="M13.41 12l6.3-6.29a1.004 1.004 0 00-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 10-1.42 1.42l6.3 6.29-6.3 6.29a.999.999 0 000 1.42 1 1 0 001.42 0l6.29-6.3 6.29 6.3a1.001 1.001 0 001.639-.325 1 1 0 00-.22-1.095L13.41 12z" fill="currentColor"></path>
+  </svg>`;
+  Object.assign(closeBtn.style, {
+    display: "flex",
+    alignItems: "center",
+    cursor: "pointer",
+    flexShrink: 0,
+    color: "#fff",
+  });
+  closeBtn.onclick = () => toast.remove();
+
+  // Append
+  toast.appendChild(icon1);
+  toast.appendChild(msg);
+  toast.appendChild(closeBtn);
+  document.getElementById("toast-container").appendChild(toast);
+
+  // Animate in
+  setTimeout(() => {
+    toast.style.opacity = "1";
+    toast.style.transform = "translateY(0)";
+  }, 50);
+
+  // Auto dismiss
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.style.transform = "translateY(20px)";
+    setTimeout(() => toast.remove(), 300);
+  }, duration);
+}
+
+async function generateCodeChallenge(codeVerifier) {
+  if (window.crypto && window.crypto.subtle) {
+    // Use native secure API if available (HTTPS / localhost)
+    const encoder = new TextEncoder();
+    const data = encoder.encode(codeVerifier);
+    const hashBuffer = await window.crypto.subtle.digest("SHA-256", data);
+    const base64Hash = btoa(String.fromCharCode(...new Uint8Array(hashBuffer)))
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/, "");
+    return base64Hash;
+  } else {
+    // 🔒 Fallback for HTTP: pure JS SHA-256 + Base64URL
+    console.warn("crypto.subtle not available. Using fallback SHA-256.");
+
+    function sha256(ascii) {
+      const rightRotate = (value, amount) =>
+        (value >>> amount) | (value << (32 - amount));
+
+      let mathPow = Math.pow;
+      let maxWord = mathPow(2, 32);
+      let lengthProperty = "length";
+      let i, j; // Used as a counter across the whole file
+      let result = "";
+
+      let words = [];
+      let asciiBitLength = ascii[lengthProperty] * 8;
+
+      let hash = (sha256.h = sha256.h || []);
+      let k = (sha256.k = sha256.k || []);
+      let primeCounter = k[lengthProperty];
+      let isComposite = {};
+
+      const fractionalPart = (n) => n - Math.floor(n);
+
+      // Compute primes and hash constants
+      function getPrime(n) {
+        let num = 2;
+        while (n > 0) {
+          if (!isComposite[num]) {
+            for (let i = num * num; i < 312; i += num) {
+              isComposite[i] = true;
+            }
+            if (--n === 0) return num;
+          }
+          num++;
+        }
+      }
+
+      if (!primeCounter) {
+        let n = 0;
+        let prime = 2;
+        while (n < 64) {
+          while (isComposite[prime]) prime++;
+          hash[n] = (fractionalPart(Math.pow(prime, 1 / 2)) * maxWord) | 0;
+          k[n++] = (fractionalPart(Math.pow(prime, 1 / 3)) * maxWord) | 0;
+          for (i = prime * prime; i < 312; i += prime) {
+            isComposite[i] = true;
+          }
+          prime++;
+        }
+      }
+
+      ascii += "\x80"; // append '1' bit (plus zero padding)
+      while ((ascii[lengthProperty] % 64) - 56) ascii += "\x00"; // pad until length ≡ 56 mod 64
+      for (i = 0; i < ascii[lengthProperty]; i++) {
+        j = ascii.charCodeAt(i);
+        if (j >> 8) return; // ASCII check
+        words[i >> 2] |= j << (((3 - i) % 4) * 8);
+      }
+      words[words[lengthProperty]] = (asciiBitLength / maxWord) | 0;
+      words[words[lengthProperty]] = asciiBitLength;
+
+      for (j = 0; j < words[lengthProperty]; ) {
+        const w = words.slice(j, (j += 16));
+        const oldHash = hash.slice(0);
+
+        for (i = 16; i < 64; i++) {
+          const s0 =
+            rightRotate(w[i - 15], 7) ^
+            rightRotate(w[i - 15], 18) ^
+            (w[i - 15] >>> 3);
+          const s1 =
+            rightRotate(w[i - 2], 17) ^
+            rightRotate(w[i - 2], 19) ^
+            (w[i - 2] >>> 10);
+          w[i] = (w[i - 16] + s0 + w[i - 7] + s1) | 0;
+        }
+
+        let a = hash[0],
+          b = hash[1],
+          c = hash[2],
+          d = hash[3],
+          e = hash[4],
+          f = hash[5],
+          g = hash[6],
+          h = hash[7];
+
+        for (i = 0; i < 64; i++) {
+          const S1 =
+            rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25);
+          const ch = (e & f) ^ (~e & g);
+          const temp1 = (h + S1 + ch + k[i] + w[i]) | 0;
+          const S0 =
+            rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22);
+          const maj = (a & b) ^ (a & c) ^ (b & c);
+          const temp2 = (S0 + maj) | 0;
+
+          h = g;
+          g = f;
+          f = e;
+          e = (d + temp1) | 0;
+          d = c;
+          c = b;
+          b = a;
+          a = (temp1 + temp2) | 0;
+        }
+
+        for (i = 0; i < 8; i++)
+          hash[i] = (hash[i] + [a, b, c, d, e, f, g, h][i]) | 0;
+      }
+
+      for (i = 0; i < 8; i++) {
+        for (j = 3; j + 1; j--) {
+          const b = (hash[i] >> (j * 8)) & 255;
+          result += (b < 16 ? "0" : "") + b.toString(16);
+        }
+      }
+      return result;
+    }
+
+    function hexToBase64Url(hex) {
+      let bytes = [];
+      for (let c = 0; c < hex.length; c += 2) {
+        bytes.push(parseInt(hex.substr(c, 2), 16));
+      }
+      let base64 = btoa(String.fromCharCode(...bytes));
+      return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    }
+
+    const hashHex = sha256(codeVerifier);
+    return hexToBase64Url(hashHex);
+  }
+}
+
+function openUnder18Modal(consentArray) {
+  let currentStep = 0;
+  let selectedKYCMethod = null;
+  let savedName = "";
+  let savedIdentity = "";
+  let savedDropdown = ""; // to preserve dropdown selection
+
+  // Create overlay & box
+  const modalOverlay = document.createElement("div");
+  Object.assign(modalOverlay.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: "9999",
+  });
+
+  const modalBox = document.createElement("div");
+  Object.assign(modalBox.style, {
+    borderRadius: "32px",
+    width: "400px",
+    padding: "20px",
+    boxShadow: "0 2px 10px rgba(0,0,0,0.2)",
+    position: "relative",
+    background: cardBackgroundColor,
+    color: cardFontColor,
+  });
+
+  // Header: back button + step text
+  const headerRow = document.createElement("div");
+  Object.assign(headerRow.style, {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "20px",
+  });
+
+  const backBtn = document.createElement("button");
+  backBtn.innerHTML = "";
+  Object.assign(backBtn.style, {
+    background: "none",
+    border: "none",
+    fontSize: "20px",
+    cursor: "pointer",
+    display: "none", // hidden on initial screen
+  });
+
+  const stepText = document.createElement("span");
+  stepText.style.fontWeight = "600";
+  stepText.style.fontFamily = "system-ui";
+  stepText.style.fontSize = "16px";
+  stepText.style.display = "none"; // hidden until Declaration is selected
+
+  headerRow.appendChild(backBtn);
+  headerRow.appendChild(stepText);
+
+  // Title & content
+  const title = document.createElement("div");
+  Object.assign(title.style, {
+    fontWeight: "500",
+    fontSize: "14px",
+    marginBottom: "5px",
+    fontFamily: "system-ui",
+  });
+
+  const stepContent = document.createElement("div");
+
+  // Footer (buttons)
+  const footer = document.createElement("div");
+  Object.assign(footer.style, {
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: "10px",
+    marginTop: "20px",
+  });
+
+  const cancelBtn = document.createElement("button");
+  cancelBtn.innerText = window.modalTranslations?.cancel || "Cancel";
+  Object.assign(cancelBtn.style, {
+    background: btn1BackgroundColor,
+    color: btn1FontColor,
+    border: "1px solid rgba(181, 181, 181, 1)",
+    padding: "8px 16px",
+    borderRadius: "250px",
+    fontWeight: "700",
+    fontSize: "18px",
+    fontFamily: "system-ui",
+    cursor: "pointer",
+  });
+
+  const nextBtn = document.createElement("button");
+  nextBtn.innerText = window.modalTranslations?.next || "Next";
+  Object.assign(nextBtn.style, {
+    background: btn2BackgroundColor,
+    color: btn2FontColor,
+    border: "1px solid rgba(181, 181, 181, 1)",
+    padding: "8px 16px",
+    borderRadius: "250px",
+    fontWeight: "700",
+    fontSize: "18px",
+    fontFamily: "system-ui",
+    cursor: "pointer",
+  });
+
+  footer.appendChild(cancelBtn);
+  footer.appendChild(nextBtn);
+
+  // Compose modal
+  modalBox.appendChild(headerRow);
+  modalBox.appendChild(title);
+  modalBox.appendChild(stepContent);
+  modalBox.appendChild(footer);
+  modalOverlay.appendChild(modalBox);
+  document.body.appendChild(modalOverlay);
+
+  // Styled dropdown helper
+  function createStyledDropdown(defaultOption = "Select") {
+    const container = document.createElement("div");
+    Object.assign(container.style, {
+      position: "relative",
+      display: "flex",
+      borderRadius: "20px",
+      cursor: "pointer",
+      justifyContent: "space-between",
+      alignItems: "center",
+      marginBottom: "20px",
+    });
+
+    const dropdown = document.createElement("select");
+    Object.assign(dropdown.style, {
+      padding: "9px 6px",
+      fontSize: "14px",
+      border: "1px solid #ccc",
+      borderRadius: "8px",
+      cursor: "pointer",
+      appearance: "none",
+      width: "100%",
+      color: "rgba(0,0,0,0.65)",
+    });
+
+    // Check if Digilocker data exists and is valid
+    const hasDigilockerData =
+      DigilockerData &&
+      DigilockerData.searchList &&
+      Array.isArray(DigilockerData.searchList) &&
+      DigilockerData.searchList.length > 0;
+
+    // Build options dynamically
+    const options = [defaultOption];
+    if (hasDigilockerData) options.push("I am with my parent");
+    options.push("I am away from my parent");
+
+    // Add options to dropdown
+    options.forEach((opt, i) => {
+      const optionEl = document.createElement("option");
+      optionEl.value = i === 0 ? "" : opt.toUpperCase();
+      optionEl.innerText = opt;
+      dropdown.appendChild(optionEl);
+    });
+
+    if (savedDropdown) dropdown.value = savedDropdown;
+
+    // Add SVG icon
+    const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    icon.setAttribute("width", "20");
+    icon.setAttribute("height", "20");
+    icon.setAttribute("viewBox", "0 0 25 25");
+    Object.assign(icon.style, {
+      position: "absolute",
+      top: "50%",
+      right: "10px",
+      transform: "translateY(-50%)",
+      pointerEvents: "none",
+    });
+    icon.innerHTML = `<path d="M12 15a1 1 0 01-.71-.29l-4-4a1 1 0 111.42-1.42l3.29 3.3 3.29-3.3a1 1 0 111.42 1.42l-4 4A1 1 0 0112 15z" fill="currentColor"></path>`;
+
+    dropdown.addEventListener("change", () => {
+      selectedKYCMethod = dropdown.value;
+      savedDropdown = dropdown.value;
+    });
+
+    container.appendChild(dropdown);
+    container.appendChild(icon);
+    return { container, select: dropdown };
+  }
+
+  // Validation helpers
+  function isValidName(name) {
+    return /^[a-zA-Z\s]+$/.test(name.trim());
+  }
+  function isValidIdentity(identity) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const mobileRegex = /^[0-9]{10}$/;
+    return emailRegex.test(identity) || mobileRegex.test(identity);
+  }
+
+  // ----------- renderInitial (single screen that toggles inputs based on dropdown) -----------
+  function renderInitial() {
+    currentStep = 0;
+
+    // Hide back button; stepText hidden until Declaration selected
+    backBtn.style.display = "none";
+    stepText.style.display = "none";
+    headerRow.style.display = "flex"; // keep header area but stepText/back control visibility
+
+    title.innerText =
+      window.modalTranslations?.verificationMethod ||
+      "Select verification method (Required)";
+    stepContent.innerHTML = "";
+
+    const { container, select } = createStyledDropdown();
+    // restore saved selection
+    if (savedDropdown) select.value = savedDropdown;
+
+    // Parent name & identity (created once per initial render)
+    const nameLabel = document.createElement("label");
+    nameLabel.innerText =
+      window.modalTranslations?.name || "Parent Name (Required)";
+    Object.assign(nameLabel.style, {
+      display: "none",
+      marginBottom: "5px",
+      fontWeight: "500",
+      fontSize: "14px",
+      fontFamily: "system-ui",
+    });
+
+    const nameInput = document.createElement("input");
+    Object.assign(nameInput.style, {
+      width: "100%",
+      padding: "8px",
+      marginBottom: "20px",
+      border: "1px solid #ccc",
+      borderRadius: "8px",
+      display: "none",
+    });
+    nameInput.value = savedName || "";
+
+    const identityLabel = document.createElement("label");
+    identityLabel.innerText =
+      window.modalTranslations?.identity || "Identity (Email or Mobile)";
+    Object.assign(identityLabel.style, {
+      display: "none",
+      marginBottom: "5px",
+      fontWeight: "500",
+      fontSize: "14px",
+      fontFamily: "system-ui",
+    });
+
+    const identityInput = document.createElement("input");
+    Object.assign(identityInput.style, {
+      width: "100%",
+      padding: "8px",
+      border: "1px solid #ccc",
+      borderRadius: "8px",
+      display: "none",
+    });
+    identityInput.value = savedIdentity || "";
+
+    // append elements
+    stepContent.appendChild(container);
+    stepContent.appendChild(nameLabel);
+    stepContent.appendChild(nameInput);
+    stepContent.appendChild(identityLabel);
+    stepContent.appendChild(identityInput);
+
+    // Footer
+    footer.innerHTML = "";
+    footer.appendChild(cancelBtn);
+    footer.appendChild(nextBtn);
+
+    // helper to set visuals depending on selection
+    function updateForSelection(val) {
+      if (val === "I AM AWAY FROM MY PARENT") {
+        // stepText.innerText = window.modalTranslations?.step1 || "Step 1/2";
+        // stepText.style.display = "block";
+
+        // show inputs
+        nameLabel.style.display = "block";
+        nameInput.style.display = "block";
+        identityLabel.style.display = "block";
+        identityInput.style.display = "block";
+
+        backBtn.style.display = "none"; // NO back on initial screen
+      } else {
+        // blank or DIGILOCKER
+        stepText.style.display = "none";
+
+        nameLabel.style.display = "none";
+        nameInput.style.display = "none";
+        identityLabel.style.display = "none";
+        identityInput.style.display = "none";
+
+        backBtn.style.display = "none";
+      }
+    }
+
+    // reflect saved selection
+    updateForSelection(select.value);
+
+    // change handler toggles inputs but does not show back button on initial
+    select.addEventListener("change", () => {
+      selectedKYCMethod = select.value;
+      savedDropdown = select.value;
+      updateForSelection(select.value);
+    });
+
+    // Next behaviour on this initial screen
+    nextBtn.onclick = async () => {
+      const sel = select.value;
+      if (!sel) {
+        showToast("Please select a verification method", "error");
+        return;
+      }
+
+      if (sel === "I AM WITH MY PARENT") {
+        showLoader();
+        modalOverlay.remove();
+        overlay.remove();
+        const responseType = "code";
+        const codeChallengeMethod = "S256";
+
+        // prepare redirect data
+        const redirectData = {
+          consentHandleId: consentHandleId,
+          preferencesStatus: consentArray,
+          languagePreference: finalSelectedLanguage,
+        };
+
+        const base64EncodedData = btoa(JSON.stringify(redirectData));
+        // Step 1: Generate Transaction ID
+        generateDigilockerTransactionId(consentArray).then(
+          async (consentMetaId) => {
+            if (!consentMetaId) {
+              console.log("Transaction ID not received");
+              return;
+            }
+
+            // Use consentMetaId as the `state`
+            const state = consentMetaId;
+
+            const codeChallenge = await generateCodeChallenge(
+              digilockercodeVerifier
+            );
+
+            const digilockerAuthUrl = `https://api.digitallocker.gov.in/public/oauth2/1/authorize?response_type=${responseType}&client_id=${digilockerClientId}&redirect_uri=${digilockerredirectUri}&code_challenge=${codeChallenge}&code_challenge_method=${codeChallengeMethod}&state=${state}`;
+
+            setTimeout(() => {
+              const newTab = window.open(digilockerAuthUrl, "_blank");
+
+              const checkInterval = setInterval(() => {
+                if (newTab.closed) {
+                  clearInterval(checkInterval);
+                  hideLoader();
+                  window.location.href = cburl;
+                }
+              }, 1000);
+
+              window.addEventListener("message", (event) => {
+                if (event.data === "DIGILOCKER_DONE") {
+                  hideLoader();
+                  clearInterval(checkInterval);
+                  window.location.href = cburl;
+                }
+              });
+            }, 300);
+          }
+        );
+
+        return;
+      }
+
+      window.addEventListener("load", async () => {
+        try {
+          const urlParams = new URLSearchParams(window.location.search);
+          const encryptedData = urlParams.get("encryptedData");
+          if (!encryptedData) throw new Error("Missing encrypted data");
+
+          const decodedData = JSON.parse(atob(encryptedData));
+
+          // Perform your backend or API actions
+          await fetchDetails(decodedData);
+          await callYourMethods(decodedData);
+
+          //  Notify main tab and close
+          if (window.opener) {
+            s;
+            window.opener.postMessage("DIGILOCKER_DONE", "*");
+          }
+
+          window.close();
+        } catch (err) {
+          console.log("Error in loader page:", err);
+          window.close();
+        }
+      });
+
+      if (sel === "I AM AWAY FROM MY PARENT") {
+        const nameVal = nameInput.value.trim();
+        const identityVal = identityInput.value.trim();
+
+        if (!isValidName(nameVal)) {
+          showToast("Name should contain letters only", "error");
+          return;
+        }
+        if (!isValidIdentity(identityVal)) {
+          showToast("Enter a valid email or 10-digit mobile", "error");
+          return;
+        }
+
+        savedName = nameVal;
+        savedIdentity = identityVal;
+
+        // Call parental consent API
+        const response = await sendParentalConsentRequest(nameVal, identityVal);
+        if (response) {
+          // Close the modal on success
+          modalOverlay.remove();
+          overlay.remove();
+        }
+      }
+    };
+  }
+
+  // ----------- renderOTPStep (OTP screen with back button) -----------
+  function renderOTPStep() {
+    currentStep = 2;
+
+    // show header, step 2/2 and back button
+    headerRow.style.display = "flex";
+    backBtn.style.display = "inline-flex";
+    stepText.style.display = "block";
+    stepText.innerText = window.modalTranslations?.step2 || "Step 2/2";
+
+    title.innerText = "";
+    stepContent.innerHTML = "";
+
+    // build back arrow icon
+    backBtn.innerHTML = "";
+    const backIcon = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg"
+    );
+    backIcon.setAttribute("width", "24");
+    backIcon.setAttribute("height", "24");
+    backIcon.setAttribute("viewBox", "0 0 24 24");
+    backIcon.innerHTML = `<path d="M15 20a1.003 1.003 0 01-.71-.29l-7-7a1 1 0 010-1.42l7-7a1.005 1.005 0 011.42 1.42L9.41 12l6.3 6.29a.997.997 0 01.219 1.095.999.999 0 01-.93.615z" fill="currentColor"></path>`;
+    Object.assign(backIcon.style, {
+      cursor: "pointer",
+      fill: "rgba(0,0,0,0.75)",
+    });
+    backBtn.appendChild(backIcon);
+
+    // OTP content
+    const headerParentOTP = document.createElement("div");
+    Object.assign(headerParentOTP.style, {
+      fontWeight: "900",
+      fontSize: "24px",
+      marginBottom: "10px",
+      fontFamily: "system-ui",
+    });
+    headerParentOTP.innerText =
+      window.modalTranslations?.otpHeading || "OTP Verification";
+    stepContent.appendChild(headerParentOTP);
+
+    const instruction = document.createElement("div");
+    instruction.innerText =
+      window.modalTranslations?.otpInstruction ||
+      "Enter the 6-digit OTP sent to 9800125683.";
+    Object.assign(instruction.style, {
+      fontSize: "14px",
+      marginBottom: "20px",
+      fontFamily: "system-ui",
+      fontWeight: "500",
+    });
+    stepContent.appendChild(instruction);
+
+    const otpInput = document.createElement("input");
+    otpInput.type = "text";
+    otpInput.maxLength = 6;
+    otpInput.placeholder = "000000";
+    Object.assign(otpInput.style, {
+      width: "100%",
+      height: "40px",
+      textAlign: "center",
+      fontSize: "18px",
+      letterSpacing: "10px",
+      border: "1px solid #ccc",
+      borderRadius: "8px",
+      outline: "none",
+      color: "#000",
+      fontFamily: "system-ui",
+      fontWeight: "500",
+    });
+    otpInput.addEventListener("input", (e) => {
+      e.target.value = e.target.value.replace(/\D/g, "");
+    });
+    stepContent.appendChild(otpInput);
+
+    // Footer: Verify only
+    footer.innerHTML = "";
+    const verifyBtn = document.createElement("button");
+    verifyBtn.innerText = window.modalTranslations?.verify || "Verify";
+    Object.assign(verifyBtn.style, {
+      background: btn2BackgroundColor,
+      color: btn2FontColor,
+      border: "1px solid rgba(181, 181, 181, 1)",
+      padding: "8px 16px",
+      borderRadius: "250px",
+      fontWeight: "700",
+      fontSize: "18px",
+      fontFamily: "system-ui",
+      cursor: "pointer",
+    });
+    footer.appendChild(verifyBtn);
+
+    // Back: return to initial state (restore saved values, no back button)
+    backBtn.onclick = () => {
+      // ensure saved values are preserved, then renderInitial which will restore visuals
+      renderInitial();
+      // after renderInitial executes, savedDropdown/name/identity are already used
+    };
+
+    verifyBtn.onclick = () => {
+      const otp = otpInput.value.trim();
+      if (otp.length !== 6) {
+        showToast("Please enter a valid 6-digit OTP", "error");
+        return;
+      }
+      showToast("OTP verified successfully!", "success");
+      setTimeout(() => modalOverlay.remove(), 800);
+    };
+  }
+
+  // cancel closes modal
+  // cancelBtn.addEventListener("click", () => modalOverlay.remove());
+
+  cancelBtn.addEventListener("click", () => {
+    // Uncheck the checkbox
+    if (checkbox) {
+      checkbox.checked = false;
+    }
+    modalOverlay.remove();
+    parentalFlow = false;
+    checkbox2.checked = false;
+
+    // Check all row checkboxes and update consentArray
+    rowCheckboxes.forEach(({ checkbox, prefId }) => {
+      checkbox.checked = false;
+      // consentArray2[prefId] = "ACCEPTED";
+    });
+  });
+
+  // start modal
+  renderInitial();
+}
+
+async function sendParentalConsentRequest(parentName, parentIdentity) {
+  try {
+    // Determine if identity is EMAIL or MOBILE
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const isEmail = emailRegex.test(parentIdentity);
+    const parentIdentityType = isEmail ? "EMAIL" : "MOBILE";
+
+    showDotLoader("Sending consent request to parent");
+
+    const url =
+      "https://api.jcms.jiolabs.com:8443/negd/consent/v1.0/consent-handle/parental-consent";
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        accept: "*/*",
+        txn: generateUUID(),
+        "tenant-id": tenantId,
+        "Content-Type": "application/json",
+        "X-Secure-Code": secureId,
+      },
+      body: JSON.stringify({
+        consentHandleId: consentHandleId,
+        parentIdentity: parentIdentity.toUpperCase(),
+        parentIdentityType: parentIdentityType,
+        isParental: true,
+        parentName: parentName,
+      }),
+    });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      let message = "Failed to send parental consent request";
+
+      if (responseData?.[0]?.errorMessage) {
+        message = responseData[0].errorMessage;
+      } else if (responseData?.message) {
+        message = responseData.message;
+      }
+
+      showToast(message, "error", 3000);
+      hideDotLoader();
+      return null;
+    }
+
+    hideDotLoader();
+
+    // Show appropriate message based on email or mobile
+    const successMessage = isEmail
+      ? "A consent request has been sent to your parent's email. Please ask them to approve it."
+      : "A consent request has been sent to your parent's mobile. Please ask them to approve it.";
+
+    showToast(successMessage, "success", 5000);
+
+    return responseData;
+  } catch (error) {
+    hideDotLoader();
+    console.log("Error in sendParentalConsentRequest:", error);
+    showToast("Something went wrong. Please try again.", "error", 3000);
+    return null;
+  }
+}
+
+async function fetchDocument(doc_id) {
+  try {
+    const url = `https://api.jcms.jiolabs.com:8443/negd/consent/v1.0/documents/view-document/${doc_id}`;
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        txn: "7afd223d-56c7-4556-9b2c-3032a684bcbd",
+        "tenant-id": tenantId,
+        Accept: "*/*",
+        "X-Secure-Code": secureId,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("API call failed: " + response.status);
+    }
+
+    const blob = await response.blob();
+
+    const pdfUrl = URL.createObjectURL(blob);
+    return pdfUrl;
+  } catch (error) {
+    console.log("Error fetching:", error);
+    return null;
+  }
+}
+
+const showDotLoader = (text) => {
+  const overlay = document.createElement("div");
+  overlay.id = "dot-loader-overlay";
+  Object.assign(overlay.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: "1000",
+    color: "rgb(15, 60, 201)",
+    fontFamily: "system-ui",
+    fontSize: "20px",
+    fontWeight: "600",
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
+  });
+
+  // text element
+  const loaderText = document.createElement("div");
+  loaderText.id = "dot-loader-text";
+  loaderText.innerText = text;
+  overlay.appendChild(loaderText);
+
+  document.body.appendChild(overlay);
+
+  // animate dots
+  let dotCount = 0;
+  dotLoaderInterval = setInterval(() => {
+    dotCount = (dotCount + 1) % 5; // cycles 0..4
+    loaderText.innerText = text + ".".repeat(dotCount);
+  }, 500);
+};
+
+const showDotInitLoader = (text) => {
+  const overlay = document.createElement("div");
+  overlay.id = "init-dot-loader-overlay";
+  Object.assign(overlay.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(0,0,0,0.05)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: "1000",
+    color: "rgb(15, 60, 201)",
+    fontFamily: "system-ui",
+    fontSize: "20px",
+    fontWeight: "600",
+
+    backdropFilter: "blur(8px)",
+    WebkitBackdropFilter: "blur(8px)",
+  });
+
+  // text element
+  const loaderText = document.createElement("div");
+  loaderText.id = "dot-loader-text";
+  loaderText.innerText = text;
+  overlay.appendChild(loaderText);
+
+  document.body.appendChild(overlay);
+
+  // animate dots
+  let dotCount = 0;
+  initDotLoaderInterval = setInterval(() => {
+    dotCount = (dotCount + 1) % 5; // cycles 0..4
+    loaderText.innerText = text + ".".repeat(dotCount);
+  }, 500);
+};
+
+const hideDotLoader = () => {
+  clearInterval(dotLoaderInterval);
+  document.getElementById("dot-loader-overlay")?.remove();
+};
+
+const hideInitDotLoader = () => {
+  clearInterval(initDotLoaderInterval);
+  document.getElementById("init-dot-loader-overlay")?.remove();
+};
+
+async function callBhashini(selectedLangKey) {
+  try {
+    if (langFlag == 1) {
+      showDotInitLoader("Loading");
+      langFlag = 0;
+    } else {
+      showDotLoader("Translating");
+    }
+    const url = "https://api.jcms.jiolabs.com:8443/negd/translator/translate";
+    const options = [
+      { value: "ENGLISH", label: "English", apiValue: "en" },
+      { value: "HINDI", label: "Hindi", apiValue: "hi" },
+      { value: "BENGALI", label: "Bengali", apiValue: "bn" },
+      { value: "TAMIL", label: "Tamil", apiValue: "ta" },
+      { value: "TELUGU", label: "Telugu", apiValue: "te" },
+      { value: "KANNADA", label: "Kannada", apiValue: "kn" },
+      { value: "MALAYALAM", label: "Malayalam", apiValue: "ml" },
+      { value: "GUJARATI", label: "Gujarati", apiValue: "gu" },
+      { value: "MARATHI", label: "Marathi", apiValue: "mr" },
+      { value: "ODIA", label: "Odia", apiValue: "or" },
+      { value: "PUNJABI", label: "Punjabi", apiValue: "pa" },
+      { value: "ASSAMESE", label: "Assamese", apiValue: "as" },
+      { value: "NEPALI", label: "Nepali", apiValue: "ne" },
+      { value: "SINDHI", label: "Sindhi", apiValue: "sd" },
+      { value: "KASHMIRI", label: "Kashmiri", apiValue: "ks" },
+      { value: "DOGRI", label: "Dogri", apiValue: "doi" },
+      { value: "KONKANI", label: "Konkani", apiValue: "gom" },
+      { value: "MAITHILI", label: "Maithili", apiValue: "mai" },
+      { value: "SANSKRIT", label: "Sanskrit", apiValue: "sa" },
+      { value: "SANTALI", label: "Santali", apiValue: "sat" },
+      { value: "BODO", label: "Bodo", apiValue: "brx" },
+      { value: "MANIPURI", label: "Manipuri", apiValue: "mni" },
+    ];
+
+    const selectedOption = options.find((opt) => opt.value === selectedLangKey);
+    const targetLang = selectedOption ? selectedOption.apiValue : "";
+    const targetLang2 = selectedOption ? selectedOption.value : "";
+    finalSelectedLanguage = targetLang2;
+
+    function toText(value) {
+      return Array.isArray(value) ? value.join(", ") : value;
+    }
+
+    const dynamicInputs = templateList1.flatMap((item, index) => {
+      const reqNo = index + 1;
+      const inputs = [];
+
+      // Translate Purpose, Duration, Id
+      inputs.push({ id: `purpose_req_${reqNo}`, source: toText(item.Purpose) });
+      inputs.push({
+        id: `duration_req_${reqNo}`,
+        source: toText(item.Duration),
+      });
+      inputs.push({ id: `id_req_${reqNo}`, source: item.Id });
+
+      // Translate each Processing activity
+      (item["Processing activity"] || []).forEach((activityObj, actIndex) => {
+        inputs.push({
+          id: `processingName_req_${reqNo}_${actIndex}`,
+          source: activityObj.activityName,
+        });
+        inputs.push({
+          id: `usedBy_req_${reqNo}_${actIndex}`,
+          source: activityObj.processorName,
+        });
+        inputs.push({
+          id: `dataItem_req_${reqNo}_${actIndex}`,
+          source: toText(activityObj.dataItems),
+        });
+      });
+
+      return inputs;
+    });
+
+    const dynamicInputs2 = templateList2.flatMap((item, index) => {
+      const reqNo = index + 1;
+      const inputs = [];
+
+      // Purpose, Duration, Id
+      inputs.push({ id: `purpose_otr_${reqNo}`, source: toText(item.Purpose) });
+      inputs.push({
+        id: `duration_otr_${reqNo}`,
+        source: toText(item.Duration),
+      });
+      inputs.push({ id: `id_otr_${reqNo}`, source: item.Id });
+
+      // Each Processing activity
+      (item["Processing activity"] || []).forEach((activityObj, actIndex) => {
+        inputs.push({
+          id: `processingName_otr_${reqNo}_${actIndex}`,
+          source: activityObj.activityName,
+        });
+        inputs.push({
+          id: `usedBy_otr_${reqNo}_${actIndex}`,
+          source: activityObj.processorName,
+        });
+        inputs.push({
+          id: `dataItem_otr_${reqNo}_${actIndex}`,
+          source: toText(activityObj.dataItems),
+        });
+      });
+
+      return inputs;
+    });
+
+    const staticInputs = [
+      { id: "topDescription", source: topDesc },
+      { id: "permissionDescription", source: permissionText },
+      { id: "rightsDescription", source: rightsDesc },
+      { id: "parentCheck", source: "I am below 18 years of age." },
+      { id: "saveChoice", source: "Save My Choices" },
+      { id: "allowAll", source: "Allow All" },
+      { id: "badge", source: "Always Active" },
+      { id: "requiredHeader", source: requiredLabel },
+      { id: "othersHeader", source: "Others" },
+      { id: "customerId", source: translatedLabel },
+      { id: "header", source: "Manage Consent" },
+      { id: "documentTitle", source: doc_name },
+      { id: "click", source: "click here" },
+
+      {
+        id: "parentVerificationMethod",
+        source: "Select verification method (Required)",
+      },
+      { id: "parentCancel", source: "Cancel" },
+      { id: "parentNext", source: "Next" },
+      { id: "parentName", source: "Parent Name (Required)" },
+      { id: "parentIdentity", source: "Identity (Email or Mobile)" },
+      { id: "parentStep1", source: "Step1/2" },
+      { id: "parentStep2", source: "Step2/2" },
+      { id: "parentOTPHeading", source: "OTP Verification" },
+      {
+        id: "parentOTPInstruction",
+        source: "Enter the 6-digit OTP sent to 9800125683.",
+      },
+      { id: "parentVerify", source: "Verify" },
+
+      // add label translations
+      { id: "Purpose", source: "Purpose" },
+      { id: "Data item", source: "Data item" },
+      { id: "Processing activity", source: "Processing activity" },
+      { id: "Used by", source: "Used by" },
+      { id: "Duration", source: "Duration" },
+      { id: "Id", source: "Id" },
+    ];
+
+    const finalInputs = [...staticInputs, ...dynamicInputs, ...dynamicInputs2];
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        tenantid: tenantId,
+        businessid: businessId,
+        txn: generateUUID(),
+        "X-Secure-Code": secureId,
+      },
+      body: JSON.stringify({
+        configId: "e66b0624-61fb-44e9-b087-8bb312b5387b",
+        provider: "BHASHINI",
+        source: "CONSENTPOPUP",
+        language: {
+          sourceLanguage: currentSourceLang,
+          targetLanguage: targetLang,
+        },
+        input: finalInputs,
+      }),
+    });
+
+    const data2 = await response.json();
+
+    // Build a map for translated labels
+
+    const getTranslated = (id) =>
+      data2.output.find((o) => o.id === id)?.target || "";
+
+    // Build translatedTemplateList
+    const translatedTemplateList = templateList1.map((item, index) => {
+      const reqNo = index + 1;
+
+      return {
+        Purpose: [getTranslated(`purpose_req_${reqNo}`)],
+        Duration: getTranslated(`duration_req_${reqNo}`),
+        Id: item.Id,
+        "Processing activity": (item["Processing activity"] || []).map(
+          (act, actIndex) => ({
+            activityName: getTranslated(
+              `processingName_req_${reqNo}_${actIndex}`
+            ),
+            processorName: getTranslated(`usedBy_req_${reqNo}_${actIndex}`),
+            dataItems: (
+              getTranslated(`dataItem_req_${reqNo}_${actIndex}`) || ""
+            )
+              .split(",")
+              .map((s) => s.trim()),
+          })
+        ),
+      };
+    });
+
+    // Build translatedTemplateList2
+    const translatedTemplateList2 = templateList2.map((item, index) => {
+      const reqNo = index + 1;
+
+      const processingActivities = (item["Processing activity"] || []).map(
+        (act, actIndex) => ({
+          activityName: getTranslated(
+            `processingName_otr_${reqNo}_${actIndex}`
+          ),
+          processorName: getTranslated(`usedBy_otr_${reqNo}_${actIndex}`),
+          dataItems: (getTranslated(`dataItem_otr_${reqNo}_${actIndex}`) || "")
+            .split(",")
+            .map((s) => s.trim())
+            .filter(Boolean),
+        })
+      );
+
+      return {
+        Purpose: [getTranslated(`purpose_otr_${reqNo}`)],
+        Duration: getTranslated(`duration_otr_${reqNo}`),
+        Id: item.Id,
+        "Processing activity": processingActivities,
+      };
+    });
+
+    [
+      "Purpose",
+      "Data item",
+      "Processing activity",
+      "Used by",
+      "Duration",
+      "Id",
+    ].forEach((key) => {
+      const obj = data2.output.find((o) => o.id === key);
+      keyTranslations[key] = obj ? obj.target : key;
+    });
+
+    function renderTranslatedList(list, container, keyTranslations) {
+      if (!container) return;
+      container.innerHTML = "";
+
+      list.forEach((template) => {
+        const table = document.createElement("div");
+        Object.assign(table.style, {
+          display: "grid",
+          gridTemplateColumns: "1fr",
+          gap: "5px",
+          paddingTop: "8px",
+          // marginBottom: "16px",
+          fontFamily: "system-ui",
+          color: cardFontColor,
+        });
+
+        function addRow(label, value) {
+          const rowDiv = document.createElement("div");
+          const labelSpan = document.createElement("span");
+          labelSpan.innerText = label + " ";
+          labelSpan.style.fontWeight = "600";
+
+          const valueSpan = document.createElement("span");
+          valueSpan.innerText = value;
+          valueSpan.style.fontWeight = "400";
+
+          rowDiv.appendChild(labelSpan);
+          rowDiv.appendChild(valueSpan);
+          table.appendChild(rowDiv);
+        }
+
+        // Use translated labels
+        addRow(`${keyTranslations["Purpose"]}:`, template.Purpose.join(", "));
+        if (validitytoBeShown) {
+          addRow(`${keyTranslations["Duration"]}:`, template.Duration);
+        }
+
+        const hrMain = document.createElement("hr");
+        Object.assign(hrMain.style, {
+          border: "0",
+          borderTop: "1px solid #ddd",
+          margin: "10px 0",
+          width: "100%",
+        });
+        table.appendChild(hrMain);
+
+        template["Processing activity"].forEach((activityObj, aIndex) => {
+          if (processActivityNameToBeShown) {
+            addRow(
+              `${keyTranslations["Processing activity"]}:`,
+              activityObj.activityName
+            );
+          }
+          if (processorNameToBeShown) {
+            addRow(`${keyTranslations["Used by"]}:`, activityObj.processorName);
+          }
+          if (dataItemToBeShown) {
+            addRow(
+              `${keyTranslations["Data item"]}:`,
+              activityObj.dataItems.join(", ")
+            );
+          }
+
+          if (
+            dataItemToBeShown === false &&
+            processActivityNameToBeShown === false &&
+            processorNameToBeShown === false
+          ) {
+          } else {
+            if (aIndex < template["Processing activity"].length - 1) {
+              const hrActivity = document.createElement("hr");
+              Object.assign(hrActivity.style, {
+                border: "0",
+                borderTop: "1px solid #ddd",
+                margin: "10px 0",
+                width: "100%",
+              });
+              table.appendChild(hrActivity);
+            }
+          }
+        });
+
+        container.appendChild(table);
+
+        const hrTemplate = document.createElement("hr");
+        Object.assign(hrTemplate.style, {
+          border: "0",
+          borderTop: "2px solid #aaa",
+          margin: "16px 0",
+          width: "100%",
+        });
+        if (
+          dataItemToBeShown === false &&
+          processActivityNameToBeShown === false &&
+          processorNameToBeShown === false
+        ) {
+        } else {
+          container.appendChild(hrTemplate);
+        }
+      });
+    }
+
+    // Same change for renderTranslatedList2:
+    function renderTranslatedList2(list, container, keyTranslations) {
+      if (!container) return;
+      container.innerHTML = "";
+      rowCheckboxes = [];
+
+      list.forEach((template) => {
+        const table = document.createElement("div");
+        Object.assign(table.style, {
+          display: "grid",
+          gridTemplateColumns: "1fr",
+          gap: "5px",
+          paddingTop: "8px",
+          // marginBottom: "16px",
+          fontFamily: "system-ui",
+          color: cardFontColor,
+        });
+
+        const preferenceId = template.Id;
+
+        function addRow(label, value, showCheckbox = false) {
+          const rowDiv = document.createElement("div");
+          Object.assign(rowDiv.style, {
+            display: "flex",
+            justifyContent: "space-between",
+          });
+
+          const leftDiv = document.createElement("div");
+          const labelSpan = document.createElement("span");
+          labelSpan.innerText = label + " ";
+          labelSpan.style.fontWeight = "600";
+
+          const valueSpan = document.createElement("span");
+          valueSpan.innerText = value;
+          valueSpan.style.fontWeight = "400";
+
+          leftDiv.appendChild(labelSpan);
+          leftDiv.appendChild(valueSpan);
+          rowDiv.appendChild(leftDiv);
+
+          if (showCheckbox) {
+            const checkboxDiv = document.createElement("div");
+            Object.assign(checkboxDiv.style, {
+              display: "flex",
+              justifyContent: "flex-end",
+            });
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            Object.assign(checkbox.style, {
+              width: "24px",
+              height: "24px",
+              cursor: "pointer",
+              borderRadius: "4px",
+              border: "1px solid rgba(0,0,0,0.65)",
+            });
+
+            if (consentArray[preferenceId]) checkbox.checked = true;
+
+            checkbox.addEventListener("change", () => {
+              if (checkbox.checked) consentArray[preferenceId] = "ACCEPTED";
+              else delete consentArray[preferenceId];
+            });
+
+            checkboxDiv.appendChild(checkbox);
+            rowDiv.appendChild(checkboxDiv);
+
+            rowCheckboxes.push({ checkbox, prefId: preferenceId });
+          }
+
+          table.appendChild(rowDiv);
+        }
+
+        // Translated labels
+        addRow(
+          `${keyTranslations["Purpose"]}:`,
+          Array.isArray(template.Purpose)
+            ? template.Purpose.join(", ")
+            : template.Purpose,
+          true
+        );
+        if (validitytoBeShown) {
+          addRow(`${keyTranslations["Duration"]}:`, template.Duration);
+        }
+
+        const hrMain = document.createElement("hr");
+        Object.assign(hrMain.style, {
+          border: "0",
+          borderTop: "1px solid #ddd",
+          margin: "10px 0",
+          width: "100%",
+        });
+        table.appendChild(hrMain);
+
+        (template["Processing activity"] || []).forEach(
+          (activityObj, actIndex) => {
+            if (processActivityNameToBeShown) {
+              addRow(
+                `${keyTranslations["Processing activity"]}:`,
+                activityObj.activityName
+              );
+            }
+            if (processorNameToBeShown) {
+              addRow(
+                `${keyTranslations["Used by"]}:`,
+                activityObj.processorName
+              );
+            }
+            if (dataItemToBeShown) {
+              addRow(
+                `${keyTranslations["Data item"]}:`,
+                Array.isArray(activityObj.dataItems)
+                  ? activityObj.dataItems.join(", ")
+                  : activityObj.dataItems
+              );
+            }
+            if (
+              dataItemToBeShown === false &&
+              processorNameToBeShown === false &&
+              processActivityNameToBeShown === false
+            ) {
+            } else {
+              if (actIndex < template["Processing activity"].length - 1) {
+                const hrActivity = document.createElement("hr");
+                Object.assign(hrActivity.style, {
+                  border: "0",
+                  borderTop: "1px solid #ddd",
+                  margin: "10px 0",
+                  width: "100%",
+                });
+                table.appendChild(hrActivity);
+              }
+            }
+          }
+        );
+
+        container.appendChild(table);
+
+        const hrTemplate = document.createElement("hr");
+        Object.assign(hrTemplate.style, {
+          border: "0",
+          borderTop: "2px solid #aaa",
+          margin: "16px 0",
+          width: "100%",
+        });
+        if (
+          dataItemToBeShown === false &&
+          processActivityNameToBeShown === false &&
+          processorNameToBeShown === false
+        ) {
+        } else {
+          container.appendChild(hrTemplate);
+        }
+      });
+    }
+
+    // Finally call with keyTranslations
+    renderTranslatedList(translatedTemplateList, content, keyTranslations);
+    renderTranslatedList2(translatedTemplateList2, content2, keyTranslations);
+
+    const getTarget = (id) =>
+      data2.output.find((o) => o.id === id)?.target || null;
+    ConsentAllow.innerHTML =
+      data?.multilingual?.languageSpecificContentMap?.[selectedLangKey]
+        ?.permissionText || getTarget("permissionDescription");
+    TopDesc.innerHTML =
+      data?.multilingual?.languageSpecificContentMap?.[selectedLangKey]
+        ?.description || getTarget("topDescription");
+    withdrawLine.innerHTML =
+      data?.multilingual?.languageSpecificContentMap?.[selectedLangKey]
+        ?.rightsText || getTarget("rightsDescription");
+    checkboxLabel.innerHTML = getTarget("parentCheck");
+    title.innerText = getTarget("header");
+    labelSpan.innerHTML = getTarget("customerId");
+    badge.innerText = getTarget("badge");
+    label.innerText = getTarget("requiredHeader");
+    label2.innerText = getTarget("othersHeader");
+    saveBtn.innerText = getTarget("saveChoice");
+    allowBtn.innerText = getTarget("allowAll");
+    documentLink.innerText = getTarget("documentTitle");
+    clickHere.innerHTML = getTarget("click");
+    currentSourceLang = targetLang;
+
+    window.modalTranslations = {
+      verificationMethod: getTarget("parentVerificationMethod"),
+      cancel: getTarget("parentCancel"),
+      next: getTarget("parentNext"),
+      name: getTarget("parentName"),
+      identity: getTarget("parentIdentity"),
+      step1: getTarget("parentStep1"),
+      step2: getTarget("parentStep2"),
+      otpHeading: getTarget("parentOTPHeading"),
+      otpInstruction: getTarget("parentOTPInstruction"),
+      verify: getTarget("parentVerify"),
+    };
+    hideDotLoader();
+    hideInitDotLoader();
+  } catch (error) {
+    console.log("Translation error:", error);
+    hideDotLoader();
+    hideInitDotLoader();
+  }
+}
+
+async function generateDigilockerTransactionId(consentArray) {
+  if (
+    consentArray == null ||
+    (typeof consentArray === "object" && Object.keys(consentArray).length === 0)
+  ) {
+    showToast("Please select at least one purpose.", "error", 6000);
+    return null;
+  }
+
+  try {
+    showDotLoader("Capturing Your Consent");
+    const url =
+      "https://api.jcms.jiolabs.com:8443/negd/consent/v1.0/consent-meta/create";
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        txn: generateUUID(),
+        "Content-Type": "application/json",
+        "tenant-id": tenantId,
+        "X-Secure-Code": secureId,
+      },
+      body: JSON.stringify({
+        consentHandleId: consentHandleId,
+        preferencesStatus: consentArray,
+        languagePreference: finalSelectedLanguage,
+        isParentalConsent: true,
+        secId: secureId,
+      }),
+    });
+
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      let message = "API call failed";
+
+      if (responseData?.[0]?.errorCode === "JCMP3004") {
+        message = "Consent Handle already exists";
+      } else if (responseData?.[0]?.errorMessage) {
+        message = responseData[0].errorMessage;
+      }
+
+      showToast(message, "error", 3000);
+      throw new Error("API call failed: " + response.status);
+    }
+
+    //  Extract consentMetaId from response
+    const consentMetaId = responseData?.consentMetaId;
+
+    // if (consentMetaId) {
+    //   showToast("Consent Successfully captured.", "success", 6000);
+    // }
+
+    overlay.remove();
+    hideDotLoader();
+
+    return consentMetaId;
+  } catch (error) {
+    hideDotLoader();
+    console.log("Error in generateDigilockerTransactionId:", error);
+    return null;
+  }
+}
+
+async function captureConsent(consentArray) {
+  if (
+    consentArray == null || // covers null & undefined
+    (typeof consentArray === "object" && Object.keys(consentArray).length === 0)
+  ) {
+    const message = "Please select at least one purpose.";
+    showToast(message, "error", 6000);
+    return;
+  } else {
+    try {
+      if (parentalFlow == true) {
+        // If isParental is true, auto-trigger Digilocker flow directly
+        if (isParental) {
+          showLoader();
+          overlay.remove();
+          const responseType = "code";
+          const codeChallengeMethod = "S256";
+
+          generateDigilockerTransactionId(consentArray).then(
+            async (consentMetaId) => {
+              if (!consentMetaId) {
+                console.log("Transaction ID not received");
+                hideLoader();
+                return;
+              }
+
+              const state = consentMetaId;
+              const codeChallenge = await generateCodeChallenge(
+                digilockercodeVerifier
+              );
+
+              const digilockerAuthUrl = `https://api.digitallocker.gov.in/public/oauth2/1/authorize?response_type=${responseType}&client_id=${digilockerClientId}&redirect_uri=${digilockerredirectUri}&code_challenge=${codeChallenge}&code_challenge_method=${codeChallengeMethod}&state=${state}`;
+
+              setTimeout(() => {
+                const newTab = window.open(digilockerAuthUrl, "_blank");
+
+                const checkInterval = setInterval(() => {
+                  if (newTab.closed) {
+                    clearInterval(checkInterval);
+                    hideLoader();
+                    window.location.href = cburl;
+                  }
+                }, 1000);
+
+                window.addEventListener("message", (event) => {
+                  if (event.data === "DIGILOCKER_DONE") {
+                    hideLoader();
+                    clearInterval(checkInterval);
+                    window.location.href = cburl;
+                  }
+                });
+              }, 300);
+            }
+          );
+          return;
+        }
+        // Otherwise show the under 18 modal for manual selection
+        openUnder18Modal(consentArray);
+      } else {
+        showDotLoader("Capturing Your Consent");
+        const url =
+          "https://api.jcms.jiolabs.com:8443/negd/consent/v1.0/consent/create";
+
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            txn: "7afd223d-56c7-4556-9b2c-3032a684bcbd",
+            "tenant-id": tenantId,
+            Accept: "*/*",
+            "Content-Type": "application/json",
+            "X-Secure-Code": secureId,
+          },
+          body: JSON.stringify({
+            consentHandleId: consentHandleId,
+            preferencesStatus: consentArray,
+            languagePreference: finalSelectedLanguage,
+          }),
+        });
+
+        if (!response.ok) {
+          const responseData = await response.json();
+
+          let message = "API call failed";
+
+          if (responseData?.[0]?.errorCode === "JCMP3004") {
+            message = "Consent Handle already exists";
+          } else if (responseData?.[0]?.errorMessage) {
+            message = responseData[0].errorMessage;
+          }
+
+          showToast(message, "error", 3000);
+          throw new Error("API call failed: " + response.status);
+        } else {
+          showToast("Consent Successfully captured.", "success", 6000);
+          parentalFlow = false;
+          overlay.remove();
+          hideDotLoader();
+          window.location.href = cburl;
+        }
+      }
+    } catch (error) {
+      return null;
+    }
+  }
+}
+
+async function captureAllConsent(consentArray) {
+  try {
+    if (parentalFlow == true) {
+      // If isParental is true, auto-trigger Digilocker flow directly
+      if (isParental) {
+        showLoader();
+        overlay.remove();
+        const responseType = "code";
+        const codeChallengeMethod = "S256";
+
+        generateDigilockerTransactionId(consentArray).then(
+          async (consentMetaId) => {
+            if (!consentMetaId) {
+              console.log("Transaction ID not received");
+              hideLoader();
+              return;
+            }
+
+            const state = consentMetaId;
+            const codeChallenge = await generateCodeChallenge(
+              digilockercodeVerifier
+            );
+
+            const digilockerAuthUrl = `https://api.digitallocker.gov.in/public/oauth2/1/authorize?response_type=${responseType}&client_id=${digilockerClientId}&redirect_uri=${digilockerredirectUri}&code_challenge=${codeChallenge}&code_challenge_method=${codeChallengeMethod}&state=${state}`;
+
+            setTimeout(() => {
+              const newTab = window.open(digilockerAuthUrl, "_blank");
+
+              const checkInterval = setInterval(() => {
+                if (newTab.closed) {
+                  clearInterval(checkInterval);
+                  hideLoader();
+                  window.location.href = cburl;
+                }
+              }, 1000);
+
+              window.addEventListener("message", (event) => {
+                if (event.data === "DIGILOCKER_DONE") {
+                  hideLoader();
+                  clearInterval(checkInterval);
+                  window.location.href = cburl;
+                }
+              });
+            }, 300);
+          }
+        );
+        return;
+      }
+      // Otherwise show the under 18 modal for manual selection
+      openUnder18Modal(consentArray);
+    } else {
+      showDotLoader("Capturing Your Consent");
+      const url =
+        "https://api.jcms.jiolabs.com:8443/negd/consent/v1.0/consent/create";
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          txn: "7afd223d-56c7-4556-9b2c-3032a684bcbd",
+          "tenant-id": tenantId,
+          Accept: "*/*",
+          "Content-Type": "application/json",
+          "X-Secure-Code": secureId,
+        },
+        body: JSON.stringify({
+          consentHandleId: consentHandleId,
+          preferencesStatus: consentArray,
+          languagePreference: finalSelectedLanguage,
+        }),
+      });
+
+      if (!response.ok) {
+        const responseData = await response.json();
+
+        let message = "API call failed";
+
+        if (responseData?.[0]?.errorCode === "JCMP3004") {
+          message = "Consent Handle already exists";
+        } else if (responseData?.[0]?.errorMessage) {
+          message = responseData[0].errorMessage;
+        }
+
+        showToast(message, "error", 3000);
+        throw new Error("API call failed: " + response.status);
+      } else {
+        showToast("Consent Successfully captured.", "success", 3000);
+        // window.location.href = "/loggedIn";
+        parentalFlow = false;
+        window.location.href = cburl;
+        overlay.remove();
+        hideDotLoader();
+      }
+    }
+  } catch (error) {
+    hideDotLoader();
+    return null;
+  }
+}
+
+async function fetchConsentData() {
+  try {
+    const url = `https://api.jcms.jiolabs.com:8443/negd/consent/v1.0/consent-handle/parental-consent/${consentHandleId}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        txn: "7afd223d-56c7-4556-9b2c-3032a684bcbd",
+        "tenant-id": tenantId,
+        Accept: "*/*",
+        "X-Secure-Code": secureId,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("API call failed: " + response.status);
+    }
+
+    data = await response.json();
+
+    // Extract parental consent fields
+    isParental = data?.isParental || false;
+    parentIdentity = data?.parentIdentity || "";
+    parentIdentityType = data?.parentIdentityType || "";
+    parentName = data?.parentName || "";
+
+    // Use parentIdentity as customer ID if isParental is true
+    cusId = isParental ? parentIdentity : data?.customerIdentifiers?.value;
+
+    if (data?.multilingual?.supportedLanguages.length == 1) {
+      langRecieved = data?.multilingual?.supportedLanguages[0];
+      langFlag = 1;
+    }
+
+    doc_name = data?.documentMeta?.name;
+    doc_id = data?.documentMeta?.documentId;
+    topDesc =
+      data?.multilingual?.languageSpecificContentMap?.ENGLISH?.description;
+    rightsDesc =
+      data?.multilingual?.languageSpecificContentMap?.ENGLISH?.rightsText;
+    permissionText =
+      data?.multilingual?.languageSpecificContentMap?.ENGLISH?.permissionText;
+    requiredLabel =
+      data?.multilingual?.languageSpecificContentMap?.ENGLISH?.label;
+    parentalControl = data?.uiConfig?.parentalControl;
+    dataItemToBeShown = data?.uiConfig?.dataItemToBeShown;
+    processActivityNameToBeShown = data?.uiConfig?.processActivityNameToBeShown;
+    processorNameToBeShown = data?.uiConfig?.processorNameToBeShown;
+    validitytoBeShown = data?.uiConfig?.validitytoBeShown;
+    darkModeVisibility = data?.uiConfig?.darkMode;
+    // darkModeVisibility = false;
+    // parentalControl = true;
+    logoUrl = data?.uiConfig?.logo;
+    var theme = data?.uiConfig?.theme;
+
+    if (theme) {
+      var decodedThemeStr = atob(theme);
+
+      var decodedTheme = JSON.parse(decodedThemeStr);
+
+      lightTheme = JSON.parse(decodedTheme.light);
+      darkTheme = JSON.parse(decodedTheme.dark);
+
+      cardBackgroundColor = lightTheme.cardBackground;
+      cardFontColor = lightTheme.cardFont;
+      buttonBackgroundColor = lightTheme.buttonBackground;
+      buttonFontColor = lightTheme.buttonFont;
+      linkFontColor = lightTheme.linkFont;
+      btn1BackgroundColor = lightTheme.buttonFont;
+      btn1FontColor = lightTheme.buttonBackground;
+      btn2BackgroundColor = lightTheme.buttonBackground;
+      btn2FontColor = lightTheme.buttonFont;
+    }
+
+    data?.preferences?.forEach((pref) => {
+      const puporse = (pref.purposeList || [])
+        .map((pa) => pa.purposeInfo?.purposeName)
+        .filter(Boolean);
+
+      const usedBy = pref.processorActivityList.map(
+        (pa) => pa.processActivityInfo.processorName
+      );
+
+      const processingActivities = pref.processorActivityList.map((p) => ({
+        activityName: p.processActivityInfo.activityName,
+
+        processorName: p.processActivityInfo.processorName,
+
+        dataItems: p.processActivityInfo.dataTypesList.flatMap(
+          (d) => d.dataItems
+        ),
+      }));
+      const dataItems = pref.processorActivityList.flatMap((pa) =>
+        pa.processActivityInfo.dataTypesList.flatMap((dt) => dt.dataItems)
+      );
+
+      const id = pref.preferenceId;
+
+      const obj = {
+        Purpose: puporse,
+        "Used by": [...new Set(usedBy)],
+        Duration: `${pref.preferenceValidity.value} ${
+          pref.preferenceValidity.value === 1
+            ? pref.preferenceValidity.unit.replace(/s$/i, "") // remove trailing s
+            : pref.preferenceValidity.unit
+        }`,
+
+        "Processing activity": processingActivities,
+        "Data item": dataItems,
+        Id: id,
+      };
+
+      consentArray2[pref.preferenceId] = "ACCEPTED";
+      if (pref.mandatory) {
+        templateList1.push(obj); // Required
+        consentArray[pref.preferenceId] = "ACCEPTED";
+      } else {
+        templateList2.push(obj); // Other
+      }
+    });
+    return data;
+  } catch (error) {
+    console.log("Error fetching:", error);
+    return null;
+  }
+}
+
+async function fetchDigilockerData() {
+  try {
+    const url = `https://api.jcms.jiolabs.com:8443/negd/partnerportal/v1.0/digilocker/credential/search`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        txn: generateUUID(),
+        "tenant-id": tenantId,
+        "x-session-token":
+          "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJwYXJ0bmVyLXBvcnRhbCIsInRlbmFudElkIjoiNTg5Yzk1YzYtNGJiOC00Njc4LThjMGItYzE1YzczNmNiNDZkIiwic3ViIjoiMzA1NWEwNDItOTFkZi00MWI2LWIxZDMtNDc2YWM5M2ZiNGM2IiwiZXhwIjoxNzYxODg4ODc4LCJpYXQiOjE3NjE4ODUyNzh9.bLREZVmrQrIwxxvIj0BjFmfa9wUiwtbu9GqXmQcmfaznl8UMAuhFq3OEVEKC4wXTh6Ahk_2uwUs0_EmN_wtBc2gVmrZ7tESijFTUPlelzm3NExFXfMR6HcfQxyyvkcZh9Ih_JqEgpJG0akQDdjK0tUd--usZMhFz069T-h5PavvCl6hODDxCwNEtJCWWo0RJ3YEkj6JTjvSRkbIvFULjrA8Qd0uj_31UswcKWheInajoNG-rhEwYO62hpbxFw7svJFDd4whY5JtfXWSV5jC1l1-zy5HaFYn8_q9Euf-S7FP6zCICqGQ7cIK5bgstJhV2QsvdZE6SpRnuabRznzkucg",
+        Accept: "application/json",
+        "X-Secure-Code": secureId,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("API call failed: " + response.status);
+    }
+    const data2 = await response.json();
+    return data2;
+  } catch (error) {
+    console.log("Error fetching:", error);
+    return null;
+  }
+}
+
+function changeDesc(selectedLangKey) {
+  callBhashini(selectedLangKey);
+}
+
+function selectKYCMethod(method) {
+  console.log("Yesssssss", method);
+}
+
+const showLoader = () => {
+  const overlay = document.createElement("div");
+  overlay.id = "loader-overlay";
+  Object.assign(overlay.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: "1000",
+  });
+
+  // spinner container
+  const spinner = document.createElement("div");
+  Object.assign(spinner.style, {
+    border: "8px solid #f3f3f3",
+    borderTop: "8px solid #3498db",
+    borderRadius: "50%",
+    width: "60px",
+    height: "60px",
+    animation: "spin 1s linear infinite",
+  });
+
+  // inject keyframes if not already added
+  if (!document.getElementById("loader-style")) {
+    const style = document.createElement("style");
+    style.id = "loader-style";
+    style.textContent = `
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  overlay.appendChild(spinner);
+  document.body.appendChild(overlay);
+};
+
+const hideLoader = () => {
+  document.getElementById("loader-overlay")?.remove();
+};
+
+function generateUUID() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+async function callBhashiniConfig(tenant, business) {
+  try {
+    const url =
+      "https://api.jcms.jiolabs.com:8443/negd/translator/translateConfig";
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        tenantid: tenant,
+        businessid: tenant,
+        txn: generateUUID(),
+        "X-Secure-Code": secureId,
+      },
+      body: JSON.stringify({
+        scopeLevel: "BUSINESS",
+        config: {
+          provider: "BHASHINI",
+          apiBaseUrl: "https://meity-auth.ulcacontrib.org",
+          modelPipelineEndpoint: "/ulca/apis/v0/model/getModelsPipeline",
+          callbackUrl:
+            "https://dhruva-api.bhashini.gov.in/services/inference/pipeline",
+          userId: "02c3fec39bbf46cda8ece45ba52e78cb",
+          apiKey: "058a0399da-ea84-4077-9e3e-984ff46f8b77",
+          pipelineId: "64392f96daac500b55c543cd",
+        },
+      }),
+    });
+
+    if (!response.ok) {
+      console.log("Bhashini config API call failed:", response.status);
+      return null;
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log("Error calling Bhashini config API:", error);
+    return null;
+  }
+}
+
+const loadPreferenceCenter = async (
+  handleId,
+  tenant,
+  business,
+  cbackUrl,
+  secCode
+) => {
+  consentHandleId = handleId;
+  tenantId = tenant;
+  businessId = business;
+  secureId = secCode;
+  cburl = cbackUrl;
+  showLoader();
+  // Call Bhashini configuration API first
+  await callBhashiniConfig(tenant, business);
+
+  const consentData = await fetchConsentData();
+  DigilockerData = await fetchDigilockerData();
+
+  if (consentData?.documentMeta?.documentId) {
+    await fetchDocument(consentData.documentMeta.documentId);
+  }
+  // callBhashiniConfig(tenant, business);
+
+  if (DigilockerData) {
+    digilockerClientId = DigilockerData?.searchList[0]?.clientId;
+    digilockerSecret = DigilockerData?.searchList[0]?.clientSecret;
+    digilockercodeVerifier = DigilockerData?.searchList[0]?.codeVerifier;
+    digilockerredirectUri = DigilockerData?.searchList[0]?.redirectUri;
+  }
+  //hideLoader();
+  createIntegrationPopup();
+  callBhashini(langRecieved);
+};
+
+const createIntegrationPopup = () => {
+  overlay = document.createElement("div");
+  Object.assign(overlay.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: "1000",
+  });
+
+  const modal = document.createElement("div");
+  Object.assign(modal.style, {
+    background: cardBackgroundColor,
+    padding: "20px",
+    borderRadius: "32px",
+    width: "584px",
+    textAlign: "left",
+    fontFamily: "system-ui",
+    maxHeight: "90vh",
+    overflowY: "auto",
+    boxSizing: "border-box",
+    ScrollBarWidth: "none",
+    color: cardFontColor,
+  });
+  modal.classList.add("custom-modal");
+
+  const toggleWrapper = document.createElement("label");
+  Object.assign(toggleWrapper.style, {
+    position: "fixed",
+    top: "0.5rem",
+    right: "0.5rem",
+    display: "inline-block",
+    width: "50px",
+    height: "28px",
+    zIndex: "1100",
+    cursor: "pointer",
+  });
+
+  // Create hidden checkbox
+  const toggleCheckbox = document.createElement("input");
+  toggleCheckbox.type = "checkbox";
+  Object.assign(toggleCheckbox.style, {
+    opacity: "0",
+    width: "0",
+    height: "0",
+  });
+
+  // Create slider span
+  const slider = document.createElement("span");
+  Object.assign(slider.style, {
+    position: "absolute",
+    cursor: "pointer",
+    top: "0",
+    left: "0",
+    right: "0",
+    bottom: "0",
+    backgroundColor: "#ccc",
+    transition: "0.3s",
+    borderRadius: "34px",
+  });
+
+  // Add circle inside slider
+  const circle = document.createElement("span");
+  Object.assign(circle.style, {
+    position: "absolute",
+    content: '""',
+    height: "22px",
+    width: "22px",
+    left: "3px",
+    bottom: "3px",
+    backgroundColor: "white",
+    transition: "0.3s",
+    borderRadius: "50%",
+  });
+  slider.appendChild(circle);
+  toggleWrapper.appendChild(toggleCheckbox);
+  toggleWrapper.appendChild(slider);
+
+  toggleCheckbox.addEventListener("change", () => {
+    if (toggleCheckbox.checked) {
+      // Dark mode
+      slider.style.backgroundColor = "#0F3CC9";
+      circle.style.transform = "translateX(22px)";
+      modal.style.background = darkTheme.cardBackground;
+      modal.style.color = darkTheme.cardFont;
+      select.style.color = darkTheme.cardFont;
+      select.style.background = darkTheme.cardBackground;
+      option.style.color = darkTheme.cardFont;
+      option.style.background = darkTheme.cardBackground;
+      cardFontColor = darkTheme.cardFont;
+      cardBackgroundColor = darkTheme.cardBackground;
+      (cardFontColor = darkTheme.cardFont),
+        // saveBtn.style.background = darkTheme.buttonBackground;
+        (allowBtn.style.background = darkTheme.buttonBackground);
+      allowBtn.style.color = darkTheme.buttonFont;
+
+      btn1BackgroundColor = darkTheme.buttonFont;
+      btn1FontColor = darkTheme.buttonBackground;
+      btn2BackgroundColor = darkTheme.buttonBackground;
+      btn2FontColor = darkTheme.buttonFont;
+
+      saveBtn.style.background = darkTheme.buttonFont;
+      saveBtn.style.color = darkTheme.buttonBackground;
+      // path.setAttribute("stroke", darkTheme.buttonBackground);
+      // path2.setAttribute("stroke", darkTheme.buttonBackground);
+      checkboxLabel.style.color = darkTheme.cardFont;
+      documentLink.style.color = darkTheme.linkFont;
+      linkFontColor = darkTheme.linkFont;
+      closeBtn.style.color = darkTheme.buttonBackground;
+      arrow2.style.color = darkTheme.buttonBackground;
+      arrow.style.color = darkTheme.buttonBackground;
+      container.style.color = darkTheme.cardFont;
+      container2.style.color = darkTheme.cardFont;
+
+      // buttonBackgroundColor = darkTheme.buttonBackground;
+      // buttonFontColor = darkTheme.buttonFont;
+    } else {
+      // Light mode
+      slider.style.backgroundColor = "#ccc";
+      circle.style.transform = "translateX(0)";
+      modal.style.background = lightTheme.cardBackground;
+      modal.style.color = lightTheme.cardFont;
+      // saveBtn.style.background = lightTheme.buttonBackground;
+      allowBtn.style.background = lightTheme.buttonBackground;
+      allowBtn.style.color = lightTheme.buttonFont;
+      select.style.color = lightTheme.cardFont;
+      select.style.background = lightTheme.cardBackground;
+
+      option.style.color = lightTheme.cardFont;
+      option.style.background = lightTheme.cardBackground;
+
+      saveBtn.style.background = lightTheme.buttonFont;
+      saveBtn.style.color = lightTheme.buttonBackground;
+      btn1BackgroundColor = lightTheme.buttonFont;
+      btn1FontColor = lightTheme.buttonBackground;
+      btn2BackgroundColor = lightTheme.buttonBackground;
+      btn2FontColor = lightTheme.buttonFont;
+
+      // path.setAttribute("stroke", lightTheme.buttonBackground);
+      // path2.setAttribute("stroke", lightTheme.buttonBackground);
+      cardBackgroundColor = lightTheme.cardBackground;
+      cardFontColor = lightTheme.cardFont;
+      checkboxLabel.style.color = lightTheme.cardFont;
+      documentLink.style.color = lightTheme.linkFont;
+      linkFontColor = lightTheme.linkFont;
+      closeBtn.style.color = lightTheme.buttonBackground;
+      arrow2.style.color = lightTheme.buttonBackground;
+      arrow.style.color = lightTheme.buttonBackground;
+      container.style.color = lightTheme.cardFont;
+      container2.style.color = lightTheme.cardFont;
+      cardFontColor = lightTheme.cardFont;
+      // buttonBackgroundColor = lightTheme.buttonBackground;
+      // buttonFontColor = lightTheme.buttonFont;
+    }
+  });
+  const style = document.createElement("style");
+  style.textContent = `
+  .custom-modal {
+    scrollbar-width: none; /* Firefox */
+  }
+  .custom-modal::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+`;
+  const firstContainer = document.createElement("div");
+  Object.assign(firstContainer.style, {
+    display: "flex",
+    justifyContent: "flex-end",
+    margin: 0,
+    padding: "10px 0px",
+  });
+
+  const closeBtn = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "svg"
+  );
+  closeBtn.setAttribute("width", "30");
+  closeBtn.setAttribute("height", "30");
+  closeBtn.setAttribute("viewBox", "0 0 25 25");
+
+  const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line1.setAttribute("x1", "6");
+  line1.setAttribute("y1", "6");
+  line1.setAttribute("x2", "18");
+  line1.setAttribute("y2", "18");
+  line1.setAttribute("stroke", "rgba(10, 40, 133, 1)");
+  line1.setAttribute("stroke-width", "2.5");
+  line1.setAttribute("stroke-linecap", "round");
+
+  const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line2.setAttribute("x1", "18");
+  line2.setAttribute("y1", "6");
+  line2.setAttribute("x2", "6");
+  line2.setAttribute("y2", "18");
+  line2.setAttribute("stroke", "rgba(10, 40, 133, 1)");
+  line2.setAttribute("stroke-width", "2.5");
+  line2.setAttribute("stroke-linecap", "round");
+
+  // closeBtn.appendChild(line1);
+  // closeBtn.appendChild(line2);
+  closeBtn.innerHTML = `<path d="M13.41 12l6.3-6.29a1.004 1.004 0 00-1.42-1.42L12 10.59l-6.29-6.3a1.004 1.004 0 10-1.42 1.42l6.3 6.29-6.3 6.29a.999.999 0 000 1.42 1 1 0 001.42 0l6.29-6.3 6.29 6.3a1.001 1.001 0 001.639-.325 1 1 0 00-.22-1.095L13.41 12z" fill="currentColor"></path>`;
+
+  closeBtn.style.cursor = "pointer";
+  closeBtn.style.color = buttonBackgroundColor;
+  closeBtn.addEventListener("click", () => {
+    // window.location.href = "/loggedIn";
+    overlay.remove();
+    toggleWrapper.remove();
+  });
+
+  firstContainer.appendChild(closeBtn);
+
+  const langIcon = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "svg"
+  );
+  langIcon.setAttribute("width", "32");
+  langIcon.setAttribute("height", "32");
+  langIcon.setAttribute("viewBox", "0 0 32 32");
+  Object.assign(langIcon.style, {
+    display: "inline-block",
+  });
+
+  const textA = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  textA.setAttribute("x", "2");
+  textA.setAttribute("y", "22");
+  textA.setAttribute("font-size", "25");
+  textA.setAttribute("font-family", "Arial, sans-serif");
+  textA.setAttribute("font-weight", "bold");
+  textA.setAttribute("fill", "black");
+  textA.textContent = "A";
+
+  const textHindi = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "text"
+  );
+  textHindi.setAttribute("x", "16");
+  textHindi.setAttribute("y", "22");
+  textHindi.setAttribute("font-size", "20");
+  textHindi.setAttribute("font-family", "Arial, sans-serif");
+  textHindi.setAttribute("font-weight", "bold");
+  textHindi.setAttribute("fill", "black");
+  textHindi.textContent = "अ";
+
+  langIcon.appendChild(textA);
+  langIcon.appendChild(textHindi);
+
+  const titleContainer = document.createElement("div");
+  Object.assign(titleContainer.style, {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "10px",
+    marginTop: "0.5rem",
+  });
+
+  const titleLeftContainer = document.createElement("div");
+  Object.assign(titleLeftContainer.style, {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: "0.5rem",
+  });
+
+  title = document.createElement("h2");
+  title.innerText = "Manage Consent";
+  Object.assign(title.style, {
+    fontWeight: "900",
+
+    fontSize: "24px",
+  });
+
+  const logo = document.createElement("img");
+  logo.src = logoUrl;
+  Object.assign(logo.style, {
+    width: "32px",
+    height: "32px",
+    objectFit: "contain",
+  });
+  titleLeftContainer.appendChild(title);
+  // Main container
+  const container_2 = document.createElement("div");
+  Object.assign(container_2.style, {
+    position: "relative",
+    display: "flex",
+    borderRadius: "20px",
+    cursor: "pointer",
+    justifyContent: "space-between",
+    alignItems: "center",
+  });
+
+  // Dropdown wrapper
+  const dropdown = document.createElement("div");
+  Object.assign(dropdown.style, {
+    position: "relative",
+    display: "inline-block",
+    alignItems: "center",
+  });
+
+  const icon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  icon.setAttribute("width", "20");
+  icon.setAttribute("height", "20");
+  icon.setAttribute("viewBox", "0 0 25 25");
+  Object.assign(icon.style, {
+    position: "absolute",
+    top: "50%",
+    left: "10px",
+    transform: "translateY(-50%)",
+    pointerEvents: "none",
+  });
+
+  icon.innerHTML = `<path d="M21.71 4.29A1 1 0 0021 4h-2.23a1 1 0 00-.71.29 1 1 0 00-.29.71 1 1 0 001 1H19v1.48a2 2 0 01-.85.09 2.3 2.3 0 01-.81-.24A2.29 2.29 0 0016 4.1a2.3 2.3 0 00-2.62.9 1 1 0 00-.15.75 1 1 0 00.43.63 1 1 0 001.39-.28.36.36 0 01.14-.1.54.54 0 01.18 0 .4.4 0 01.15.1.28.28 0 01.07.17.32.32 0 01-.08.21.309.309 0 01-.22.09 1 1 0 00-.92.615 1 1 0 00-.08.385 1 1 0 00.3.7 1 1 0 00.7.3.76.76 0 01.42.12.7.7 0 01.27.34.779.779 0 01.05.43.72.72 0 01-.21.38.78.78 0 01-.38.2A.71.71 0 0115 10a.82.82 0 01-.34-.27.791.791 0 01-.12-.42 1 1 0 00-2 0 2.73 2.73 0 004.56 2.05 2.72 2.72 0 00.9-1.81c.133.01.267.01.4 0 .2.014.402.008.6-.02v1.56c.004.265.108.518.29.71a1.001 1.001 0 001.42 0 1.05 1.05 0 00.29-.71V6a1 1 0 00.71-.29A1.05 1.05 0 0022 5a.999.999 0 00-.29-.71zm-12.28.34a1 1 0 00-1.86 0l-5.5 14a1 1 0 000 .77c.11.24.307.428.55.53a1 1 0 00.77 0c.24-.11.429-.307.53-.55L5.65 15h5.7l1.72 4.37c.049.119.12.228.21.32.09.097.2.175.32.23a1.07 1.07 0 00.79.01c.12-.049.228-.12.32-.21.097-.09.176-.2.23-.32A.998.998 0 0015 19a1.067 1.067 0 00-.07-.39L9.43 4.63zm-3 8.37L8.5 7.73 10.57 13H6.43z" fill="currentColor"/>`;
+
+  const icon2 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  icon2.setAttribute("width", "20");
+  icon2.setAttribute("height", "20");
+  icon2.setAttribute("viewBox", "0 0 25 25");
+  Object.assign(icon2.style, {
+    position: "absolute",
+    top: "50%",
+    right: "10px",
+    transform: "translateY(-50%)",
+    pointerEvents: "none",
+  });
+  // Default icon2 (down chevron)
+  const downPath = `<path d="M12 15a1.002 1.002 0 01-.71-.29l-4-4a1.004 1.004 0 111.42-1.42l3.29 3.3 3.29-3.3a1.004 1.004 0 111.42 1.42l-4 4A1.001 1.001 0 0112 15z" fill="currentColor"></path>`;
+
+  // Up chevron
+  const upPath = `<path d="M16 15a.998.998 0 01-.71-.29L12 11.41l-3.29 3.3a1.004 1.004 0 01-1.42-1.42l4-4a.999.999 0 011.42 0l4 4A1.001 1.001 0 0116 15z" fill="currentColor"></path>`;
+
+  // Set default icon
+  icon2.innerHTML = downPath;
+
+  // When dropdown opens (focus) → show up chevron
+
+  const languages = [
+    "English",
+    "Hindi",
+    "Bengali",
+    "Tamil",
+    "Telugu",
+    "Kannada",
+    "Malayalam",
+    "Gujarati",
+    "Marathi",
+    "Odia",
+    "Punjabi",
+    "Assamese",
+    "Nepali",
+    "Sindhi",
+    "Kashmiri",
+    "Dogri",
+    "Konkani",
+    "Maithili",
+    "Sanskrit",
+    "Santali",
+    "Bodo",
+    "Manipuri",
+  ];
+
+  // select dropdown
+  select = document.createElement("select");
+  Object.assign(select.style, {
+    padding: "6px 30px 6px 35px",
+    fontSize: "14px",
+    border: "1px solid #ccc",
+    borderRadius: "20px",
+    cursor: "pointer",
+    appearance: "none",
+    WebkitAppearance: "none",
+    MozAppearance: "none",
+    background: "transparent",
+    color: cardFontColor,
+    backgroundColor: cardBackgroundColor,
+  });
+  languages.forEach((lang) => {
+    option = document.createElement("option");
+    option.value = lang.toUpperCase(); // Use uppercase key for mapping
+    option.innerText = lang;
+
+    select.appendChild(option);
+    if (langRecieved) {
+      select.value = langRecieved.toUpperCase();
+    }
+  });
+
+  let isOpen = false;
+
+  // First click -> open
+  select.addEventListener("mousedown", () => {
+    if (!isOpen) {
+      icon2.innerHTML = upPath;
+      isOpen = true;
+    } else {
+      // Second click closes dropdown
+      icon2.innerHTML = downPath;
+      isOpen = false;
+    }
+  });
+
+  // When selection is made
+  select.addEventListener("change", () => {
+    icon2.innerHTML = downPath;
+    isOpen = false;
+  });
+
+  // When clicking outside
+  select.addEventListener("blur", () => {
+    icon2.innerHTML = downPath;
+    isOpen = false;
+  });
+
+  select.addEventListener("change", (e) => {
+    const selectedLangKey = e.target.value;
+    changeDesc(selectedLangKey);
+  });
+
+  dropdown.appendChild(icon);
+  dropdown.appendChild(select);
+  dropdown.appendChild(icon2);
+
+  container_2.appendChild(dropdown);
+  titleLeftContainer.appendChild(container_2);
+  titleContainer.appendChild(titleLeftContainer);
+
+  titleContainer.appendChild(logo);
+
+  TopDesc = document.createElement("p");
+  TopDesc.innerHTML = `${topDesc}`;
+  TopDesc.style.marginTop = "1rem";
+  TopDesc.style.marginBottom = "1rem";
+  TopDesc.style.fontSize = "14px";
+  // TopDesc.style.color = cardFontColor;
+  TopDesc.style.fontWeight = "500";
+
+  const customerId = document.createElement("p");
+
+  labelSpan = document.createElement("span");
+  labelSpan.innerText = translatedLabel;
+  labelSpan.style.fontWeight = "700";
+  labelSpan.style.fontSize = "16px";
+
+  const valueSpan = document.createElement("span");
+  valueSpan.innerText = `: ${cusId}`;
+  valueSpan.style.fontWeight = "400";
+  valueSpan.style.fontSize = "16px";
+
+  customerId.appendChild(labelSpan);
+  customerId.appendChild(valueSpan);
+
+  document.body.appendChild(customerId);
+
+  const accordion = document.createElement("div");
+  Object.assign(accordion.style, {
+    margin: "10px 0",
+    fontFamily: "Inter, Arial, sans-serif",
+    width: "100%",
+  });
+
+  const header = document.createElement("div");
+  Object.assign(header.style, {
+    display: "grid",
+    gridTemplateColumns: "30px 1fr auto",
+    alignItems: "center",
+    paddingTop: "12px",
+    paddingBottom: "12px",
+    cursor: "pointer",
+    userSelect: "none",
+    borderBottom: "1px solid rgba(224, 224, 224, 1)",
+  });
+  const arrow = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  arrow.setAttribute("width", "30");
+  arrow.setAttribute("height", "30");
+  arrow.setAttribute("viewBox", "5 0 12 23");
+  arrow.style.transition = "transform 0.3s ease";
+  arrow.style.color = buttonBackgroundColor;
+  arrow.innerHTML = `<path d="M12 15a1.002 1.002 0 01-.71-.29l-4-4a1.004 1.004 0 111.42-1.42l3.29 3.3 3.29-3.3a1.004 1.004 0 111.42 1.42l-4 4A1.001 1.001 0 0112 15z" fill="currentColor"></path>`;
+
+  label = document.createElement("span");
+  label.innerText = requiredLabel;
+  label.style.fontWeight = "500";
+  label.style.fontSize = "16px";
+  label.style.fontFamily = "system-ui";
+
+  header.appendChild(arrow);
+  header.appendChild(label);
+
+  badge = document.createElement("span");
+  badge.innerText = "Always Active";
+  Object.assign(badge.style, {
+    border: "1px solid rgba(181, 181, 181, 1)",
+    borderRadius: "80px",
+    padding: "4px 12px",
+    fontSize: "12px",
+    // color: "#333",
+    fontFamily: "system-ui",
+    fontWeight: 500,
+  });
+
+  header.appendChild(badge);
+
+  content = document.createElement("div");
+  Object.assign(content.style, {
+    paddingLeft: "30px",
+    display: "none",
+    fontSize: "14px",
+    color: cardFontColor,
+    fontFamily: "system-ui",
+  });
+
+  const container = document.createElement("div");
+  // Build a translation map after getting data2 from translation API
+  // const keyTranslations = {};
+  // [
+  //   "Purpose",
+  //   "Data item",
+  //   "Processing activity",
+  //   "Used by",
+  //   "Duration",
+  //   "Id",
+  // ].forEach((key) => {
+  //   const obj = data2.output.find((o) => o.id === key);
+  //   keyTranslations[key] = obj ? obj.target : key;
+  // });
+
+  // Render templateList1 with translated labels
+  templateList1.forEach((template) => {
+    const purposes = template.Purpose || [];
+    const duration = template.Duration || "";
+    const processingActivities = template["Processing activity"] || [];
+
+    const table = document.createElement("div");
+    Object.assign(table.style, {
+      display: "grid",
+      gridTemplateColumns: "1fr",
+      gap: "5px",
+      paddingTop: "8px",
+      // marginBottom: "16px",
+    });
+
+    function addRow(label, value) {
+      const rowDiv = document.createElement("div");
+
+      const labelSpan = document.createElement("span");
+      labelSpan.innerText = label + " ";
+      labelSpan.style.fontWeight = "600";
+
+      const valueSpan = document.createElement("span");
+      valueSpan.innerText = value;
+      valueSpan.style.fontWeight = "400";
+
+      rowDiv.appendChild(labelSpan);
+      rowDiv.appendChild(valueSpan);
+      table.appendChild(rowDiv);
+    }
+
+    // Purpose (all in one line) & Duration
+    addRow(`${keyTranslations["Purpose"]}:`, purposes.join(", "));
+
+    if (validitytoBeShown) {
+      addRow(`${keyTranslations["Duration"]}:`, duration);
+    }
+
+    // Separator
+    const hrMain = document.createElement("hr");
+    Object.assign(hrMain.style, {
+      border: "0",
+      borderTop: "1px solid #ddd",
+      margin: "10px 0",
+      width: "100%",
+    });
+    table.appendChild(hrMain);
+
+    // Processing activities
+    processingActivities.forEach((activityObj, aIndex) => {
+      const activityName = activityObj.activityName || "";
+      const usedBy = activityObj.processorName || "";
+      const dataItems = Array.isArray(activityObj.dataItems)
+        ? activityObj.dataItems.join(", ")
+        : "";
+      if (processActivityNameToBeShown) {
+        addRow(`${keyTranslations["Processing activity"]}:`, activityName);
+      }
+      if (processorNameToBeShown) {
+        addRow(`${keyTranslations["Used by"]}:`, usedBy);
+      }
+      if (dataItemToBeShown) {
+        addRow(`${keyTranslations["Data item"]}:`, dataItems);
+      }
+
+      if (aIndex < processingActivities.length - 1) {
+        const hrActivity = document.createElement("hr");
+        Object.assign(hrActivity.style, {
+          border: "0",
+          borderTop: "1px solid #ddd",
+          margin: "10px 0",
+          width: "100%",
+        });
+        table.appendChild(hrActivity);
+      }
+    });
+
+    // Append table and outer separator
+    container.appendChild(table);
+    const hrTemplate = document.createElement("hr");
+    Object.assign(hrTemplate.style, {
+      border: "0",
+      borderTop: "2px solid #aaa",
+      margin: "16px 0",
+      width: "100%",
+    });
+    if (
+      dataItemToBeShown === false &&
+      processorNameToBeShown === false &&
+      processorNameToBeShown === false
+    ) {
+    } else {
+      container.appendChild(hrTemplate);
+    }
+  });
+
+  content.appendChild(container);
+
+  Object.assign(arrow.style, {
+    display: "inline-block",
+    verticalAlign: "middle",
+    marginRight: "6px",
+  });
+
+  Object.assign(label.style, {
+    fontWeight: "500",
+    fontSize: "16px",
+    fontFamily: "system-ui",
+    verticalAlign: "middle",
+  });
+
+  // Toggle open/close
+  header.addEventListener("click", () => {
+    const isOpen = content.style.display === "block";
+
+    if (isOpen) {
+      // Currently open close it
+      content.style.display = "none";
+      arrow.style.transform = "rotate(0deg)";
+    } else {
+      // Currently closed open it
+      content.style.display = "block";
+      arrow.style.transform = "rotate(180deg)";
+    }
+  });
+
+  if (templateList1.length > 0) {
+    accordion.appendChild(header);
+    accordion.appendChild(content);
+  }
+
+  const accordion2 = document.createElement("div");
+  Object.assign(accordion2.style, {
+    margin: "10px 0",
+    fontFamily: "Inter, Arial, sans-serif",
+    width: "100%",
+  });
+
+  const header2 = document.createElement("div");
+  Object.assign(header2.style, {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingTop: "12px",
+    paddingBottom: "12px",
+    cursor: "pointer",
+    userSelect: "none",
+    borderBottom: "1px solid rgba(224, 224, 224, 1)",
+  });
+
+  const left2 = document.createElement("div");
+  Object.assign(left2.style, {
+    display: "flex",
+    alignItems: "center",
+  });
+
+  const arrow2 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  arrow2.setAttribute("width", "30");
+  arrow2.setAttribute("height", "30");
+  arrow2.setAttribute("viewBox", "5 0 12 23");
+  arrow2.style.transition = "transform 0.3s ease";
+  arrow2.style.color = buttonBackgroundColor;
+  arrow2.innerHTML = `<path d="M12 15a1.002 1.002 0 01-.71-.29l-4-4a1.004 1.004 0 111.42-1.42l3.29 3.3 3.29-3.3a1.004 1.004 0 111.42 1.42l-4 4A1.001 1.001 0 0112 15z" fill="currentColor"></path>`;
+
+  label2 = document.createElement("span");
+  label2.innerText = "Others";
+  label2.style.fontWeight = "500";
+  label2.style.fontSize = "16px";
+  label2.style.fontFamily = "system-ui";
+
+  left2.appendChild(arrow2);
+  left2.appendChild(label2);
+
+  checkbox2 = document.createElement("input");
+  checkbox2.type = "checkbox";
+  Object.assign(checkbox2.style, {
+    width: "24px",
+    height: "24px",
+    borderRadius: "4px",
+    border: "1px solid rgba(0,0,0,0.65)",
+    cursor: "pointer",
+  });
+
+  checkbox2.addEventListener("change", () => {
+    const checked = checkbox2.checked;
+    rowCheckboxes.forEach(({ checkbox, prefId }) => {
+      checkbox.checked = checked;
+      if (checked) {
+        consentArray[prefId] = "ACCEPTED";
+      } else {
+        delete consentArray[prefId];
+      }
+    });
+  });
+
+  header2.appendChild(left2);
+  header2.appendChild(checkbox2);
+
+  content2 = document.createElement("div");
+  Object.assign(content2.style, {
+    paddingLeft: "30px",
+    display: "none",
+    fontSize: "14px",
+    color: cardFontColor,
+    fontFamily: "system-ui",
+  });
+  const container2 = document.createElement("div");
+
+  // const rowCheckboxes = [];
+  templateList2.forEach((template) => {
+    const table = document.createElement("div");
+    Object.assign(table.style, {
+      display: "grid",
+      gridTemplateColumns: "1fr",
+      gap: "5px",
+      paddingTop: "8px",
+      // marginBottom: "16px",
+      fontFamily: "system-ui",
+    });
+
+    const preferenceId = template.Id;
+    let rowIndex = 0;
+
+    function addRow(label, value, showCheckbox = false) {
+      const rowDiv = document.createElement("div");
+      Object.assign(rowDiv.style, {
+        display: "flex",
+        justifyContent: "space-between",
+      });
+
+      const leftDiv = document.createElement("div");
+      const labelSpan = document.createElement("span");
+      labelSpan.innerText = label + " ";
+      labelSpan.style.fontWeight = "600";
+
+      const valueSpan = document.createElement("span");
+      valueSpan.innerText = value;
+      valueSpan.style.fontWeight = "400";
+
+      leftDiv.appendChild(labelSpan);
+      leftDiv.appendChild(valueSpan);
+      rowDiv.appendChild(leftDiv);
+
+      if (showCheckbox) {
+        const checkboxDiv = document.createElement("div");
+        Object.assign(checkboxDiv.style, {
+          display: "flex",
+          justifyContent: "flex-end",
+        });
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        Object.assign(checkbox.style, {
+          width: "24px",
+          height: "24px",
+          cursor: "pointer",
+          borderRadius: "4px",
+          border: "1px solid rgba(0,0,0,0.65)",
+        });
+
+        if (consentArray[preferenceId]) checkbox.checked = true;
+
+        checkbox.addEventListener("change", () => {
+          if (checkbox.checked) consentArray[preferenceId] = "ACCEPTED";
+          else delete consentArray[preferenceId];
+
+          if (typeof checkbox2 !== "undefined") {
+            checkbox2.checked = rowCheckboxes.every(
+              ({ checkbox }) => checkbox.checked
+            );
+          }
+        });
+
+        checkboxDiv.appendChild(checkbox);
+        rowDiv.appendChild(checkboxDiv);
+
+        rowCheckboxes.push({ checkbox, prefId: preferenceId });
+        rowIndex++;
+      }
+
+      table.appendChild(rowDiv);
+    }
+
+    // Purpose + Duration (checkbox only on first row) using translated labels
+    addRow(
+      `${keyTranslations["Purpose"]}:`,
+      Array.isArray(template.Purpose)
+        ? template.Purpose.join(", ")
+        : template.Purpose,
+      true
+    );
+    if (validitytoBeShown) {
+      addRow(`${keyTranslations["Duration"]}:`, template.Duration);
+    }
+
+    // Separator
+    const hrMain = document.createElement("hr");
+    Object.assign(hrMain.style, {
+      border: "0",
+      borderTop: "1px solid #ddd",
+      margin: "10px 0",
+      width: "100%",
+    });
+    table.appendChild(hrMain);
+
+    // Each processing activity using translated labels
+    (template["Processing activity"] || []).forEach((activityObj, actIndex) => {
+      if (processActivityNameToBeShown) {
+        addRow(
+          `${keyTranslations["Processing activity"]}:`,
+          activityObj.activityName
+        );
+      }
+      if (processorNameToBeShown) {
+        addRow(`${keyTranslations["Used by"]}:`, activityObj.processorName);
+      }
+      if (dataItemToBeShown) {
+        addRow(
+          `${keyTranslations["Data item"]}:`,
+          Array.isArray(activityObj.dataItems)
+            ? activityObj.dataItems.join(", ")
+            : activityObj.dataItems
+        );
+      }
+
+      if (
+        dataItemToBeShown === false &&
+        processActivityNameToBeShown === false &&
+        processorNameToBeShown === false
+      ) {
+      } else {
+        if (actIndex < template["Processing activity"].length - 1) {
+          const hrActivity = document.createElement("hr");
+          Object.assign(hrActivity.style, {
+            border: "0",
+            borderTop: "1px solid #ddd",
+            margin: "10px 0",
+            width: "100%",
+          });
+          table.appendChild(hrActivity);
+        }
+      }
+    });
+
+    // Outer separator after template
+    container2.appendChild(table);
+    const hrTemplate = document.createElement("hr");
+    Object.assign(hrTemplate.style, {
+      border: "0",
+      borderTop: "2px solid #aaa",
+      margin: "16px 0",
+      width: "100%",
+    });
+    if (
+      dataItemToBeShown === false &&
+      processorNameToBeShown === false &&
+      processorNameToBeShown === false
+    ) {
+    } else {
+      container2.appendChild(hrTemplate);
+    }
+  });
+
+  content2.appendChild(container2);
+
+  header2.addEventListener("click", () => {
+    const isOpen = content2.style.display === "block";
+
+    if (isOpen) {
+      // Currently open -> close it
+      content2.style.display = "none";
+      arrow2.style.transform = "rotate(0deg)";
+    } else {
+      // Currently closed- >open it
+      content2.style.display = "block";
+      arrow2.style.transform = "rotate(180deg)";
+    }
+  });
+  if (templateList2.length > 0) {
+    accordion2.appendChild(header2);
+    accordion2.appendChild(content2);
+  }
+
+  documentLink = document.createElement("p");
+  documentLink.innerText = `${doc_name}`;
+  Object.assign(documentLink.style, {
+    color: linkFontColor,
+    fontWeight: "700",
+    cursor: "pointer",
+    margin: "10px 0",
+    fontSize: "14px",
+    marginBottom: "1rem",
+    marginTop: "1rem",
+  });
+
+  documentLink.addEventListener("click", async () => {
+    if (!pdfUrl) {
+      pdfUrl = await fetchDocument(doc_id);
+    }
+    if (pdfUrl) {
+      window.open(pdfUrl, "_blank"); // Opens PDF in new tab
+    }
+  });
+
+  const checkboxContainer = document.createElement("div");
+  Object.assign(checkboxContainer.style, {
+    marginTop: "10px",
+    marginBottom: "15px",
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  });
+
+  checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  Object.assign(checkbox.style, {
+    width: "16px",
+    height: "16px",
+    cursor: "pointer",
+    borderRadius: "4px",
+    border: "1px solid rgba(181, 181, 181, 1)",
+  });
+  // If isParental is true, checkbox should be checked and disabled
+  if (isParental) {
+    checkbox.checked = true;
+    checkbox.disabled = true;
+    parentalFlow = true;
+  }
+
+  checkbox.addEventListener("change", function () {
+    if (checkbox.checked) {
+      // openUnder18Modal();
+      parentalFlow = true;
+    } else {
+      parentalFlow = false;
+    }
+  });
+
+  checkboxLabel = document.createElement("label");
+  checkboxLabel.innerText = "I am below 18 years of age.";
+  checkboxLabel.style.cursor = "pointer";
+  checkboxLabel.style.fontSize = "14px";
+  // checkboxLabel.style.color = "rgba(0, 0, 0, 0.65)";
+  checkboxLabel.style.fontWeight = "bold";
+  checkboxContainer.appendChild(checkbox);
+  checkboxContainer.appendChild(checkboxLabel);
+
+  const withdrawContainer = document.createElement("p"); // or "p"
+
+  Object.assign(withdrawContainer.style, {
+    fontFamily: "system-ui",
+    marginTop: "5px",
+    fontSize: "14px",
+    fontWeight: 500,
+    marginBottom: "1rem",
+  });
+
+  // Make withdrawLine inline
+  withdrawLine = document.createElement("span");
+  withdrawLine.innerHTML = `${rightsDesc} `;
+
+  clickHere = document.createElement("span");
+  clickHere.innerText = "click here";
+  Object.assign(clickHere.style, {
+    color: linkFontColor,
+    fontWeight: "700",
+    cursor: "pointer",
+  });
+
+  withdrawContainer.appendChild(withdrawLine);
+  // withdrawContainer.appendChild(clickHere);
+
+  ConsentAllow = document.createElement("p");
+  ConsentAllow.innerHTML = `${permissionText}`;
+  ConsentAllow.style.marginTop = "5px";
+  ConsentAllow.style.fontSize = "14px";
+  // ConsentAllow.style.color = cardFontColor;
+  ConsentAllow.style.fontWeight = "500";
+  ConsentAllow.style.fontFamily = "system-ui";
+
+  const buttonContainer = document.createElement("div");
+  Object.assign(buttonContainer.style, {
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: "10px",
+    marginTop: "20px",
+  });
+  saveBtn = document.createElement("button");
+  saveBtn.innerText = "Save My Choices";
+  Object.assign(saveBtn.style, {
+    background: buttonFontColor,
+    color: buttonBackgroundColor,
+    border: "1px solid rgba(181, 181, 181, 1)",
+    padding: "12px 24px",
+    borderRadius: "250px",
+    fontWeight: "700",
+    fontSize: "18px",
+    fontFamily: "system-ui",
+    cursor: "pointer",
+    textAlign: "center",
+    whiteSpace: "normal",
+    wordBreak: "break-word",
+    width: "auto",
+    maxWidth: "15rem",
+    // maxWidth: "250px",
+  });
+  saveBtn.addEventListener("click", () => {
+    captureConsent(consentArray);
+  });
+
+  allowBtn = document.createElement("button");
+  allowBtn.innerText = "Allow All";
+  // Object.assign(allowBtn.style, {
+  //   background: buttonBackgroundColor,
+  //   color: buttonFontColor,
+  //   border: "none",
+  //   padding: "12px 24px",
+  //   borderRadius: "250px",
+  //   cursor: "pointer",
+  //   fontWeight: "700",
+  //   fontSize: "18px",
+  //   fontFamily: "system-ui",
+  //   textAlign: "center",
+  //   whiteSpace: "nowrap",
+  //   minWidth: "150px", // fallback
+  // });
+
+  Object.assign(allowBtn.style, {
+    background: buttonBackgroundColor,
+    color: buttonFontColor,
+    border: "1px solid rgba(181, 181, 181, 1)",
+    padding: "12px 24px",
+    borderRadius: "250px",
+    fontWeight: "700",
+    fontSize: "18px",
+    fontFamily: "system-ui",
+    cursor: "pointer",
+    textAlign: "center",
+    whiteSpace: "normal",
+    wordBreak: "break-word",
+    width: "auto",
+    maxWidth: "15rem",
+    // maxWidth: "250px",
+  });
+  allowBtn.addEventListener("click", () => {
+    // Check the header checkbox
+    checkbox2.checked = true;
+
+    // Check all row checkboxes and update consentArray
+    rowCheckboxes.forEach(({ checkbox, prefId }) => {
+      checkbox.checked = true;
+      consentArray2[prefId] = "ACCEPTED";
+    });
+
+    captureAllConsent(consentArray2);
+  });
+
+  buttonContainer.appendChild(saveBtn);
+  buttonContainer.appendChild(allowBtn);
+
+  modal.appendChild(firstContainer);
+  modal.appendChild(titleContainer);
+  modal.appendChild(TopDesc);
+  modal.appendChild(customerId);
+  modal.appendChild(accordion);
+  modal.appendChild(accordion2);
+  modal.appendChild(documentLink);
+  if (parentalControl == true) {
+    modal.appendChild(checkboxContainer);
+  }
+
+  modal.appendChild(withdrawContainer);
+  modal.appendChild(ConsentAllow);
+  modal.appendChild(buttonContainer);
+  overlay.appendChild(modal);
+  overlay.appendChild(style);
+
+  document.body.appendChild(overlay);
+  if (darkModeVisibility == true) {
+    document.body.appendChild(toggleWrapper);
+  }
+};
+
+export default loadPreferenceCenter;

@@ -1,0 +1,125 @@
+.filter-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background: rgba(0, 0, 0, 0.5); /* dim background */
+  z-index: 999; /* just below the panel */
+}
+
+.filter-panel {
+  position: fixed;
+  top: 0;
+  right: -30%;
+  width: 30%;
+  height: 100%;
+  background: #fff;
+  box-shadow: -2px 0 10px rgba(0, 0, 0, 0.12);
+  transition: right 0.4s ease;
+  z-index: 9999;
+
+  display: flex;
+  flex-direction: column; /* important */
+}
+
+.filter-panel.open {
+  right: 0;
+}
+
+.filter-header {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  /* border-bottom: 1px solid #eee; */
+  font-weight: bold;
+}
+
+.filter-body {
+  padding: 15px;
+  overflow-y: auto; /* allow scrolling */
+  flex: 1; /* take available space */
+  padding-bottom: 100px; /* space so footer never overlaps */
+}
+
+/* Search box container */
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 5rem;
+  padding: 4px 10px;
+  background: #fff;
+  margin: 12px;
+}
+
+/* Input styles */
+.search-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+}
+
+.search-input::placeholder {
+  color: #a0a0a0;
+}
+
+.filter-label {
+  margin-left: 12px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.status-options {
+  display: flex;
+  gap: 10px;
+  margin: 0 12px 12px 12px;
+}
+.status-box {
+  border: 1px solid #000000a6;
+  border-radius: 5rem;
+  padding: 8px 14px;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.status-box.selected {
+  background-color: #0066ff; /* Blue */
+  border-color: #0066ff;
+}
+
+.status-box.selected p,
+.status-box.selected span {
+  color: white !important;
+}
+
+.date-range-row {
+  display: flex;
+  gap: 10px;
+  margin: 0 12px 12px 12px;
+}
+
+.date-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #333;
+}
+
+/* Footer FIXED to bottom */
+.filter-footer {
+  position: sticky; /* stays visible at bottom */
+  bottom: 0;
+  background: #fff;
+  padding: 15px;
+
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}

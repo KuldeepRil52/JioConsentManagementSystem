@@ -1,0 +1,100 @@
+{
+  "MASTER_LABEL_USER_MOBILE": {
+    "dataSource": "PAYLOAD",
+    "path": "customerIdentifiers.value",
+    "defaultValue": ""
+  },
+  "MASTER_LABEL_BUSINESS_NAME": {
+    "dataSource": "DB",
+    "collection": "business_applications",
+    "path": "name",
+    "defaultValue": "Our Service"
+  },
+  "MASTER_LABEL_CUSTOMER_NAME": {
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.customerName",
+    "defaultValue": "Valued Customer"
+  },
+  "MASTER_LABEL_TOKEN_CLAIMS": {
+    "dataSource": "TOKEN",
+    "path": "claims",
+    "defaultValue": ""
+  },
+  "MASTER_LABEL_OTP": {
+    "dataSource": "GENERATE",
+    "generator": "OTP",
+    "config": {
+      "length": 6,
+      "numeric": true,
+      "maxLength": 20
+    },
+    "defaultValue": "000000"
+  },
+  "MASTER_LABEL_CREATED_AT": {
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.createdAt",
+    "defaultValue": ""
+  },
+  "MASTER_LABEL_UPDATED_AT": {
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.updatedAt",
+    "defaultValue": ""
+  },
+  "MASTER_LABEL_CONSENT_ID": {
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.consentId",
+    "description": "Consent record identifier",
+    "defaultValue": ""
+  },
+  "MASTER_LABEL_CONSENT_REQUEST_ID": {
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.consentRequestId",
+    "description": "Consent request record identifier",
+    "defaultValue": ""
+  },
+  "MASTER_LABEL_CLIENT_SECRET": {
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.clientSecret",
+    "defaultValue": "SECRET-000"
+  },
+  "MASTER_LABEL_PORTAL_URL": {
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.portalUrl",
+    "defaultValue": "#"
+  },
+  "MASTER_LABEL_CLIENT_ID": {
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.clientId",
+    "defaultValue": "CLIENT-000"
+  },
+  "MASTER_LABEL_ACCOUNT_NAME": {
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.accountName",
+    "defaultValue": "JCMS Account"
+  },
+  "MASTER_LABEL_TOTP_KEY": {
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.totpKey",
+    "defaultValue": "XXXXXXXXXXXX"
+  },
+  "MASTER_LABEL_QR_DATA": {
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.qrData",
+    "defaultValue": " "
+  },
+  "MASTER_LABEL_PROCESSOR_SPOC_NAME": {
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.processorSpocName",
+    "defaultValue": "Processor SPOC"
+  },
+  "MASTER_LABEL_PROCESSOR_NAME": {
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.processorName",
+    "defaultValue": "Processor"
+  },
+  "MASTER_LABEL_PROCESSOR_ID": {
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.processorId",
+    "defaultValue": "PROC-000"
+  }
+}

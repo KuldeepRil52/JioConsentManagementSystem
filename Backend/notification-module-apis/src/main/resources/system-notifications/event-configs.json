@@ -1,0 +1,462 @@
+[
+  {
+    "eventType": "CONSENT_REQUEST_PENDING",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "MEDIUM",
+    "description": "Notification when consent request is pending"
+  },
+  {
+    "eventType": "CONSENT_RENEWAL_REQUEST",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "MEDIUM",
+    "description": "Notification when consent renewal is requested"
+  },
+  {
+    "eventType": "CONSENT_CREATED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": true,
+    "notifyDataPrincipal": true,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when consent is created"
+  },
+  {
+    "eventType": "CONSENT_UPDATED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": true,
+    "notifyDataPrincipal": true,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when consent is updated"
+  },
+  {
+    "eventType": "CONSENT_WITHDRAWN",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": true,
+    "notifyDataPrincipal": true,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when consent is withdrawn"
+  },
+  {
+    "eventType": "CONSENT_EXPIRED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": true,
+    "notifyDataPrincipal": true,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when consent has expired"
+  },
+  {
+    "eventType": "CONSENT_RENEWED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": true,
+    "notifyDataPrincipal": true,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when consent is renewed"
+  },
+  {
+    "eventType": "GRIEVANCE_RAISED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when grievance is raised"
+  },
+  {
+    "eventType": "GRIEVANCE_INPROCESS",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "MEDIUM",
+    "description": "Notification when grievance is in process"
+  },
+  {
+    "eventType": "GRIEVANCE_ESCALATED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when grievance is escalated"
+  },
+  {
+    "eventType": "GRIEVANCE_RESOLVED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when grievance is resolved"
+  },
+  {
+    "eventType": "GRIEVANCE_DENIED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when grievance is denied"
+  },
+  {
+    "eventType": "GRIEVANCE_CLOSED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "MEDIUM",
+    "description": "Notification when grievance is closed"
+  },
+  {
+    "eventType": "GRIEVANCE_STATUS_UPDATED",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": true,
+    "priority": "MEDIUM",
+    "description": "Notification when grievance status is updated"
+  },
+  {
+    "eventType": "DATA_DELETED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": true,
+    "priority": "HIGH",
+    "description": "Notification when data is deleted"
+  },
+  {
+    "eventType": "DATA_SHARED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": true,
+    "priority": "HIGH",
+    "description": "Notification when data is shared"
+  },
+  {
+    "eventType": "DATA_BREACHED",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when data breach is detected"
+  },
+  {
+    "eventType": "DATA_RETENTION_DURATION_EXPIRED",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when data retention duration expires"
+  },
+  {
+    "eventType": "LOG_RETENTION_DURATION_EXPIRED",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "MEDIUM",
+    "description": "Notification when log retention duration expires"
+  },
+  {
+    "eventType": "TENANT_ONBOARDED",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when new tenant is onboarded to the system"
+  },
+  {
+    "eventType": "INIT_OTP",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification to send OTP for authentication or verification"
+  },
+  {
+    "eventType": "CONSENT_PREFERENCE_EXPIRY",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": true,
+    "notifyDataPrincipal": true,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "MEDIUM",
+    "description": "Notification when consent preference is due to expire"
+  },
+  {
+    "eventType": "TOTP_PIN_DETAILS",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification to send TOTP setup details for 2FA"
+  },
+  {
+    "eventType": "ORGANIZATION_ONBOARDING",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when new organization is onboarded"
+  },
+  {
+    "eventType": "PROCESSOR_ONBOARDING",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when new data processor is onboarded"
+  },
+  {
+    "eventType": "DPO_USER_ONBOARDING",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when new DPO user account is created"
+  },
+  {
+    "eventType": "GRIEVANCE_ESCALATED_L1",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when grievance is escalated to Level 1"
+  },
+  {
+    "eventType": "GRIEVANCE_ESCALATED_L2",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when grievance is escalated to Level 2"
+  },
+  {
+    "eventType": "DATA_EXPIRED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": true,
+    "notifyCms": true,
+    "priority": "HIGH",
+    "description": "Notification when data has expired"
+  },
+  {
+    "eventType": "GRIEVANCE_RETENTION_DURATION_EXPIRED",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when grievance retention duration expires"
+  },
+  {
+    "eventType": "CONSENT_RETENTION_DURATION_EXPIRED",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when consent retention duration expires"
+  },
+  {
+    "eventType": "RETENTION_CONSENT_ARTIFACT_EXPIRED",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when consent artifact retention period expires"
+  },
+  {
+    "eventType": "RETENTION_COOKIE_CONSENT_EXPIRED",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when cookie consent retention period expires"
+  },
+  {
+    "eventType": "RETENTION_GRIEVANCE_EXPIRED",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when grievance retention period expires"
+  },
+  {
+    "eventType": "RETENTION_LOGS_EXPIRED",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when system logs retention period expires"
+  },
+  {
+    "eventType": "RETENTION_DATA_EXPIRED",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when data retention period expires"
+  },
+  {
+    "eventType": "CONSENT_INTEGRITY_VERIFICATION_FAILED",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "CRITICAL",
+    "description": "Critical alert when consent integrity verification fails"
+  },
+  {
+    "eventType": "CONSENT_INTEGRITY_VERIFICATION_COMPLETED",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": true,
+    "notifyCms": false,
+    "priority": "MEDIUM",
+    "description": "Notification when consent integrity verification completes successfully"
+  },
+  {
+    "eventType": "COOKIE_CONSENT_HANDLE_CREATED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "MEDIUM",
+    "description": "Notification when cookie consent handle is created"
+  },
+  {
+    "eventType": "COOKIE_CONSENT_CREATED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when cookie consent is created"
+  },
+  {
+    "eventType": "NEW_COOKIE_CONSENT_VERSION_CREATED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when new cookie consent version is created"
+  },
+  {
+    "eventType": "TOKEN_VALIDATION_SUCCESS",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "MEDIUM",
+    "description": "Notification when token validation succeeds"
+  },
+  {
+    "eventType": "COOKIE_CONSENT_REVOKED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when cookie consent is revoked"
+  },
+  {
+    "eventType": "COOKIE_CONSENT_EXPIRED",
+    "notifyDataFiduciary": true,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": false,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when cookie consent is expired"
+  },
+  {
+    "eventType": "PARENTAL_CONSENT",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when parental consent request is received for a minor"
+  },
+  {
+    "eventType": "DATA_DELETION_NOTIFICATION",
+    "notifyDataFiduciary": false,
+    "notifyDataProcessor": false,
+    "notifyDataPrincipal": true,
+    "notifyDpo": false,
+    "notifyCms": false,
+    "priority": "HIGH",
+    "description": "Notification when data is deleted following consent expiry or withdrawal"
+  }
+]

@@ -1,0 +1,51 @@
+.sideBar-outer-container {
+  width: 240px;
+  /* height: calc(100vh - 110px); */
+  min-height: 100vh; /* always at least full viewport */
+  height: auto;
+  background-color: rgba(245, 245, 245, 1);
+  top: 0;
+  left: 0;
+  /* position: fixed; */
+  padding: 15px;
+  /* overflow-y: auto; */
+  scrollbar-width: thin;
+}
+
+.sideBar-menu-item {
+  margin-top: 10px;
+  margin-bottom: 4px;
+  margin-left: 0;
+  display: flex;
+  padding-right: 7px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  align-items: center;
+}
+
+.sideBar-menu-click {
+  display: flex;
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 36px;
+  align-items: center;
+  cursor: pointer;
+}
+
+.sideBar-menu-click.active {
+  background-color: white;
+}
+
+.sideBar-menu-click.inactive {
+  background-color: transparent;
+}
+
+.sideBar-cusId {
+  margin-left: 8px;
+  max-width: 120px; /* same space as mobile number */
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: inline-block;
+  vertical-align: middle;
+}

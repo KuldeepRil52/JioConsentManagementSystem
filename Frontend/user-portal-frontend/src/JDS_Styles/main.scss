@@ -1,0 +1,52 @@
+@import "../../node_modules/@jds/core/styles/main.scss";
+@import "../../node_modules/@jds/token-jio/style.css";
+@import "../../node_modules/@jds/react-engine/style.css";
+
+// Override font-face declarations to use local .ttf files instead of remote .woff files
+@font-face {
+  font-family: "JioType Light";
+  src: url("../Assets/Font/JioType/JioType-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JioType Bold";
+  src: url("../Assets/Font/JioType/JioType-Bold.ttf") format("truetype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JioType Medium";
+  src: url("../Assets/Font/JioType/JioType-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JioType MediumItalic";
+  src: url("../Assets/Font/JioType/JioType-MediumItalic.ttf") format("truetype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JioType LightItalic";
+  src: url("../Assets/Font/JioType/JioType-LightItalic.ttf") format("truetype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "JioType Black";
+  src: url("../Assets/Font/JioType/JioType-Black.ttf") format("truetype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}

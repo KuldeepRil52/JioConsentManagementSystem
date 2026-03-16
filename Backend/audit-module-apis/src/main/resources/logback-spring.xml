@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds">
+
+    <!-- Include Spring Boot defaults -->
+    <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+    <!-- =========================================
+          CONFIGURABLE LOG PATH
+         ========================================= -->
+    <springProperty scope="context" name="LOG_PATH" source="logging.file.path" defaultValue="logs"/>
+
+    <!-- =========================================
+          CONSOLE APPENDER (JSON FORMAT)
+         ========================================= -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <fieldName>timestamp</fieldName>
+                    <pattern>yyyy-MM-dd'T'HH:mm:ss.SSS'Z'</pattern>
+                </timestamp>
+                <logLevel>
+                    <fieldName>level</fieldName>
+                </logLevel>
+                <loggerName>
+                    <fieldName>logger</fieldName>
+                </loggerName>
+                <threadName>
+                    <fieldName>thread</fieldName>
+                </threadName>
+                <mdc>
+                    <fieldName>mdc</fieldName>
+                </mdc>
+                <message>
+                    <fieldName>message</fieldName>
+                </message>
+                <stackTrace>
+                    <fieldName>stacktrace</fieldName>
+                </stackTrace>
+            </providers>
+        </encoder>
+    </appender>
+
+    <!-- =========================================
+          TENANT-BASED FILE APPENDER
+         ========================================= -->
+    <appender name="TENANT_LOGS" class="ch.qos.logback.classic.sift.SiftingAppender">
+        <discriminator class="ch.qos.logback.classic.sift.MDCBasedDiscriminator">
+            <key>tenantId</key>
+            <defaultValue>default_tenant</defaultValue>
+        </discriminator>
+
+        <sift>
+            <appender name="TENANT_FILE-${tenantId}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                <file>${LOG_PATH}/${tenantId}/tenant-app.log</file>
+
+                <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                    <fileNamePattern>${LOG_PATH}/${tenantId}/tenant-app-%d{yyyy-MM-dd}.log</fileNamePattern>
+                    <maxHistory>14</maxHistory>
+                </rollingPolicy>
+
+                <encoder>
+                    <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} -
+                        [tenant:%X{tenantId}] [business:%X{businessId}] %msg%n
+                    </pattern>
+                </encoder>
+            </appender>
+        </sift>
+    </appender>
+
+    <!-- =========================================
+         ⚙ LOGGER LEVEL CONFIGURATION
+         ========================================= -->
+    <logger name="com.jio.digigov.auditmodule" level="DEBUG" additivity="false">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="TENANT_LOGS"/>
+    </logger>
+
+    <logger name="org.springframework" level="WARN"/>
+    <logger name="org.mongodb.driver" level="WARN"/>
+
+    <!-- =========================================
+          ROOT LOGGER
+         ========================================= -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="TENANT_LOGS"/>
+    </root>
+
+</configuration>

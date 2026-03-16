@@ -1,0 +1,22 @@
+/* EmailTemplate.css */
+
+/* Header row height */
+.custom-table thead th {
+  height: 36px;
+  vertical-align: middle; /* centers the content vertically */
+}
+
+/* Body row height */
+.custom-table tbody td {
+  height: 56px;
+  vertical-align: middle; /* centers the content vertically */
+}
+
+/* Optional: Adjust text styling if needed */
+.custom-table td span,
+.custom-table th div {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+

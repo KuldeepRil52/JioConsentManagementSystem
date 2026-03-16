@@ -1,0 +1,196 @@
+/* Page layout */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #fff;
+}
+
+.login-card {
+  width: 440px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 32px 26px;
+  font-family: Arial, sans-serif;
+
+  
+}
+
+/* Tablet view */
+@media (max-width: 1024px) {
+  .login-card {
+    width: 400px;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .login-card {
+    width: 90%;
+    max-width: 400px;
+    padding: 24px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    width: 95%;
+    padding: 20px 16px;
+  }
+}
+.terms-text {
+  font-size: 12px;
+  color: #555;
+  margin-top: 16px;
+  line-height: 1.4;
+}
+
+.terms-text a {
+  color: #0050d4;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.adminLogin-outer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.adminLogin-modal {
+  width: 29.17%;
+  height: 66.67%;
+  background-color: white;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* Tablet view */
+@media (max-width: 1024px) {
+  .adminLogin-modal {
+    width: 50%;
+    height: auto;
+    min-height: 60%;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .adminLogin-modal {
+    width: 85%;
+    height: auto;
+    min-height: 50%;
+    padding: 30px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .adminLogin-modal {
+    width: 90%;
+    padding: 24px 16px;
+  }
+}
+
+.adminLogin-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 10;
+}
+
+.adminLogin-outer-otp-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.adminLogin-otp-modal {
+  width: 29.17%;
+  height: 66.67%;
+  background-color: white;
+  background-color: white;
+  border-radius: 16px;
+  box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.16);
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+/* Tablet view */
+@media (max-width: 1024px) {
+  .adminLogin-otp-modal {
+    width: 50%;
+    height: auto;
+    min-height: 60%;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .adminLogin-otp-modal {
+    width: 85%;
+    height: auto;
+    min-height: 50%;
+    padding: 30px 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .adminLogin-otp-modal {
+    width: 90%;
+    padding: 24px 16px;
+  }
+}
+
+.adminLogin-otp-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 10;
+}
+
+.adminLogin-header {
+  margin-bottom: 15px;
+}
+
+.resend-otp-outer-div {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.resend-otp-link:not(.disabled):hover {
+  text-decoration: underline;
+}
+
+.resend-otp-inner-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.resend-otp-label {
+  font-size: 14px;
+  color: grey;
+}
+.resend-otp-timer {
+  font-size: 14px;
+  color: black;
+}
+
+.focusable-link {
+  text-decoration: none;        /* normal state: no underline */
+  outline: none;
+}
+
+.focusable-link:hover,
+.focusable-link:focus {
+  text-decoration: underline;   /* underline on hover + tab focus */
+}

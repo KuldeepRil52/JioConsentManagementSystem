@@ -1,0 +1,39 @@
+{
+  "_comment": "System notification configuration with support for multiple providers",
+  "businessId": "SYSTEM",
+  "scopeLevel": "SYSTEM",
+  "activeProvider": "${SYSTEM_NOTIFICATION_PROVIDER:DIGIGOV}",
+  "configurations": {
+    "DIGIGOV": {
+      "configId": "SHARED_CONFIG_DIGIGOV_001",
+      "providerType": "DIGIGOV",
+      "configurationJson": {
+        "clientId": "${SYSTEM_DIGIGOV_CLIENT_ID}",
+        "clientSecret": "${SYSTEM_DIGIGOV_CLIENT_SECRET}",
+        "sid": "${SYSTEM_DIGIGOV_SID:47}",
+        "baseUrl": "${SYSTEM_DIGIGOV_BASE_URL}",
+        "networkType": "INTERNET",
+        "mutualSSL": true,
+        "mutualCertificate": "${ONBOARDING_DEFAULT_MUTUAL_CERTIFICATE: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}",
+        "callbackUrl": "${SYSTEM_CALLBACK_URL:}",
+        "defaultLanguage": "english"
+      }
+    },
+    "SMTP": {
+      "configId": "SHARED_CONFIG_SMTP_001",
+      "providerType": "SMTP",
+      "smtpDetails": {
+        "serverAddress": "${SYSTEM_SMTP_HOST:smtp.gmail.com}",
+        "port": "${SYSTEM_SMTP_PORT:587}",
+        "username": "${SYSTEM_SMTP_USERNAME:anuj.singh@easygov.co.in}",
+        "password": "${SYSTEM_SMTP_PASSWORD}",
+        "fromEmail": "${SYSTEM_SMTP_FROM_EMAIL:anuj.singh@easygov.co.in}",
+        "senderDisplayName": "${SYSTEM_SMTP_FROM_NAME:Anuj Singh}",
+        "tlsSsl": "${SYSTEM_SMTP_TLS_SSL:TLS}",
+        "smtpAuthEnabled": "${SYSTEM_SMTP_AUTH_ENABLED:true}",
+        "smtpConnectionTimeout": "${SYSTEM_SMTP_CONNECTION_TIMEOUT:5000}",
+        "smtpSocketTimeout": "${SYSTEM_SMTP_SOCKET_TIMEOUT:5000}"
+      }
+    }
+  }
+}

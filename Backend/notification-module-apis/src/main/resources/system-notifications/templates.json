@@ -1,0 +1,1464 @@
+[
+  {
+    "_comment": "CONSENT_REQUEST_PENDING - DATA_PRINCIPAL",
+    "eventType": "CONSENT_REQUEST_PENDING",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nA new or renewed consent request from <#ARG2> is pending your action. \n\nConsent ID: <#ARG3> \nPurpose: <#ARG4> \n\nFor assistance, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407301",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_REQUEST_ID",
+        "<#ARG4>": "MASTER_LABEL_CONSENT_PURPOSE"
+      },
+      "templateDetails": "Consent request pending user action"
+    },
+    "email": {
+      "subject": "Consent Request Pending with <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_REQUEST_ID",
+        "<#ARG4>": "MASTER_LABEL_CONSENT_PURPOSE"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Consent Action Required</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>A new or renewed consent request from <#ARG2> is pending your action.</p><p>Consent ID: <strong><#ARG3></strong><br/>Purpose: <strong><#ARG4></strong></p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Consent request pending user action"
+    }
+  },
+  {
+    "_comment": "CONSENT_RENEWAL_REQUEST - DATA_PRINCIPAL",
+    "eventType": "CONSENT_RENEWAL_REQUEST",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nA new or renewed consent request from <#ARG2> is pending your action. \n\nConsent ID: <#ARG3> \nPurpose: <#ARG4> \n\nFor assistance, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407302",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_REQUEST_ID",
+        "<#ARG4>": "MASTER_LABEL_CONSENT_PURPOSE"
+      },
+      "templateDetails": "Consent renewal request notification"
+    },
+    "email": {
+      "subject": "Consent Request Pending with <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_REQUEST_ID",
+        "<#ARG4>": "MASTER_LABEL_CONSENT_PURPOSE"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Consent Action Required</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>A new or renewed consent request from <#ARG2> is pending your action.</p><p>Consent ID: <strong><#ARG3></strong><br/>Purpose: <strong><#ARG4></strong></p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Consent renewal request notification"
+    }
+  },
+  {
+    "_comment": "CONSENT_CREATED - DATA_PRINCIPAL",
+    "eventType": "CONSENT_CREATED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nThis is to inform you that there has been an update regarding your consent with <#ARG2>. \n\nConsent ID: <#ARG3> \nStatus: CREATED \n\nIf applicable, your consent remains valid as per the defined consent period or until withdrawn. \n\nFor any queries, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407303",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID"
+      },
+      "templateDetails": "Consent created confirmation"
+    },
+    "email": {
+      "subject": "Update on Your Consent with <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Consent Update</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>This is to inform you that there has been an update regarding your consent with <#ARG2>.</p><p>Consent ID: <strong><#ARG3></strong><br/>Status: <strong>CREATED</strong></p><p>If applicable, your consent remains valid as per the defined consent period or until withdrawn.</p><p>For any queries, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Consent created confirmation"
+    }
+  },
+  {
+    "_comment": "CONSENT_UPDATED - DATA_PRINCIPAL",
+    "eventType": "CONSENT_UPDATED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nThis is to inform you that there has been an update regarding your consent with <#ARG2>. \n\nConsent ID: <#ARG3> \nStatus: UPDATED \n\nIf applicable, your consent remains valid as per the defined consent period or until withdrawn. \n\nFor any queries, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407304",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID"
+      },
+      "templateDetails": "Consent information updated"
+    },
+    "email": {
+      "subject": "Update on Your Consent with <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Consent Update</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>This is to inform you that there has been an update regarding your consent with <#ARG2>.</p><p>Consent ID: <strong><#ARG3></strong><br/>Status: <strong>UPDATED</strong></p><p>If applicable, your consent remains valid as per the defined consent period or until withdrawn.</p><p>For any queries, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Consent information updated"
+    }
+  },
+  {
+    "_comment": "CONSENT_WITHDRAWN - DATA_PRINCIPAL",
+    "eventType": "CONSENT_WITHDRAWN",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nThis is to inform you that there has been an update regarding your consent with <#ARG2>. \n\nConsent ID: <#ARG3> \nStatus: WITHDRAWN \n\nIf applicable, your consent remains valid as per the defined consent period or until withdrawn. \n\nFor any queries, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407305",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID"
+      },
+      "templateDetails": "Consent withdrawn by user"
+    },
+    "email": {
+      "subject": "Update on Your Consent with <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Consent Update</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>This is to inform you that there has been an update regarding your consent with <#ARG2>.</p><p>Consent ID: <strong><#ARG3></strong><br/>Status: <strong>WITHDRAWN</strong></p><p>If applicable, your consent remains valid as per the defined consent period or until withdrawn.</p><p>For any queries, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Consent withdrawn by user"
+    }
+  },
+  {
+    "_comment": "CONSENT_EXPIRED - DATA_PRINCIPAL",
+    "eventType": "CONSENT_EXPIRED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nThis is to inform you that there has been an update regarding your consent with <#ARG2>. \n\nConsent ID: <#ARG3> \nStatus: EXPIRED \n\nIf applicable, your consent remains valid as per the defined consent period or until withdrawn. \n\nFor any queries, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407306",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID"
+      },
+      "templateDetails": "Consent expiration notification"
+    },
+    "email": {
+      "subject": "Update on Your Consent with <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Consent Update</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>This is to inform you that there has been an update regarding your consent with <#ARG2>.</p><p>Consent ID: <strong><#ARG3></strong><br/>Status: <strong>EXPIRED</strong></p><p>If applicable, your consent remains valid as per the defined consent period or until withdrawn.</p><p>For any queries, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Consent expiration notification"
+    }
+  },
+  {
+    "_comment": "CONSENT_RENEWED - DATA_PRINCIPAL",
+    "eventType": "CONSENT_RENEWED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nThis is to inform you that there has been an update regarding your consent with <#ARG2>. \n\nConsent ID: <#ARG3> \nStatus: RENEWED \n\nIf applicable, your consent remains valid as per the defined consent period or until withdrawn. \n\nFor any queries, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407307",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID"
+      },
+      "templateDetails": "Consent renewed successfully"
+    },
+    "email": {
+      "subject": "Update on Your Consent with <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Consent Update</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>This is to inform you that there has been an update regarding your consent with <#ARG2>.</p><p>Consent ID: <strong><#ARG3></strong><br/>Status: <strong>RENEWED</strong></p><p>If applicable, your consent remains valid as per the defined consent period or until withdrawn.</p><p>For any queries, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Consent renewed successfully"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_RAISED - DATA_PRINCIPAL",
+    "eventType": "GRIEVANCE_RAISED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nThere has been an update on your grievance raised with <#ARG2>. \n\nReference ID: <#ARG3> \nStatus: RAISED \n\nOur team is working to ensure timely resolution. \n\nFor assistance, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407308",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_GRIEVANCE_ID"
+      },
+      "templateDetails": "New grievance raised"
+    },
+    "email": {
+      "subject": "Update on Your Grievance",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_GRIEVANCE_ID"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Grievance Update</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>There has been an update on your grievance raised with <#ARG2>.</p><p>Reference ID: <strong><#ARG3></strong><br/>Status: <strong>RAISED</strong></p><p>Our team is working to ensure timely resolution.</p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "New grievance raised"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_INPROCESS - DATA_PRINCIPAL",
+    "eventType": "GRIEVANCE_INPROCESS",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nThere has been an update on your grievance raised with <#ARG2>. \n\nReference ID: <#ARG3> \nStatus: IN-PROCESS \n\nOur team is working to ensure timely resolution. \n\nFor assistance, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407309",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_GRIEVANCE_ID"
+      },
+      "templateDetails": "Grievance in process update"
+    },
+    "email": {
+      "subject": "Update on Your Grievance",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_GRIEVANCE_ID"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Grievance Update</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>There has been an update on your grievance raised with <#ARG2>.</p><p>Reference ID: <strong><#ARG3></strong><br/>Status: <strong>IN-PROCESS</strong></p><p>Our team is working to ensure timely resolution.</p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Grievance in process update"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_ESCALATED - DATA_PRINCIPAL",
+    "eventType": "GRIEVANCE_ESCALATED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear <#ARG1>, your grievance (ID: <#ARG2>) with <#ARG3> was escalated on <#ARG4>. You can track it at <#ARG5>.",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407310",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG3>": "MASTER_LABEL_DATA_FIDUCIARY_NAME",
+        "<#ARG4>": "MASTER_LABEL_ESCALATED_DATE",
+        "<#ARG5>": "MASTER_LABEL_TRACKING_URL"
+      },
+      "templateDetails": "Grievance escalated notification"
+    },
+    "email": {
+      "subject": "Grievance Escalated – <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG3>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG4>": "MASTER_LABEL_ESCALATED_DATE",
+        "<#ARG5>": "MASTER_LABEL_STATUS",
+        "<#ARG6>": "MASTER_LABEL_TRACKING_URL"
+      },
+      "completeHtmlContent": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Grievance Escalated</title><style>body{margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f9}.container{max-width:600px;margin:0 auto;background-color:#ffffff}.header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:30px;text-align:center}.header h1{margin:0;color:#ffffff;font-size:24px;font-weight:600}.content{padding:40px 30px;color:#333333;font-size:15px;line-height:1.6}.info-box{background-color:#f8f9fa;padding:20px;border-radius:6px;margin:20px 0;border-left:4px solid #667eea}.button{display:inline-block;padding:12px 30px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;margin:20px 0}.footer{background-color:#f8f9fa;padding:20px 30px;text-align:center;border-top:1px solid #e9ecef}.footer p{margin:0;font-size:13px;color:#6c757d}</style></head><body><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f4f6f9;padding:20px 0\"><tr><td align=\"center\"><div class=\"container\"><div class=\"header\"><h1>Grievance Escalated</h1></div><div class=\"content\"><p style=\"margin:0 0 15px 0\">Dear <strong><#ARG1></strong>,</p><p style=\"margin:0 0 20px 0\">Your grievance has been escalated to higher authorities for immediate attention and priority resolution.</p><div class=\"info-box\"><p style=\"margin:0 0 10px 0\"><strong style=\"color:#667eea\">Grievance ID:</strong> <#ARG2></p><p style=\"margin:0 0 10px 0\"><strong style=\"color:#667eea\">Organization:</strong> <#ARG3></p><p style=\"margin:0 0 10px 0\"><strong style=\"color:#667eea\">Escalated On:</strong> <#ARG4></p><p style=\"margin:0\"><strong style=\"color:#667eea\">Current Status:</strong> <span style=\"display:inline-block;background-color:#fd7e14;color:#ffffff;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600\"><#ARG5></span></p></div><p style=\"margin:20px 0\">This escalation ensures that your case receives the highest priority. Senior team members will review your grievance and work expeditiously to resolve it.</p><a href=\"<#ARG6>\" class=\"button\">Track Grievance</a><p style=\"margin:20px 0 0 0;font-size:13px;color:#6c757d\">We understand the importance of your concern and are committed to a swift resolution.</p></div><div class=\"footer\"><p>Your grievance is being handled with the highest priority.</p></div></div></td></tr></table></body></html>",
+      "templateDetails": "Grievance escalated notification"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_RESOLVED - DATA_PRINCIPAL",
+    "eventType": "GRIEVANCE_RESOLVED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nThere has been an update on your grievance raised with <#ARG2>. \n\nReference ID: <#ARG3> \nStatus: RESOLVED \n\nOur team is working to ensure timely resolution. \n\nFor assistance, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407311",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_GRIEVANCE_ID"
+      },
+      "templateDetails": "Grievance resolved notification"
+    },
+    "email": {
+      "subject": "Update on Your Grievance",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_GRIEVANCE_ID"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Grievance Update</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>There has been an update on your grievance raised with <#ARG2>.</p><p>Reference ID: <strong><#ARG3></strong><br/>Status: <strong>RESOLVED</strong></p><p>Our team is working to ensure timely resolution.</p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Grievance resolved notification"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_DENIED - DATA_PRINCIPAL",
+    "eventType": "GRIEVANCE_DENIED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear user (<#ARG1>), your grievance (ID: <#ARG2>) with <#ARG3> has been denied on <#ARG4>.",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407312",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG3>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG4>": "MASTER_LABEL_DENIED_DATE"
+      },
+      "templateDetails": "Grievance denied notification"
+    },
+    "email": {
+      "subject": "Grievance Denied – <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG3>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG4>": "MASTER_LABEL_DENIED_DATE",
+        "<#ARG5>": "MASTER_LABEL_DENIAL_REASON"
+      },
+      "completeHtmlContent": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Grievance Denied</title><style>body{margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f9}.container{max-width:600px;margin:0 auto;background-color:#ffffff}.header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:30px;text-align:center}.header h1{margin:0;color:#ffffff;font-size:24px;font-weight:600}.content{padding:40px 30px;color:#333333;font-size:15px;line-height:1.6}.info-box{background-color:#f8f9fa;padding:20px;border-radius:6px;margin:20px 0;border-left:4px solid #667eea}.denial-box{background-color:#fff3cd;border-left:4px solid #ffc107;padding:15px;margin:20px 0;border-radius:4px}.button{display:inline-block;padding:12px 30px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;margin:20px 0}.footer{background-color:#f8f9fa;padding:20px 30px;text-align:center;border-top:1px solid #e9ecef}.footer p{margin:0;font-size:13px;color:#6c757d}</style></head><body><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f4f6f9;padding:20px 0\"><tr><td align=\"center\"><div class=\"container\"><div class=\"header\"><h1>Grievance Denied</h1></div><div class=\"content\"><p style=\"margin:0 0 15px 0\">Dear <strong><#ARG1></strong>,</p><p style=\"margin:0 0 20px 0\">After careful review, we regret to inform you that your grievance has been denied.</p><div class=\"info-box\"><p style=\"margin:0 0 10px 0\"><strong style=\"color:#667eea\">Grievance ID:</strong> <#ARG2></p><p style=\"margin:0 0 10px 0\"><strong style=\"color:#667eea\">Organization:</strong> <#ARG3></p><p style=\"margin:0 0 10px 0\"><strong style=\"color:#667eea\">Denied On:</strong> <#ARG4></p><p style=\"margin:0\"><strong style=\"color:#667eea\">Status:</strong> <span style=\"display:inline-block;background-color:#dc3545;color:#ffffff;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600\">DENIED</span></p></div><div class=\"denial-box\"><p style=\"margin:0 0 5px 0;font-weight:600;color:#856404\">Reason for Denial:</p><p style=\"margin:0;color:#333333\"><#ARG5></p></div><p style=\"margin:20px 0 0 0;font-size:13px;color:#6c757d\">If you have additional information or wish to discuss this decision, please contact our support team.</p></div><div class=\"footer\"><p>We appreciate your understanding. Feel free to reach out with any questions.</p></div></div></td></tr></table></body></html>",
+      "templateDetails": "Grievance denied notification"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_CLOSED - DATA_PRINCIPAL",
+    "eventType": "GRIEVANCE_CLOSED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear <#ARG1>, your grievance (ID: <#ARG2>) with <#ARG3> was closed on <#ARG4>.",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407313",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG3>": "MASTER_LABEL_DATA_FIDUCIARY_NAME",
+        "<#ARG4>": "MASTER_LABEL_CLOSED_DATE"
+      },
+      "templateDetails": "Grievance closed notification"
+    },
+    "email": {
+      "subject": "Grievance Closed – <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG3>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG4>": "MASTER_LABEL_CLOSED_DATE"
+      },
+      "completeHtmlContent": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Grievance Closed</title><style>body{margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f9}.container{max-width:600px;margin:0 auto;background-color:#ffffff}.header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:30px;text-align:center}.header h1{margin:0;color:#ffffff;font-size:24px;font-weight:600}.content{padding:40px 30px;color:#333333;font-size:15px;line-height:1.6}.info-box{background-color:#f8f9fa;padding:20px;border-radius:6px;margin:20px 0;border-left:4px solid #667eea}.button{display:inline-block;padding:12px 30px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;margin:20px 0}.footer{background-color:#f8f9fa;padding:20px 30px;text-align:center;border-top:1px solid #e9ecef}.footer p{margin:0;font-size:13px;color:#6c757d}</style></head><body><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f4f6f9;padding:20px 0\"><tr><td align=\"center\"><div class=\"container\"><div class=\"header\"><h1>Grievance Closed</h1></div><div class=\"content\"><p style=\"margin:0 0 15px 0\">Dear <strong><#ARG1></strong>,</p><p style=\"margin:0 0 20px 0\">Your grievance has been officially closed. This case is now complete.</p><div class=\"info-box\"><p style=\"margin:0 0 10px 0\"><strong style=\"color:#667eea\">Grievance ID:</strong> <#ARG2></p><p style=\"margin:0 0 10px 0\"><strong style=\"color:#667eea\">Organization:</strong> <#ARG3></p><p style=\"margin:0 0 10px 0\"><strong style=\"color:#667eea\">Closed On:</strong> <#ARG4></p><p style=\"margin:0\"><strong style=\"color:#667eea\">Status:</strong> <span style=\"display:inline-block;background-color:#6c757d;color:#ffffff;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600\">CLOSED</span></p></div><p style=\"margin:20px 0\">Thank you for using our grievance redressal system. Your feedback helps us improve our services.</p><p style=\"margin:20px 0 0 0;font-size:13px;color:#6c757d\">If you have any further concerns, please don't hesitate to raise a new grievance.</p></div><div class=\"footer\"><p>Thank you for giving us the opportunity to address your concerns.</p></div></div></td></tr></table></body></html>",
+      "templateDetails": "Grievance closed notification"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_STATUS_UPDATED - DATA_PRINCIPAL",
+    "eventType": "GRIEVANCE_STATUS_UPDATED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear user (<#ARG1>), your grievance (ID: <#ARG2>) status with <#ARG3> has been updated on <#ARG4>.",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407314",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG3>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG4>": "MASTER_LABEL_UPDATED_DATE"
+      },
+      "templateDetails": "Grievance status update"
+    },
+    "email": {
+      "subject": "Grievance Status Updated – <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG3>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG4>": "MASTER_LABEL_UPDATED_DATE",
+        "<#ARG5>": "MASTER_LABEL_STATUS",
+        "<#ARG6>": "MASTER_LABEL_TRACKING_URL"
+      },
+      "completeHtmlContent": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Grievance Status Updated</title><style>body{margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f9}.container{max-width:600px;margin:0 auto;background-color:#ffffff}.header{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:30px;text-align:center}.header h1{margin:0;color:#ffffff;font-size:24px;font-weight:600}.content{padding:40px 30px;color:#333333;font-size:15px;line-height:1.6}.info-box{background-color:#f8f9fa;padding:20px;border-radius:6px;margin:20px 0;border-left:4px solid #667eea}.button{display:inline-block;padding:12px 30px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600;margin:20px 0}.footer{background-color:#f8f9fa;padding:20px 30px;text-align:center;border-top:1px solid #e9ecef}.footer p{margin:0;font-size:13px;color:#6c757d}</style></head><body><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f4f6f9;padding:20px 0\"><tr><td align=\"center\"><div class=\"container\"><div class=\"header\"><h1>Grievance Status Updated</h1></div><div class=\"content\"><p style=\"margin:0 0 15px 0\">Dear <strong><#ARG1></strong>,</p><p style=\"margin:0 0 20px 0\">The status of your grievance has been updated. Here are the latest details:</p><div class=\"info-box\"><p style=\"margin:0 0 10px 0\"><strong style=\"color:#667eea\">Grievance ID:</strong> <#ARG2></p><p style=\"margin:0 0 10px 0\"><strong style=\"color:#667eea\">Organization:</strong> <#ARG3></p><p style=\"margin:0 0 10px 0\"><strong style=\"color:#667eea\">Updated On:</strong> <#ARG4></p><p style=\"margin:0\"><strong style=\"color:#667eea\">New Status:</strong> <span style=\"display:inline-block;background-color:#17a2b8;color:#ffffff;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600\"><#ARG5></span></p></div><p style=\"margin:20px 0\">You can continue to track the progress of your grievance using the link below.</p><a href=\"<#ARG6>\" class=\"button\">Track Grievance</a><p style=\"margin:20px 0 0 0;font-size:13px;color:#6c757d\">We'll notify you of any further updates on your case.</p></div><div class=\"footer\"><p>Thank you for your patience as we work to resolve your grievance.</p></div></div></td></tr></table></body></html>",
+      "templateDetails": "Grievance status update"
+    }
+  },
+  {
+    "_comment": "DATA_DELETED - DATA_PRINCIPAL",
+    "eventType": "DATA_DELETED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nThis is to inform you that your data associated with <#ARG2> has been processed as per policy. \n\nAction Taken: DELETED \n\nFor any clarification, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407315",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "templateDetails": "User data deleted notification"
+    },
+    "email": {
+      "subject": "Update on Your Data Record",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Data Processing Notification</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>This is to inform you that your data associated with <#ARG2> has been processed as per policy.</p><p>Action Taken: <strong>DELETED</strong></p><p>For any clarification, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "User data deleted notification"
+    }
+  },
+  {
+    "_comment": "DATA_SHARED - DATA_PRINCIPAL",
+    "eventType": "DATA_SHARED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nThis is to inform you that your data associated with <#ARG2> has been processed as per policy. \n\nAction Taken: SHARED \n\nFor any clarification, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407316",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "templateDetails": "Data shared with third party"
+    },
+    "email": {
+      "subject": "Update on Your Data Record",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Data Processing Notification</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>This is to inform you that your data associated with <#ARG2> has been processed as per policy.</p><p>Action Taken: <strong>SHARED</strong></p><p>For any clarification, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Data shared with third party"
+    }
+  },
+  {
+    "_comment": "DATA_BREACHED - DATA_PRINCIPAL",
+    "eventType": "DATA_BREACHED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear <#ARG1>, \n\nWe regret to inform you that your personal data associated with Consent ID: <#ARG2> and maintained by <#ARG3> was involved in a data breach identified on <#ARG4>. \n\nDetails of the Incident: \n&bull; Breach Reference ID: <#ARG5> \n&bull; Affected Data Category: <#ARG6> \n&bull; Reported By: <#ARG7> \n&bull; Reported To Authority On: <#ARG8> \n\nRecommended Actions: \n1) Change your account password and review linked accounts. \n2) Monitor your transactions for unusual activity. \n3) Contact our Data Protection Office for any help. \n\nDPO Contact: <#ARG9>, <#ARG10> \n\nWe apologize for the inconvenience and assure you that necessary steps are being taken. \n\nRegards, Jio Consent Management System",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_CONSENT_ID",
+        "<#ARG3>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG4>": "MASTER_LABEL_BREACH_DATE",
+        "<#ARG5>": "MASTER_LABEL_BREACH_REFERENCE_ID",
+        "<#ARG6>": "MASTER_LABEL_AFFECTED_DATA_CATEGORY",
+        "<#ARG7>": "MASTER_LABEL_REPORTED_BY",
+        "<#ARG8>": "MASTER_LABEL_REPORTED_TO_AUTHORITY_DATE",
+        "<#ARG9>": "MASTER_LABEL_DPO_CONTACT_NAME",
+        "<#ARG10>": "MASTER_LABEL_DPO_CONTACT_DETAILS"
+      },
+      "templateDetails": "Data breach alert notification",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407317",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}"
+    },
+    "email": {
+      "subject": "Security Alert – Data Breach Notification",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_CONSENT_ID",
+        "<#ARG3>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG4>": "MASTER_LABEL_BREACH_DATE",
+        "<#ARG5>": "MASTER_LABEL_BREACH_REFERENCE_ID",
+        "<#ARG6>": "MASTER_LABEL_AFFECTED_DATA_CATEGORY",
+        "<#ARG7>": "MASTER_LABEL_REPORTED_BY",
+        "<#ARG8>": "MASTER_LABEL_REPORTED_TO_AUTHORITY_DATE",
+        "<#ARG9>": "MASTER_LABEL_DPO_CONTACT_NAME",
+        "<#ARG10>": "MASTER_LABEL_DPO_CONTACT_DETAILS"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Data Breach Notification</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>We regret to inform you that your personal data associated with <strong>Consent ID:</strong> <#ARG2> and maintained by <strong><#ARG3></strong> was involved in a data breach identified on <strong><#ARG4></strong>.</p><p><strong>Details of the Incident:</strong><br/>&bull; Breach Reference ID: <#ARG5><br/>&bull; Affected Data Category: <#ARG6><br/>&bull; Reported By: <#ARG7><br/>&bull; Reported To Authority On: <#ARG8></p><p><strong>Recommended Actions:</strong></p><ol><li>Change your account password and review linked accounts.</li><li>Monitor your transactions for unusual activity.</li><li>Contact our Data Protection Office for any help.</li></ol><p><strong>DPO Contact:</strong> <#ARG9>, <#ARG10></p><p>We apologize for the inconvenience and assure you that necessary steps are being taken.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Data breach alert notification"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_RAISED - DATA_PROTECTION_OFFICER",
+    "eventType": "GRIEVANCE_RAISED",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "email": {
+      "subject": "[DPO Alert] New Grievance Raised – Business: <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_BUSINESS_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_BUSINESS_NAME",
+        "<#ARG3>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG4>": "MASTER_LABEL_DATA_PRINCIPAL_NAME",
+        "<#ARG5>": "MASTER_LABEL_DATA_PRINCIPAL_EMAIL",
+        "<#ARG6>": "MASTER_LABEL_GRIEVANCE_DATE",
+        "<#ARG7>": "MASTER_LABEL_GRIEVANCE_DESCRIPTION",
+        "<#ARG8>": "MASTER_LABEL_PORTAL_URL",
+        "<#ARG9>": "MASTER_LABEL_JWT_TOKEN"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — New Grievance Raised</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>A new grievance has been raised in the Consent Management System.</p><p><strong>Grievance Details:</strong><br/>&bull; Business: <#ARG2><br/>&bull; Grievance ID: <#ARG3><br/>&bull; Raised By: <#ARG4> (<#ARG5>)<br/>&bull; Raised On: <#ARG6><br/>&bull; Description: <#ARG7></p><p>To review and act, please visit: <a href='<#ARG8>'><#ARG8></a></p><p><strong>Authentication Token:</strong> <#ARG9></p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "New grievance raised alert (DPO)"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_INPROCESS - DATA_PROTECTION_OFFICER",
+    "eventType": "GRIEVANCE_INPROCESS",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "email": {
+      "subject": "[DPO Alert] Grievance In Process – Business: <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_BUSINESS_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG3>": "MASTER_LABEL_BUSINESS_NAME",
+        "<#ARG4>": "MASTER_LABEL_UPDATE_DATE",
+        "<#ARG5>": "MASTER_LABEL_ASSIGNED_HANDLER",
+        "<#ARG6>": "MASTER_LABEL_TARGET_RESOLUTION_DATE",
+        "<#ARG7>": "MASTER_LABEL_JWT_TOKEN"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Grievance In Process</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>The grievance <#ARG2> for <#ARG3> is now marked as <strong>In Process</strong> on <#ARG4>.</p><p><strong>Handler:</strong> <#ARG5><br/><strong>Expected Resolution Date:</strong> <#ARG6></p><p><strong>Authentication Token:</strong> <#ARG7></p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Grievance in process update (DPO)"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_ESCALATED - DATA_PROTECTION_OFFICER",
+    "eventType": "GRIEVANCE_ESCALATED",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "email": {
+      "subject": "[DPO Alert] Grievance Escalated – Business: <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_BUSINESS_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG3>": "MASTER_LABEL_BUSINESS_NAME",
+        "<#ARG4>": "MASTER_LABEL_ESCALATION_REASON",
+        "<#ARG5>": "MASTER_LABEL_ESCALATED_BY",
+        "<#ARG6>": "MASTER_LABEL_ESCALATION_LEVEL",
+        "<#ARG7>": "MASTER_LABEL_ESCALATED_DATE",
+        "<#ARG8>": "MASTER_LABEL_JWT_TOKEN"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Grievance Escalation</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>The grievance <#ARG2> for <#ARG3> has been escalated due to <#ARG4>.</p><p><strong>Escalated By:</strong> <#ARG5><br/><strong>Escalation Level:</strong> <#ARG6><br/><strong>Escalation Date:</strong> <#ARG7></p><p>Please review and take appropriate action.</p><p><strong>Authentication Token:</strong> <#ARG8></p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Grievance escalated alert (DPO)"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_RESOLVED - DATA_PROTECTION_OFFICER",
+    "eventType": "GRIEVANCE_RESOLVED",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "email": {
+      "subject": "[DPO Alert] Grievance Resolved – Business: <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_BUSINESS_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG3>": "MASTER_LABEL_BUSINESS_NAME",
+        "<#ARG4>": "MASTER_LABEL_RESOLVED_DATE",
+        "<#ARG5>": "MASTER_LABEL_HANDLER_NAME",
+        "<#ARG6>": "MASTER_LABEL_RESOLUTION_SUMMARY",
+        "<#ARG7>": "MASTER_LABEL_JWT_TOKEN"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Grievance Resolved</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>The grievance <#ARG2> for <#ARG3> has been resolved on <#ARG4>.</p><p><strong>Resolution Summary:</strong><br/>&bull; Handled By: <#ARG5><br/>&bull; Notes: <#ARG6></p><p>The Data Principal will be notified shortly.</p><p><strong>Authentication Token:</strong> <#ARG7></p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Grievance resolved notification (DPO)"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_DENIED - DATA_PROTECTION_OFFICER",
+    "eventType": "GRIEVANCE_DENIED",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "email": {
+      "subject": "[DPO Alert] Grievance Denied – Business: <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_BUSINESS_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG3>": "MASTER_LABEL_BUSINESS_NAME",
+        "<#ARG4>": "MASTER_LABEL_DENIED_DATE",
+        "<#ARG5>": "MASTER_LABEL_DENIAL_REASON",
+        "<#ARG6>": "MASTER_LABEL_REVIEWER_NAME",
+        "<#ARG7>": "MASTER_LABEL_JWT_TOKEN"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Grievance Denied</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>The grievance <#ARG2> for <#ARG3> has been denied on <#ARG4>.</p><p><strong>Reason for Denial:</strong> <#ARG5><br/><strong>Reviewed By:</strong> <#ARG6></p><p><strong>Authentication Token:</strong> <#ARG7></p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Grievance denied notification (DPO)"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_CLOSED - DATA_PROTECTION_OFFICER",
+    "eventType": "GRIEVANCE_CLOSED",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "email": {
+      "subject": "[DPO Alert] Grievance Closed – Business: <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_BUSINESS_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG3>": "MASTER_LABEL_BUSINESS_NAME",
+        "<#ARG4>": "MASTER_LABEL_CLOSED_DATE",
+        "<#ARG5>": "MASTER_LABEL_FINAL_STATUS",
+        "<#ARG6>": "MASTER_LABEL_CLOSED_BY",
+        "<#ARG7>": "MASTER_LABEL_JWT_TOKEN"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Grievance Closed</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Hello <#ARG1>,</p><p>The grievance <#ARG2> for <#ARG3> has been marked as Closed on <#ARG4>.</p><p><strong>Final Status:</strong> <#ARG5><br/><strong>Closed By:</strong> <#ARG6></p><p><strong>Authentication Token:</strong> <#ARG7></p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Grievance closed notification (DPO)"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_STATUS_UPDATED - DATA_PROTECTION_OFFICER",
+    "eventType": "GRIEVANCE_STATUS_UPDATED",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "email": {
+      "subject": "[DPO Alert] Grievance Status Updated – Business: <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_BUSINESS_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_GRIEVANCE_ID",
+        "<#ARG3>": "MASTER_LABEL_BUSINESS_NAME",
+        "<#ARG4>": "MASTER_LABEL_UPDATE_DATE",
+        "<#ARG5>": "MASTER_LABEL_PREVIOUS_STATUS",
+        "<#ARG6>": "MASTER_LABEL_CURRENT_STATUS",
+        "<#ARG7>": "MASTER_LABEL_PORTAL_URL",
+        "<#ARG8>": "MASTER_LABEL_JWT_TOKEN"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Grievance Status Updated</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>The grievance <#ARG2> for <#ARG3> has been updated on <#ARG4>.</p><p><strong>Old Status:</strong> <#ARG5><br/><strong>New Status:</strong> <#ARG6></p><p>To view details, visit: <a href='<#ARG7>'><#ARG7></a></p><p><strong>Authentication Token:</strong> <#ARG8></p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Grievance status update (DPO)"
+    }
+  },
+  {
+    "_comment": "Tenant onboarded notification - DATA_PRINCIPAL",
+    "eventType": "TENANT_ONBOARDED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Welcome <#ARG1>! Your tenant <#ARG2> has been successfully onboarded on <#ARG3>. Contact: <#ARG4>",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407318",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_TENANT_NAME",
+        "<#ARG2>": "MASTER_LABEL_TENANT_ID",
+        "<#ARG3>": "MASTER_LABEL_ONBOARDED_DATE",
+        "<#ARG4>": "MASTER_LABEL_ADMIN_CONTACT"
+      },
+      "templateDetails": "New tenant onboarded"
+    },
+    "email": {
+      "subject": "Welcome to DPDP Platform – <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "cc": [
+        "admin@dpdp.system"
+      ],
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_TENANT_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_TENANT_NAME",
+        "<#ARG2>": "MASTER_LABEL_TENANT_ID",
+        "<#ARG3>": "MASTER_LABEL_ONBOARDED_DATE",
+        "<#ARG4>": "MASTER_LABEL_ADMIN_CONTACT",
+        "<#ARG5>": "MASTER_LABEL_TENANT_DESCRIPTION"
+      },
+      "completeHtmlContent": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Tenant Onboarded</title></head><body style=\"margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f9;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f4f6f9;padding:20px 0;\"><tr><td align=\"center\"><table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"max-width:600px;background-color:#ffffff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);\"><tr><td style=\"background:linear-gradient(135deg,#28a745 0%,#20c997 100%);padding:30px;text-align:center;border-radius:8px 8px 0 0;\"><h1 style=\"margin:0;color:#ffffff;font-size:24px;font-weight:600;\">Welcome to DPDP Platform!</h1></td></tr><tr><td style=\"padding:40px 30px;color:#333333;font-size:15px;line-height:1.6;\"><p style=\"margin:0 0 20px 0;\">Dear <strong><#ARG1></strong>,</p><p style=\"margin:0 0 20px 0;\">Congratulations! Your tenant has been successfully onboarded to the DPDP Platform.</p><div style=\"background-color:#f8f9fa;padding:20px;border-radius:6px;margin:20px 0;\"><p style=\"margin:0 0 10px 0;\"><strong>Tenant Details:</strong></p><p style=\"margin:0 0 5px 0;\">Name: <strong><#ARG1></strong></p><p style=\"margin:0 0 5px 0;\">Tenant ID: <strong><#ARG2></strong></p><p style=\"margin:0 0 5px 0;\">Onboarded: <strong><#ARG3></strong></p><p style=\"margin:0 0 5px 0;\">Admin Contact: <strong><#ARG4></strong></p></div><p style=\"margin:0 0 20px 0;\"><#ARG5></p><p style=\"margin:0 0 10px 0;\">You can now access all platform features and begin managing your data protection workflows.</p></td></tr><tr><td style=\"background-color:#f8f9fa;padding:20px 30px;text-align:center;border-radius:0 0 8px 8px;border-top:1px solid #e9ecef;\"><p style=\"margin:0;font-size:13px;color:#6c757d;\">Automated tenant onboarding notification from DPDP Platform</p></td></tr></table></td></tr></table></body></html>",
+      "templateDetails": "New tenant onboarded"
+    }
+  },
+  {
+    "_comment": "Tenant onboarded notification - DATA_PROTECTION_OFFICER",
+    "eventType": "TENANT_ONBOARDED",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "sms": {
+      "template": "New tenant <#ARG1> (ID: <#ARG2>) onboarded on <#ARG3>. Admin: <#ARG4>",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407319",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_TENANT_NAME",
+        "<#ARG2>": "MASTER_LABEL_TENANT_ID",
+        "<#ARG3>": "MASTER_LABEL_ONBOARDED_DATE",
+        "<#ARG4>": "MASTER_LABEL_ADMIN_CONTACT"
+      },
+      "templateDetails": "New tenant onboarded"
+    },
+    "email": {
+      "subject": "New Tenant Onboarded – <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "cc": [
+        "dpo@dpdp.system",
+        "ops@dpdp.system"
+      ],
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_TENANT_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_TENANT_NAME",
+        "<#ARG2>": "MASTER_LABEL_TENANT_ID",
+        "<#ARG3>": "MASTER_LABEL_ONBOARDED_DATE",
+        "<#ARG4>": "MASTER_LABEL_ADMIN_CONTACT",
+        "<#ARG5>": "MASTER_LABEL_TENANT_DESCRIPTION"
+      },
+      "completeHtmlContent": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Tenant Onboarded - DPO Notification</title></head><body style=\"margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f9;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f4f6f9;padding:20px 0;\"><tr><td align=\"center\"><table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"max-width:600px;background-color:#ffffff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);\"><tr><td style=\"background:linear-gradient(135deg,#007bff 0%,#0056b3 100%);padding:30px;text-align:center;border-radius:8px 8px 0 0;\"><h1 style=\"margin:0;color:#ffffff;font-size:24px;font-weight:600;\">New Tenant Onboarded</h1></td></tr><tr><td style=\"padding:40px 30px;color:#333333;font-size:15px;line-height:1.6;\"><p style=\"margin:0 0 20px 0;\">A new tenant has been successfully onboarded to the DPDP Platform.</p><div style=\"background-color:#f8f9fa;padding:20px;border-radius:6px;margin:20px 0;\"><p style=\"margin:0 0 10px 0;\"><strong>Tenant Information:</strong></p><p style=\"margin:0 0 5px 0;\">Name: <strong><#ARG1></strong></p><p style=\"margin:0 0 5px 0;\">Tenant ID: <strong><#ARG2></strong></p><p style=\"margin:0 0 5px 0;\">Onboarded Date: <strong><#ARG3></strong></p><p style=\"margin:0 0 5px 0;\">Administrator: <strong><#ARG4></strong></p></div><p style=\"margin:0 0 20px 0;\"><#ARG5></p><p style=\"margin:0 0 10px 0;\">Please review the tenant configuration and ensure all compliance requirements are met.</p></td></tr><tr><td style=\"background-color:#f8f9fa;padding:20px 30px;text-align:center;border-radius:0 0 8px 8px;border-top:1px solid #e9ecef;\"><p style=\"margin:0;font-size:13px;color:#6c757d;\">DPO notification - DPDP Platform</p></td></tr></table></td></tr></table></body></html>",
+      "templateDetails": "New tenant onboarded"
+    }
+  },
+  {
+    "_comment": "OTP initialization notification - DATA_PRINCIPAL",
+    "eventType": "INIT_OTP",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear <#ARG1>, \nYour One-Time Password (OTP) for logging into the Jio Consent Management System (JCMS) is: \n\nOTP: <#ARG2> \n\nThis code is valid for <#ARG3> minutes. Do not share it with anyone. \n\nFor any assistance, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}\n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407320",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_OTP_CODE",
+        "<#ARG3>": "MASTER_LABEL_OTP_TTL_MINUTES"
+      },
+      "templateDetails": "OTP for authentication"
+    },
+    "email": {
+      "subject": "One-Time Password (OTP) for Jio Consent Management System",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_OTP_CODE",
+        "<#ARG3>": "MASTER_LABEL_OTP_TTL_MINUTES"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — OTP</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>Your One-Time Password (OTP) for logging into the Jio Consent Management System (JCMS) is:</p><p><strong>OTP: <#ARG2> </strong></p><p>This code is valid for <#ARG3> minutes. Do not share it with anyone.</p><p>For any assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "OTP for authentication"
+    }
+  },
+  {
+    "_comment": "OTP initialization notification - DATA_PROTECTION_OFFICER",
+    "eventType": "INIT_OTP",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "sms": {
+      "template": "Your OTP for <#ARG1> is <#ARG2>. Valid for <#ARG3> minutes. Do not share this code.",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407321",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_OTP_PURPOSE",
+        "<#ARG2>": "MASTER_LABEL_OTP",
+        "<#ARG3>": "MASTER_LABEL_OTP_EXPIRY_MINUTES"
+      },
+      "templateDetails": "OTP for authentication"
+    },
+    "email": {
+      "subject": "Your OTP Code for <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_OTP_PURPOSE"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_OTP_PURPOSE",
+        "<#ARG2>": "MASTER_LABEL_OTP",
+        "<#ARG3>": "MASTER_LABEL_OTP_EXPIRY_MINUTES"
+      },
+      "completeHtmlContent": "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Your OTP Code</title></head><body style=\"margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background-color:#f4f6f9;\"><table role=\"presentation\" width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"background-color:#f4f6f9;padding:20px 0;\"><tr><td align=\"center\"><table role=\"presentation\" width=\"600\" cellpadding=\"0\" cellspacing=\"0\" border=\"0\" style=\"max-width:600px;background-color:#ffffff;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);\"><tr><td style=\"background:linear-gradient(135deg,#6c5ce7 0%,#a29bfe 100%);padding:30px;text-align:center;border-radius:8px 8px 0 0;\"><h1 style=\"margin:0;color:#ffffff;font-size:24px;font-weight:600;\">Your One-Time Password</h1></td></tr><tr><td style=\"padding:40px 30px;color:#333333;font-size:15px;line-height:1.6;\"><p style=\"margin:0 0 20px 0;\">You have requested a one-time password for: <strong><#ARG1></strong></p><div style=\"background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:30px;border-radius:8px;text-align:center;margin:30px 0;\"><p style=\"margin:0 0 10px 0;color:#ffffff;font-size:14px;text-transform:uppercase;letter-spacing:2px;\">Your OTP Code</p><p style=\"margin:0;color:#ffffff;font-size:36px;font-weight:bold;letter-spacing:8px;font-family:monospace;\"><#ARG2></p></div><div style=\"background-color:#fff3cd;border-left:4px solid:#ffc107;padding:15px;margin:20px 0;border-radius:4px;\"><p style=\"margin:0;color:#856404;font-size:14px;\"><strong>⚠️ Security Notice:</strong></p><p style=\"margin:5px 0 0 0;color:#856404;font-size:13px;\">&bull; This OTP is valid for <strong><#ARG3> minutes</strong></p><p style=\"margin:5px 0 0 0;color:#856404;font-size:13px;\">&bull; Do NOT share this code with anyone</p><p style=\"margin:5px 0 0 0;color:#856404;font-size:13px;\">&bull; If you didn't request this, please contact support immediately</p></div></td></tr><tr><td style=\"background-color:#f8f9fa;padding:20px 30px;text-align:center;border-radius:0 0 8px 8px;border-top:1px solid #e9ecef;\"><p style=\"margin:0;font-size:13px;color:#6c757d;\">Automated security notification - DPDP Platform</p></td></tr></table></td></tr></table></body></html>",
+      "templateDetails": "OTP for authentication"
+    }
+  },
+  {
+    "_comment": "CONSENT_PREFERENCE_EXPIRY - DATA_PRINCIPAL",
+    "eventType": "CONSENT_PREFERENCE_EXPIRY",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear <#ARG1>, \nYour consent preference (Preference ID: <#ARG2>) under Consent ID: <#ARG3> for <#ARG4> is due to expire on <#ARG5>. \nPlease renew your consent before the expiry date to continue services without interruption. \nRenew Here: <#ARG6> \nRegards, Jio Consent Management System",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_PREFERENCE_ID",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID",
+        "<#ARG4>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG5>": "MASTER_LABEL_EXPIRY_DATE",
+        "<#ARG6>": "MASTER_LABEL_PORTAL_URL"
+      },
+      "templateDetails": "Consent preference expiring soon",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407322",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}"
+    },
+    "email": {
+      "subject": "Consent Preference Expiry Notification",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_PREFERENCE_ID",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID",
+        "<#ARG4>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG5>": "MASTER_LABEL_EXPIRY_DATE",
+        "<#ARG6>": "MASTER_LABEL_PORTAL_URL"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Consent Expiry Notice</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>Your consent preference (Preference ID: <#ARG2>) under Consent ID: <#ARG3> for <#ARG4> is due to expire on <#ARG5>.</p><p>To continue services without interruption, please renew your consent before the expiry date.</p><p>Renew Here: <a href='<#ARG6>'><#ARG6></a></p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Consent preference expiring soon"
+    }
+  },
+  {
+    "_comment": "TOTP_PIN_DETAILS - DATA_PRINCIPAL",
+    "eventType": "TOTP_PIN_DETAILS",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear <#ARG1>,\n\nWelcome to the Jio Consent Management System (JCMS).\n\nTo enhance security, please set up Two-Factor Authentication (2FA) using Google Authenticator:\n\n1) Open or install Google Authenticator.\n2) Tap \"+\" &rarr; select \"Enter setup key\".\n3) Enter the following:\n &bull; Account: PAN <#ARG2> | Client ID <#ARG6>\n &bull; Key: <#ARG3>\n\nUse the 6-digit code generated in the portal to log in securely.\nYou can access JCMS using the following URL: <#ARG5>\n\nNeed help? Contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}\n\nRegards,\nJio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407323",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_ACCOUNT_NAME",
+        "<#ARG3>": "MASTER_LABEL_TOTP_KEY",
+        "<#ARG5>": "MASTER_LABEL_PORTAL_URL",
+        "<#ARG6>": "MASTER_LABEL_CLIENT_ID"
+      },
+      "templateDetails": "TOTP setup for 2FA"
+    },
+    "email": {
+      "subject": "Two-Factor Authentication Setup for JCMS",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_ACCOUNT_NAME",
+        "<#ARG3>": "MASTER_LABEL_TOTP_KEY",
+        "<#ARG4>": "MASTER_LABEL_QR_DATA",
+        "<#ARG5>": "MASTER_LABEL_PORTAL_URL",
+        "<#ARG6>": "MASTER_LABEL_CLIENT_ID"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — 2FA Setup</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>Welcome to the <strong>Jio Consent Management System (JCMS)</strong>.</p><p>To enhance security, please set up <strong>Two-Factor Authentication (2FA)</strong> using <strong>Google Authenticator</strong> or any compatible authenticator app.</p><p><strong>Important:</strong> If the QR code is not visible, please <strong>trust the sender / mark the email as safe</strong> and reload the message.</p><ol><li>Open or install an authenticator app (e.g., Google Authenticator, Authy, Microsoft Authenticator).</li><li>Tap '+' &rarr; select 'Scan a QR code'.</li><li>Scan the QR code below to set up 2FA.</li></ol><p><img src='data:image/png;base64,<#ARG4>' alt='TOTP QR Code' style='max-width:220px;border:1px solid #ccc;padding:5px;border-radius:8px;'/></p><p><strong>If QR scan fails, use the steps below:</strong></p><ol><li>Tap '+' &rarr; select 'Enter setup key'.</li><li>Enter the following:<br/>&rarr; <strong>Account:</strong> <strong>PAN <#ARG2> | Client ID <#ARG6></strong><br/>&rarr; <strong>Key:</strong> <strong><#ARG3></strong></li></ol><p><strong>Use the 6-digit code generated in the portal to log in securely.</strong></p><p>You can access JCMS using the following URL: <strong><#ARG5></strong></p><p>Need help? Contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/><strong>Jio Consent Management System</strong></p></body></html>",
+      "templateDetails": "TOTP setup for 2FA"
+    }
+  },
+  {
+    "_comment": "ORGANIZATION_ONBOARDING - DATA_PRINCIPAL",
+    "eventType": "ORGANIZATION_ONBOARDING",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear <#ARG1>, \n\nYour organization has been successfully onboarded to the Jio Consent Management System (JCMS). \n\nOrganization Name: <#ARG2> \nClient ID: <#ARG3> \nPAN: <#ARG4> \n\nYou can now start using the system to manage consents and grievances. \n\nFor queries, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407324",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_BUSINESS_NAME_TENANT_ONBOARDING",
+        "<#ARG3>": "MASTER_LABEL_CLIENT_ID",
+        "<#ARG4>": "MASTER_LABEL_ORG_PAN"
+      },
+      "templateDetails": "Organization onboarding successful"
+    },
+    "email": {
+      "subject": "Organization Successfully Onboarded",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_BUSINESS_NAME_TENANT_ONBOARDING",
+        "<#ARG3>": "MASTER_LABEL_CLIENT_ID",
+        "<#ARG4>": "MASTER_LABEL_ORG_PAN"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Organization Onboarding</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>Your organization has been successfully onboarded to the Jio Consent Management System (JCMS).</p><p><strong>Organization Details:</strong><br/>Organization Name: <strong><#ARG2></strong><br/>Client ID: <strong><#ARG3></strong><br/>PAN: <strong><#ARG4></strong></p><p>You can now start using the system to manage consents and grievances.</p><p>For queries, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Organization onboarding successful"
+    }
+  },
+  {
+    "_comment": "PROCESSOR_ONBOARDING - DATA_PRINCIPAL",
+    "eventType": "PROCESSOR_ONBOARDING",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear <#ARG1>, \n\nThe processor <#ARG2> has been successfully onboarded under the organization <#ARG3> in the Jio Consent Management System (JCMS). \n\nProcessor ID: <#ARG4> \nClient ID: <#ARG5>\nPAN: <#ARG6>\nYou can now securely process consent-related data on behalf of the organization. \n\nFor assistance, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407325",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_PROCESSOR_SPOC_NAME",
+        "<#ARG2>": "MASTER_LABEL_PROCESSOR_NAME",
+        "<#ARG3>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG4>": "MASTER_LABEL_PROCESSOR_ID",
+        "<#ARG5>": "MASTER_LABEL_CLIENT_ID",
+        "<#ARG6>": "MASTER_LABEL_CLIENT_SECRET"
+      },
+      "templateDetails": "Data processor onboarding successful"
+    },
+    "email": {
+      "subject": "Processor Successfully Onboarded",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_PROCESSOR_SPOC_NAME",
+        "<#ARG2>": "MASTER_LABEL_PROCESSOR_NAME",
+        "<#ARG3>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG4>": "MASTER_LABEL_PROCESSOR_ID",
+        "<#ARG5>": "MASTER_LABEL_CLIENT_ID",
+        "<#ARG6>": "MASTER_LABEL_CLIENT_SECRET"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Processor Onboarding</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>The processor <strong><#ARG2></strong> has been successfully onboarded under the organization <strong><#ARG3></strong> in the Jio Consent Management System (JCMS).</p><p>Processor ID: <strong><#ARG4></strong></p><p>Client ID: <strong><#ARG5></strong></p><p>Client Secret: <strong><#ARG6></strong></p><p>You can now securely process consent-related data on behalf of the organization.</p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Data processor onboarding successful"
+    }
+  },
+  {
+    "_comment": "DPO_USER_ONBOARDING - DATA_PRINCIPAL",
+    "eventType": "DPO_USER_ONBOARDING",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear <#ARG1>, \n\nYour account has been created in the Jio Consent Management System (JCMS) under the organization <#ARG2>. \n\nRole Assigned: <#ARG3> \nClient ID: <#ARG4> \nPAN: <#ARG5> \n\nYou can now log in using your registered credentials. \n\nFor queries, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407326",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_USER_ROLE",
+        "<#ARG4>": "MASTER_LABEL_CLIENT_ID",
+        "<#ARG5>": "MASTER_LABEL_ORG_PAN"
+      },
+      "templateDetails": "DPO user account created"
+    },
+    "email": {
+      "subject": "Your JCMS Account Is Ready",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_USER_ROLE",
+        "<#ARG4>": "MASTER_LABEL_CLIENT_ID",
+        "<#ARG5>": "MASTER_LABEL_ORG_PAN"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Account Created</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>Your account has been created in the Jio Consent Management System (JCMS) under the organization <strong><#ARG2></strong>.</p><p>Role Assigned: <strong><#ARG3></strong><br/>Client ID: <strong><#ARG4></strong><br/>PAN: <strong><#ARG5></strong></p><p>You can now log in using your registered credentials.</p><p>For queries, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "DPO user account created"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_ESCALATED_L1 - DATA_PRINCIPAL",
+    "eventType": "GRIEVANCE_ESCALATED_L1",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nThere has been an update on your grievance raised with <#ARG2>. \n\nReference ID: <#ARG3> \nStatus: ESCALATED_L1 \n\nOur team is working to ensure timely resolution. \n\nFor assistance, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407327",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_GRIEVANCE_ID"
+      },
+      "templateDetails": "Grievance escalated to Level 1"
+    },
+    "email": {
+      "subject": "Update on Your Grievance",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_GRIEVANCE_ID"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Grievance Update</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>There has been an update on your grievance raised with <#ARG2>.</p><p>Reference ID: <strong><#ARG3></strong><br/>Status: <strong>ESCALATED_L1</strong></p><p>Our team is working to ensure timely resolution.</p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Grievance escalated to Level 1"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_ESCALATED_L2 - DATA_PRINCIPAL",
+    "eventType": "GRIEVANCE_ESCALATED_L2",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nThere has been an update on your grievance raised with <#ARG2>. \n\nReference ID: <#ARG3> \nStatus: ESCALATED_L2 \n\nOur team is working to ensure timely resolution. \n\nFor assistance, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407328",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_GRIEVANCE_ID"
+      },
+      "templateDetails": "Grievance escalated to Level 2"
+    },
+    "email": {
+      "subject": "Update on Your Grievance",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_GRIEVANCE_ID"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Grievance Update</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>There has been an update on your grievance raised with <#ARG2>.</p><p>Reference ID: <strong><#ARG3></strong><br/>Status: <strong>ESCALATED_L2</strong></p><p>Our team is working to ensure timely resolution.</p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Grievance escalated to Level 2"
+    }
+  },
+  {
+    "_comment": "DATA_EXPIRED - DATA_PRINCIPAL",
+    "eventType": "DATA_EXPIRED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear User (<#ARG1>), \n\nThis is to inform you that your data associated with <#ARG2> has been processed as per policy. \n\nAction Taken: RETENTION EXPIRED \n\nFor any clarification, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407329",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "templateDetails": "Data expiration notification"
+    },
+    "email": {
+      "subject": "Update on Your Data Record",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Data Processing Notification</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>This is to inform you that your data associated with <#ARG2> has been processed as per policy.</p><p>Action Taken: <strong>RETENTION EXPIRED</strong></p><p>For any clarification, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Data expiration notification"
+    }
+  },
+  {
+    "_comment": "GRIEVANCE_RETENTION_DURATION_EXPIRED - DATA_PRINCIPAL",
+    "eventType": "GRIEVANCE_RETENTION_DURATION_EXPIRED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear <#ARG1>, \n\nThe grievance record retention period for <#ARG2> has expired. Grievance-related data will be securely deleted as per data retention policy. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407330",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "templateDetails": "Grievance retention period expired"
+    },
+    "email": {
+      "subject": "Grievance Record Retention Period Expired",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Grievance Retention Notice</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>The grievance record retention period for <#ARG2> has expired. Grievance-related data will be securely deleted as per the data retention policy.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Grievance retention period expired"
+    }
+  },
+  {
+    "_comment": "CONSENT_RETENTION_DURATION_EXPIRED - DATA_PRINCIPAL",
+    "eventType": "CONSENT_RETENTION_DURATION_EXPIRED",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear <#ARG1>, \n\nThe consent record retention period for <#ARG2> has expired. Consent data will now be securely deleted as per the organization's data retention policy. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407331",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "templateDetails": "Consent retention period expired"
+    },
+    "email": {
+      "subject": "Consent Record Retention Period Expired",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_NAME",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Consent Retention Notice</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>The consent record retention period for <#ARG2> has expired. Consent data will now be securely deleted as per the organization's data retention policy.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Consent retention period expired"
+    }
+  },
+  {
+    "_comment": "RETENTION_CONSENT_ARTIFACT_EXPIRED - DATA_PROTECTION_OFFICER",
+    "eventType": "RETENTION_CONSENT_ARTIFACT_EXPIRED",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "email": {
+      "subject": "Consent Artifact Retention Period Expired for <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_DPO_NAME",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_RETENTION_PERIOD_VALUE",
+        "<#ARG4>": "MASTER_LABEL_RETENTION_PERIOD_UNIT",
+        "<#ARG5>": "MASTER_LABEL_EXPIRY_DATE",
+        "<#ARG6>": "MASTER_LABEL_EXPIRED_RECORDS_COUNT"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Consent Artifact Retention Period Expired</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>This is to inform you that consent artifacts for <strong><#ARG2></strong> have exceeded the configured retention period of <strong><#ARG3> <#ARG4></strong> and have expired as of <strong><#ARG5></strong>.</p><p><strong>Total Expired Records:</strong> <#ARG6></p><p>Please review and take appropriate action as per data retention compliance policies.</p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "DPO notification for RETENTION_CONSENT_ARTIFACT_EXPIRED"
+    }
+  },
+  {
+    "_comment": "RETENTION_COOKIE_CONSENT_EXPIRED - DATA_PROTECTION_OFFICER",
+    "eventType": "RETENTION_COOKIE_CONSENT_EXPIRED",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "email": {
+      "subject": "Cookie Consent Retention Period Expired for <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_ORGANIZATION_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_DPO_NAME",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_RETENTION_PERIOD_VALUE",
+        "<#ARG4>": "MASTER_LABEL_RETENTION_PERIOD_UNIT",
+        "<#ARG5>": "MASTER_LABEL_EXPIRY_DATE",
+        "<#ARG6>": "MASTER_LABEL_EXPIRED_RECORDS_COUNT"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Cookie Consent Retention Period Expired</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>This is to inform you that cookie consents for <strong><#ARG2></strong> have exceeded the configured retention period of <strong><#ARG3> <#ARG4></strong> and have expired as of <strong><#ARG5></strong>.</p><p><strong>Total Expired Records:</strong> <#ARG6></p><p>Please review and take appropriate action as per data retention compliance policies.</p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "DPO notification for RETENTION_COOKIE_CONSENT_EXPIRED"
+    }
+  },
+  {
+    "_comment": "RETENTION_GRIEVANCE_EXPIRED - DATA_PROTECTION_OFFICER",
+    "eventType": "RETENTION_GRIEVANCE_EXPIRED",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "email": {
+      "subject": "Business: <#ARG1> - Grievance Retention Period Expired",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_BUSINESS_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_DPO_NAME",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_RETENTION_PERIOD_VALUE",
+        "<#ARG4>": "MASTER_LABEL_RETENTION_PERIOD_UNIT",
+        "<#ARG5>": "MASTER_LABEL_EXPIRY_DATE",
+        "<#ARG6>": "MASTER_LABEL_EXPIRED_RECORDS_COUNT"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Grievance Retention Period Expired</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>This is to inform you that grievance records for <strong><#ARG2></strong> have exceeded the configured retention period of <strong><#ARG3> <#ARG4></strong> and have expired as of <strong><#ARG5></strong>.</p><p><strong>Total Expired Records:</strong> <#ARG6></p><p>Please review and take appropriate action as per data retention compliance policies.</p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "DPO notification for RETENTION_GRIEVANCE_EXPIRED"
+    }
+  },
+  {
+    "_comment": "RETENTION_LOGS_EXPIRED - DATA_PROTECTION_OFFICER",
+    "eventType": "RETENTION_LOGS_EXPIRED",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "email": {
+      "subject": "Business: <#ARG1> - System Logs Retention Period Expired",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_BUSINESS_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_DPO_NAME",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_RETENTION_PERIOD_VALUE",
+        "<#ARG4>": "MASTER_LABEL_RETENTION_PERIOD_UNIT",
+        "<#ARG5>": "MASTER_LABEL_EXPIRY_DATE",
+        "<#ARG6>": "MASTER_LABEL_EXPIRED_RECORDS_COUNT"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — System Logs Retention Period Expired</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>This is to inform you that system logs for <strong><#ARG2></strong> have exceeded the configured retention period of <strong><#ARG3> <#ARG4></strong> and have expired as of <strong><#ARG5></strong>.</p><p><strong>Total Expired Records:</strong> <#ARG6></p><p>Please review and take appropriate action as per data retention compliance policies.</p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "DPO notification for RETENTION_LOGS_EXPIRED"
+    }
+  },
+  {
+    "_comment": "RETENTION_DATA_EXPIRED - DATA_PROTECTION_OFFICER",
+    "eventType": "RETENTION_DATA_EXPIRED",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "email": {
+      "subject": "Business: <#ARG1> - Data Retention Period Expired",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_BUSINESS_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_DPO_NAME",
+        "<#ARG2>": "MASTER_LABEL_ORGANIZATION_NAME",
+        "<#ARG3>": "MASTER_LABEL_RETENTION_PERIOD_VALUE",
+        "<#ARG4>": "MASTER_LABEL_RETENTION_PERIOD_UNIT",
+        "<#ARG5>": "MASTER_LABEL_EXPIRY_DATE",
+        "<#ARG6>": "MASTER_LABEL_EXPIRED_RECORDS_COUNT"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Data Retention Period Expired</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>This is to inform you that data records for <strong><#ARG2></strong> have exceeded the configured retention period of <strong><#ARG3> <#ARG4></strong> and have expired as of <strong><#ARG5></strong>.</p><p><strong>Total Expired Records:</strong> <#ARG6></p><p>Please review and take appropriate action as per data retention compliance policies.</p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "DPO notification for RETENTION_DATA_EXPIRED"
+    }
+  },
+  {
+    "_comment": "CONSENT_INTEGRITY_VERIFICATION_FAILED - DATA_PROTECTION_OFFICER",
+    "eventType": "CONSENT_INTEGRITY_VERIFICATION_FAILED",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "email": {
+      "subject": "Consent Integrity Verification Failed - Action Required",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_TENANT_ID",
+        "<#ARG2>": "MASTER_LABEL_BUSINESS_ID",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID",
+        "<#ARG4>": "MASTER_LABEL_REFERENCE_ID",
+        "<#ARG5>": "MASTER_LABEL_PAYLOAD_HASH_VERIFICATION",
+        "<#ARG6>": "MASTER_LABEL_CHAIN_LINK_VERIFICATION",
+        "<#ARG7>": "MASTER_LABEL_CONSENT_JSON_MATCH",
+        "<#ARG8>": "MASTER_LABEL_OVERALL_INTEGRITY_STATUS"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Consent Integrity Verification Failed</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear DPO,</p><p>This is a <strong style='color:#d9534f;'>CRITICAL ALERT</strong> regarding consent integrity verification failure.</p><p><strong>Verification Details:</strong></p><ul><li><strong>Tenant ID:</strong> <#ARG1></li><li><strong>Business ID:</strong> <#ARG2></li><li><strong>Consent ID:</strong> <#ARG3></li><li><strong>Reference ID:</strong> <#ARG4></li></ul><p><strong>Verification Results:</strong></p><ul><li><strong>Payload Hash Verification:</strong> <#ARG5></li><li><strong>Chain Link Verification:</strong> <#ARG6></li><li><strong>Consent JSON Match:</strong> <#ARG7></li><li><strong>Overall Status:</strong> <span style='color:#d9534f;'><#ARG8></span></li></ul><p><strong style='color:#d9534f;'>ACTION REQUIRED:</strong> Please investigate this integrity verification failure immediately and take corrective action as per compliance protocols.</p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "DPO notification for CONSENT_INTEGRITY_VERIFICATION_FAILED"
+    }
+  },
+  {
+    "_comment": "CONSENT_INTEGRITY_VERIFICATION_COMPLETED - DATA_PROTECTION_OFFICER",
+    "eventType": "CONSENT_INTEGRITY_VERIFICATION_COMPLETED",
+    "recipientType": "DATA_PROTECTION_OFFICER",
+    "email": {
+      "subject": "Consent Integrity Verification Completed Successfully",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_TENANT_ID",
+        "<#ARG2>": "MASTER_LABEL_BUSINESS_ID",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID",
+        "<#ARG4>": "MASTER_LABEL_REFERENCE_ID",
+        "<#ARG5>": "MASTER_LABEL_PAYLOAD_HASH_VERIFICATION",
+        "<#ARG6>": "MASTER_LABEL_CHAIN_LINK_VERIFICATION",
+        "<#ARG7>": "MASTER_LABEL_CONSENT_JSON_MATCH",
+        "<#ARG8>": "MASTER_LABEL_OVERALL_INTEGRITY_STATUS"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Consent Integrity Verification Completed</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear DPO,</p><p>This is to inform you that consent integrity verification has been <strong style='color:#5cb85c;'>completed successfully</strong>.</p><p><strong>Verification Details:</strong></p><ul><li><strong>Tenant ID:</strong> <#ARG1></li><li><strong>Business ID:</strong> <#ARG2></li><li><strong>Consent ID:</strong> <#ARG3></li><li><strong>Reference ID:</strong> <#ARG4></li></ul><p><strong>Verification Results:</strong></p><ul><li><strong>Payload Hash Verification:</strong> <#ARG5></li><li><strong>Chain Link Verification:</strong> <#ARG6></li><li><strong>Consent JSON Match:</strong> <#ARG7></li><li><strong>Overall Status:</strong> <span style='color:#5cb85c;'><#ARG8></span></li></ul><p>All integrity checks have passed successfully. No action is required at this time.</p><p>For assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "DPO notification for CONSENT_INTEGRITY_VERIFICATION_COMPLETED"
+    }
+  },
+  {
+    "_comment": "PARENTAL_CONSENT - DATA_PRINCIPAL",
+    "eventType": "PARENTAL_CONSENT",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear <#ARG1>, \n\nWe've received a parental consent request from <#ARG2> (Consent Handle: <#ARG3>) for business <#ARG4>. \nPlease review and approve using: <#ARG5> \n\nFor assistance, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407332",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_PARENT_NAME",
+        "<#ARG2>": "MASTER_LABEL_MINOR_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_HANDLE",
+        "<#ARG4>": "MASTER_LABEL_BUSINESS_NAME",
+        "<#ARG5>": "MASTER_LABEL_REVIEW_URL"
+      },
+      "templateDetails": "Parental consent request notification"
+    },
+    "email": {
+      "subject": "Action Required – Review Minor's Parental Consent",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {},
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_PARENT_NAME",
+        "<#ARG2>": "MASTER_LABEL_MINOR_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_HANDLE",
+        "<#ARG4>": "MASTER_LABEL_BUSINESS_NAME",
+        "<#ARG5>": "MASTER_LABEL_REVIEW_URL"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Parental Consent Notification</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear <#ARG1>,</p><p>This is to inform you that we have received a parental consent request submitted by <strong><#ARG2></strong>.</p><p>Consent Handle: <strong><#ARG3></strong></p><p>Business: <strong><#ARG4></strong></p><p>Kindly review and approve the minor consent request using the link below:<br/><a href='<#ARG5>'><#ARG5></a></p><p>For any assistance, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Parental consent request notification"
+    }
+  },
+  {
+    "_comment": "DATA_DELETION_NOTIFICATION - DATA_PRINCIPAL",
+    "eventType": "DATA_DELETION_NOTIFICATION",
+    "recipientType": "DATA_PRINCIPAL",
+    "sms": {
+      "template": "Dear <#ARG1>, \n\nThe data associated with your consent <#ARG3> for <#ARG2> has been deleted following consent expiry/withdrawn.\n\nAction: DATA DELETED (Expired/Withdrawn)\n\nFor any queries, contact ${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}. \n\nRegards, Jio Consent Management System",
+      "dltEntityId": "1001",
+      "dltTemplateId": "5153451111563407333",
+      "from": "${SYSTEM_SMS_FROM:JIOCNF-S}",
+      "arguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_BUSINESS_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID"
+      },
+      "templateDetails": "Data deletion notification for data principal"
+    },
+    "email": {
+      "subject": "Data Deletion Notification – Business: <#ARG1>",
+      "fromName": "${SYSTEM_EMAIL_FROM_NAME:Jio Consent Management System}",
+      "from": "${SYSTEM_EMAIL_FROM:info-consent@jio.com}",
+      "replyTo": "${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}",
+      "subjectArguments": {
+        "<#ARG1>": "MASTER_LABEL_BUSINESS_NAME"
+      },
+      "bodyArguments": {
+        "<#ARG1>": "MASTER_LABEL_USER_IDENTIFIER",
+        "<#ARG2>": "MASTER_LABEL_BUSINESS_NAME",
+        "<#ARG3>": "MASTER_LABEL_CONSENT_ID"
+      },
+      "completeHtmlContent": "<!doctype html><html lang='en'><head><meta charset='utf-8'/><meta name='viewport' content='width=device-width, initial-scale=1.0'/><title>Jio Consent Management System — Data Deletion Update</title></head><body style='font-family:Arial,Helvetica,sans-serif;font-size:15px;color:#000;line-height:1.6;'><p>Dear User (<#ARG1>),</p><p>This is to inform you that the data associated with your consent with <#ARG2> has been deleted following consent expiry/withdrawn.</p><p>Consent ID: <strong><#ARG3></strong><br/>Action Taken: <strong>DATA DELETED</strong><br/>Status: <strong>Consent Expired/Withdrawn</strong></p><p>For any queries, contact <a href='mailto:${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}'>${SYSTEM_EMAIL_REPLYTO:support-consent@ril.com}</a>.</p><p>Regards,<br/>Jio Consent Management System</p></body></html>",
+      "templateDetails": "Data deletion notification for data principal"
+    }
+  }
+]

@@ -1,0 +1,79 @@
+# ================= ConfigMap =================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-apis-config
+data:
+  SERVER_PORT: "9009"
+  MONGODB_DATABASE: "cms_db_admin"
+  PROFILE: "st"
+  WSO2_BASE_URL: "https://<wso2-host>:9443"
+  AUDIT_MODULE_APIS_URL: "http://audit-module-apis:9006"
+
+---
+# ================= Deployment =================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-apis
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: auth-apis
+  template:
+    metadata:
+      labels:
+        app: auth-apis
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: auth-apis
+          image: "$(IMAGE_URL)"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+          ports:
+            - containerPort: 9009
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          envFrom:
+            - configMapRef:
+                name: auth-apis-config
+          env:
+            - name: APP_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.labels['app']
+
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: uri
+
+            - name: SPRING_DATA_MONGODB_URI
+              value: "$(MONGODB_URI)&appName=$(APP_NAME)"
+          volumeMounts:
+            - name: logs
+              mountPath: /opt/logs   # container writes logs here
+      volumes:
+        - name: logs
+          emptyDir: {}

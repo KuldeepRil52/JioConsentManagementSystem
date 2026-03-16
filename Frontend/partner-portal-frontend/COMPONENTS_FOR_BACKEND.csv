@@ -1,0 +1,27 @@
+componentName,componentUrl,displayLabel,section,description
+DASHBOARD,/dashboard,Dashboard,Dashboard,Main dashboard page
+CONSENT_SETUP,/consent,Consent set up,System Configuration,Configure consent settings
+COOKIE_CATEGORIES,/cookie-category,Cookie categories,System Configuration,Manage cookie categories
+GRIEVANCE_SETUP,/grievance,Grievance set up,System Configuration,Configure grievance settings
+DATA_PROTECTION_OFFICER,/dataProtectionOfficer,Data protection officer,System Configuration,Manage data protection officer details
+SYSTEM_SETUP,/systemConfiguration,System set up,System Configuration,System configuration settings
+NOTIFICATION,/notification,Notification,System Configuration,Notification settings
+MASTER_SETUP,/master,Master set up,System Configuration,Master data setup
+TEMPLATES,/templates,Templates,Consent,Consent templates management
+EMAIL_TEMPLATE,/emailTemplate,Email template,Consent,Consent email templates
+SMS_TEMPLATE,/smsTemplate,SMS template,Consent,Consent SMS templates
+REGISTERED_COOKIES,/registercookies,Registered cookies,Cookies,Manage registered cookies
+COOKIES_LOGS,/cookieslogs,Cookies Logs,Cookies,View cookie logs
+ROPA,/ropa,ROPA,Governance,Record of Processing Activities
+DPO_DASHBOARD,/dpo-dashboard,DPO Dashboard,Governance,Data Protection Officer dashboard
+AUDIT_COMPLIANCE,/audit-compliance,Audit & Compliance Report,Governance,Audit and compliance reporting
+BREACH_NOTIFICATIONS,/breach-notifications,Breach Notifications,Governance,Data breach notifications
+GRIEVANCE_REQUESTS,/request,Requests,Grievance Redressal,Grievance requests management
+GRIEVANCE_FORM,/grievanceFormTemplates,Form,Grievance Redressal,Grievance form templates
+GRIEVANCE_EMAIL_TEMPLATE,/grievanceEmailTemplate,Email template,Grievance Redressal,Grievance email templates
+GRIEVANCE_SMS_TEMPLATE,/grievanceSmsTemplate,SMS template,Grievance Redressal,Grievance SMS templates
+BUSINESS_GROUPS,/business,Business groups,User Management,Manage business groups
+ROLES,/roles,Roles,User Management,Role management
+USERS,/users,Users,User Management,User management
+ORGANIZATION_MAP,/organization-map,Organization Map,User Management,Organization hierarchy visualization
+

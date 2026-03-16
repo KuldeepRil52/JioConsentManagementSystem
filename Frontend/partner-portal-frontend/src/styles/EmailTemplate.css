@@ -1,0 +1,107 @@
+.emailTemplateWidth {
+  width: 95%;
+}
+.emailTemplate-Heading-Button {
+  display: flex;
+  justify-content: space-between;
+}
+.emailTemplate-Heading-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* add px */
+}
+
+.emailTemplate-badge {
+  /* display: inline-block; /* ensure it wraps around text */
+  /* padding: 2px 6px;
+  background-color: red;
+  border-radius: 5px;
+  text-align: center;  */
+  height: 24px;
+  width: 159px;
+  background-color: rgba(245, 245, 245, 1);
+  border-radius: 5px;
+  text-align: center;
+}
+
+.emailTemplate-custom-table-outer-div {
+  margin-top: "4%";
+  right: 0;
+}
+
+.emailTempalte-custom-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.emailTempalte-custom-table th,
+.emailTempalte-custom-table td {
+  border-bottom: 1px solid rgba(245, 245, 245, 1); /* Only horizontal lines */
+  padding: 10px;
+  text-align: left;
+}
+
+.emailTempalte-custom-table thead {
+  background-color: rgba(245, 245, 245, 1); /* Header background */
+  font-weight: bold;
+}
+
+/* Clickable row hover effect */
+.emailTempalte-custom-table tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.emailTempalte-custom-table tbody tr:hover {
+  background-color: rgba(0, 102, 204, 0.06); /* Light blue highlight on hover */
+}
+
+.emailTempalte-custom-table tbody tr[style*="cursor: pointer"]:hover {
+  background-color: rgba(0, 102, 204, 0.08); /* Slightly stronger for clickable rows */
+}
+
+.emailTemplate-table-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Stats Cards Section */
+.container-wrapper {
+  margin-bottom: 20px;
+}
+
+.numbers-section {
+  display: flex;
+  gap: 16px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  padding: 16px 20px;
+  border-radius: 8px;
+  min-width: 200px;
+  flex: 1;
+}
+
+.card.total {
+  background-color: #f5f5f5;
+}
+
+.card.inProgress {
+  background-color: #e3f2fd;
+}
+
+.card.success {
+  background-color: #e8f5e9;
+}
+
+.card.warning {
+  background-color: #fff3e0;
+}
+
+.card.danger {
+  background-color: #ffebee;
+}

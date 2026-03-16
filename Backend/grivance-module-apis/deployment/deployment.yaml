@@ -1,0 +1,72 @@
+# ================= ConfigMap =================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grivance-module-apis-config
+data:
+  SERVER_PORT: "9007"
+  MONGODB_DATABASE: "cms_db_admin"
+  PROFILE: "st"
+  AUDIT_MODULE_APIS_URL: "http://audit-module-apis:9006"
+  NOTIFICATION_MODULE_APIS_URL: "http://notification-module-apis:9005"
+  VAULT_APIS_URL: "http://vault-apis:9010"
+
+---
+# ================= Deployment =================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grivance-module-apis
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: grivance-module-apis
+  template:
+    metadata:
+      labels:
+        app: grivance-module-apis
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: grivance-module-apis
+          image: "$(IMAGE_URL)"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+          ports:
+            - containerPort: 9007
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          envFrom:
+            - configMapRef:
+                name: grivance-module-apis-config
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: uri
+          volumeMounts:
+            - name: logs
+              mountPath: /opt/logs   # container writes logs here
+      volumes:
+        - name: logs
+          emptyDir: {}

@@ -1,0 +1,279 @@
+.page-container-cl {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Main content split into 2 halves */
+.main-content-cl {
+  margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 16px;
+  height: 100vh;
+  box-sizing: border-box;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.landmark-tag {
+  background: #f5f5f5;
+  color: #555;
+  font-size: 13px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-family: monospace;
+  margin-right: 2%;
+  margin-left: 2%;
+  margin-top: 10px;
+}
+
+.dropdown-group-pl {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 400px;
+}
+
+.dropdown-group-pl label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgb(118, 118, 118);
+}
+
+.dropdown-group-pl select {
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  appearance: none; /* remove default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='none' stroke='%23666' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M19 9l-7 7-7-7'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+}
+
+.dropdown-group-pl select:focus {
+  border-color: #999;
+  outline: none;
+}
+
+.dropdown-group-pl small {
+  font-size: 12px;
+  color: #666;
+}
+
+.numbers-section {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  width: 90%;
+  margin-bottom: 20px;
+  /* padding: 1% 0%;  */
+}
+
+.consentLog-container {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.numbers-section .card {
+  flex: 1; /* all cards take equal width */
+  min-width: 180px; /* don't shrink too much */
+  padding: 16px;
+  border-radius: 8px;
+  /* background-color: #ffffff; */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.numbers-section .card.success {
+  display: flex;
+  flex-direction: row;
+  background-color: #e9f7e9;
+  justify-content: flex-start;
+}
+
+.numbers-section .card.warning {
+  background-color: #fef0e7;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.numbers-section .card.danger {
+  background-color: #fee6ea;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.numbers-section .card.info {
+  background-color: #fef0e7;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.numbers-section .card.total {
+  background-color: #e0e0e0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+.numbers-section .card.inProgress {
+  background-color: #E7EBF8;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.activebadge-text {
+  color: #135610;
+  font-weight: 700;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+.activebadge {
+  background-color: #e9f7e9;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.1rem;
+  padding-bottom: 0.1rem;
+  width: fit-content;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.emailTemplate-table-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.inner-table {
+  margin-left: 5%;
+  width: 90%;
+  /* border: 1px solid #ccc; */
+  border-radius: 6px;
+  margin-top: 8px;
+  border-collapse: collapse;
+}
+
+.inner-table th,
+.inner-table td {
+  padding: 6px 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+.consentlog-business-table-container {
+  display: inline-block;
+
+  width: 100%;
+}
+
+/* Main table borders */
+.consentLog-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: Arial, sans-serif;
+  border-left: 2px solid rgba(245, 245, 245, 1);
+  border-right: 2px solid rgba(245, 245, 245, 1);
+  border-bottom: 2px solid rgba(231, 235, 248, 1);
+}
+/* Border only after chevron column in parent table */
+.consentLog-table > thead > tr > th:first-child,
+.consentLog-table > tbody > tr > td:first-child {
+  border-right: 2px solid rgba(245, 245, 245, 1);
+  width: 3rem;
+  text-align: center;
+}
+
+.chevron-cell {
+  width: 3rem;
+  text-align: center;
+  border-right: 2px solid rgba(245, 245, 245, 1);
+  padding: 0;
+}
+
+.chevron-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.consentLog-table th,
+.consentLog-table td {
+  border: none;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #000;
+  text-align: left;
+}
+
+.consentLog-table tr + tr td {
+  border-top: 1px solid #ddd;
+}
+
+.consentLog-table thead {
+  background-color: #f5f5f5;
+}
+
+/* Expanded row parent styling */
+.expanded-row-parent {
+  background-color: rgba(231, 235, 248, 1) !important;
+  font-weight: bold;
+}
+
+/* Inner table */
+/* Expanded row cell should remove its own padding */
+.expanded-row td {
+  padding: 0;
+}
+
+/* Inner table should take full width and align flush */
+.inner-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Inner table headers + cells */
+.inner-table th,
+.inner-table td {
+  border: none;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.header-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: space-between;
+}
+
+.header-with-icon svg {
+  flex-shrink: 0;
+}

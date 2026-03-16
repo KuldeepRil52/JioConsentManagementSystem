@@ -1,0 +1,57 @@
+export const tableHeaders = [
+  { label: "Consent group name", width: "25%" },
+  { label: "Template ID", width: "15%" },
+  { label: "Start date", width: "20%" },
+  { label: "Data items", width: "15%" },
+  { label: "Data types", width: "10%" },
+  { label: "Purpose", width: "15%" },
+  { label: "Status", width: "10%" },
+];
+
+export const tableData = [
+  {
+    "Consent group name": "6a83244e-2aec-4c85",
+    "Template ID": "df-a83244e-2aec-4c85",
+    "Start date": "22/22/22",
+    "Data items": "Medical documents",
+    "Data types": "Lab reports, medical",
+    Purpose: "Basic services",
+    Status: "Accepted",
+  },
+  {
+    "Consent group name": "6a83244e-2aec-4c85",
+    "Template ID": "df-a83244e-2aec-4c85",
+    "Start date": "22/22/22",
+    "Data items": "Medical documents",
+    "Data types": "Lab reports, medical",
+    Purpose: "Basic services",
+    Status: "Accepted",
+  },
+  {
+    "Consent group name": "6a83244e-2aec-4c85",
+    "Template ID": "df-a83244e-2aec-4c85",
+    "Start date": "22/22/22",
+    "Data items": "Medical documents",
+    "Data types": "Lab reports, medical",
+    Purpose: "Basic services",
+    Status: "Accepted",
+  },
+  {
+    "Consent group name": "6a83244e-2aec-4c85",
+    "Template ID": "df-a83244e-2aec-4c85",
+    "Start date": "22/22/22",
+    "Data items": "Medical documents",
+    "Data types": "Lab reports, medical",
+    Purpose: "Basic services",
+    Status: "Accepted",
+  },
+  {
+    "Consent group name": "6a83244e-2aec-4c85",
+    "Template ID": "df-a83244e-2aec-4c85",
+    "Start date": "22/22/22",
+    "Data items": "Medical documents",
+    "Data types": "Lab reports, medical",
+    Purpose: "Basic services",
+    Status: "Accepted",
+  },
+];

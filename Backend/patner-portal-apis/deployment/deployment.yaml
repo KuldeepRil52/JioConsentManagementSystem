@@ -1,0 +1,122 @@
+# ================= ConfigMap =================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: partner-portal-apis-config
+data:
+  SERVER_PORT: "9017"
+  MONGODB_DATABASE: "cms_db_admin"
+  PROFILE: "st"
+  NOTIFICATION_MODULE_APIS_URL: "http://notification-module-apis:9005"
+  AUDIT_MODULE_APIS_URL: "http://audit-module-apis:9006"
+  VAULT_APIS_URL: "http://vault-apis:9010"
+  CONSENT_HANDLE_EXPIRY_CRON: "0 0 2 * * ?"
+  CONSENT_HANDLE_EXPIRY_BATCH_SIZE: "5000"
+  CONSENT_HANDLE_EXPIRY_PERIOD_TYPE: "MONTHS"
+  CONSENT_HANDLE_EXPIRY_PERIOD_VALUE: "1"
+  CONSENT_HANDLE_EXPIRY_THREAD_POOL_SIZE: "10"
+  CONSENT_EXPIRY_CRON: "0 30 02 * * ?"
+  CONSENT_EXPIRY_BATCH_SIZE: "1000"
+  CONSENT_EXPIRY_THREAD_POOL_SIZE: "10"
+  CONSENT_PREFERENCE_EXPIRY_CRON: "0 15 02 * * ?"
+  CONSENT_PREFERENCE_EXPIRY_BATCH_SIZE: "500"
+  CONSENT_PREFERENCE_EXPIRY_THREAD_POOL_SIZE: "10"
+  CONSENT_DEFAULT_REMINDER_DAYS: "30"
+  GRIEVANCE_ESCALATION_CRON: "0 0 3 * * ?"
+  GRIEVANCE_ESCALATION_BATCH_SIZE: "500"
+  GRIEVANCE_ESCALATION_THREAD_POOL_SIZE: "10"
+  GRIEVANCE_DEFAULT_ESCALATION_DAYS: "2"
+  COOKIE_CONSENT_EXPIRY_CRON: "0 0 0 * * *"
+  COOKIE_CONSENT_HANDLE_EXPIRY_CRON: "0 * * * * *"
+  CONSENT_ARTIFACT_RETENTION_CRON: "0 45 02 * * ?"
+  CONSENT_ARTIFACT_RETENTION_BATCH_SIZE: "500"
+  CONSENT_ARTIFACT_RETENTION_THREAD_POOL_SIZE: "10"
+  CONSENT_ARTIFACT_DEFAULT_RETENTION_DAYS: "2"
+  COOKIE_CONSENT_RETENTION_CRON: "0 15 03 * * ?"
+  COOKIE_CONSENT_RETENTION_BATCH_SIZE: "500"
+  COOKIE_CONSENT_RETENTION_THREAD_POOL_SIZE: "10"
+  COOKIE_CONSENT_DEFAULT_RETENTION_DAYS: "2"
+  GRIEVANCE_RETENTION_CRON: "0 30 03 * * ?"
+  GRIEVANCE_RETENTION_BATCH_SIZE: "500"
+  GRIEVANCE_RETENTION_THREAD_POOL_SIZE: "10"
+  GRIEVANCE_DEFAULT_RETENTION_DAYS: "2"
+  LOGS_RETENTION_CRON: "0 45 03 * * ?"
+  LOGS_RETENTION_BATCH_SIZE: "500"
+  LOGS_RETENTION_THREAD_POOL_SIZE: "10"
+  LOGS_DEFAULT_RETENTION_DAYS: "2"
+  DATA_RETENTION_CRON: "0 00 04 * * ?"
+  DATA_RETENTION_BATCH_SIZE: "500"
+  DATA_RETENTION_THREAD_POOL_SIZE: "10"
+  DATA_DEFAULT_RETENTION_DAYS: "2"
+  CONSENT_PREFERENCE_EXPIRY_PORTAL_URL: "<portal-base-url>"
+---
+# ================= Deployment =================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: partner-portal-apis
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: partner-portal-apis
+  template:
+    metadata:
+      labels:
+        app: partner-portal-apis
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: partner-portal-apis
+          image: "$(IMAGE_URL)"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+          ports:
+            - containerPort: 9002
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          livenessProbe:
+            httpGet:
+              path: /partnerportal/actuator/health
+              port: 9002
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /partnerportal/actuator/health
+              port: 9002
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          envFrom:
+            - configMapRef:
+                name: partner-portal-apis-config
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: admin-mongodb-secret
+                  key: uri
+          volumeMounts:
+            - name: logs
+              mountPath: /opt/logs   # container writes logs here
+      volumes:
+        - name: logs
+          emptyDir: {}

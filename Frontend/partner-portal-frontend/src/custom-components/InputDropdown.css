@@ -1,0 +1,114 @@
+.dropdown-wrapper {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 4px;
+  width: 100%;
+}
+
+.dropdown-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.dropdown-required {
+  color: #d32f2f;
+  margin-left: 4px;
+}
+
+.dropdown-select {
+  font-family: inherit;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 32px 8px 12px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="8" viewBox="0 0 12 8"><path fill="%23333" d="M6 8L0 2l1.4-1.4L6 5.2 10.6.6 12 2z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.dropdown-select:hover:not(:disabled) {
+  border-color: #999;
+}
+
+.dropdown-select:focus {
+  border-color: #0050d4;
+  box-shadow: 0 0 0 2px rgba(0, 80, 212, 0.1);
+}
+
+.dropdown-select:disabled {
+  background-color: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
+}
+
+/* Size Variants */
+.dropdown-small {
+  padding: 6px 32px 6px 10px;
+  font-size: 13px;
+}
+
+.dropdown-medium {
+  padding: 8px 32px 8px 12px;
+  font-size: 14px;
+}
+
+.dropdown-large {
+  padding: 10px 32px 10px 14px;
+  font-size: 16px;
+}
+
+/* State Variants */
+.dropdown-success {
+  border-color: #4caf50 !important;
+}
+
+.dropdown-success:focus {
+  box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1) !important;
+}
+
+.dropdown-error {
+  border-color: #d32f2f !important;
+}
+
+.dropdown-error:focus {
+  box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.1) !important;
+}
+
+.dropdown-warning {
+  border-color: #ff9800 !important;
+}
+
+.dropdown-warning:focus {
+  box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.1) !important;
+}
+
+/* State Text */
+.dropdown-state-text {
+  font-size: 12px;
+  margin-top: 4px;
+  display: block;
+}
+
+.dropdown-state-text.dropdown-success {
+  color: #4caf50;
+}
+
+.dropdown-state-text.dropdown-error {
+  color: #d32f2f;
+}
+
+.dropdown-state-text.dropdown-warning {
+  color: #ff9800;
+}
+

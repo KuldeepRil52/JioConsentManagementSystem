@@ -1,0 +1,100 @@
+[
+  {
+    "purposeCode": "P001",
+    "purposeName": "Account Creation & Authentication",
+    "purposeDescription": "Collect data to create user account and authenticate securely.",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  },
+  {
+    "purposeCode": "P002",
+    "purposeName": "Service Delivery / Fulfilment",
+    "purposeDescription": "Process personal data to provide requested product or service.",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  },
+  {
+    "purposeCode": "P003",
+    "purposeName": "Payment Processing & Billing",
+    "purposeDescription": "Handle financial data for payments, invoicing, and reconciliation.",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  },
+  {
+    "purposeCode": "P004",
+    "purposeName": "Customer Support / Grievance Handling",
+    "purposeDescription": "Use data to respond to customer queries and grievances.",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  },
+  {
+    "purposeCode": "P005",
+    "purposeName": "Marketing Communications",
+    "purposeDescription": "Send promotional emails, SMS, or notifications.",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  },
+  {
+    "purposeCode": "P006",
+    "purposeName": "Analytics & Service Improvement",
+    "purposeDescription": "Collect usage data for analytics, personalization, and feature enhancements.",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  },
+  {
+    "purposeCode": "P007",
+    "purposeName": "Fraud Detection & Security Monitoring",
+    "purposeDescription": "Use data for fraud prevention, security monitoring, and threat detection.",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  },
+  {
+    "purposeCode": "P008",
+    "purposeName": "Regulatory & Legal Compliance",
+    "purposeDescription": "Process data as required under law, audits, or regulatory obligations.",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  },
+  {
+    "purposeCode": "P009",
+    "purposeName": "Third-Party Data Sharing",
+    "purposeDescription": "Share information with trusted processors/partners for agreed purposes.",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  },
+  {
+    "purposeCode": "P010",
+    "purposeName": "Data Portability / Account Transfer",
+    "purposeDescription": "Share or transfer user data upon request to another service provider.",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  },
+  {
+    "purposeCode": "P011",
+    "purposeName": "Research & Development",
+    "purposeDescription": "Use anonymized/pseudonymized data for R&D and innovation.",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  },
+  {
+    "purposeCode": "P012",
+    "purposeName": "Personalization / Recommendations",
+    "purposeDescription": "Provide tailored recommendations, offers, and content to the user.",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  },
+  {
+    "purposeCode": "P013",
+    "purposeName": "Location-Based Services",
+    "purposeDescription": "Use geolocation data to provide location-specific services and updates.",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  },
+  {
+    "purposeCode": "P014",
+    "purposeName": "Employee / HR Management (Internal DF)",
+    "purposeDescription": "Process employee data for payroll, compliance, and HR activities.",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  }
+]

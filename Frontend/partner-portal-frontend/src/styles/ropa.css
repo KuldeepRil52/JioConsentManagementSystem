@@ -1,0 +1,469 @@
+/* Main container */
+.ropa-container {
+  width: 100%;
+  padding: 24px;
+  background: #f8f9fa;
+}
+
+/* Header Section */
+.ropa-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  margin-right: 3rem;
+  padding: 0;
+}
+
+.ropa-title-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ropa-main-title {
+  margin: 0;
+  padding: 0;
+  font-size: 32px;
+  font-weight: 700;
+  color: #000000;
+  line-height: 1.2;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.ropa-governance-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  background-color: #d1fae5;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #065f46;
+}
+
+.ropa-button-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Table Controls */
+.ropa-table-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 1rem;
+  margin-right: 2rem;
+  gap: 0.5rem;
+}
+
+.ropa-search-container {
+  position: relative;
+  flex: 0 0 auto;
+  max-width: 300px;
+}
+
+.ropa-search-input {
+  width: 100%;
+  min-width: 300px;
+  padding: 0.625rem 1rem 0.625rem 2.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 24px;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+  background: white;
+}
+
+.ropa-search-input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.ropa-search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6b7280;
+  pointer-events: none;
+}
+
+.ropa-table-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.ropa-icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #4b5563;
+}
+
+.ropa-icon-button:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.ropa-icon-button:active {
+  background: #f3f4f6;
+}
+
+/* Table wrapper with scroll */
+.ropa-table-wrapper {
+  overflow-x: auto;
+  overflow-y: auto;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: white;
+  max-height: calc(100vh - 200px);
+  margin-top: 0;
+  margin-right: 2rem;
+  padding: 0;
+}
+
+/* Main ROPA table */
+.ropa-table {
+  border-top: 1px solid beige;
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 12px;
+  background: white;
+}
+
+/* Header styling */
+.ropa-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: white;
+}
+
+/* Section header row - first row with grouped headers */
+.ropa-table thead tr.ropa-section-row th {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e0e0e0 !important;
+  border-right: 1px solid #e0e0e0 !important;
+  border-left: none !important;
+  border-top: none !important;
+  font-weight: 600;
+  padding: 10px 12px;
+  text-align: center;
+  font-size: 12px;
+  color: #333;
+  text-transform: none;
+  line-height: 1.4;
+  vertical-align: middle;
+  display: table-cell !important;
+}
+
+.ropa-table thead tr.ropa-section-row th:first-child {
+  border-left: none;
+}
+
+.ropa-table thead tr.ropa-section-row th:last-child {
+  border-right: none;
+}
+
+/* Column header row - second row with specific column names */
+.ropa-table thead tr:last-child th {
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+  font-weight: 600;
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 11px;
+  color: #666;
+  line-height: 1.3;
+}
+
+.ropa-table thead tr:last-child th:last-child {
+  border-right: none;
+}
+
+/* Table cells */
+.ropa-table td {
+  border-bottom: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: #333;
+  text-align: left;
+  vertical-align: middle;
+  line-height: 1.4;
+}
+
+.ropa-table td:last-child {
+  border-right: none;
+}
+
+/* Row hover effect */
+.ropa-table tbody tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Remove alternating row colors for cleaner look */
+.ropa-table tbody tr {
+  background-color: white;
+}
+
+/* Column widths */
+/* Process Overview columns */
+.ropa-table th:nth-child(1),
+.ropa-table td:nth-child(1) {
+  width: 180px;
+  min-width: 180px;
+}
+
+.ropa-table th:nth-child(2),
+.ropa-table td:nth-child(2) {
+  width: 200px;
+  min-width: 200px;
+}
+
+.ropa-table th:nth-child(3),
+.ropa-table td:nth-child(3) {
+  width: 180px;
+  min-width: 180px;
+}
+
+.ropa-table th:nth-child(4),
+.ropa-table td:nth-child(4) {
+  width: 250px;
+  min-width: 250px;
+}
+
+/* Categories of personal data */
+.ropa-table th:nth-child(5),
+.ropa-table td:nth-child(5) {
+  width: 280px;
+  min-width: 280px;
+}
+
+/* Categories of special nature */
+.ropa-table th:nth-child(6),
+.ropa-table td:nth-child(6) {
+  width: 250px;
+  min-width: 250px;
+}
+
+/* Source of personal data */
+.ropa-table th:nth-child(7),
+.ropa-table td:nth-child(7) {
+  width: 200px;
+  min-width: 200px;
+}
+
+/* Category of individual */
+.ropa-table th:nth-child(8),
+.ropa-table td:nth-child(8) {
+  width: 220px;
+  min-width: 220px;
+}
+
+/* Permitted Reasons for Processing - 3 columns */
+.ropa-table th:nth-child(9),
+.ropa-table td:nth-child(9) {
+  width: 280px;
+  min-width: 280px;
+}
+
+.ropa-table th:nth-child(10),
+.ropa-table td:nth-child(10) {
+  width: 300px;
+  min-width: 300px;
+}
+
+.ropa-table th:nth-child(11),
+.ropa-table td:nth-child(11) {
+  width: 240px;
+  min-width: 240px;
+}
+
+/* DPIA Reference */
+.ropa-table th:nth-child(12),
+.ropa-table td:nth-child(12) {
+  width: 200px;
+  min-width: 200px;
+}
+
+/* Actions buttons */
+.ropa-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+  color: #666;
+}
+
+.icon-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.icon-btn:active {
+  background-color: #e0e0e0;
+}
+
+.icon-btn-delete:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.icon-btn-delete:hover svg {
+  fill: #dc2626;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+  .ropa-container {
+    padding: 16px;
+  }
+  
+  .ropa-table {
+    font-size: 11px;
+  }
+  
+  .ropa-table thead tr:first-child th {
+    font-size: 11px;
+    padding: 8px 10px;
+  }
+  
+  .ropa-table thead tr:last-child th {
+    font-size: 10px;
+    padding: 6px 10px;
+  }
+  
+  .ropa-table tbody td {
+    padding: 8px 10px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .ropa-container {
+    padding: 12px;
+  }
+  
+  .ropa-header-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-right: 1rem;
+  }
+  
+  .ropa-button-group {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .ropa-table-controls {
+    margin-right: 1rem;
+  }
+  
+  .ropa-table-wrapper {
+    margin-right: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .ropa-container {
+    padding: 8px;
+  }
+  
+  .ropa-main-title {
+    font-size: 24px;
+  }
+  
+  .ropa-header-section {
+    margin-right: 0;
+  }
+  
+  .ropa-button-group {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .ropa-table-controls {
+    flex-direction: column;
+    align-items: stretch;
+    margin-right: 0;
+  }
+  
+  .ropa-search-container {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .ropa-search-input {
+    min-width: 100%;
+    width: 100%;
+  }
+  
+  .ropa-table-actions {
+    justify-content: flex-end;
+    width: 100%;
+  }
+  
+  .ropa-table-wrapper {
+    margin-right: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .ropa-table {
+    min-width: 1000px;
+    font-size: 10px;
+  }
+  
+  .ropa-table thead tr th {
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+  
+  .ropa-table td {
+    padding: 8px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .ropa-main-title {
+    font-size: 20px;
+  }
+  
+  .ropa-table {
+    min-width: 900px;
+    font-size: 9px;
+  }
+  
+  .ropa-table thead tr th,
+  .ropa-table td {
+    padding: 6px;
+    font-size: 9px;
+  }
+}

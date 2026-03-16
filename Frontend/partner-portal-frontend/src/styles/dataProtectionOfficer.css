@@ -1,0 +1,77 @@
+.dataProtectionOfficer-outer-division {
+  display: flex;
+  flex-direction: column;
+  gap: 5;
+}
+
+.dataProtectionOfficer-header-and-badge {
+  display: flex;
+  gap: 10;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.dataProtectionOfficer-badge {
+  height: 24px;
+  width: 159px;
+  background-color: rgba(245, 245, 245, 1);
+  border-radius: 5px;
+  text-align: center;
+}
+
+.dataProtectionOfficer-inputs-column-div {
+  display: grid;
+  grid-template-columns: 40%;
+}
+
+.dataProtectionOfficer-input {
+  margin-bottom: 20px;
+}
+
+.dataProtectionOfficer-save-btn {
+  margin-left: 957px;
+}
+
+/* ========================================
+   RESPONSIVE STYLES FOR DPO PAGE
+   ======================================== */
+
+/* Tablet view */
+@media (max-width: 1024px) {
+  .dataProtectionOfficer-inputs-column-div {
+    grid-template-columns: 60%;
+  }
+  
+  .dataProtectionOfficer-save-btn {
+    margin-left: auto;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .dataProtectionOfficer-inputs-column-div {
+    grid-template-columns: 100%;
+  }
+  
+  .dataProtectionOfficer-save-btn {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .dataProtectionOfficer-header-and-badge {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .dataProtectionOfficer-badge {
+    width: auto;
+    min-width: 120px;
+    padding: 0 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dataProtectionOfficer-input {
+    margin-bottom: 16px;
+  }
+}

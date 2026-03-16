@@ -1,0 +1,34 @@
+/* Custom Icon Component Styles */
+
+.custom-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  line-height: 1;
+  transition: all 0.2s ease-in-out;
+  color: #565656; /* Default icon color - Gray */
+}
+
+.custom-icon-clickable {
+  cursor: pointer;
+}
+
+.custom-icon-clickable:hover {
+  opacity: 0.8;
+}
+
+/* Icon kinds */
+.custom-icon-default {
+  display: inline-flex;
+}
+
+.custom-icon-background-bold {
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.custom-icon-background-bold:hover {
+  background-color: #e5e7eb;
+}
+

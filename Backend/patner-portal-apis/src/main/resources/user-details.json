@@ -1,0 +1,19 @@
+[
+  {
+    "name": "Name",
+    "description": "Name description"
+  },
+  {
+    "name": "Mobile Number",
+    "description": "Mobile Number description"
+  },
+  {
+    "name": "Email address",
+    "description": "Email address description"
+  },
+  {
+    "name": "State/UT",
+    "description": "State/UT description"
+  }
+]
+

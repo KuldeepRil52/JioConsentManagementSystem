@@ -1,0 +1,604 @@
+const createIntegrationPopup = () => {
+  const overlay = document.createElement("div");
+  Object.assign(overlay.style, {
+    position: "fixed",
+    top: "0",
+    left: "0",
+    width: "100vw",
+    height: "100vh",
+    backgroundColor: "rgba(0,0,0,0.5)",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: "1000",
+  });
+
+  const modal = document.createElement("div");
+  Object.assign(modal.style, {
+    background: "#fff",
+    padding: "20px",
+    borderRadius: "32px",
+    width: "550px",
+    textAlign: "left",
+    fontFamily: "system-ui",
+    maxHeight: "90vh",
+    overflowY: "auto",
+    boxSizing: "border-box",
+    ScrollBarWidth: "none",
+  });
+  modal.classList.add("custom-modal");
+
+  // Inject CSS into <style> tag
+  const style = document.createElement("style");
+  style.textContent = `
+  .custom-modal {
+    scrollbar-width: none; /* Firefox */
+  }
+  .custom-modal::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+`;
+  const firstContainer = document.createElement("div");
+  Object.assign(firstContainer.style, {
+    display: "flex",
+    justifyContent: "flex-end",
+    margin: 0,
+  });
+
+  const closeBtn = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "svg"
+  );
+  closeBtn.setAttribute("width", "30");
+  closeBtn.setAttribute("height", "30");
+  closeBtn.setAttribute("viewBox", "0 0 24 24");
+
+  const line1 = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line1.setAttribute("x1", "6");
+  line1.setAttribute("y1", "6");
+  line1.setAttribute("x2", "18");
+  line1.setAttribute("y2", "18");
+  line1.setAttribute("stroke", "rgba(10, 40, 133, 1)");
+  line1.setAttribute("stroke-width", "2.5");
+  line1.setAttribute("stroke-linecap", "round"); // rounded tips
+
+  const line2 = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line2.setAttribute("x1", "18");
+  line2.setAttribute("y1", "6");
+  line2.setAttribute("x2", "6");
+  line2.setAttribute("y2", "18");
+  line2.setAttribute("stroke", "rgba(10, 40, 133, 1)");
+  line2.setAttribute("stroke-width", "2.5");
+  line2.setAttribute("stroke-linecap", "round"); // rounded tips
+
+  closeBtn.appendChild(line1);
+  closeBtn.appendChild(line2);
+
+  // Optional: make it clickable
+  closeBtn.style.cursor = "pointer";
+
+  firstContainer.appendChild(closeBtn);
+  const titleContainer = document.createElement("div");
+  Object.assign(titleContainer.style, {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "10px",
+    marginTop: "0.5rem",
+  });
+
+  const title = document.createElement("h2");
+  title.innerText = "Manage Consent";
+  Object.assign(title.style, {
+    fontWeight: "900",
+
+    fontSize: "24px",
+  });
+
+  const logo = document.createElement("img");
+  logo.src =
+    "https://upload.wikimedia.org/wikipedia/commons/2/20/Reliance_Jio_Logo_%28October_2015%29.svg";
+  Object.assign(logo.style, {
+    width: "32px",
+    height: "32px",
+    objectFit: "contain",
+  });
+  titleContainer.appendChild(title);
+  titleContainer.appendChild(logo);
+
+  const TopDesc = document.createElement("p");
+  TopDesc.innerHTML = `While using JioMeet, your activities create data which will be used with your consent to offer customised services. Details of data usage are provided below.`;
+  TopDesc.style.marginTop = "1rem";
+  TopDesc.style.marginBottom = "1rem";
+  TopDesc.style.fontSize = "14px";
+  TopDesc.style.color = "rgba(0, 0, 0, 0.65)";
+  TopDesc.style.fontWeight = "500";
+
+  const customerId = document.createElement("p");
+  customerId.innerText = "Customer ID: Johndoe@gmail.com";
+  Object.assign(customerId.style, {
+    fontWeight: "700",
+    fontSize: "14px",
+  });
+
+  const accordion = document.createElement("div");
+  Object.assign(accordion.style, {
+    margin: "10px 0",
+    fontFamily: "Inter, Arial, sans-serif",
+    width: "100%",
+  });
+
+  const header = document.createElement("div");
+  Object.assign(header.style, {
+    display: "grid",
+    gridTemplateColumns: "30px 1fr auto",
+    alignItems: "center",
+    paddingTop: "12px",
+    paddingBottom: "12px",
+    cursor: "pointer",
+    userSelect: "none",
+    borderBottom: "1px solid rgba(224, 224, 224, 1)",
+  });
+
+  //   const left = document.createElement("div");
+  //   Object.assign(left.style, {
+  //     display: "flex",
+  //     alignItems: "center",
+  //     gap: "8px",
+  //   });
+
+  const arrow = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  arrow.setAttribute("width", "25");
+  arrow.setAttribute("height", "25");
+  arrow.setAttribute("viewBox", "0 0 24 24");
+  arrow.style.transition = "transform 0.3s ease";
+
+  const path = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "polyline"
+  );
+
+  path.setAttribute("points", "6 9 12 15 18 9");
+  path.setAttribute("fill", "none");
+  path.setAttribute("stroke", "#555");
+  path.setAttribute("stroke-width", "2.5");
+  path.setAttribute("stroke-linecap", "round");
+  path.setAttribute("stroke-linejoin", "round");
+
+  arrow.appendChild(path);
+
+  const label = document.createElement("span");
+  label.innerText = "Required";
+  label.style.fontWeight = "600";
+  label.style.fontSize = "16px";
+
+  header.appendChild(arrow);
+  header.appendChild(label);
+
+  const badge = document.createElement("span");
+  badge.innerText = "Always Active";
+  Object.assign(badge.style, {
+    border: "1px solid rgba(181, 181, 181, 1)",
+    borderRadius: "80px",
+    padding: "4px 12px",
+    fontSize: "12px",
+    color: "#333",
+    fontFamily: "system-ui",
+    fontWeight: 500,
+  });
+
+  header.appendChild(badge);
+
+  const content = document.createElement("div");
+  Object.assign(content.style, {
+    paddingLeft: "30px",
+    display: "none",
+    fontSize: "14px",
+    color: "#444",
+  });
+
+  // Table container
+
+  const templateList = [
+    {
+      puporse: ["capure consent", "camera"],
+      "used by": ["Kcinema", "Mcdonalds"],
+      Duration: "1 year",
+      "processing activity": ["Data Processing", "Data cleaning"],
+      "Data item": ["CC", "bb"],
+    },
+    {
+      puporse: [
+        "revoke consent",
+        "mobile",
+        "revoke consent",
+        "mobile",
+        "revoke consent",
+        "mobile",
+        ,
+        "revoke consent",
+        "mobile",
+      ],
+      "used by": ["Jcinema", "Dominoze"],
+      Duration: "5 year",
+      "processing activity": [
+        "Data Processing",
+        "Data cleaning",
+        "Data Teaing",
+      ],
+      "Data item": ["AA", "LL"],
+    },
+  ];
+  const container = document.createElement("div");
+
+  // Loop over each object in templateList
+  templateList.forEach((template) => {
+    const table = document.createElement("div");
+    Object.assign(table.style, {
+      display: "grid",
+      gridTemplateColumns: "30fr 60fr 10fr",
+      gap: "5px",
+      paddingTop: "8px",
+      marginBottom: "16px",
+      fontFamily: "system-ui",
+    });
+
+    // Row helper
+    function addRow(label, value, extra = "") {
+      const col1 = document.createElement("div");
+      col1.innerText = label;
+      col1.style.fontWeight = "600";
+
+      const col2 = document.createElement("div");
+      col2.innerText = value;
+
+      const col3 = document.createElement("div");
+      col3.innerText = extra;
+
+      table.appendChild(col1);
+      table.appendChild(col2);
+      table.appendChild(col3);
+    }
+
+    // Add rows dynamically from object
+    for (let key in template) {
+      const val = Array.isArray(template[key])
+        ? template[key].join(", ")
+        : template[key];
+      addRow(key + ":", val);
+    }
+
+    // Separator line
+    const hr = document.createElement("hr");
+    Object.assign(hr.style, {
+      border: "0",
+      borderTop: "1px solid #ddd",
+      margin: "10px 0",
+      gridColumn: "1 / span 3",
+      marginLeft: "-30px", // cancel out container padding
+      width: "calc(100% + 30px)", // stretch back full width
+    });
+
+    container.appendChild(table);
+    container.appendChild(hr);
+  });
+  // Append the table to accordion content
+  content.appendChild(container);
+
+  // Toggle open/close
+  header.addEventListener("click", () => {
+    const isOpen = content.style.display === "block";
+
+    if (isOpen) {
+      // Currently open → close it
+      content.style.display = "none";
+      arrow.style.transform = "rotate(0deg)";
+    } else {
+      // Currently closed → open it
+      content.style.display = "block";
+      arrow.style.transform = "rotate(180deg)";
+    }
+  });
+
+  accordion.appendChild(header);
+  accordion.appendChild(content);
+
+  const accordion2 = document.createElement("div");
+  Object.assign(accordion2.style, {
+    margin: "10px 0",
+    fontFamily: "Inter, Arial, sans-serif",
+    width: "100%",
+  });
+
+  const header2 = document.createElement("div");
+  Object.assign(header2.style, {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingTop: "12px",
+    paddingBottom: "12px",
+    cursor: "pointer",
+    userSelect: "none",
+    borderBottom: "1px solid rgba(224, 224, 224, 1)",
+  });
+
+  const left2 = document.createElement("div");
+  Object.assign(left2.style, {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  });
+
+  const arrow2 = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  arrow2.setAttribute("width", "25");
+  arrow2.setAttribute("height", "25");
+  arrow2.setAttribute("viewBox", "0 0 24 24");
+  arrow2.style.transition = "transform 0.3s ease";
+
+  const path2 = document.createElementNS(
+    "http://www.w3.org/2000/svg",
+    "polyline"
+  );
+
+  path2.setAttribute("points", "6 9 12 15 18 9");
+  path2.setAttribute("fill", "none");
+  path2.setAttribute("stroke", "#555");
+  path2.setAttribute("stroke-width", "2.5");
+  path2.setAttribute("stroke-linecap", "round");
+  path2.setAttribute("stroke-linejoin", "round");
+
+  arrow2.appendChild(path2);
+
+  const label2 = document.createElement("span");
+  label2.innerText = "Others";
+  label2.style.fontWeight = "600";
+
+  left2.appendChild(arrow2);
+  left2.appendChild(label2);
+
+  const checkbox2 = document.createElement("input");
+  checkbox2.type = "checkbox";
+  Object.assign(checkbox2.style, {
+    width: "24px",
+    height: "24px",
+    borderRadius: "4px",
+    border: "1px solid rgba(0,0,0,0.65)",
+    cursor: "pointer",
+  });
+
+  header2.appendChild(left2);
+  header2.appendChild(checkbox2);
+
+  const templateList2 = [
+    {
+      puporse: ["capure consent", "camera"],
+      "used by": ["Kcinema", "Mcdonalds"],
+      Duration: "1 year",
+      "processing activity": ["Data Processing", "Data cleaning"],
+      "Data item": ["CC", "bb"],
+    },
+    {
+      puporse: ["revoke consent", "mobile"],
+      "used by": ["Jcinema", "Dominoze"],
+      Duration: "5 year",
+      "processing activity": [
+        "Data Processing",
+        "Data cleaning",
+        "Data Teaing",
+      ],
+      "Data item": ["AA", "LL"],
+    },
+  ];
+  const content2 = document.createElement("div");
+  Object.assign(content2.style, {
+    paddingLeft: "30px",
+    display: "none",
+    fontSize: "14px",
+    color: "#444",
+  });
+  const container2 = document.createElement("div");
+
+  // Loop over each object in templateList
+  templateList2.forEach((template) => {
+    const table = document.createElement("div");
+    Object.assign(table.style, {
+      display: "grid",
+      gridTemplateColumns: "30fr 60fr 10fr",
+      gap: "5px",
+      paddingTop: "8px",
+      marginBottom: "16px",
+    });
+    let rowIndex = 0;
+    // Row helper
+    function addRow(label, value, extra = "") {
+      const col1 = document.createElement("div");
+      col1.innerText = label;
+      col1.style.fontWeight = "600";
+
+      const col2 = document.createElement("div");
+      col2.innerText = value;
+
+      const col3 = document.createElement("div");
+      Object.assign(col3.style, {
+        display: "flex",
+        justifyContent: "flex-end",
+        alignItems: "center",
+      });
+      if (rowIndex === 0) {
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        Object.assign(checkbox.style, {
+          width: "24px",
+          height: "24px",
+          borderRadius: "4px",
+          border: "1px solid rgba(0,0,0,0.65)",
+          cursor: "pointer",
+        });
+        col3.appendChild(checkbox);
+      }
+
+      table.appendChild(col1);
+      table.appendChild(col2);
+      table.appendChild(col3);
+      rowIndex++;
+    }
+
+    // Add rows dynamically from object
+    for (let key in template) {
+      const val = Array.isArray(template[key])
+        ? template[key].join(", ")
+        : template[key];
+      addRow(key + ":", val);
+    }
+
+    // Separator line
+    const hr = document.createElement("hr");
+    Object.assign(hr.style, {
+      border: "0",
+      borderTop: "1px solid #ddd",
+      margin: "10px 0",
+      gridColumn: "1 / span 3",
+      marginLeft: "-30px", // cancel out container padding
+      width: "calc(100% + 30px)", // stretch back full width
+    });
+    container2.appendChild(table);
+    container2.appendChild(hr);
+  });
+  // Append the table to accordion content
+  content2.appendChild(container2);
+
+  header2.addEventListener("click", () => {
+    const isOpen = content2.style.display === "block";
+
+    if (isOpen) {
+      // Currently open → close it
+      content2.style.display = "none";
+      arrow2.style.transform = "rotate(0deg)";
+    } else {
+      // Currently closed → open it
+      content2.style.display = "block";
+      arrow2.style.transform = "rotate(180deg)";
+    }
+  });
+
+  accordion2.appendChild(header2);
+  accordion2.appendChild(content2);
+
+  const documentLink = document.createElement("p");
+  documentLink.innerText = "Document.pdf";
+  Object.assign(documentLink.style, {
+    color: " rgba(10, 40, 133, 1)",
+    fontWeight: "700",
+    cursor: "pointer",
+    margin: "10px 0",
+    fontSize: "14px",
+    marginBottom: "1rem",
+    marginTop: "1rem",
+  });
+
+  const checkboxContainer = document.createElement("div");
+  Object.assign(checkboxContainer.style, {
+    marginTop: "10px",
+    marginBottom: "15px",
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+  });
+
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  Object.assign(checkbox.style, {
+    width: "16px",
+    height: "16px",
+    cursor: "pointer",
+    borderRadius: "4px",
+    border: "1px solid rgba(181, 181, 181, 1)",
+  });
+
+  const checkboxLabel = document.createElement("label");
+  checkboxLabel.innerText = "I am below 18 years of age.";
+  checkboxLabel.style.cursor = "pointer";
+  checkboxLabel.style.fontSize = "14px";
+  checkboxLabel.style.color = "rgba(0, 0, 0, 0.65)";
+  checkboxLabel.style.fontWeight = "bold";
+
+  checkboxContainer.appendChild(checkbox);
+  checkboxContainer.appendChild(checkboxLabel);
+
+  const withdrawLine = document.createElement("p");
+  withdrawLine.innerHTML = `To withdraw your consent, exercise your rights, or file complaints with the Board 
+    <span style="color: rgba(10, 40, 133, 1);font-weight: 700; cursor: pointer; fontFamily:system-ui">click here</span>.`;
+  withdrawLine.style.marginTop = "5px";
+  withdrawLine.style.fontSize = "14px";
+  withdrawLine.style.color = "rgba(0, 0, 0, 0.65)";
+  withdrawLine.style.fontWeight = 500;
+  withdrawLine.style.marginBottom = "1rem";
+  withdrawLine.fontFamily = "system-ui";
+
+  const ConsentAllow = document.createElement("p");
+  ConsentAllow.innerHTML = `By clicking ‘Allow all’ or ’Save my choices’, you are providing your consent
+to JioMeet using your data as outlined above.`;
+  ConsentAllow.style.marginTop = "5px";
+  ConsentAllow.style.fontSize = "14px";
+  ConsentAllow.style.color = "rgba(0, 0, 0, 0.65)";
+  ConsentAllow.style.fontWeight = "500";
+  ConsentAllow.style.fontFamily = "system-ui";
+
+  const buttonContainer = document.createElement("div");
+  Object.assign(buttonContainer.style, {
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: "10px",
+    marginTop: "20px",
+  });
+
+  const saveBtn = document.createElement("button");
+  saveBtn.innerText = "Save My Choices";
+  Object.assign(saveBtn.style, {
+    background: "#fff",
+    color: "rgba(10, 40, 133, 1)",
+    border: "1px solid rgba(181, 181, 181, 1)",
+    padding: "5px 10px",
+    borderRadius: "250px",
+    fontWeight: "700",
+    fontSize: "16px",
+    fontFamily: "system-ui",
+    cursor: "pointer",
+  });
+
+  const allowBtn = document.createElement("button");
+  allowBtn.innerText = "Allow All";
+  Object.assign(allowBtn.style, {
+    background: "rgba(15, 60, 201, 1)",
+    color: "#fff",
+    border: "none",
+    padding: "5px 10px",
+    borderRadius: "250px",
+    cursor: "pointer",
+    fontWeight: "700",
+    fontFamily: "system-ui",
+  });
+
+  buttonContainer.appendChild(saveBtn);
+  buttonContainer.appendChild(allowBtn);
+
+  modal.appendChild(firstContainer);
+  modal.appendChild(titleContainer);
+  modal.appendChild(TopDesc);
+  modal.appendChild(customerId);
+  modal.appendChild(accordion);
+  modal.appendChild(accordion2);
+  modal.appendChild(documentLink);
+  modal.appendChild(checkboxContainer);
+  modal.appendChild(withdrawLine);
+  modal.appendChild(ConsentAllow);
+  modal.appendChild(buttonContainer);
+  overlay.appendChild(modal);
+  overlay.appendChild(style);
+
+  document.body.appendChild(overlay);
+};
+
+window.addEventListener("load", () => {
+  createIntegrationPopup();
+});

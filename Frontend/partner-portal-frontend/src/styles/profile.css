@@ -1,0 +1,184 @@
+/* Profile Page Container */
+.profile-page {
+  min-height: 100vh;
+  background: transparent;
+  padding: 100px 40px 60px 120px;
+  box-sizing: border-box;
+}
+
+.profile-container {
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Title */
+.profile-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 24px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* Profile Card */
+.profile-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  border: 1px solid #e2e8f0;
+}
+
+/* Profile Field */
+.profile-field {
+  margin-bottom: 28px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 12px;
+}
+
+.profile-field:last-of-type {
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+.profile-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #64748b;
+  margin-bottom: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.profile-value-with-copy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.profile-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  word-break: break-word;
+  flex: 1;
+}
+
+.copy-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 6px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.copy-icon-btn:hover {
+  background: #f1f5f9;
+  transform: scale(1.1);
+}
+
+.copy-icon-btn:active {
+  transform: scale(0.95);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .profile-page {
+    padding: 100px 24px 60px 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 88px 20px 48px 20px;
+  }
+
+  .profile-container {
+    max-width: 100%;
+  }
+
+  .profile-title {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .profile-card {
+    padding: 32px 24px;
+    border-radius: 12px;
+  }
+
+  .profile-field {
+    margin-bottom: 24px;
+    padding-bottom: 10px;
+  }
+
+  .profile-field:last-of-type {
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+
+  .profile-label {
+    font-size: 13px;
+  }
+
+  .profile-value {
+    font-size: 15px;
+  }
+
+  .copy-icon-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-page {
+    padding: 80px 16px 40px 16px;
+  }
+
+  .profile-title {
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  .profile-card {
+    padding: 24px 20px;
+  }
+
+  .profile-field {
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+  }
+
+  .profile-field:last-of-type {
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+
+  .profile-label {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  .profile-value {
+    font-size: 14px;
+  }
+
+  .copy-icon-btn {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+}

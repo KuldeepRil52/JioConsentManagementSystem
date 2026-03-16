@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="2 minutes">
+
+    <logger name="org.eclipse.jetty" level="OFF"/>
+    <logger name="org.springframework.core.env.PropertySourcesPropertyResolver" level="OFF"/>
+    <logger name="org.springframework.web" level="OFF"/>
+
+    <!-- DEV , ST , SIT -->
+    <springProfile name="default,st,sit">
+
+        <contextName>${log_path}</contextName>
+        <property name="LOG_RETENTION_LOWER" value="3"/>
+
+        <!-- DEBUG -->
+        <appender name="FILE-DEBUG"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${CONTEXT_NAME}/systemRegistry_Debug.log</file>
+
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>DEBUG</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+
+            <encoder>
+                <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            </encoder>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>
+                    ${CONTEXT_NAME}/archived/systemRegistry_Debug.%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+                <maxFileSize>10MB</maxFileSize>
+                <maxHistory>${LOG_RETENTION_LOWER}</maxHistory>
+            </rollingPolicy>
+        </appender>
+
+        <!-- ERROR -->
+        <appender name="FILE-ERROR"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${CONTEXT_NAME}/systemRegistry_Error.log</file>
+
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>ERROR</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+
+            <encoder>
+                <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            </encoder>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>
+                    ${CONTEXT_NAME}/archived/systemRegistry_Error.%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+                <maxFileSize>10MB</maxFileSize>
+            </rollingPolicy>
+        </appender>
+
+        <!-- INFO -->
+        <appender name="FILE-INFO"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${CONTEXT_NAME}/systemRegistry_Info.log</file>
+
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>INFO</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+
+            <encoder>
+                <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            </encoder>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>
+                    ${CONTEXT_NAME}/archived/systemRegistry_Info.%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+                <maxFileSize>10MB</maxFileSize>
+            </rollingPolicy>
+        </appender>
+
+        <logger name="org.mongodb" level="ERROR">
+            <appender-ref ref="FILE-ERROR"/>
+        </logger>
+
+        <root level="DEBUG">
+            <appender-ref ref="FILE-DEBUG"/>
+            <appender-ref ref="FILE-INFO"/>
+            <appender-ref ref="FILE-ERROR"/>
+        </root>
+    </springProfile>
+
+    <!-- PROD -->
+    <springProfile name="prod">
+
+        <contextName>${log_path:/opt/logs}</contextName>
+
+        <appender name="FILE-ERROR"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${CONTEXT_NAME}/systemRegistry_Error.log</file>
+
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>ERROR</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+
+            <encoder>
+                <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            </encoder>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>
+                    ${CONTEXT_NAME}/archived/systemRegistry_Error.%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+                <maxFileSize>10MB</maxFileSize>
+            </rollingPolicy>
+        </appender>
+
+        <appender name="FILE-INFO"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${CONTEXT_NAME}/systemRegistry_Info.log</file>
+
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>INFO</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+
+            <encoder>
+                <pattern>%d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            </encoder>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                <fileNamePattern>
+                    ${CONTEXT_NAME}/archived/systemRegistry_Info.%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+                <maxFileSize>10MB</maxFileSize>
+            </rollingPolicy>
+        </appender>
+
+        <root>
+            <appender-ref ref="FILE-ERROR"/>
+            <appender-ref ref="FILE-INFO"/>
+        </root>
+    </springProfile>
+
+</configuration>

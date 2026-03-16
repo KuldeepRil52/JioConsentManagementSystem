@@ -1,0 +1,73 @@
+# ================= ConfigMap =================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cookie-consent-apis-config
+data:
+  SERVER_PORT: "9008"
+  MONGODB_DATABASE: "cms_db_admin"
+  PROFILE: "st"
+  AUDIT_MODULE_APIS_URL: "http://audit-module-apis:9006"
+  USE_AI: "true"
+  VAULT_APIS_URL: "http://vault-apis:9010"
+  AUTH_APIS_URL: "http://auth-apis:9009"
+
+---
+# ================= Deployment =================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cookie-consent-apis
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: cookie-consent-apis
+  template:
+    metadata:
+      labels:
+        app: cookie-consent-apis
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: cookie-consent-apis
+          image: "$(IMAGE_URL)"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+          ports:
+            - containerPort: 9008
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "1000m"
+              memory: "2Gi"
+          envFrom:
+            - configMapRef:
+                name: cookie-consent-apis-config
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: uri
+          volumeMounts:
+            - name: logs
+              mountPath: /opt/logs   # container writes logs here
+      volumes:
+        - name: logs
+          emptyDir: {}

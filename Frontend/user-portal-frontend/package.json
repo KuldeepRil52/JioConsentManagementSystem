@@ -1,0 +1,42 @@
+{
+  "devDependencies": {
+    "@parcel/transformer-sass": "^2.15.4",
+    "buffer": "^6.0.3",
+    "env-cmd": "^11.0.0",
+    "parcel": "^2.15.4"
+  },
+  "scripts": {
+    "start:dev": "env-cmd -f .env.dev parcel index.html --port 4200",
+    "start:nonprod": "env-cmd -f .env.nonprod parcel index.html --port 3000",
+    "start:prod": "env-cmd -f .env.prod parcel index.html --port 3000",
+    "start": "parcel src/index.html --port 3000",
+    "build:dev": "env-cmd -f .env.dev parcel build index.html",
+    "build:nonprod": "env-cmd -f .env.nonprod parcel build index.html",
+    "build:prod": "env-cmd -f .env.prod parcel build index.html"
+  },
+  "dependencies": {
+    "@jds/core": "1.1.85",
+    "@jds/core-icons": "0.13.29",
+    "@jds/extended-icons": "0.13.31",
+    "@jds/react-engine": "2.0.38",
+    "@jds/token-jio": "0.0.64",
+    "@reduxjs/toolkit": "^2.9.0",
+    "axios": "^1.12.2",
+    "file-saver": "^2.0.5",
+    "jsencrypt": "^3.5.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-idle-timer": "^5.7.2",
+    "react-redux": "^9.2.0",
+    "react-router": "^6.26.2",
+    "react-router-dom": "^6.26.2",
+    "react-select": "^5.10.2",
+    "react-toastify": "^11.0.5",
+    "redux": "^5.0.1",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^3.1.0",
+    "sass": "^1.93.2",
+    "xlsx": "^0.20.2",
+    "xlsx-js-style": "^1.2.0"
+  }
+}

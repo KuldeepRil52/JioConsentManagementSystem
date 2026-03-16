@@ -1,0 +1,184 @@
+[
+  {
+    "componentId": "f3c4b8e1-7d2a-4c19-8e3f-bba9c4dd1027",
+    "componentName": "ADMIN",
+    "componentUrl": "/admin",
+    "displayLabel": "Admin",
+    "section": "Admin"
+  },
+  {
+    "componentId": "b3a3a7e1-7e6c-4e0d-9187-8e9f5c2eaa01",
+    "componentName": "DASHBOARD",
+    "componentUrl": "/dashboard",
+    "displayLabel": "Dashboard",
+    "section": "Dashboard"
+  },
+  {
+    "componentId": "ef2f9b9c-5f1d-4ad0-bb0e-0c7f6d7aa002",
+    "componentName": "CONSENT_SETUP",
+    "componentUrl": "/consent",
+    "displayLabel": "Consent set up",
+    "section": "System Configuration"
+  },
+  {
+    "componentId": "fd2b6c71-4d9c-4f0a-bdb0-7ac4c9ba0003",
+    "componentName": "COOKIE_CATEGORIES",
+    "componentUrl": "/cookie-category",
+    "displayLabel": "Cookie categories",
+    "section": "System Configuration"
+  },
+  {
+    "componentId": "f57e6a92-53cb-46cb-a30e-9d60a2aa0004",
+    "componentName": "GRIEVANCE_SETUP",
+    "componentUrl": "/grievance",
+    "displayLabel": "Grievance set up",
+    "section": "System Configuration"
+  },
+  {
+    "componentId": "f37e3f44-9dc8-42a1-b8df-26c6c9bb0005",
+    "componentName": "DATA_PROTECTION_OFFICER",
+    "componentUrl": "/dataProtectionOfficer",
+    "displayLabel": "Data protection officer",
+    "section": "System Configuration"
+  },
+  {
+    "componentId": "e44c1f5b-24a0-4c89-a947-5b58f9aa0006",
+    "componentName": "SYSTEM_SETUP",
+    "componentUrl": "/systemConfiguration",
+    "displayLabel": "System set up",
+    "section": "System Configuration"
+  },
+  {
+    "componentId": "d15f8f3b-2a04-4da5-913d-bf1f7caa0007",
+    "componentName": "NOTIFICATION",
+    "componentUrl": "/notification",
+    "displayLabel": "Notification",
+    "section": "System Configuration"
+  },
+  {
+    "componentId": "cb6f7b1e-7f6a-4b29-8453-c6f7faaa0008",
+    "componentName": "MASTER_SETUP",
+    "componentUrl": "/master",
+    "displayLabel": "Master set up",
+    "section": "System Configuration"
+  },
+  {
+    "componentId": "ab8c9e45-8a9b-4e6c-bf32-93f7fbaa0009",
+    "componentName": "TEMPLATES",
+    "componentUrl": "/templates",
+    "displayLabel": "Templates",
+    "section": "Consent"
+  },
+  {
+    "componentId": "cd2d8c6f-6b7e-4f2e-9b7e-67f8faaa0010",
+    "componentName": "EMAIL_TEMPLATE",
+    "componentUrl": "/emailTemplate",
+    "displayLabel": "Email template",
+    "section": "Consent"
+  },
+  {
+    "componentId": "ec5d7f8a-2d9c-41b7-b12c-13f8faaa0011",
+    "componentName": "SMS_TEMPLATE",
+    "componentUrl": "/smsTemplate",
+    "displayLabel": "SMS template",
+    "section": "Consent"
+  },
+  {
+    "componentId": "aa3b6b9f-8e9b-4bca-a65b-6df8faaa0012",
+    "componentName": "REGISTERED_COOKIES",
+    "componentUrl": "/registercookies",
+    "displayLabel": "Registered cookies",
+    "section": "Cookies"
+  },
+  {
+    "componentId": "b24d7c4a-3d9a-4a1b-8c7e-9df8faaa0013",
+    "componentName": "COOKIES_LOGS",
+    "componentUrl": "/cookieslogs",
+    "displayLabel": "Cookies Logs",
+    "section": "Cookies"
+  },
+  {
+    "componentId": "c85e8f6d-1b2f-4d5a-9821-8df8faaa0014",
+    "componentName": "ROPA",
+    "componentUrl": "/ropa",
+    "displayLabel": "ROPA",
+    "section": "Governance"
+  },
+  {
+    "componentId": "a24b6d8f-6a1d-4a7c-b8e2-9cf8faaa0015",
+    "componentName": "DPO_DASHBOARD",
+    "componentUrl": "/dpo-dashboard",
+    "displayLabel": "DPO Dashboard",
+    "section": "Governance"
+  },
+  {
+    "componentId": "e93f8f2a-4d1c-4b6b-9f7e-8bf8faaa0016",
+    "componentName": "AUDIT_COMPLIANCE",
+    "componentUrl": "/audit-compliance",
+    "displayLabel": "Audit & Compliance Report",
+    "section": "Governance"
+  },
+  {
+    "componentId": "b58a7b2e-3f9a-47c6-b9ae-5ef8faaa0017",
+    "componentName": "BREACH_NOTIFICATIONS",
+    "componentUrl": "/breach-notifications",
+    "displayLabel": "Breach Notifications",
+    "section": "Governance"
+  },
+  {
+    "componentId": "a93b7c4f-2e9a-4b1a-b3e8-4ff8faaa0018",
+    "componentName": "GRIEVANCE_REQUESTS",
+    "componentUrl": "/request",
+    "displayLabel": "Requests",
+    "section": "Grievance Redressal"
+  },
+  {
+    "componentId": "c62f8b1d-5d8a-41a6-9b5e-7df8faaa0019",
+    "componentName": "GRIEVANCE_FORM",
+    "componentUrl": "/grievanceFormTemplates",
+    "displayLabel": "Form",
+    "section": "Grievance Redressal"
+  },
+  {
+    "componentId": "d71e9b3c-8a1e-4f5a-9f6e-6ef8faaa0020",
+    "componentName": "GRIEVANCE_EMAIL_TEMPLATE",
+    "componentUrl": "/grievanceEmailTemplate",
+    "displayLabel": "Email template",
+    "section": "Grievance Redressal"
+  },
+  {
+    "componentId": "e63b8a9f-9a2d-4d7e-9b8e-8ef8faaa0021",
+    "componentName": "GRIEVANCE_SMS_TEMPLATE",
+    "componentUrl": "/grievanceSmsTemplate",
+    "displayLabel": "SMS template",
+    "section": "Grievance Redressal"
+  },
+  {
+    "componentId": "b92f7a8d-5f9b-4a6d-9b7e-7df8faaa0022",
+    "componentName": "BUSINESS_GROUPS",
+    "componentUrl": "/business",
+    "displayLabel": "Business groups",
+    "section": "User Management"
+  },
+  {
+    "componentId": "f83a6c7d-3b8f-4f1a-9b7a-6df8faaa0023",
+    "componentName": "ROLES",
+    "componentUrl": "/roles",
+    "displayLabel": "Roles",
+    "section": "User Management"
+  },
+  {
+    "componentId": "c94b7d3e-2f9c-4f8b-9b9e-9df8faaa0024",
+    "componentName": "USERS",
+    "componentUrl": "/users",
+    "displayLabel": "Users",
+    "section": "User Management"
+  },
+  {
+    "componentId": "e57a8d2f-6c9a-4b6e-9b4f-9cf8faaa0025",
+    "componentName": "ORGANIZATION_MAP",
+    "componentUrl": "/organization-map",
+    "displayLabel": "Organization Map",
+    "section": "User Management"
+  }
+]
