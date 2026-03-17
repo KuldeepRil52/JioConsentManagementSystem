@@ -71,3 +71,19 @@ spec:
       volumes:
         - name: logs
           emptyDir: {}
+
+---
+# ================= Service =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: cookie-consent-apis
+spec:
+  type: NodePort
+  selector:
+    app: cookie-consent-apis
+  ports:
+    - protocol: TCP
+      port: 9008
+      targetPort: 9008
+      nodePort: 30008

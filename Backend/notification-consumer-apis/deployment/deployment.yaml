@@ -85,3 +85,9 @@ spec:
       volumes:
         - name: logs
           emptyDir: {}
+        - name: krb5-conf-volume
+          secret:
+            secretName: kafka-krb5
+        - name: krb5-keytab-volume
+          secret:
+            secretName: kafka-keytab

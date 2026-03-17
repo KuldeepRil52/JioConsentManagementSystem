@@ -106,3 +106,19 @@ spec:
       volumes:
         - name: logs
           emptyDir: {}
+
+---
+# ================= Service =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: translator-apis
+spec:
+  type: NodePort
+  selector:
+    app: translator-apis
+  ports:
+    - protocol: TCP
+      port: 9003
+      targetPort: 9003
+      nodePort: 30003

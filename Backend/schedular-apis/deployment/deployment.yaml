@@ -110,3 +110,19 @@ spec:
       volumes:
         - name: logs
           emptyDir: {}
+
+---
+# ================= Service =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: schedular-apis
+spec:
+  type: NodePort
+  selector:
+    app: schedular-apis
+  ports:
+    - protocol: TCP
+      port: 9017
+      targetPort: 9017
+      nodePort: 30017

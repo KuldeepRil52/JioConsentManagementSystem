@@ -76,3 +76,19 @@ spec:
       volumes:
         - name: logs
           emptyDir: {}
+
+---
+# ================= Service =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: consent-core-apis
+spec:
+  type: NodePort
+  selector:
+    app: consent-core-apis
+  ports:
+    - protocol: TCP
+      port: 9001
+      targetPort: 9001
+      nodePort: 30001

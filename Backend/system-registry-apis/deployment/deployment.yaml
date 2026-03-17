@@ -70,3 +70,19 @@ spec:
       volumes:
         - name: logs
           emptyDir: {}
+
+---
+# ================= Service =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: system-registry-apis
+spec:
+  type: NodePort
+  selector:
+    app: system-registry-apis
+  ports:
+    - protocol: TCP
+      port: 9011
+      targetPort: 9011
+      nodePort: 30011

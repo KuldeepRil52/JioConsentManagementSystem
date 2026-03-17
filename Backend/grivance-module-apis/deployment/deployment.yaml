@@ -70,3 +70,19 @@ spec:
       volumes:
         - name: logs
           emptyDir: {}
+
+---
+# ================= Service =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: grivance-module-apis
+spec:
+  type: NodePort
+  selector:
+    app: grivance-module-apis
+  ports:
+    - protocol: TCP
+      port: 9007
+      targetPort: 9007
+      nodePort: 30007

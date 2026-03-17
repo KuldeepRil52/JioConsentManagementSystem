@@ -85,3 +85,25 @@ spec:
       volumes:
         - name: logs
           emptyDir: {}
+        - name: krb5-conf-volume
+          secret:
+            secretName: kafka-krb5
+        - name: krb5-keytab-volume
+          secret:
+            secretName: kafka-keytab
+
+---
+# ================= Service =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: audit-module-apis
+spec:
+  type: NodePort
+  selector:
+    app: audit-module-apis
+  ports:
+    - protocol: TCP
+      port: 9006
+      targetPort: 9006
+      nodePort: 30006

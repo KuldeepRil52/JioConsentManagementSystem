@@ -71,3 +71,19 @@ spec:
       volumes:
         - name: logs
           emptyDir: {}
+
+---
+# ================= Service =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: wso2-cred-generator-apis
+spec:
+  type: NodePort
+  selector:
+    app: wso2-cred-generator-apis
+  ports:
+    - protocol: TCP
+      port: 9004
+      targetPort: 9004
+      nodePort: 30004

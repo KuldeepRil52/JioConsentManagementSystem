@@ -92,3 +92,26 @@ spec:
       volumes:
         - name: logs
           emptyDir: {}
+        - name: krb5-conf-volume
+          secret:
+            secretName: kafka-krb5
+        - name: krb5-keytab-volume
+          secret:
+            secretName: kafka-keytab
+
+---
+# ================= Service =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-module-apis
+spec:
+  type: NodePort
+  selector:
+    app: notification-module-apis
+  ports:
+    - protocol: TCP
+      port: 9005
+      targetPort: 9005
+      nodePort: 30005
+

@@ -77,3 +77,19 @@ spec:
       volumes:
         - name: logs
           emptyDir: {}
+
+---
+# ================= Service =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-apis
+spec:
+  type: NodePort
+  selector:
+    app: auth-apis
+  ports:
+    - protocol: TCP
+      port: 9009
+      targetPort: 9009
+      nodePort: 30009

@@ -70,3 +70,19 @@ spec:
       volumes:
         - name: logs
           emptyDir: {}
+
+---
+# ================= Service =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: vault-apis
+spec:
+  type: NodePort
+  selector:
+    app: vault-apis
+  ports:
+    - protocol: TCP
+      port: 9010
+      targetPort: 9010
+      nodePort: 30010
