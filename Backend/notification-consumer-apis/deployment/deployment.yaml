@@ -43,7 +43,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: notification-consumer-apis
-          image: "$(IMAGE_URL)"
+          image: notification-consumer-apis:latest
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false

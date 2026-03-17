@@ -54,7 +54,7 @@ spring:
   # ========================================
   
   kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    bootstrap-servers: jpbsthdpdbs02.bss.jio.com:9092,jpbsthdpdbs01.bss.jio.com:9092,jpbsthdpdbs03.bss.jio.com:9092,jpbsthdpdbs04.bss.jio.com:9092,jpbsthdpdbs05.bss.jio.com:9092,jpbsthdpdbs06.bss.jio.com:9092,jpbsthdpdbs07.bss.jio.com:9092,jpbsthdpdbs08.bss.jio.com:9092,jpbsthdpdbs09.bss.jio.com:9092,jpbsthdpdbs10.bss.jio.com:9092,jpbsthdpdbs11.bss.jio.com:9092,jpbsthdpdbs12.bss.jio.com:9092,jpbsthdpdbs13.bss.jio.com:9092,jpbsthdpdbs14.bss.jio.com:9092,jpbsthdpdbs15.bss.jio.com:9092,jpbsthdpdbs16.bss.jio.com:9092,jpbsthdpdbs17.bss.jio.com:9092
     security:
       protocol: SASL_PLAINTEXT
     properties:
@@ -537,7 +537,7 @@ audit:
 # ========================================
 system-registry:
   service:
-    base-url: ${SYSTEM_REGISTRY_APIS_URL:http://localhost:30011}
+    base-url: ${SYSTEM_REGISTRY_APIS_URL:http://10.173.184.32:30011}
     endpoints:
       consent-withdraw: /registry/api/v1/consents/{consentId}/withdraw
 

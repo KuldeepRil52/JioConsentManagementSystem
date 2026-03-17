@@ -41,7 +41,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: audit-module-apis
-          image: "$(IMAGE_URL)"
+          image: audit-module-apis:latest
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false

@@ -80,7 +80,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: schedular-apis
-          image: "$(IMAGE_URL)"
+          image: schedular-apis:latest
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false

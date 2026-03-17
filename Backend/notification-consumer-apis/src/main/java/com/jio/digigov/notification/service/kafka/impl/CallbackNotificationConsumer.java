@@ -700,22 +700,12 @@ public class CallbackNotificationConsumer {
             callConsentWithdrawApiIfApplicable(eventMessage);
 
             createAndProcessCallback(eventMessage, RecipientType.DATA_FIDUCIARY.name(), eventMessage.getBusinessId(), mongoTemplate);
-
-            // Handle own-use DP callback from DF consumer path to avoid race condition with System Registry
-            handleOwnUseDpCallbackIfApplicable(eventMessage, mongoTemplate);
         }
         else if (messageKey.contains("_DP_")) {
             // This message is specifically for a Data Processor
             // Extract DP ID from the message key: EVT_20250929_82239_DP_d9d3e75c-4cf4-4419-831d-81a68bd2fbba
             String dpId = messageKey.substring(messageKey.lastIndexOf("_DP_") + 4);
             log.info("Processing Data Processor callback for messageKey: {}, dpId: {}", messageKey, dpId);
-
-            // Skip own-use DP for consent withdrawal/expiration events - handled by DF consumer path
-            if (isConsentWithdrawEvent(eventMessage.getEventType()) && isOwnUseDataProcessor(dpId, eventMessage.getBusinessId(), mongoTemplate)) {
-                log.info("Skipping own-use DP callback for eventId={}, dpId={} - handled by DF consumer path",
-                        eventMessage.getEventId(), dpId);
-                return;
-            }
 
             // Validate the specific DP ID
             List<String> dataProcessorIds = eventMessage.getDataProcessorIds();
@@ -1100,139 +1090,6 @@ public class CallbackNotificationConsumer {
                 .payload(payload)
                 .timeout(apiTimeout)
                 .build();
-    }
-
-    // ========================================
-    // Own-Use Data Processor Handling
-    // ========================================
-
-    /**
-     * Checks if a Data Processor is an "Own Use" DP for the given business.
-     *
-     * @param dpId Data Processor ID
-     * @param businessId Business ID
-     * @param mongoTemplate Tenant-specific MongoTemplate
-     * @return true if the DP is an own-use DP
-     */
-    private boolean isOwnUseDataProcessor(String dpId, String businessId, MongoTemplate mongoTemplate) {
-        try {
-            Query query = new Query(Criteria.where("businessId").is(businessId)
-                    .and("dataProcessorId").is(dpId)
-                    .and("details").is("Own Use"));
-            DataProcessor ownUseDp = mongoTemplate.findOne(query, DataProcessor.class);
-            return ownUseDp != null;
-        } catch (Exception e) {
-            log.error("Error checking own-use DP: dpId={}, businessId={}, error={}", dpId, businessId, e.getMessage(), e);
-            return false;
-        }
-    }
-
-    /**
-     * Handles own-use DP callback creation and status update from the DF consumer path.
-     * This avoids the race condition where System Registry looks for an ACKNOWLEDGED record
-     * that the DP consumer hasn't created yet.
-     *
-     * For consent withdrawal/expiration events, this method:
-     * 1. Finds the own-use DP for the business
-     * 2. Creates a NotificationCallback record with ACKNOWLEDGED status
-     * 3. Calls the notification module API to mark it as DELETED
-     *
-     * @param eventMessage The event message
-     * @param mongoTemplate Tenant-specific MongoTemplate
-     */
-    private void handleOwnUseDpCallbackIfApplicable(EventMessage eventMessage, MongoTemplate mongoTemplate) {
-        try {
-            // Only handle consent withdrawal/expiration events
-            if (!isConsentWithdrawEvent(eventMessage.getEventType())) {
-                return;
-            }
-
-            // Find own-use DP for this business from the event's DP list
-            List<String> dpIds = eventMessage.getDataProcessorIds();
-            if (dpIds == null || dpIds.isEmpty()) {
-                return;
-            }
-
-            Query query = new Query(Criteria.where("businessId").is(eventMessage.getBusinessId())
-                    .and("dataProcessorId").in(dpIds)
-                    .and("details").is("Own Use"));
-            DataProcessor ownUseDp = mongoTemplate.findOne(query, DataProcessor.class);
-
-            if (ownUseDp == null) {
-                log.debug("No own-use DP found for businessId={}, skipping own-use DP handling", eventMessage.getBusinessId());
-                return;
-            }
-
-            String dpId = ownUseDp.getDataProcessorId();
-            log.info("Handling own-use DP callback from DF consumer path: eventId={}, dpId={}, businessId={}",
-                    eventMessage.getEventId(), dpId, eventMessage.getBusinessId());
-
-            // Idempotency check - skip if record already exists
-            NotificationCallback existingCallback = findExistingCallbackNotification(
-                    eventMessage.getEventId(), RecipientType.DATA_PROCESSOR.name(), dpId, mongoTemplate);
-            if (existingCallback != null) {
-                log.info("Own-use DP callback record already exists: notificationId={}, eventId={}, dpId={}",
-                        existingCallback.getNotificationId(), eventMessage.getEventId(), dpId);
-                return;
-            }
-
-            // Create NotificationCallback record with ACKNOWLEDGED status
-            String notificationId = generateNotificationId("CALLBACK_DATA_PROCESSOR");
-
-            StatusHistoryEntry acknowledgedEntry = StatusHistoryEntry.builder()
-                    .timestamp(LocalDateTime.now())
-                    .status(NotificationStatus.ACKNOWLEDGED.name())
-                    .remark("Auto-acknowledged for own-use Data Processor")
-                    .source(StatusHistorySource.SYSTEM)
-                    .updatedBy("system")
-                    .build();
-
-            NotificationCallback callback = NotificationCallback.builder()
-                    .notificationId(notificationId)
-                    .eventId(eventMessage.getEventId())
-                    .eventType(eventMessage.getEventType())
-                    .correlationId(eventMessage.getCorrelationId())
-                    .businessId(eventMessage.getBusinessId())
-                    .recipientType(RecipientType.DATA_PROCESSOR.name())
-                    .recipientId(dpId)
-                    .callbackUrl(ownUseDp.getCallbackUrl() != null ? ownUseDp.getCallbackUrl() : "N/A")
-                    .eventData(eventMessage.getEventPayload())
-                    .status(NotificationStatus.ACKNOWLEDGED.name())
-                    .priority(EventPriority.HIGH.name())
-                    .attemptCount(0)
-                    .maxAttempts(0)
-                    .isAsync(true)
-                    .statusHistory(List.of(acknowledgedEntry))
-                    .build();
-
-            callbackRepository.save(callback, mongoTemplate);
-            log.info("Created own-use DP callback record: notificationId={}, eventId={}, dpId={}, status=ACKNOWLEDGED",
-                    notificationId, eventMessage.getEventId(), dpId);
-
-            // Update status to DELETED directly via DB
-            StatusHistoryEntry deletedEntry = StatusHistoryEntry.builder()
-                    .timestamp(LocalDateTime.now())
-                    .status(NotificationStatus.DELETED.name())
-                    .remark("Auto-deleted for own-use Data Processor - data managed by DF")
-                    .source(StatusHistorySource.SYSTEM)
-                    .updatedBy("system")
-                    .build();
-
-            callbackRepository.updateStatusWithHistory(
-                    notificationId,
-                    NotificationStatus.DELETED.name(),
-                    deletedEntry,
-                    mongoTemplate
-            );
-
-            log.info("Own-use DP callback marked as DELETED: notificationId={}, eventId={}, dpId={}",
-                    notificationId, eventMessage.getEventId(), dpId);
-
-        } catch (Exception e) {
-            // Fire-and-forget: Log error but don't fail the DF callback flow
-            log.error("Error handling own-use DP callback: eventId={}, error={}. DF callback processing continues.",
-                    eventMessage.getEventId(), e.getMessage(), e);
-        }
     }
 
     // ========================================

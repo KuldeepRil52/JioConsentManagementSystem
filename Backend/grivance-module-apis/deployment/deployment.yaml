@@ -40,7 +40,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: grivance-module-apis
-          image: "$(IMAGE_URL)"
+          image: grivance-module-apis:latest
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false

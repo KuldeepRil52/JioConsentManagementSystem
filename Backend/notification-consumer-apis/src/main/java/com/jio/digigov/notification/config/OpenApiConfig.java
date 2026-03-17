@@ -78,8 +78,9 @@ public class OpenApiConfig {
                     .url("https://internal.jio.com/licenses/platform")))
             .servers(List.of(
                 new Server().url("http://localhost:9003/notification").description("Local Development"),
-                new Server().url("http://localhost:30005/notification").description("Development Environment"),
-                new Server().url("http://notification-module-apis:9005/notification").description("Kubernetes (service name)")
+                new Server().url("http://10.173.184.32:30005/notification").description("Development Environment"),
+                new Server().url("https://api-staging.digigov.jio.com/notification").description("Staging Environment"),
+                new Server().url("https://api.digigov.jio.com/notification").description("Production Environment")
             ))
             .addSecurityItem(new SecurityRequirement().addList("TenantAuth"))
             .addSecurityItem(new SecurityRequirement().addList("BusinessAuth"))

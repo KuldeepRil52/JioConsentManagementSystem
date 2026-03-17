@@ -41,7 +41,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: wso2-cred-generator-apis
-          image: "$(IMAGE_URL)"
+          image: wso2-cred-generator-apis:latest
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false

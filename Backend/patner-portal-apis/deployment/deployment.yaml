@@ -43,7 +43,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: partner-portal-apis
-          image: "$(IMAGE_URL)"
+          image: partner-portal-apis:latest
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false

@@ -16,7 +16,7 @@ public class SystemRegistryProperties {
     /**
      * Base URL for the System Registry service.
      */
-    private String baseUrl = "http://localhost:30011";
+    private String baseUrl = "http://10.173.184.32:30011";
 
     /**
      * API endpoints configuration.

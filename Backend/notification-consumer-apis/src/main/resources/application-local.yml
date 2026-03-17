@@ -1,0 +1,434 @@
+# ========================================
+# DPDP Notification Module Configuration
+# ========================================
+# Base configuration with defaults for all environments
+# Environment-specific configs override these values
+
+# ========================================
+# Server Configuration
+# ========================================
+server:
+  port: 9004
+  servlet:
+    context-path: /notification-consumer
+
+# Kerberos configuration file (not needed for local development)
+# java:
+#   security:
+#     krb5:
+#       conf: ${KRB5_CONFIG}
+#
+# kerberos:
+#   keytab: ${KEYTAB_CONFIG}
+
+
+# ========================================
+# Spring Framework Configuration
+# ========================================
+spring:
+  application:
+    name: notification-consumer
+  main:
+    allow-circular-references: true
+
+  # ========================================
+  # MongoDB Configuration
+  # ========================================
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+      database: ${MONGODB_DEFAULT_DATABASE:cms_db_admin}
+      auto-index-creation: true
+
+  # ========================================
+  # JSON Serialization Configuration
+  # ========================================
+  jackson:
+    time-zone: UTC
+    date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
+    serialization:
+      write-dates-as-timestamps: false
+      fail-on-empty-beans: false
+
+  # ========================================
+  # Kafka Configuration
+  # ========================================
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    security:
+      protocol: ${KAFKA_SECURITY_PROTOCOL:PLAINTEXT}
+    properties:
+      # Security configuration
+      sasl.mechanism: ${KAFKA_SASL_MECHANISM:PLAIN}
+      sasl.kerberos.service.name: ${KAFKA_KERBEROS_SERVICE_NAME:kafka}
+      sasl.jaas.config: ${KAFKA_SASL_JAAS_CONFIG:}
+      # Client configuration
+      client.dns.lookup: use_all_dns_ips
+      acks: all
+
+
+    # Consumer Configuration
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP:DEV_CMS_NOTIFICATION}
+      enable-auto-commit: false
+      auto-offset-reset: latest
+      fetch-max-bytes: ${KAFKA_FETCH_MAX_BYTES:10485760}
+      max-partition-fetch-bytes: ${KAFKA_MAX_PARTITION_FETCH_BYTES:10485760}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.jio.digigov.notification.dto.kafka
+        max.poll.records: 10
+        session.timeout.ms: 30000
+        heartbeat.interval.ms: 10000
+
+    # Listener Configuration
+    listener:
+      ack-mode: manual
+      concurrency: ${KAFKA_LISTENER_CONCURRENCY:1}
+
+  # ========================================
+  # Cache Configuration
+  # ========================================
+  cache:
+    type: caffeine
+    caffeine:
+      spec: maximumSize=1000,expireAfterWrite=55m
+
+# ========================================
+# Management & Monitoring Configuration
+# ========================================
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  health:
+    kafka:
+      enabled: true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
+
+# ========================================
+# Logging Configuration
+# ========================================
+logging:
+  level:
+    root: INFO
+    com.jio.digigov.notification: DEBUG
+    org.springframework.web: INFO
+    org.springframework.data.mongodb: WARN
+    org.springframework.kafka: INFO
+    org.apache.kafka: WARN
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# ========================================
+# Multi-Tenancy Configuration
+# ========================================
+multi-tenant:
+  enabled: true
+  shared-database: ${MONGODB_DEFAULT_DATABASE:cms_db_admin}
+  tenant-database-prefix: tenant_db_
+
+# ========================================
+# DigiGov Integration Configuration
+# ========================================
+digigov:
+  # Base URL Configuration
+  base-url: ${DIGIGOV_BASE_URL:http://localhost:8082/mock-digigov}
+
+  # API Endpoints
+  sms:
+    api:
+      url: ${DIGIGOV_SMS_API_URL:${digigov.base-url}/sms/send}
+      timeout: ${DIGIGOV_SMS_API_TIMEOUT:30000}
+
+  email:
+    api:
+      url: ${DIGIGOV_EMAIL_API_URL:${digigov.base-url}/email/send}
+      timeout: ${DIGIGOV_EMAIL_API_TIMEOUT:60000}
+
+  # Mock Configuration (for local development)
+  mock:
+    base-url: ${digigov.base-url}
+    timeout: 30000
+
+  # Token Configuration
+  token:
+    expiry-minutes: 60
+    refresh-before-minutes: 5
+    cache:
+      max-size: 1000
+      expire-after-write-minutes: 55
+
+# ========================================
+# Notification Gateway Configuration
+# ========================================
+notification:
+  gateway:
+    credentials:
+      admin:
+        client-id: ${DIGIGOV_ADMIN_CLIENT_ID:tP3WG8ka8j7U3GtkB951fhlJnEoa}
+        client-secret: ${DIGIGOV_ADMIN_CLIENT_SECRET:QnLxTMHPyurm8xI4CCJh26ezx_Ia}
+    endpoints:
+      token: token
+      notification:
+        onboard: notification/v2.2/onboardTemplate
+        approve: notificationadmin/v2.2/approve
+        send: notification/v2.2/send
+      otp:
+        onboard: g2cOTPAuth/v1.7/onboardTemplate
+        approve: g2cOTPAuthAdmin/v1.7/approve
+        init: g2cOTPAuth/v1.7/init
+        verify: g2cOTPAuth/v1.7/verify
+
+  # Async Processing Configuration
+  async:
+    enabled: ${NOTIFICATION_ASYNC_ENABLED:true}
+    timeout-seconds: 30
+    retry:
+      max-attempts: 5
+      initial-interval: 1000
+      multiplier: 2.0
+      max-interval: 30000
+
+  # Webhook Configuration
+  webhook:
+    secret: ${NOTIFICATION_WEBHOOK_SECRET:dpdp-webhook-secret-2024}
+    timeout-ms: ${NOTIFICATION_WEBHOOK_TIMEOUT:30000}
+    max-retries: ${NOTIFICATION_WEBHOOK_MAX_RETRIES:3}
+
+# ========================================
+# Kafka Topic Configuration
+# ========================================
+kafka:
+  # Consumer Configuration
+  consumer:
+    group-id: ${KAFKA_CONSUMER_GROUP:DEV_CMS_NOTIFICATION}
+
+  topics:
+    sms: ${KAFKA_TOPIC_SMS:DEV_CMS_NOTIFICATION_SMS}
+    email: ${KAFKA_TOPIC_EMAIL:DEV_CMS_NOTIFICATION_EMAIL}
+    callback: ${KAFKA_TOPIC_CALLBACK:DEV_CMS_NOTIFICATION_CALLBACK}
+    # test: ${KAFKA_TOPIC_TEST:notification.test}
+    # retry: ${KAFKA_TOPIC_RETRY:notification.retry}
+
+  # dlq:
+  #   sms: ${KAFKA_DLQ_SMS:notification.sms.dlq}
+  #   email: ${KAFKA_DLQ_EMAIL:notification.email.dlq}
+  #   callback: ${KAFKA_DLQ_CALLBACK:notification.callback.dlq}
+
+  # Topic Configuration Properties
+  config:
+    partitions: ${KAFKA_TOPIC_PARTITIONS:1}
+    replicas: ${KAFKA_TOPIC_REPLICAS:1}
+    retention-ms: ${KAFKA_TOPIC_RETENTION_MS:604800000}  # 7 days default
+    max-message-bytes: ${KAFKA_MAX_MESSAGE_BYTES:10485760}  # 10MB default
+    segment-bytes: ${KAFKA_SEGMENT_BYTES:10485760}  # 10MB default
+    min-insync-replicas: ${KAFKA_MIN_INSYNC_REPLICAS:1}
+    compression-type: ${KAFKA_COMPRESSION_TYPE:snappy}
+    cleanup-policy: ${KAFKA_CLEANUP_POLICY:delete}
+
+    # # DLQ specific configs
+    # dlq:
+    #   partitions: ${KAFKA_DLQ_PARTITIONS:1}
+    #   retention-ms: ${KAFKA_DLQ_RETENTION_MS:1209600000}  # 14 days default
+
+    # # Retry topic configs
+    # retry:
+    #   partitions: ${KAFKA_RETRY_PARTITIONS:3}
+    #   retention-ms: ${KAFKA_RETRY_RETENTION_MS:259200000}  # 3 days default
+
+# ========================================
+# Retry Policy Configuration
+# ========================================
+retry:
+  # Channel-specific retry attempts
+  sms:
+    max-attempts: ${RETRY_SMS_MAX_ATTEMPTS:3}
+  email:
+    max-attempts: ${RETRY_EMAIL_MAX_ATTEMPTS:3}
+  callback:
+    max-attempts: ${RETRY_CALLBACK_MAX_ATTEMPTS:5}
+
+  # Global retry configuration
+  base-delay-ms: ${RETRY_BASE_DELAY_MS:60000}  # 1 minute (increased from 2 seconds)
+  multiplier: ${RETRY_MULTIPLIER:2.0}
+  max-delay-ms: ${RETRY_MAX_DELAY_MS:600000}  # 10 minutes (increased from 1 minute)
+  jitter-factor: ${RETRY_JITTER_FACTOR:0.25}
+
+# ========================================
+# JWT Configuration
+# ========================================
+jwt:
+  callback:
+    secret: ${JWT_CALLBACK_SECRET:local-development-secret-key-256-bits-long-for-testing-only}
+    expiration: ${JWT_CALLBACK_EXPIRATION:3600}
+    issuer: ${JWT_CALLBACK_ISSUER:dpdp-notification-service}
+
+# ========================================
+# Webhook Configuration
+# ========================================
+webhook:
+  timeout: ${WEBHOOK_TIMEOUT:30000}
+  max-retries: ${WEBHOOK_MAX_RETRIES:5}
+  jwt:
+    issuer: ${WEBHOOK_JWT_ISSUER:dpdp-notification-service}
+    expiry: ${WEBHOOK_JWT_EXPIRY:300}  # 5 minutes
+
+# ========================================
+# Callback Configuration
+# ========================================
+callback:
+  timeout: ${CALLBACK_TIMEOUT:30000}
+  max-retries: ${CALLBACK_MAX_RETRIES:3}
+  retry-backoff:
+    initial-delay: 1000
+    multiplier: 2
+    max-delay: 30000
+
+# ========================================
+# Email Configuration
+# ========================================
+email:
+  max-body-size: ${EMAIL_MAX_BODY_SIZE:1048576}  # 1MB default
+
+# ========================================
+# Authorization Configuration
+# ========================================
+authorization:
+  enabled: ${AUTHORIZATION_ENABLED:true}
+
+# ========================================
+# SpringDoc OpenAPI Configuration
+# ========================================
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    display-request-duration: true
+    groups-order: asc
+    operations-sorter: alpha
+    tags-sorter: alpha
+    try-it-out-enabled: true
+    filter: true
+    doc-expansion: none
+  packages-to-scan:
+    - com.jio.digigov.notification.controller.v1
+    - com.jio.digigov.notification.controller
+  paths-to-match:
+    - /v1/event-configurations/**
+    - /master-list/**
+    - /v1/templates/**
+    - /v1/events/**
+    - /v1/notifications/**
+    - /v1/missed-notifications/**
+  paths-to-exclude:
+    - /actuator/**
+    - /api/v1/notifications/send/**  # Legacy endpoints excluded
+    - /notification/v2.2/**         # Legacy endpoints excluded
+    - /api/v1/templates/**          # Legacy template endpoints excluded
+    - /api/v1/otp/**               # OTP endpoints excluded
+    - /g2cOTPAuth/**               # Legacy OTP endpoints excluded
+    - /configurations/**           # Configuration endpoints excluded
+    - /v1/data-processors/**       # Data processor endpoints excluded
+    - /test/master-list/**         # Test endpoints excluded
+    - /api/v1/health/**            # Health endpoints excluded
+  group-configs:
+    - group: 1-event-configuration
+      display-name: Event Configuration
+      paths-to-match:
+        - /v1/event-configurations/**
+    - group: 2-master-list
+      display-name: Master List Management
+      paths-to-match:
+        - /master-list/**
+    - group: 3-template-management
+      display-name: Template Management
+      paths-to-match:
+        - /v1/templates/**
+    - group: 4-event-triggers
+      display-name: Event Triggers
+      paths-to-match:
+        - /v1/events/**
+    - group: 5-notification-events
+      display-name: Notification Events
+      paths-to-match:
+        - /v1/notifications/**
+    - group: 6-missed-notifications
+      display-name: Missed Notification Management
+      paths-to-match:
+        - /v1/missed-notifications/**
+  default-produces-media-type: application/json
+  default-consumes-media-type: application/json
+
+# Master List Configuration (Local)
+# ========================================
+master-list:
+  # Configuration loading settings
+  config:
+    file-path: ${MASTER_LIST_CONFIG_FILE:master-list-config.json}
+    database-collection: ${MASTER_LIST_DB_COLLECTION:master_list_config}
+    cache-duration: ${MASTER_LIST_CACHE_DURATION:PT5M}  # 5 minutes
+
+  # Resolution settings
+  resolution:
+    fail-fast: ${MASTER_LIST_FAIL_FAST:false}  # Allow default values in local
+    max-resolution-time: ${MASTER_LIST_MAX_RESOLUTION_TIME:10000}  # 10 seconds
+    batch-db-queries: ${MASTER_LIST_BATCH_DB_QUERIES:true}
+    # Enable default value usage when argument resolution fails
+    use-default-values: ${MASTER_LIST_USE_DEFAULT_VALUES:true}
+
+# ========================================
+# Local Environment Cache Configuration Override
+# ========================================
+cache:
+  enabled: true
+  type: caffeine  # Use Caffeine for local development
+
+  # Caffeine-specific configuration
+  caffeine:
+    enabled: ${CACHE_CAFFEINE_ENABLED:true}
+
+  # MongoDB-specific configuration
+  mongodb:
+    enabled: ${CACHE_MONGODB_ENABLED:false}
+
+  # Local development TTL settings - short for testing but above minimum
+  ttl:
+    digigov-token: 5m
+    digigov-admin-token: 5m
+    ng-configuration: 2m
+    master-list-config: 1m
+    master-list-db-value: 1m
+    event-config: 2m
+    templates: 2m
+    db-query-result: 1m
+
+  # Very aggressive refresh for local testing
+  refresh:
+    enabled: true
+    before-expiry:
+      tokens: 1m
+      configurations: 30s
+      templates: 1m
+
+# ========================================
+# Audit Service Configuration
+# ========================================
+audit:
+  url: ${AUDIT_MODULE_APIS_URL:http://localhost:9006}/audit/v1/audit
+  enabled: ${AUDIT_ENABLED:true}
+  timeout:
+    connect-ms: 5000
+    read-ms: 10000

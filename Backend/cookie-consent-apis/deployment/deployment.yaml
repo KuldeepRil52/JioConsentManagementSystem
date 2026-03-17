@@ -41,7 +41,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: cookie-consent-apis
-          image: "$(IMAGE_URL)"
+          image: cookie-consent-apis:latest
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false

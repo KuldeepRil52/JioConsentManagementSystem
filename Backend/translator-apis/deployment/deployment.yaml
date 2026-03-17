@@ -42,7 +42,7 @@ spec:
 
       containers:
         - name: translator-apis
-          image: "$(IMAGE_URL)"
+          image: translator-apis:latest
           imagePullPolicy: IfNotPresent
 
           securityContext:

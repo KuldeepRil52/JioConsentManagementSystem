@@ -46,7 +46,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: consent-core-apis
-          image: "$(IMAGE_URL)"
+          image: consent-core-apis:latest
           imagePullPolicy: IfNotPresent
           securityContext:
             allowPrivilegeEscalation: false
