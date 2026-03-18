@@ -11,6 +11,18 @@ RUN mvn clean package -Dmaven.test.skip=true
 # Base Image
 FROM mcr.microsoft.com/playwright:v1.50.0-noble
 
+# Install Java 21 only (skip Maven since JAR is already built)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends openjdk-21-jdk && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set JAVA_HOME (helpful for Maven/Gradle builds)
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+ENV PATH="$JAVA_HOME/bin:$PATH"
+
+#Check Java Version
+RUN java -version
+
 LABEL maintainer="Jio Consent Management System <JIOCONSENT@RIL.COM>"
 
 # Create non-root user and standard directories

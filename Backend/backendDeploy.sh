@@ -6,7 +6,7 @@ REGISTRY=""
 TAG="latest"
 
 # List of services
-SERVICES=("audit-module-apis" "auth-apis" "consent-core-apis" "cookie-consent-apis" "grivance-module-apis" "notification-consumer-apis" "notification-module-apis" "patner-portal-apis" "schedular-apis" "translator-apis" "vault-apis" "wso2-cred-generator-apis" "system-registry-apis")
+SERVICES=("audit-module-apis" "auth-apis" "consent-core-apis" "cookie-consent-apis" "grivance-module-apis" "notification-consumer-apis" "notification-module-apis" "partner-portal-apis" "schedular-apis" "translator-apis" "vault-apis" "wso2-cred-generator-apis" "system-registry-apis")
 
 for SERVICE in "${SERVICES[@]}"; do
     echo "--------------------------------------------------"
