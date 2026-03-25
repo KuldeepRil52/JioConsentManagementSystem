@@ -15,17 +15,13 @@
     "build:prod": "env-cmd -f .env.prod parcel build index.html"
   },
   "dependencies": {
-    "@jds/core": "1.1.85",
-    "@jds/core-icons": "0.13.29",
-    "@jds/extended-icons": "0.13.31",
-    "@jds/react-engine": "2.0.38",
-    "@jds/token-jio": "0.0.64",
     "@reduxjs/toolkit": "^2.9.0",
     "axios": "^1.12.2",
     "file-saver": "^2.0.5",
     "jsencrypt": "^3.5.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-icons": "^5.6.0",
     "react-idle-timer": "^5.7.2",
     "react-redux": "^9.2.0",
     "react-router": "^6.26.2",

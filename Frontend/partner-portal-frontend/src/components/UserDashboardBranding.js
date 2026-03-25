@@ -1,8 +1,6 @@
 import React from "react";
-import { InputFieldV2, Text, Icon, InputToggle, ActionButton } from '../custom-components';
-import { IcClose, IcSuccess, IcUpload } from '../custom-components/Icon';
-import { useState } from "react";
-import { useRef } from "react";
+import { InputFieldV2, Text, Icon, InputToggle, ActionButton } from "../custom-components";
+import { IcClose, IcSuccess, IcUpload } from "../custom-components/Icon";
 import "../styles/toast.css";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import CustomToast from "./CustomToastContainer";
@@ -455,8 +453,6 @@ const UserDashboardBranding = ({
         </div>
 
       </div>
-
-
       <ToastContainer
         position="bottom-left"
         autoClose={3000}

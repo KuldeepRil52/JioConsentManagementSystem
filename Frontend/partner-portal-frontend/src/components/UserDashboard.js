@@ -505,18 +505,13 @@ const UserDashboard = () => {
           {/* Tabs Container */}
           <div className="notif-tabs-setup">
             <Tabs
-              appearance="normal"
-              value={activeTab}
-              onChange={(index) => {
+              activeKey={activeTab}
+              onTabChange={(index) => {
                 setActiveTab(index);
-                // Reset accessibility tab to "semantics" when switching to Accessibility tab (index 1)
                 if (index === 1) {
                   setAccessibilityTab("semantics");
                 }
               }}
-              onNextClick={function noRefCheck() { }}
-              onPrevClick={function noRefCheck() { }}
-              onScroll={function noRefCheck() { }}
               overflow="fit"
             >
 

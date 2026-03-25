@@ -1,21 +1,31 @@
 import React, { useState, useEffect, useMemo } from "react";
 import "../Styles/createRequest.css";
-import { ActionButton, Icon, Image, Text, Button } from "@jds/core";
+import { textStyle, FONT_FAMILY_STACK } from "../utils/textStyles";
+import { ICON_SIZE } from "../utils/iconSizes";
 import "../Styles/toast.css";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import CustomToast from "./CustomToastContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
-import { IcLanguage } from "@jds/extended-icons";
-import { IcChevronDown, IcUpload, IcSuccess, IcClose } from "@jds/core-icons";
+
 import {
   createGrievanceRequest,
   getGrievnaceTemplateData,
   translateData,
   translateConfiguration,
 } from "../store/actions/CommonAction";
-import useTranslation, { getApiValueFromLanguage } from "../hooks/useTranslation";
+import useTranslation, {
+  getApiValueFromLanguage,
+} from "../hooks/useTranslation";
+import {
+  FaChevronDown,
+  FaChevronUp,
+  FaTimes,
+  FaTimesCircle,
+  FaUpload,
+} from "react-icons/fa";
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 
 const CreateRequest = () => {
   const logos = new URL("../Assets/popup.svg", import.meta.url).href;
@@ -27,7 +37,7 @@ const CreateRequest = () => {
   const [title, setTitle] = useState("Register your grievance");
   const [purposeHeading, setPurposeHeading] = useState("Purpose: ");
   const [processingHeading, setProcessingHeading] = useState(
-    "Processing activity: "
+    "Processing activity: ",
   );
   const [usedByHeading, setUsedByHeading] = useState("Used By: ");
   const [durationHeading, setDurationHeading] = useState("Duration: ");
@@ -48,7 +58,11 @@ const CreateRequest = () => {
   const translationInputs = useMemo(
     () => [
       { id: "create_title", source: "Register your grievance" },
-      { id: "create_description", source: "Please provide the following details to register your grievance." },
+      {
+        id: "create_description",
+        source:
+          "Please provide the following details to register your grievance.",
+      },
       { id: "create_purpose", source: "Purpose: " },
       { id: "create_processing", source: "Processing activity: " },
       { id: "create_used_by", source: "Used By: " },
@@ -60,19 +74,26 @@ const CreateRequest = () => {
       { id: "create_grievance_subcategory", source: "Grievance Subcategory" },
       { id: "create_enter_subcategory", source: "Enter Grievance Subcategory" },
       { id: "create_description", source: "Description (Required)" },
-      { id: "create_description_placeholder", source: "Enter description of the group's function or scope." },
+      {
+        id: "create_description_placeholder",
+        source: "Enter description of the group's function or scope.",
+      },
       { id: "create_user_details", source: "User Details" },
       { id: "create_user_type", source: "User Type" },
       { id: "create_select_user_type", source: "Select user type" },
       { id: "create_upload_files", source: "Upload Files" },
       { id: "create_upload", source: "Upload" },
-      { id: "create_upload_instruction", source: "Drag and drop or upload a document with hyperlink with the consent banner in .pdf or .doc format." },
+      {
+        id: "create_upload_instruction",
+        source:
+          "Drag and drop or upload a document with hyperlink with the consent banner in .pdf or .doc format.",
+      },
       { id: "create_required", source: "Required" },
       { id: "create_enter", source: "Enter" },
       { id: "create_submit_request", source: "Submit Request" },
       { id: "create_always_active", source: "Always Active" },
     ],
-    []
+    [],
   );
 
   // Use translation hook
@@ -132,14 +153,22 @@ const CreateRequest = () => {
   useEffect(() => {
     if (currentLanguage !== "ENGLISH") {
       translateContent(translationInputs, currentLanguage);
-      if (grievanceFormTemplate && Object.keys(grievanceFormTemplate).length > 0) {
+      if (
+        grievanceFormTemplate &&
+        Object.keys(grievanceFormTemplate).length > 0
+      ) {
         const targetLang = getApiValueFromLanguage(currentLanguage);
         translateFormFields(grievanceFormTemplate, targetLang);
       }
     } else {
       setDynamicTranslations({});
     }
-  }, [currentLanguage, translationInputs, translateContent, grievanceFormTemplate]);
+  }, [
+    currentLanguage,
+    translationInputs,
+    translateContent,
+    grievanceFormTemplate,
+  ]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -164,7 +193,7 @@ const CreateRequest = () => {
                   selectedLanguage.toUpperCase() ||
                 lang.heading
                   ?.toUpperCase()
-                  .includes(selectedLanguage.toUpperCase())
+                  .includes(selectedLanguage.toUpperCase()),
             );
 
             if (matchingLanguageEntry) {
@@ -201,23 +230,56 @@ const CreateRequest = () => {
 
   // for translation - using translation hook
   const [text, setText] = useState(
-    "While using JioMeet, your activities create data which will be used with your consent to offer customised services. Details of data usage are provided below. "
+    "While using JioMeet, your activities create data which will be used with your consent to offer customised services. Details of data usage are provided below. ",
   );
-  
+
   // Get translated labels from hook
-  const grievanceDetailsHeading = getTranslation("create_grievance_details", "Grievance Details");
-  const selectCategoryPlaceholder = getTranslation("create_select_category", "Select Category");
-  const grievanceCategoryLabel = getTranslation("create_grievance_category", "Grievance Category");
-  const grievanceSubCategoryLabel = getTranslation("create_grievance_subcategory", "Grievance Subcategory");
-  const subCategoryPlaceholder = getTranslation("create_enter_subcategory", "Enter Grievance Subcategory");
-  const descriptionLabel = getTranslation("create_description", "Description (Required)");
-  const descriptionPlaceholder = getTranslation("create_description_placeholder", "Enter description of the group's function or scope.");
-  const userDetailsHeading = getTranslation("create_user_details", "User Details");
+  const grievanceDetailsHeading = getTranslation(
+    "create_grievance_details",
+    "Grievance Details",
+  );
+  const selectCategoryPlaceholder = getTranslation(
+    "create_select_category",
+    "Select Category",
+  );
+  const grievanceCategoryLabel = getTranslation(
+    "create_grievance_category",
+    "Grievance Category",
+  );
+  const grievanceSubCategoryLabel = getTranslation(
+    "create_grievance_subcategory",
+    "Grievance Subcategory",
+  );
+  const subCategoryPlaceholder = getTranslation(
+    "create_enter_subcategory",
+    "Enter Grievance Subcategory",
+  );
+  const descriptionLabel = getTranslation(
+    "create_description",
+    "Description (Required)",
+  );
+  const descriptionPlaceholder = getTranslation(
+    "create_description_placeholder",
+    "Enter description of the group's function or scope.",
+  );
+  const userDetailsHeading = getTranslation(
+    "create_user_details",
+    "User Details",
+  );
   const userTypeLabel = getTranslation("create_user_type", "User Type");
-  const userTypePlaceholder = getTranslation("create_select_user_type", "Select user type");
-  const uploadFilesHeading = getTranslation("create_upload_files", "Upload Files");
+  const userTypePlaceholder = getTranslation(
+    "create_select_user_type",
+    "Select user type",
+  );
+  const uploadFilesHeading = getTranslation(
+    "create_upload_files",
+    "Upload Files",
+  );
   const uploadButtonText = getTranslation("create_upload", "Upload");
-  const uploadInstruction = getTranslation("create_upload_instruction", "Drag and drop or upload a document with hyperlink with the consent banner in .pdf or .doc format.");
+  const uploadInstruction = getTranslation(
+    "create_upload_instruction",
+    "Drag and drop or upload a document with hyperlink with the consent banner in .pdf or .doc format.",
+  );
   const requiredLable = getTranslation("create_required", "Required");
   const enterLable = getTranslation("create_enter", "Enter");
 
@@ -303,7 +365,7 @@ const CreateRequest = () => {
       border: "1px solid #ccc",
       borderRadius: "8px",
       padding: "2px 4px",
-      fontSize: "14px",
+      fontSize: "11px",
       minHeight: "40px",
       boxShadow: "none",
       borderColor: state.isFocused ? "#ccc" : "#ccc",
@@ -321,7 +383,7 @@ const CreateRequest = () => {
     placeholder: (base) => ({
       ...base,
       color: "#666",
-      fontSize: "14px",
+      fontSize: "11px",
     }),
 
     multiValue: (base) => ({
@@ -334,7 +396,7 @@ const CreateRequest = () => {
     multiValueLabel: (base) => ({
       ...base,
       color: "#333",
-      fontSize: "13px",
+      fontSize: "11px",
     }),
 
     multiValueRemove: (base) => ({
@@ -362,14 +424,14 @@ const CreateRequest = () => {
 
     option: (base, state) => ({
       ...base,
-      fontSize: "14px",
+      fontSize: "11px",
       padding: "8px 12px",
       cursor: "pointer",
       backgroundColor: state.isSelected
         ? "#e6f0ff"
         : state.isFocused
-        ? "#f5f5f5"
-        : "#fff",
+          ? "#f5f5f5"
+          : "#fff",
       color: "#333",
       ":active": {
         backgroundColor: "#e6f0ff",
@@ -407,13 +469,15 @@ const CreateRequest = () => {
         <div className="accordion-header" onClick={() => setIsOpen(!isOpen)}>
           <div className="accordion-left">
             <span className={`accordion-icon ${isOpen ? "open" : ""}`}>
-              <IcChevronDown height={25} width={25} />
+              <FaChevronDown size={ICON_SIZE} />
             </span>
             <span className="accordion-title">{title}</span>
           </div>
 
           {alwaysActive && (
-            <span className="accordion-label">{getTranslation("create_always_active", "Always Active")}</span>
+            <span className="accordion-label">
+              {getTranslation("create_always_active", "Always Active")}
+            </span>
           )}
           {hasCheckbox && <input type="checkbox" />}
         </div>
@@ -447,7 +511,7 @@ const CreateRequest = () => {
                       ? `${item.preferenceValidity.value} ${toTitleCase(
                           item.preferenceValidity.value === 1
                             ? item.preferenceValidity.unit.replace(/s$/i, "") // singular
-                            : item.preferenceValidity.unit // plural
+                            : item.preferenceValidity.unit, // plural
                         )}`
                       : "N/A"}
                   </p>
@@ -486,10 +550,10 @@ const CreateRequest = () => {
   };
 
   const [rights, setRights] = useState(
-    "To withdraw your consent, exercise your rights, or file complaints with the Board click here."
+    "To withdraw your consent, exercise your rights, or file complaints with the Board click here.",
   );
   const [permission, setPermission] = useState(
-    "By clicking ‘Allow all’ or ’Save my choices’, you are providing your consent to Reliance Medlab using your data as outlined above."
+    "By clicking ‘Allow all’ or ’Save my choices’, you are providing your consent to Reliance Medlab using your data as outlined above.",
   );
   const [supportedLanguages, setSupportedLanguages] = useState([]);
   const [language, setLanguage] = useState("");
@@ -508,7 +572,7 @@ const CreateRequest = () => {
   const [activityOptions, setActivityOptions] = useState([]);
   const [purposeOptions, setPurposeOptions] = useState([]);
   const [processingActivityOptions, setProcessingActivityOptions] = useState(
-    []
+    [],
   );
   const [purposeList, setPurposeList] = useState([]);
 
@@ -660,7 +724,7 @@ const CreateRequest = () => {
           if (!userDetailInputs[item] || userDetailInputs[item].trim() === "") {
             errors.push(`Please enter ${item}.`);
           }
-        }
+        },
       );
     }
 
@@ -685,19 +749,19 @@ const CreateRequest = () => {
             }
           />
         ),
-        { icon: false }
+        { icon: false },
       );
       return;
     } else if (errors.length === 1) {
       toast.error(
         (props) => <CustomToast {...props} type="error" message={errors[0]} />,
-        { icon: false }
+        { icon: false },
       );
       return;
     } else if (true) {
       // Format grievance information (if needed for later use)
       const formattedGrievanceInformation = Object.entries(
-        grievanceFormTemplate?.grievances || {}
+        grievanceFormTemplate?.grievances || {},
       ).map(([grievanceType, grievanceItems]) => ({
         grievanceType,
         grievanceItems,
@@ -713,7 +777,7 @@ const CreateRequest = () => {
             acc[key] = userDetailInputs[label] || "";
             return acc;
           },
-          {}
+          {},
         );
 
       // --- Final request body ---
@@ -737,7 +801,7 @@ const CreateRequest = () => {
         createGrievanceRequest({
           grievanceTemplateId: grievanceFormTemplate.grievanceTemplateId,
           body,
-        })
+        }),
       );
 
       if (res?.status === 201) {
@@ -749,7 +813,7 @@ const CreateRequest = () => {
               message={"Grievance Request Raised Succesfully!"}
             />
           ),
-          { icon: false }
+          { icon: false },
         );
         navigate("/requests");
       }
@@ -762,31 +826,44 @@ const CreateRequest = () => {
             message={"Grievance Request Saved Succesfully!"}
           />
         ),
-        { icon: false }
+        { icon: false },
       );
     }
   };
 
   return (
-    <main className="page-container" role="main" aria-label="Create Grievance Request">
+    <main
+      className="page-container"
+      role="main"
+      aria-label="Create Grievance Request"
+    >
       <div className="main-content">
         <div className="right-half">
           <nav className="preview-header" aria-label="Page navigation">
             <div className="header-left">
-              <Button
-                ariaControls="navigation"
-                ariaDescribedby="back-button-desc"
-                ariaLabel="Go back to previous page"
-                className="Button"
-                icon="ic_back"
-                iconAriaLabel="Back arrow"
-                iconLeft="ic_back"
-                kind="secondary"
+              <div
+                role="button"
+                tabIndex={0}
+                aria-label="Next page"
                 onClick={handleBack}
-                size="medium"
-                state="normal"
-              />
-              <span id="back-button-desc" className="sr-only">Navigate to previous page</span>
+                style={{
+                  cursor: "pointer",
+
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "50%",
+                  backgroundColor: "#fff", // white background
+                  border: "1px solid #d1d5db", // light grey border
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <FiChevronLeft size={ICON_SIZE} color="#555" />
+              </div>
+              <span id="back-button-desc" className="sr-only">
+                Navigate to previous page
+              </span>
             </div>
             <div className="header-right">
               <div
@@ -813,7 +890,12 @@ const CreateRequest = () => {
                         // marginBottom: "8px",
                       }}
                     >
-                      {title ? title : getTranslation("create_title", "Register your grievance")}
+                      {title
+                        ? title
+                        : getTranslation(
+                            "create_title",
+                            "Register your grievance",
+                          )}
                     </h1>
                   </div>
 
@@ -835,7 +917,7 @@ const CreateRequest = () => {
                       backgroundColor: activePopupColors.cardBackground,
                       color: activePopupColors.cardFont,
                       marginBottom: "8px",
-                      fontSize: "14px",
+                      fontSize: "11px",
                       letterSpacing: "-0.5px",
                       color: "rgba(0, 0, 0, 0.65)",
                       fontWeight: "500",
@@ -843,21 +925,31 @@ const CreateRequest = () => {
                   >
                     {text
                       ? text
-                      : getTranslation("create_description", "Please provide the following details to register your grievance.")}
+                      : getTranslation(
+                          "create_description",
+                          "Please provide the following details to register your grievance.",
+                        )}
                   </p>
                   {grievanceFormTemplate?.multilingual?.grievanceInformation
                     ?.length > 0 && (
                     <div>
                       {/* --- Section heading --- */}
                       <div style={{ marginBottom: "10px" }}>
-                        <Text appearance="heading-xxs" color="primary-grey-80">
+                        <span style={textStyle("heading-xxs", "primary-grey-80")}>
                           {grievanceDetailsHeading}
-                        </Text>
+                        </span>
                       </div>
 
                       {/* --- Grievance Category Dropdown --- */}
-                      <div className="dropdown-group" role="group" aria-labelledby="grievance-category-label">
-                        <label id="grievance-category-label" htmlFor="grievance-category-select">
+                      <div
+                        className="dropdown-group"
+                        role="group"
+                        aria-labelledby="grievance-category-label"
+                      >
+                        <label
+                          id="grievance-category-label"
+                          htmlFor="grievance-category-select"
+                        >
                           {grievanceCategoryLabel}
                         </label>
                         <select
@@ -879,15 +971,22 @@ const CreateRequest = () => {
                               <option key={idx} value={info.grievanceType}>
                                 {getDynamicTranslation(info.grievanceType)}
                               </option>
-                            )
+                            ),
                           )}
                         </select>
                       </div>
 
                       {/* --- Grievance Sub-Category Dropdown --- */}
                       {selectedGrievanceType && (
-                        <div className="dropdown-group" role="group" aria-labelledby="grievance-subcategory-label">
-                          <label id="grievance-subcategory-label" htmlFor="grievance-subcategory-select">
+                        <div
+                          className="dropdown-group"
+                          role="group"
+                          aria-labelledby="grievance-subcategory-label"
+                        >
+                          <label
+                            id="grievance-subcategory-label"
+                            htmlFor="grievance-subcategory-select"
+                          >
                             {grievanceSubCategoryLabel}
                           </label>
                           <select
@@ -905,7 +1004,7 @@ const CreateRequest = () => {
                             {(
                               grievanceFormTemplate?.multilingual.grievanceInformation.find(
                                 (info) =>
-                                  info.grievanceType === selectedGrievanceType
+                                  info.grievanceType === selectedGrievanceType,
                               )?.grievanceItems || []
                             ).map((item, idx) => (
                               <option key={idx} value={item}>
@@ -919,8 +1018,15 @@ const CreateRequest = () => {
                   )}
 
                   {grievanceFormTemplate?.multilingual?.descriptionCheck && (
-                    <div className="dropdown-group" role="group" aria-labelledby="description-label">
-                      <label id="description-label" htmlFor="grievance-description">
+                    <div
+                      className="dropdown-group"
+                      role="group"
+                      aria-labelledby="description-label"
+                    >
+                      <label
+                        id="description-label"
+                        htmlFor="grievance-description"
+                      >
                         {descriptionLabel}
                       </label>
                       <textarea
@@ -944,9 +1050,9 @@ const CreateRequest = () => {
                     ?.userType?.length > 0 ||
                     grievanceFormTemplate?.multilingual?.userInformation[0]
                       ?.userItems?.length > 0) && (
-                    <Text appearance="heading-xxs" color="primary-grey-80">
+                    <span style={textStyle("heading-xxs", "primary-grey-80")}>
                       {userDetailsHeading}
-                    </Text>
+                    </span>
                   )}
 
                   {grievanceFormTemplate?.multilingual?.userInformation[0]
@@ -977,7 +1083,7 @@ const CreateRequest = () => {
                               <option key={index} value={type}>
                                 {getDynamicTranslation(type)}
                               </option>
-                            )
+                            ),
                           )}
                         </select>
                       </div>
@@ -994,9 +1100,9 @@ const CreateRequest = () => {
                                 htmlFor={`user-field-input-${index}`}
                                 style={{
                                   display: "block",
-                                  fontSize: "13px",
+                                  fontSize: "11px",
                                   fontWeight: "600",
-                                  fontFamily: "Arial, sans-serif",
+                                  fontFamily: FONT_FAMILY_STACK,
                                   marginBottom: "5px",
                                   color: "#767676",
                                 }}
@@ -1023,16 +1129,16 @@ const CreateRequest = () => {
                                   padding: "10px 12px",
                                   border: "1px solid #ccc",
                                   borderRadius: "8px",
-                                  fontSize: "14px",
+                                  fontSize: "11px",
                                   fontWeight: 400,
                                   color: "rgba(20, 20, 20, 1)",
                                   outline: "none",
-                                  fontFamily: "Arial, sans-serif",
+                                  fontFamily: FONT_FAMILY_STACK,
                                 }}
                               />
                             </div>
                           </div>
-                        )
+                        ),
                       )}
                     </div>
                   )}
@@ -1040,9 +1146,12 @@ const CreateRequest = () => {
                   {grievanceFormTemplate?.multilingual?.uploadFiles && (
                     <div role="group" aria-labelledby="upload-section-label">
                       <div className="">
-                        <Text id="upload-section-label" appearance="heading-xxs" color="primary-grey-80">
+                        <span
+                          id="upload-section-label"
+                          style={textStyle("heading-xxs", "primary-grey-80")}
+                        >
                           {uploadFilesHeading}
-                        </Text>
+                        </span>
                       </div>
 
                       <div
@@ -1060,7 +1169,7 @@ const CreateRequest = () => {
                           tabIndex={0}
                           aria-label={`${uploadButtonText}. ${uploadInstruction}`}
                           onKeyDown={(e) => {
-                            if (e.key === 'Enter' || e.key === ' ') {
+                            if (e.key === "Enter" || e.key === " ") {
                               e.preventDefault();
                               handleUploadFilesClick();
                             }
@@ -1075,21 +1184,21 @@ const CreateRequest = () => {
                             aria-label="Upload file"
                           />
 
-                          <div className="flex items-center justify-center" aria-hidden="true">
-                            <Icon
-                              ic={<IcUpload height={23} width={23} />}
-                              color="primary_60"
-                            />
-                            <Text appearance="button" color="primary-60">
+                          <div
+                            className="flex items-center justify-center"
+                            aria-hidden="true"
+                          >
+                            <FaUpload size={ICON_SIZE} />
+                            <span style={textStyle("button", "primary-60")}>
                               {uploadButtonText}
-                            </Text>
+                            </span>
                           </div>
                         </div>
 
                         <div id="upload-instruction">
-                          <Text appearance="body-xs" color="primary-grey-80">
+                          <span style={textStyle("body-xs", "primary-grey-80")}>
                             {uploadInstruction}
-                          </Text>
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -1102,18 +1211,14 @@ const CreateRequest = () => {
                         className="previewFile"
                       >
                         <div className="iconandText">
-                          <Icon
-                            ic={<IcSuccess width={15} height={15} />}
-                            color="feedback_success_50"
-                          />
-                          <Text appearance="body-xs" color="primary-grey-80">
+                          <FaCheckCircle size={ICON_SIZE} style={{ color: "green" }} />
+                          <span style={textStyle("body-xs", "primary-grey-80")}>
                             {uploadFileName}
-                          </Text>
+                          </span>
                         </div>
                       </div>
-                      <Icon
-                        ic={<IcClose width={15} height={15} />}
-                        color="primary_60"
+                      <FaTimes
+                        size={ICON_SIZE}
                         className="selecetd-file-display"
                         onClick={handleRemoveUploadFile}
                       />
@@ -1127,13 +1232,32 @@ const CreateRequest = () => {
                   }`}
                 >
                   <div style={{}}>
-                    <ActionButton
-                      kind="primary"
-                      size="medium"
-                      state="normal"
-                      label={getTranslation("create_submit_request", "Submit Request")}
+                    <button
                       onClick={handlePublish}
-                    />
+                      aria-label="Submit Request"
+                      style={{
+                        backgroundColor: "#2563eb", // same modern blue
+                        color: "#fff",
+                        border: "none",
+                        padding: "10px 20px", // slightly smaller than large button
+                        borderRadius: "999px",
+                        fontSize: "11px",
+                        fontWeight: "600",
+                        cursor: "pointer",
+                        transition: "0.2s",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = "#1d4ed8";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "#2563eb";
+                      }}
+                    >
+                      {getTranslation(
+                        "create_submit_request",
+                        "Submit Request",
+                      )}
+                    </button>
                   </div>
                 </div>
               </div>

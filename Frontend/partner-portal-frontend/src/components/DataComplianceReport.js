@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { Text, Tabs, TabItem, BadgeV2 } from '../custom-components';
-import { IcSuccessColored, IcError, IcWarningColored } from '../custom-components/Icon';
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { Text, Tabs, TabItem, BadgeV2, Icon } from "../custom-components";
+import { IcSuccessColored, IcError, IcWarningColored, IcCode, IcTicketDetails, IcTimelapse } from "../custom-components/Icon";
 import { useSelector } from "react-redux";
 import "../styles/dataComplianceReport.css";
 import { isSandboxMode } from "../utils/sandboxMode";
@@ -20,16 +20,11 @@ const DataComplianceReport = () => {
   const businessId = useSelector((state) => state.common.business_id);
   const token = useSelector((state) => state.common.session_token);
 
-  useEffect(() => {
-    fetchComplianceData();
-  }, [tenantId, businessId]);
-
-  const fetchComplianceData = async () => {
+  const fetchComplianceData = useCallback(async (signal) => {
     setLoading(true);
     setError(null);
     try {
       if (isSandboxMode()) {
-        // Fetch mock data for sandbox
         const callbackResponse = await sandboxAPICall(
           'compliance/callbacks',
           'GET',
@@ -43,7 +38,8 @@ const DataComplianceReport = () => {
           {}
         );
         
-        // Extract stats data
+        if (signal?.aborted) return;
+
         if (callbackResponse && callbackResponse.data && callbackResponse.data.stats) {
           setStats(callbackResponse.data.stats);
         }
@@ -55,29 +51,31 @@ const DataComplianceReport = () => {
         setCallbackData(transformCallbackData(callbackResponse));
         setDeletionData(transformDeletionData(deletionResponse));
       } else {
-        // Real API calls using specific endpoints from config
-        
-        // Fetch callback stats
         const callbackResponse = await fetch(
           config.compliance_callbacks_stats,
           {
             method: 'GET',
+            signal,
             headers: {
               'Content-Type': 'application/json',
               'X-Tenant-Id': tenantId,
+              'tenant-id': tenantId,
+              'business-id': businessId,
               'x-session-token': token
             }
           }
         );
 
-        // Fetch purge stats
         const deletionResponse = await fetch(
           config.compliance_purge_stats,
           {
             method: 'GET',
+            signal,
             headers: {
               'Content-Type': 'application/json',
               'X-Tenant-Id': tenantId,
+              'tenant-id': tenantId,
+              'business-id': businessId,
               'x-session-token': token
             }
           }
@@ -90,7 +88,8 @@ const DataComplianceReport = () => {
         const callbackJson = await callbackResponse.json();
         const deletionJson = await deletionResponse.json();
 
-        // Extract stats data
+        if (signal?.aborted) return;
+
         if (callbackJson && callbackJson.data && callbackJson.data.stats) {
           setStats(callbackJson.data.stats);
         }
@@ -99,17 +98,24 @@ const DataComplianceReport = () => {
           setPurgeStats(deletionJson.data.stats);
         }
 
-        // Transform the API response to match our component's expected format
         setCallbackData(transformCallbackData(callbackJson));
         setDeletionData(transformDeletionData(deletionJson));
       }
     } catch (error) {
+      if (error.name === 'AbortError') return;
       console.error("Error fetching compliance data:", error);
       setError("Failed to load compliance data. Please try again.");
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) setLoading(false);
     }
-  };
+  }, [tenantId, businessId, token]);
+
+  useEffect(() => {
+    if (!tenantId || !businessId) return;
+    const controller = new AbortController();
+    fetchComplianceData(controller.signal);
+    return () => controller.abort();
+  }, [fetchComplianceData]);
 
   // Transform callback API response to component format
   const transformCallbackData = (apiData) => {
@@ -162,47 +168,34 @@ const DataComplianceReport = () => {
     if (!apiData || !apiData.data) return [];
     
     const rows = [];
-    const { dataFiduciary = {}, dataProcessor = {} } = apiData.data;
+    const { dataProcessor = {} } = apiData.data;
     
-    // Process Data Fiduciaries
-    Object.keys(dataFiduciary).forEach(id => {
-      const entity = dataFiduciary[id];
-      if (entity.byEventType && Array.isArray(entity.byEventType)) {
-        entity.byEventType.forEach(eventData => {
-          rows.push({
-            dfProcessor: entity.name || 'N/A',
-            consentCount: typeof eventData.consentCount === 'number' ? eventData.consentCount : 0,
-            consentType: eventData.eventType || 'N/A',
-            dateOfEvent: eventData.dateOfEvent || 'N/A',
-            slaDays: typeof eventData.slaDays === 'number' ? eventData.slaDays : 7,
-            piiDataType: eventData.piiDataType || 'N/A',
-            totalRecords: typeof eventData.totalRecords === 'number' ? eventData.totalRecords : 0,
-            recordsPurged: typeof eventData.recordsPurged === 'number' ? eventData.recordsPurged : 0,
-            pendingRecords: typeof eventData.pendingRecords === 'number' ? eventData.pendingRecords : 0,
-            daysOverdue: typeof eventData.daysOverdue === 'number' ? eventData.daysOverdue : 0,
-            status: eventData.status || (eventData.pendingRecords > 0 ? 'Overdue' : 'Completed')
-          });
-        });
-      }
-    });
-    
-    // Process Data Processors
+    // Process Data Processors only
     Object.keys(dataProcessor).forEach(id => {
       const entity = dataProcessor[id];
       if (entity.byEventType && Array.isArray(entity.byEventType)) {
         entity.byEventType.forEach(eventData => {
+          // Determine status based on pending and overdue events
+          const pendingEvents = typeof eventData.pendingEvents === 'number' ? eventData.pendingEvents : 0;
+          const overdueEvents = typeof eventData.overdueEvents === 'number' ? eventData.overdueEvents : 0;
+          let status = 'Completed';
+          if (overdueEvents > 0) {
+            status = 'Overdue';
+          } else if (pendingEvents > 0) {
+            status = 'Pending';
+          }
+          
           rows.push({
             dfProcessor: entity.name || 'N/A',
-            consentCount: typeof eventData.consentCount === 'number' ? eventData.consentCount : 0,
-            consentType: eventData.eventType || 'N/A',
-            dateOfEvent: eventData.dateOfEvent || 'N/A',
-            slaDays: typeof eventData.slaDays === 'number' ? eventData.slaDays : 7,
-            piiDataType: eventData.piiDataType || 'N/A',
-            totalRecords: typeof eventData.totalRecords === 'number' ? eventData.totalRecords : 0,
-            recordsPurged: typeof eventData.recordsPurged === 'number' ? eventData.recordsPurged : 0,
-            pendingRecords: typeof eventData.pendingRecords === 'number' ? eventData.pendingRecords : 0,
-            daysOverdue: typeof eventData.daysOverdue === 'number' ? eventData.daysOverdue : 0,
-            status: eventData.status || (eventData.pendingRecords > 0 ? 'Overdue' : 'Completed')
+            eventType: eventData.eventType || 'N/A',
+            totalRecords: typeof eventData.totalEvents === 'number' ? eventData.totalEvents : 0,
+            recordsPurged: typeof eventData.purgedEvents === 'number' ? eventData.purgedEvents : 0,
+            pendingRecords: pendingEvents,
+            purgePercentage: typeof eventData.purgePercentage === 'number' ? eventData.purgePercentage : 0,
+            pendingPercentage: typeof eventData.pendingPercentage === 'number' ? eventData.pendingPercentage : 0,
+            overduePercentage: typeof eventData.overduePercentage === 'number' ? eventData.overduePercentage : 0,
+            daysOverdue: overdueEvents, // Using overdueEvents count as days overdue
+            status: status
           });
         });
       }
@@ -210,6 +203,61 @@ const DataComplianceReport = () => {
     
     return rows;
   };
+
+  // Calculate purge statistics from table data
+  const calculatedPurgeStats = useMemo(() => {
+    if (!deletionData || deletionData.length === 0) {
+      return null;
+    }
+
+    // Calculate totals from all rows
+    const totalEvents = deletionData.reduce((sum, row) => sum + (row.totalRecords || 0), 0);
+    const purgedEvents = deletionData.reduce((sum, row) => sum + (row.recordsPurged || 0), 0);
+    const pendingEvents = deletionData.reduce((sum, row) => sum + (row.pendingRecords || 0), 0);
+    const overdueEvents = deletionData.reduce((sum, row) => sum + (row.daysOverdue || 0), 0);
+
+    // Calculate percentages
+    const purgePercentage = totalEvents > 0 ? (purgedEvents / totalEvents) * 100 : 0;
+    const pendingPercentage = totalEvents > 0 ? (pendingEvents / totalEvents) * 100 : 0;
+    const overduePercentage = totalEvents > 0 ? (overdueEvents / totalEvents) * 100 : 0;
+
+    // Group by event type
+    const eventTypeMap = {};
+    deletionData.forEach(row => {
+      const eventType = row.eventType || 'N/A';
+      if (!eventTypeMap[eventType]) {
+        eventTypeMap[eventType] = {
+          eventType: eventType,
+          totalEvents: 0,
+          purgedEvents: 0,
+          pendingEvents: 0,
+          overdueEvents: 0
+        };
+      }
+      eventTypeMap[eventType].totalEvents += row.totalRecords || 0;
+      eventTypeMap[eventType].purgedEvents += row.recordsPurged || 0;
+      eventTypeMap[eventType].pendingEvents += row.pendingRecords || 0;
+      eventTypeMap[eventType].overdueEvents += row.daysOverdue || 0;
+    });
+
+    const byEventType = Object.values(eventTypeMap).map(event => ({
+      ...event,
+      purgePercentage: event.totalEvents > 0 ? (event.purgedEvents / event.totalEvents) * 100 : 0,
+      pendingPercentage: event.totalEvents > 0 ? (event.pendingEvents / event.totalEvents) * 100 : 0,
+      overduePercentage: event.totalEvents > 0 ? (event.overdueEvents / event.totalEvents) * 100 : 0
+    }));
+
+    return {
+      totalEvents,
+      purgedEvents,
+      pendingEvents,
+      overdueEvents,
+      purgePercentage,
+      pendingPercentage,
+      overduePercentage,
+      byEventType
+    };
+  }, [deletionData]);
 
   const getStatusBadge = (status) => {
     if (status === "Completed") {
@@ -398,8 +446,8 @@ const DataComplianceReport = () => {
       <div className="compliance-tabs-wrapper">
         <div className="compliance-tabs">
           <Tabs
-            activeTab={activeTab}
-            onChange={(index) => setActiveTab(index)}
+            activeKey={activeTab}
+            onTabChange={(index) => setActiveTab(index)}
             variant="default"
           >
             <TabItem label="Consent Event & Grievance Callbacks" />
@@ -418,7 +466,7 @@ const DataComplianceReport = () => {
             <IcError height={48} width={48} />
             <Text appearance="body-md" color="error-100">{error}</Text>
             <button 
-              onClick={fetchComplianceData} 
+              onClick={() => fetchComplianceData()} 
               className="retry-button"
               style={{
                 marginTop: '16px',
@@ -492,6 +540,11 @@ const DataComplianceReport = () => {
                             Failure %
                           </Text>
                         </th>
+                        <th>
+                          <Text appearance="body-xs-bold" color="primary-grey-80">
+                            Logs
+                          </Text>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
@@ -556,6 +609,9 @@ const DataComplianceReport = () => {
                             </Text>
                               </span>
                           </td>
+                          <td>
+                            <Icon ic={<IcTicketDetails />} size="medium" color="primary_grey_80" />
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -614,22 +670,7 @@ const DataComplianceReport = () => {
                         </th>
                         <th>
                           <Text appearance="body-xs-bold" color="primary-grey-80">
-                            # Consents
-                          </Text>
-                        </th>
-                        <th>
-                          <Text appearance="body-xs-bold" color="primary-grey-80">
-                            Date of Event
-                          </Text>
-                        </th>
-                        <th style={{ textAlign: "center" }}>
-                          <Text appearance="body-xs-bold" color="primary-grey-80">
-                            SLA (Days)
-                          </Text>
-                        </th>
-                        <th>
-                          <Text appearance="body-xs-bold" color="primary-grey-80">
-                            PII Data Type
+                            Event types
                           </Text>
                         </th>
                         <th style={{ textAlign: "right" }}>
@@ -649,7 +690,22 @@ const DataComplianceReport = () => {
                         </th>
                         <th style={{ textAlign: "center" }}>
                           <Text appearance="body-xs-bold" color="primary-grey-80">
-                            Days Overdue
+                            Purge %
+                          </Text>
+                        </th>
+                        <th style={{ textAlign: "center" }}>
+                          <Text appearance="body-xs-bold" color="primary-grey-80">
+                            Pending %
+                          </Text>
+                        </th>
+                        <th style={{ textAlign: "center" }}>
+                          <Text appearance="body-xs-bold" color="primary-grey-80">
+                            Overdue %
+                          </Text>
+                        </th>
+                        <th style={{ textAlign: "center" }}>
+                          <Text appearance="body-xs-bold" color="primary-grey-80">
+                            Overdue
                           </Text>
                         </th>
                         <th>
@@ -657,12 +713,17 @@ const DataComplianceReport = () => {
                             Status
                           </Text>
                         </th>
+                        <th className="logs-column-sticky">
+                          <Text appearance="body-xs-bold" color="primary-grey-80">
+                            Logs
+                          </Text>
+                        </th>
                       </tr>
                     </thead>
                     <tbody>
                       {deletionData.length === 0 ? (
                         <tr>
-                          <td colSpan="10" style={{ textAlign: "center", padding: "40px" }}>
+                          <td colSpan="11" style={{ textAlign: "center", padding: "40px" }} className="logs-column-sticky">
                             <Text appearance="body-md" color="grey-80">No data available</Text>
                           </td>
                         </tr>
@@ -673,22 +734,7 @@ const DataComplianceReport = () => {
                               <Text appearance="body-sm-bold">{row.dfProcessor}</Text>
                             </td>
                             <td>
-                              <div>
-                                <Text appearance="body-sm">{String(row.consentCount)}</Text>
-                                <br />
-                                <Text appearance="body-xs" color="grey-80">
-                                  ({row.consentType})
-                                </Text>
-                              </div>
-                            </td>
-                            <td>
-                              <Text appearance="body-xs">{row.dateOfEvent}</Text>
-                            </td>
-                            <td style={{ textAlign: "center" }}>
-                              <Text appearance="body-sm">{String(row.slaDays)}</Text>
-                            </td>
-                            <td>
-                              <Text appearance="body-xs">{row.piiDataType}</Text>
+                              <Text appearance="body-sm">{row.eventType || row.consentType || "-"}</Text>
                             </td>
                             <td style={{ textAlign: "right" }}>
                               <Text appearance="body-sm-bold">{String(row.totalRecords)}</Text>
@@ -707,6 +753,21 @@ const DataComplianceReport = () => {
                               </Text>
                             </td>
                             <td style={{ textAlign: "center" }}>
+                              <Text appearance="body-sm">
+                                {typeof row.purgePercentage === 'number' ? row.purgePercentage.toFixed(1) : '0.0'}%
+                              </Text>
+                            </td>
+                            <td style={{ textAlign: "center" }}>
+                              <Text appearance="body-sm" color={row.pendingPercentage > 0 ? "error-100" : "grey-80"}>
+                                {typeof row.pendingPercentage === 'number' ? row.pendingPercentage.toFixed(1) : '0.0'}%
+                              </Text>
+                            </td>
+                            <td style={{ textAlign: "center" }}>
+                              <Text appearance="body-sm" color={row.overduePercentage > 0 ? "error-100" : "grey-80"}>
+                                {typeof row.overduePercentage === 'number' ? row.overduePercentage.toFixed(1) : '0.0'}%
+                              </Text>
+                            </td>
+                            <td style={{ textAlign: "center" }}>
                               {row.daysOverdue > 0 ? (
                                 <span className="overdue-badge">
                                   <Text appearance="body-xs-bold" color="error-100">
@@ -720,6 +781,9 @@ const DataComplianceReport = () => {
                               )}
                             </td>
                             <td>{getStatusBadge(row.status)}</td>
+                            <td className="logs-column-sticky">
+                              <Icon ic={<IcTicketDetails />} size="medium" color="primary_grey_80" />
+                            </td>
                           </tr>
                         ))
                       )}
@@ -730,7 +794,7 @@ const DataComplianceReport = () => {
 
                   {/* Right Column: Charts */}
                   <div className="compliance-charts-column">
-                    {purgeStats && (
+                    {calculatedPurgeStats && (
                       <>
                         {/* Purge Statistics Donut Chart */}
                         <div className="chart-section">
@@ -740,7 +804,7 @@ const DataComplianceReport = () => {
                                 Purge Statistics
                               </Text>
                               <div className="donut-total-stat">
-                                <Text appearance="heading-l" color="primary-grey-100">{purgeStats.totalEvents || 0}</Text>
+                                <Text appearance="heading-l" color="primary-grey-100">{calculatedPurgeStats.totalEvents || 0}</Text>
                                 <Text appearance="body-xs" color="primary-grey-60">Total Events</Text>
                               </div>
                             </div>
@@ -757,7 +821,7 @@ const DataComplianceReport = () => {
                               />
                               
                               {/* Purged arc (green) */}
-                              {purgeStats.purgedEvents > 0 && (
+                              {calculatedPurgeStats.purgedEvents > 0 && (
                                 <circle
                                   cx="100"
                                   cy="100"
@@ -765,7 +829,7 @@ const DataComplianceReport = () => {
                                   fill="none"
                                   stroke="#10B981"
                                   strokeWidth="30"
-                                  strokeDasharray={`${(purgeStats.purgePercentage / 100) * (2 * Math.PI * 70)} ${2 * Math.PI * 70}`}
+                                  strokeDasharray={`${(calculatedPurgeStats.purgePercentage / 100) * (2 * Math.PI * 70)} ${2 * Math.PI * 70}`}
                                   strokeDashoffset={0}
                                   transform="rotate(-90 100 100)"
                                   strokeLinecap="round"
@@ -773,7 +837,7 @@ const DataComplianceReport = () => {
                               )}
                               
                               {/* Pending/Overdue arc (red) */}
-                              {purgeStats.pendingEvents > 0 && (
+                              {calculatedPurgeStats.pendingEvents > 0 && (
                                 <circle
                                   cx="100"
                                   cy="100"
@@ -781,8 +845,8 @@ const DataComplianceReport = () => {
                                   fill="none"
                                   stroke="#EF4444"
                                   strokeWidth="30"
-                                  strokeDasharray={`${(purgeStats.pendingPercentage / 100) * (2 * Math.PI * 70)} ${2 * Math.PI * 70}`}
-                                  strokeDashoffset={-(purgeStats.purgePercentage / 100) * (2 * Math.PI * 70)}
+                                  strokeDasharray={`${(calculatedPurgeStats.pendingPercentage / 100) * (2 * Math.PI * 70)} ${2 * Math.PI * 70}`}
+                                  strokeDashoffset={-(calculatedPurgeStats.purgePercentage / 100) * (2 * Math.PI * 70)}
                                   transform="rotate(-90 100 100)"
                                   strokeLinecap="round"
                                 />
@@ -797,7 +861,7 @@ const DataComplianceReport = () => {
                                 fontWeight="bold"
                                 fill="#10B981"
                               >
-                                {purgeStats.purgePercentage?.toFixed(1) || 0}%
+                                {calculatedPurgeStats.purgePercentage?.toFixed(1) || 0}%
                               </text>
                               <text
                                 x="100"
@@ -813,14 +877,14 @@ const DataComplianceReport = () => {
                         </div>
                         
                         {/* Event Type Chart */}
-                        {purgeStats.byEventType && purgeStats.byEventType.length > 0 && (
+                        {calculatedPurgeStats.byEventType && calculatedPurgeStats.byEventType.length > 0 && (
                           <div className="chart-section">
                             <div className="event-type-chart">
                               <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "16px" }}>
                                 Purge Events by Type
                               </Text>
-                              {purgeStats.byEventType.map((event, index) => {
-                                const maxEvents = Math.max(...purgeStats.byEventType.map(e => e.totalEvents));
+                              {calculatedPurgeStats.byEventType.map((event, index) => {
+                                const maxEvents = Math.max(...calculatedPurgeStats.byEventType.map(e => e.totalEvents));
                                 const percentage = maxEvents > 0 ? (event.totalEvents / maxEvents) * 100 : 0;
                                 const colors = ['#3B82F6', '#10B981', '#F59E0B', '#6366F1'];
                                 const color = colors[index % colors.length];

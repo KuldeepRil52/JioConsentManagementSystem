@@ -51,7 +51,7 @@ const DataDeletionPurgeDashboard = () => {
   };
 
   // Fetch deletion requests from API
-  const fetchDeletionRequests = useCallback(async () => {
+  const fetchDeletionRequests = useCallback(async (signal) => {
     if (!tenantId || !businessId || !sessionToken) {
       console.warn("Missing tenantId, businessId, or sessionToken, skipping API call");
       setLoading(false);
@@ -64,11 +64,11 @@ const DataDeletionPurgeDashboard = () => {
 
       const txnId = generateTransactionId();
 
-      // Ensure Bearer prefix is added if not already present
       const authToken = sessionToken?.startsWith('Bearer ') ? sessionToken : `Bearer ${sessionToken || ''}`;
 
       const response = await fetch(config.consent_deletion_list, {
         method: 'GET',
+        signal,
         headers: {
           'Content-Type': 'application/json',
           'X-Tenant-Id': tenantId,
@@ -83,9 +83,9 @@ const DataDeletionPurgeDashboard = () => {
       }
 
       const responseData = await response.json();
-      console.log("Deletion requests API response:", responseData);
 
-      // Update stats from data.overview (always set stats, even if zero)
+      if (signal?.aborted) return;
+
       const overview = responseData?.data?.overview || {};
       setStats({
         deletionRequests: safeNumber(overview.deletionRequests),
@@ -96,18 +96,31 @@ const DataDeletionPurgeDashboard = () => {
         notificationPending: safeNumber(overview.notificationPending),
       });
 
-      // Update deletion requests from data.deletionRequests.data
       if (responseData?.data?.deletionRequests?.data && Array.isArray(responseData.data.deletionRequests.data)) {
         const apiRequests = responseData.data.deletionRequests.data;
 
-        // Map API response to component format
         const mappedRequests = apiRequests.map((item, index) => {
-          // Parse processors string (e.g., "0/0 Done" -> processorsCompleted: 0, processorsTotal: 0)
-          const processorsMatch = item.processors?.match(/(\d+)\/(\d+)/);
-          const processorsCompleted = processorsMatch ? parseInt(processorsMatch[1], 10) : 0;
-          const processorsTotal = processorsMatch ? parseInt(processorsMatch[2], 10) : 0;
+          const processorsMatch = String(item.processors || "").match(/(\d+)\s*\/\s*(\d+)/);
+          const processorsCompleted =
+            processorsMatch
+              ? parseInt(processorsMatch[1], 10)
+              : safeNumber(
+                item.processorsCompleted ??
+                item.processorCompleted ??
+                item.completedProcessors ??
+                item.deletedProcessors
+              );
+          const processorsTotal =
+            processorsMatch
+              ? parseInt(processorsMatch[2], 10)
+              : safeNumber(
+                item.processorsTotal ??
+                item.processorTotal ??
+                item.totalProcessors ??
+                item.processorCount
+              );
+          const processorsDisplay = `${processorsCompleted}/${processorsTotal}`;
 
-          // Map trigger to reason
           const reasonMap = {
             'CONSENT_WITHDRAWN': 'Withdraw',
             'CONSENT_EXPIRED': 'Expiry',
@@ -116,12 +129,10 @@ const DataDeletionPurgeDashboard = () => {
           };
           const reason = reasonMap[item.trigger] || item.trigger || 'Withdraw';
 
-          // Map dfStatus (convert to title case: DELETED -> Deleted)
           const dfStatus = item.dfStatus
             ? item.dfStatus.charAt(0).toUpperCase() + item.dfStatus.slice(1).toLowerCase()
             : 'Pending';
 
-          // Map overall status
           const overallMap = {
             'Done': 'All deleted',
             'DONE': 'All deleted',
@@ -140,6 +151,7 @@ const DataDeletionPurgeDashboard = () => {
             dfStatus: dfStatus,
             processorsCompleted: processorsCompleted,
             processorsTotal: processorsTotal,
+            processorsDisplay: processorsDisplay,
             overallStatus: overallStatus,
             eventTimestamp: item.eventTimestamp,
             eventId: item.eventId,
@@ -148,24 +160,24 @@ const DataDeletionPurgeDashboard = () => {
 
         setDeletionRequests(mappedRequests);
       } else {
-        // If no data, set empty array
         setDeletionRequests([]);
       }
     } catch (err) {
+      if (err.name === 'AbortError') return;
       console.error("Error fetching deletion requests:", err);
       setError(err.message);
-      // Keep dummy data on error for now
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) setLoading(false);
     }
   }, [tenantId, businessId, sessionToken]);
 
-  // Fetch data when component mounts
+  // Re-fetch when business group or credentials change
   useEffect(() => {
-    if (tenantId && businessId && sessionToken) {
-      fetchDeletionRequests();
-    }
-  }, [tenantId, businessId, sessionToken, fetchDeletionRequests]);
+    if (!tenantId || !businessId || !sessionToken) return;
+    const controller = new AbortController();
+    fetchDeletionRequests(controller.signal);
+    return () => controller.abort();
+  }, [fetchDeletionRequests]);
 
   // Deletion requests from API
   const [deletionRequests, setDeletionRequests] = useState([]);
@@ -209,21 +221,41 @@ const DataDeletionPurgeDashboard = () => {
       if (!matchesReason) return false;
     }
 
-    // Date range filter (based on event timestamp - same as event timestamp in API)
+    // Date range filter – compare in IST so the user-selected dates match
     const hasDateFilter = filters.dateFrom || filters.dateTo;
     if (hasDateFilter) {
       const rawTs = item.eventTimestamp;
       if (rawTs == null || rawTs === '') return false;
-      const eventTime = typeof rawTs === 'number' ? rawTs : new Date(String(rawTs).endsWith('Z') ? rawTs : rawTs + 'Z').getTime();
-      if (isNaN(eventTime)) return false;
-      if (filters.dateFrom) {
-        const fromTime = new Date(filters.dateFrom + 'T00:00:00.000Z').getTime();
-        if (eventTime < fromTime) return false;
+
+      // Robustly parse the event timestamp (handles epoch s/ms, ISO strings
+      // with nanosecond precision, and strings without timezone suffix)
+      let eventDate;
+      if (typeof rawTs === 'number') {
+        const ms = rawTs < 1e12 ? rawTs * 1000 : rawTs;
+        eventDate = new Date(ms);
+      } else if (typeof rawTs === 'string') {
+        const trimmed = String(rawTs).trim();
+        if (/^\d{10,13}$/.test(trimmed)) {
+          const n = Number(trimmed);
+          eventDate = new Date(n < 1e12 ? n * 1000 : n);
+        } else {
+          // Truncate fractional seconds to 3 digits so Date() can parse it
+          const normalized = trimmed.replace(/(\.\d{3})\d+/, '$1');
+          const hasTz = /Z$|[+-]\d{2}:\d{2}$/.test(normalized);
+          eventDate = new Date(hasTz ? normalized : normalized + 'Z');
+        }
+      } else {
+        return false;
       }
-      if (filters.dateTo) {
-        const toTime = new Date(filters.dateTo + 'T23:59:59.999Z').getTime();
-        if (eventTime > toTime) return false;
-      }
+
+      if (isNaN(eventDate.getTime())) return false;
+
+      // Convert to IST date string (YYYY-MM-DD) so we compare in the same
+      // timezone the user sees; 'en-CA' locale produces YYYY-MM-DD format.
+      const istDateStr = eventDate.toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
+
+      if (filters.dateFrom && istDateStr < filters.dateFrom) return false;
+      if (filters.dateTo && istDateStr > filters.dateTo) return false;
     }
 
     return true;
@@ -290,9 +322,11 @@ const DataDeletionPurgeDashboard = () => {
     }
 
     const csvData = sortedRequests.map((request) => {
-      const processorsCompleted = request.processorsCompleted ?? 0;
-      const processorsTotal = request.processorsTotal ?? 0;
-      const processorsStr = `${processorsCompleted}/${processorsTotal}`;
+      // Use "completed / total" format with spaces around the slash so Excel
+      // does NOT auto-interpret values like 0/1 as dates (01-Jan).
+      const completed = safeNumber(request.processorsCompleted);
+      const total = safeNumber(request.processorsTotal);
+      const processorsStr = `${completed} / ${total}`;
       return {
         [CSV_HEADERS[0]]: request.consentId ?? 'N/A',
         [CSV_HEADERS[1]]: request.dataPrincipal ?? 'N/A',
@@ -803,6 +837,7 @@ const DataDeletionPurgeDashboard = () => {
                         <input
                           type="date"
                           value={filters.dateFrom}
+                          max={filters.dateTo || new Date().toISOString().split('T')[0]}
                           onChange={(e) =>
                             setFilters({ ...filters, dateFrom: e.target.value })
                           }
@@ -813,6 +848,8 @@ const DataDeletionPurgeDashboard = () => {
                         <input
                           type="date"
                           value={filters.dateTo}
+                          min={filters.dateFrom || ''}
+                          max={new Date().toISOString().split('T')[0]}
                           onChange={(e) =>
                             setFilters({ ...filters, dateTo: e.target.value })
                           }
@@ -943,7 +980,7 @@ const DataDeletionPurgeDashboard = () => {
                       </td>
                       <td>
                         <Text appearance="body-xs" color="black">
-                          {item.processorsCompleted}/{item.processorsTotal}
+                          {item.processorsDisplay || `${safeNumber(item.processorsCompleted)}/${safeNumber(item.processorsTotal)}`}
                         </Text>
                       </td>
                       <td>

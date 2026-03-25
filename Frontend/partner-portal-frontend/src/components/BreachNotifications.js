@@ -1,23 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Text, ActionButton, Icon } from "../custom-components";
-import { useSelector } from "react-redux";
-import { IcEditPen, IcTrash, IcSort, IcWarning } from "../custom-components/Icon";
 import React, { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { Text, ActionButton, Button, Icon } from "../custom-components";
-import { IcEditPen, IcTrash, IcSort, IcDownload, IcVisible, IcNotification } from "../custom-components/Icon";
-import { Slide, ToastContainer, toast } from "react-toastify";
-import Select from "react-select";
-import CustomToast from "./CustomToastContainer";
-import { generateTransactionId } from "../utils/transactionId";
-import { exportToCSV } from "../utils/csvExport";
-import config from "../utils/config";
-import "../styles/pageConfiguration.css";
-import "../styles/breachNotifications.css";
-import "../styles/toast.css";
-import { IcAlarmSensor } from '../custom-components/Icon';
-import { IcWarningColored } from '../custom-components/Icon';
-import { IcSuccessColored } from '../custom-components/Icon';
+import { IcEditPen, IcTrash, IcSort, IcDownload, IcVisible, IcNotification, IcFilter, IcClose, IcAlarmSensor, IcWarningColored, IcSuccessColored } from "../custom-components/Icon";
 
 const BreachNotifications = () => {
   const navigate = useNavigate();
@@ -43,6 +28,14 @@ const BreachNotifications = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState('asc');
+
+  // Filter state
+  const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    status: [],
+    dateFrom: "",
+    dateTo: "",
+  });
 
   // Status options
   const statusOptions = [
@@ -129,8 +122,10 @@ const BreachNotifications = () => {
           id: breach.id || `BR-${index + 1}`,
           incidentId: breach.incidentId || `BR-${index + 1}`,
           status: breach.status || 'INVESTIGATION',
-          discoveryDateTime: formatDateTime(breach.incidentDetails?.discoveryDateTime),
-          occurrenceDateTime: formatDateTime(breach.incidentDetails?.occurrenceDateTime),
+          discoveryDateTime: breach.incidentDetails?.discoveryDateTime,
+          occurrenceDateTime: breach.incidentDetails?.occurrenceDateTime,
+          discoveryDateTimeFormatted: formatDateTime(breach.incidentDetails?.discoveryDateTime),
+          occurrenceDateTimeFormatted: formatDateTime(breach.incidentDetails?.occurrenceDateTime),
           breachType: formatBreachType(breach.incidentDetails?.breachType),
           briefDescription: breach.incidentDetails?.briefDescription || 'N/A',
           systemAffected: Array.isArray(breach.incidentDetails?.affectedSystemOrService)
@@ -187,10 +182,75 @@ const BreachNotifications = () => {
     return <Icon ic={<IcSort />} size="small" color="black" />;
   };
 
-  const sortedBreachIncidents = useMemo(() => {
-    if (!sortColumn) return breachIncidents;
+  // Filter functions
+  const handleStatusFilterChange = (status) => {
+    setFilters((prev) => ({
+      ...prev,
+      status: prev.status.includes(status)
+        ? prev.status.filter((s) => s !== status)
+        : [...prev.status, status],
+    }));
+  };
 
-    return [...breachIncidents].sort((a, b) => {
+  const handleClearFilters = () => {
+    setFilters({
+      status: [],
+      dateFrom: "",
+      dateTo: "",
+    });
+    setSearchQuery("");
+  };
+
+  const handleApplyFilters = () => {
+    setFilterDrawerOpen(false);
+  };
+
+  const activeFilterCount =
+    filters.status.length + (filters.dateFrom ? 1 : 0) + (filters.dateTo ? 1 : 0);
+
+  // Filtering Logic
+  const filteredBreachIncidents = useMemo(() => {
+    return breachIncidents.filter((breach) => {
+      // Search filter
+      const query = searchQuery.toLowerCase();
+      const matchesSearch = !searchQuery || 
+        breach.incidentId?.toLowerCase().includes(query) ||
+        breach.status?.toLowerCase().includes(query) ||
+        breach.breachType?.toLowerCase().includes(query) ||
+        breach.systemAffected?.toLowerCase().includes(query) ||
+        breach.briefDescription?.toLowerCase().includes(query);
+
+      // Status filter
+      const matchesStatus = filters.status.length === 0 || filters.status.includes(breach.status);
+
+      // Date range filter (using discoveryDateTime)
+      let matchesDate = true;
+      if (filters.dateFrom || filters.dateTo) {
+        if (!breach.discoveryDateTime) {
+          matchesDate = false;
+        } else {
+          const discoveryDate = new Date(breach.discoveryDateTime);
+          if (filters.dateFrom) {
+            const fromDate = new Date(filters.dateFrom);
+            fromDate.setHours(0, 0, 0, 0);
+            if (discoveryDate < fromDate) matchesDate = false;
+          }
+          if (filters.dateTo) {
+            const toDate = new Date(filters.dateTo);
+            toDate.setHours(23, 59, 59, 999);
+            if (discoveryDate > toDate) matchesDate = false;
+          }
+        }
+      }
+
+      return matchesSearch && matchesStatus && matchesDate;
+    });
+  }, [breachIncidents, searchQuery, filters]);
+
+  const sortedBreachIncidents = useMemo(() => {
+    if (!sortColumn) return filteredBreachIncidents;
+
+    return [...filteredBreachIncidents].sort((a, b) => {
       const aValue = a[sortColumn] || '';
       const bValue = b[sortColumn] || '';
 
@@ -198,7 +258,7 @@ const BreachNotifications = () => {
       if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
       return 0;
     });
-  }, [breachIncidents, sortColumn, sortDirection]);
+  }, [filteredBreachIncidents, sortColumn, sortDirection]);
 
   // Fetch data on component mount
   useEffect(() => {
@@ -683,16 +743,137 @@ const BreachNotifications = () => {
             </svg>
           </div>
           <div className="breach-table-actions">
-            <button className="breach-icon-button" title="Filter">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <path d="M3 6h18M3 12h12M3 18h6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
+            <button
+              className={`breach-icon-button ${filterDrawerOpen ? "active" : ""} ${activeFilterCount > 0 ? "has-filters" : ""}`}
+              onClick={() => setFilterDrawerOpen(!filterDrawerOpen)}
+              title="Filter"
+            >
+              <IcFilter height={20} width={20} />
+              {activeFilterCount > 0 && (
+                <span className="filter-badge">{activeFilterCount}</span>
+              )}
             </button>
             <button className="breach-icon-button" onClick={handleDownloadCSV} title="Download CSV">
               <IcDownload height={20} width={20} />
             </button>
           </div>
         </div>
+
+        {/* Filter Drawer */}
+        {filterDrawerOpen && (
+          <>
+            <div
+              className="breach-filter-drawer-overlay"
+              onClick={() => setFilterDrawerOpen(false)}
+            />
+            <div className="breach-filter-drawer">
+              <div className="filter-drawer-header">
+                <div className="filter-drawer-title">
+                  <IcFilter height={24} width={24} />
+                  <Text appearance="heading-xs" color="primary-grey-100">
+                    Filters
+                  </Text>
+                </div>
+                <button
+                  className="filter-drawer-close"
+                  onClick={() => setFilterDrawerOpen(false)}
+                >
+                  <IcClose height={24} width={24} />
+                </button>
+              </div>
+
+              <div className="filter-drawer-content">
+                {/* Search */}
+                <div className="filter-section">
+                  <Text appearance="body-s-bold" color="primary-grey-100">
+                    Search
+                  </Text>
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '10px 12px',
+                      border: '1px solid #e0e0e0',
+                      borderRadius: '6px',
+                      fontSize: '14px',
+                    }}
+                  />
+                </div>
+
+                {/* Status Filter */}
+                <div className="filter-section">
+                  <Text appearance="body-s-bold" color="primary-grey-100">
+                    Status
+                  </Text>
+                  <div className="filter-chips">
+                    {statusOptions.map((opt) => (
+                      <button
+                        key={opt.value}
+                        className={`filter-chip ${filters.status.includes(opt.value) ? "active" : ""}`}
+                        onClick={() => handleStatusFilterChange(opt.value)}
+                      >
+                        {opt.label}
+                        {filters.status.includes(opt.value) && (
+                          <IcClose height={16} width={16} />
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Date Range */}
+                <div className="filter-section">
+                  <Text appearance="body-s-bold" color="primary-grey-100">
+                    Date range (Discovery Date)
+                  </Text>
+                  <div className="filter-date-range">
+                    <div className="filter-date-input">
+                      <label>From</label>
+                      <input
+                        type="date"
+                        value={filters.dateFrom}
+                        max={filters.dateTo || new Date().toISOString().split('T')[0]}
+                        onChange={(e) =>
+                          setFilters({ ...filters, dateFrom: e.target.value })
+                        }
+                      />
+                    </div>
+                    <div className="filter-date-input">
+                      <label>To</label>
+                      <input
+                        type="date"
+                        value={filters.dateTo}
+                        min={filters.dateFrom || ''}
+                        max={new Date().toISOString().split('T')[0]}
+                        onChange={(e) =>
+                          setFilters({ ...filters, dateTo: e.target.value })
+                        }
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="filter-drawer-footer">
+                <ActionButton
+                  kind="secondary"
+                  size="medium"
+                  label="Clear all"
+                  onClick={handleClearFilters}
+                />
+                <ActionButton
+                  kind="primary"
+                  size="medium"
+                  label="Apply"
+                  onClick={handleApplyFilters}
+                />
+              </div>
+            </div>
+          </>
+        )}
 
         {/* Table Section */}
         <div className="breach-table-wrapper">
@@ -849,169 +1030,138 @@ const BreachNotifications = () => {
                 <tr>
                   <td colSpan="16" style={{ textAlign: 'center', padding: '40px' }}>
                     <Text appearance="body-m" color="primary-grey-80">
-                      No breach notifications found.
+                      {searchQuery || activeFilterCount > 0 ? `No results found for current filters` : "No breach notifications found."}
                     </Text>
                   </td>
                 </tr>
               ) : (
-                sortedBreachIncidents
-                  .filter((breach) => {
-                    if (!searchQuery) return true;
-                    const query = searchQuery.toLowerCase();
-                    return (
-                      breach.incidentId?.toLowerCase().includes(query) ||
-                      breach.status?.toLowerCase().includes(query) ||
-                      breach.breachType?.toLowerCase().includes(query) ||
-                      breach.systemAffected?.toLowerCase().includes(query) ||
-                      breach.briefDescription?.toLowerCase().includes(query)
-                    );
-                  }).length === 0 ? (
-                  <tr>
-                    <td colSpan="16" style={{ textAlign: 'center', padding: '40px' }}>
-                      <Text appearance="body-m" color="primary-grey-80">
-                        No results found for "{searchQuery}"
+                sortedBreachIncidents.map((breach) => (
+                  <tr key={breach.id}>
+                    <td>
+                      <Text appearance="body-xs-bold" color="black">
+                        {breach.incidentId}
                       </Text>
                     </td>
-                  </tr>
-                ) : sortedBreachIncidents
-                  .filter((breach) => {
-                    if (!searchQuery) return true;
-                    const query = searchQuery.toLowerCase();
-                    return (
-                      breach.incidentId?.toLowerCase().includes(query) ||
-                      breach.status?.toLowerCase().includes(query) ||
-                      breach.breachType?.toLowerCase().includes(query) ||
-                      breach.systemAffected?.toLowerCase().includes(query) ||
-                      breach.briefDescription?.toLowerCase().includes(query)
-                    );
-                  })
-                  .map((breach) => (
-                    <tr key={breach.id}>
-                      <td>
-                        <Text appearance="body-xs-bold" color="black">
-                          {breach.incidentId}
-                        </Text>
-                      </td>
-                      <td>
-                        <span
-                          className={`status-badge ${getStatusClass(
-                            breach.status
-                          )}`}
-                        >
-                          {formatStatus(breach.status)}
-                        </span>
-                      </td>
-                      <td>
-                        <Text appearance="body-xs-bold" color="black">
-                          {breach.discoveryDateTime}
-                        </Text>
-                      </td>
-                      <td>
-                        <Text appearance="body-xs-bold" color="black">
-                          {breach.occurrenceDateTime}
-                        </Text>
-                      </td>
-                      <td>
-                        <Text appearance="body-xs-bold" color="black">
-                          {breach.breachType}
-                        </Text>
-                      </td>
-                      <td>
-                        <Text appearance="body-xs" color="black">
-                          {breach.briefDescription}
-                        </Text>
-                      </td>
-                      <td>
-                        <Text appearance="body-xs-bold" color="black">
-                          {breach.systemAffected}
-                        </Text>
-                      </td>
-                      <td>
-                        <Text appearance="body-xs" color="black">
-                          {breach.dataCategories}
-                        </Text>
-                      </td>
-                      <td>
-                        <Text appearance="body-xs-bold" color="black">
-                          {breach.affectedRecords}
-                        </Text>
-                      </td>
-                      <td>
-                        <Text appearance="body-xs-bold" color="black">
-                          {breach.dataEncrypted}
-                        </Text>
-                      </td>
-                      <td>
-                        <Text appearance="body-xs" color="black">
-                          {breach.riskDescription}
-                        </Text>
-                      </td>
-                      <td>
-                        <Text appearance="body-xs" color="black">
-                          {breach.dpbiNotificationDate}
-                        </Text>
-                      </td>
-                      <td>
-                        <Text appearance="body-xs-bold" color="black">
-                          {breach.referenceId}
-                        </Text>
-                      </td>
-                      <td>
-                        <Text appearance="body-xs" color="black">
-                          {breach.dataPrincipalNotificationDate}
-                        </Text>
-                      </td>
-                      <td>
-                        <Text appearance="body-xs" color="black">
-                          {breach.notificationChannels}
-                        </Text>
-                      </td>
-                      <td>
-                        <div className="breach-actions">
-                          <div className="tooltip-container">
-                            <button
-                              className="icon-btn"
-                              onClick={() => handleView(breach.incidentId)}
-                            >
-                              <IcVisible height={18} width={18} />
-                            </button>
-                            <span className="tooltip-text">View Details</span>
-                          </div>
-
-                          <div className="tooltip-container">
-                            <button
-                              className="icon-btn"
-                              onClick={() => handleEdit(breach.incidentId)}
-                            >
-                              <IcEditPen height={18} width={18} />
-                            </button>
-                            <span className="tooltip-text">Edit Breach</span>
-                          </div>
-
-                          <div className="tooltip-container">
-                            <button
-                              className="icon-btn icon-btn-notify"
-                              onClick={() => handleNotifyDPBI(breach.incidentId)}
-                              disabled
-                            >
-                              <IcNotification height={18} width={18} />
-                            </button>
-                            <span className="tooltip-text">Notify DPBI (Coming Soon)</span>
-                          </div>
-
-                          <div className="tooltip-container">
-                            <button
-                              className="icon-btn icon-btn-notify"
-                              onClick={() => handleNotifyDataPrincipals(breach.incidentId)}
-                            >
-                              <IcNotification height={18} width={18} />
-                            </button>
-                            <span className="tooltip-text">Notify Data Principals</span>
-                          </div>
+                    <td>
+                      <span
+                        className={`status-badge ${getStatusClass(
+                          breach.status
+                        )}`}
+                      >
+                        {formatStatus(breach.status)}
+                      </span>
+                    </td>
+                    <td>
+                      <Text appearance="body-xs-bold" color="black">
+                        {breach.discoveryDateTimeFormatted}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text appearance="body-xs-bold" color="black">
+                        {breach.occurrenceDateTimeFormatted}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text appearance="body-xs-bold" color="black">
+                        {breach.breachType}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text appearance="body-xs" color="black">
+                        {breach.briefDescription}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text appearance="body-xs-bold" color="black">
+                        {breach.systemAffected}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text appearance="body-xs" color="black">
+                        {breach.dataCategories}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text appearance="body-xs-bold" color="black">
+                        {breach.affectedRecords}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text appearance="body-xs-bold" color="black">
+                        {breach.dataEncrypted}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text appearance="body-xs" color="black">
+                        {breach.riskDescription}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text appearance="body-xs" color="black">
+                        {breach.dpbiNotificationDate}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text appearance="body-xs-bold" color="black">
+                        {breach.referenceId}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text appearance="body-xs" color="black">
+                        {breach.dataPrincipalNotificationDate}
+                      </Text>
+                    </td>
+                    <td>
+                      <Text appearance="body-xs" color="black">
+                        {breach.notificationChannels}
+                      </Text>
+                    </td>
+                    <td>
+                      <div className="breach-actions">
+                        <div className="tooltip-container">
+                          <button
+                            className="icon-btn"
+                            onClick={() => handleView(breach.incidentId)}
+                          >
+                            <IcVisible height={18} width={18} />
+                          </button>
+                          <span className="tooltip-text">View Details</span>
                         </div>
-                      </td>
-                    </tr>
-                  ))
+
+                        <div className="tooltip-container">
+                          <button
+                            className="icon-btn"
+                            onClick={() => handleEdit(breach.incidentId)}
+                          >
+                            <IcEditPen height={18} width={18} />
+                          </button>
+                          <span className="tooltip-text">Edit Breach</span>
+                        </div>
+
+                        <div className="tooltip-container">
+                          <button
+                            className="icon-btn icon-btn-notify"
+                            onClick={() => handleNotifyDPBI(breach.incidentId)}
+                            disabled
+                          >
+                            <IcNotification height={18} width={18} />
+                          </button>
+                          <span className="tooltip-text">Notify DPBI (Coming Soon)</span>
+                        </div>
+
+                        <div className="tooltip-container">
+                          <button
+                            className="icon-btn icon-btn-notify"
+                            onClick={() => handleNotifyDataPrincipals(breach.incidentId)}
+                          >
+                            <IcNotification height={18} width={18} />
+                          </button>
+                          <span className="tooltip-text">Notify Data Principals</span>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))
               )}
             </tbody>
           </table>

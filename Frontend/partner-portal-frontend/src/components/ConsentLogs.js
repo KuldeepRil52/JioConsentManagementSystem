@@ -53,6 +53,16 @@ const ConsentLogs = () => {
   const [sortColumn, setSortColumn] = useState(null);
   const [sortDirection, setSortDirection] = useState('asc');
 
+  const formatConsentStatus = (status) => {
+    const up = (status || "").toString().toUpperCase();
+    if (up === "WITHDRAWN" || up === "REVOKED") return "Withdrawn";
+    if (up === "ACTIVE") return "Active";
+    if (up === "INACTIVE") return "Inactive";
+    if (up === "EXPIRED") return "Expired";
+    if (up === "PENDING") return "Pending";
+    return status || "—";
+  };
+
   const handleToggle = (rowId) => {
     setExpandedRow(expandedRow === rowId ? null : rowId);
   };
@@ -390,8 +400,7 @@ const ConsentLogs = () => {
                   </Text>
                   <br></br>
                   <Text appearance="body-xs" color="primary-grey-80">
-                    {/* Consent revoked */}
-                    Consent withdrawn
+                  Consent withdrawn
                   </Text>
                 </div>
               </div>
@@ -607,7 +616,7 @@ const ConsentLogs = () => {
                             appearance="body-xs"
                             color="primary-grey-80"
                           >
-                            {formatToIST(consent.createdAt)}
+                            {formatToIST(consent.startDate || consent.createdAt)}
                           </Text>
                         </td>
                         <td>
@@ -652,7 +661,7 @@ const ConsentLogs = () => {
                         </td>
                         <td>
                           <div className="activebadge">
-                            <p className="activebadge-text">{consent.status}</p>
+                            <p className="activebadge-text">{formatConsentStatus(consent.status)}</p>
                           </div>
                         </td>
                         <td>

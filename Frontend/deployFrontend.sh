@@ -9,7 +9,7 @@ DEPLOY_PATH=""                    # Optional deployment path, leave empty if not
 SERVICES=(
     "partner-portal-frontend"
     "user-portal-frontend"
-    "consent-popup"
+    "consent-popup-frontend"
 )
 
 # Arrays to store results

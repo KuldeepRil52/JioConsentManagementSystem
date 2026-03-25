@@ -616,10 +616,8 @@ const ConsentDeletionDetail = () => {
       {/* Tabs */}
       <div className="consent-detail-tabs" style={{ marginBottom: "24px" , marginLeft:'3%', marginRight:'3%' }}>
         <Tabs
-          appearance="normal"
-          value={activeTab}
-          onChange={(index) => setActiveTab(index)}
-          overflow="fit"
+          activeKey={activeTab}
+          onTabChange={(index) => setActiveTab(index)}
         >
           <TabItem
             label={
@@ -1066,13 +1064,15 @@ const ConsentDeletionDetail = () => {
                     </Text>
                   </div>
 
-                  {/* Created At */}
+                  {/* Created Date */}
                   <div>
                     <Text appearance="body-s-bold" color="primary-grey-100">
-                      Created At:{" "}
+                      Created Date:{" "}
                     </Text>
                     <Text appearance="body-s" color="primary-grey-80" style={{ marginTop: "5px" }}>
-                      {consentDetailData.createdAt ? formatToIST(consentDetailData.createdAt) : "—"}
+                      {consentDetailData.startDate || consentDetailData.createdAt
+                        ? formatToIST(consentDetailData.startDate || consentDetailData.createdAt) 
+                        : "—"}
                     </Text>
                   </div>
 

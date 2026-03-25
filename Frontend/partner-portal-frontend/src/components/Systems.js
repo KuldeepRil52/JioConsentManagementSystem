@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import Select from "react-select";
 import { makeAPICall } from "../utils/ApiCall";
+import config from "../utils/config";
 
 const Systems = () => {
   const dispatch = useDispatch();
@@ -30,7 +31,7 @@ const Systems = () => {
   const [activeTab, setActiveTab] = useState(0);
   
   // Integration tab state
-  const [integrationType, setIntegrationType] = useState("mysql");
+  const [integrationType, setIntegrationType] = useState(null);
   const [enableIntegration, setEnableIntegration] = useState(true);
   const [integrationIdentifier, setIntegrationIdentifier] = useState("");
   const [host, setHost] = useState("");
@@ -41,6 +42,10 @@ const Systems = () => {
   const [ssh, setSsh] = useState("");
   const [selectedDataset, setSelectedDataset] = useState(null);
   const [createdSystemId, setCreatedSystemId] = useState(null);
+  const [datasetsList, setDatasetsList] = useState([]);
+  // Track the raw datasetId from the integration API so we can resolve it
+  // once datasetsList finishes loading (handles the async race condition)
+  const [pendingDatasetId, setPendingDatasetId] = useState(null);
 
   // Redux selectors
   const businessId = useSelector((state) => state.common.business_id);
@@ -54,6 +59,8 @@ const Systems = () => {
     
     if (isAddRoute || isEditRoute) {
       setShowAddForm(true);
+      // Fetch datasets for the dropdown
+      fetchDatasets();
       if (isEditRoute) {
         const systemId = location.pathname.split("/").pop();
         // Get system data from navigation state
@@ -66,6 +73,27 @@ const Systems = () => {
           setSelectedTags(tags);
           setSelectedSystem(system);
           setIsEditMode(true);
+          
+          // Populate integration fields if available
+          if (system.integration || system.dbIntegration) {
+            const integration = system.integration || system.dbIntegration;
+            setIntegrationType(integration.type || integration.integrationType || "mysql");
+            setEnableIntegration(integration.enabled !== false);
+            setIntegrationIdentifier(integration.identifier || integration.integrationIdentifier || "");
+            setHost(integration.host || "");
+            setPort(integration.port?.toString() || "");
+            setUsername(integration.username || "");
+            setPassword(integration.password || "");
+            setDatabase(integration.database || integration.databaseName || "");
+            setSsh(integration.ssh || "");
+          } else if (!host && !port && !database) {
+            // Only fetch integration data if fields are not already populated
+            // (handleEditSystem -> fetchSystemById may have already loaded them)
+            const systemId = system.id || system.systemId;
+            if (systemId) {
+              fetchIntegrationData(systemId, datasetsList);
+            }
+          }
         } else {
           // Fetch system data by ID if not in state
           fetchSystemById(systemId);
@@ -86,6 +114,40 @@ const Systems = () => {
     }
   }, [location.pathname, location.state]);
 
+  // Fetch integration data when switching to Integration tab in edit mode
+  useEffect(() => {
+    if (activeTab === 1 && isEditMode && selectedSystem) {
+      const systemId = selectedSystem.id || selectedSystem.systemId;
+      // Only fetch if form fields are empty (data not loaded yet)
+      if (systemId && (!host && !port && !database)) {
+        console.log("Fetching integration data when switching to Integration tab");
+        fetchIntegrationData(systemId, datasetsList);
+      }
+    }
+  }, [activeTab, isEditMode, selectedSystem]);
+
+  // Re-resolve selectedDataset when datasetsList finally loads
+  // This fixes the race condition where fetchIntegrationData runs before
+  // fetchDatasets completes, leaving the dataset dropdown empty
+  useEffect(() => {
+    if (pendingDatasetId && datasetsList.length > 0 && !selectedDataset) {
+      const dataset = datasetsList.find(d =>
+        d.id === pendingDatasetId ||
+        d.datasetId === pendingDatasetId ||
+        String(d.id) === String(pendingDatasetId) ||
+        String(d.datasetId) === String(pendingDatasetId)
+      );
+      if (dataset) {
+        setSelectedDataset({
+          value: dataset.id || dataset.datasetId,
+          label: dataset.name || dataset.datasetId || "Unnamed Dataset"
+        });
+        console.log("Re-resolved pending dataset after datasets loaded:", dataset.name || dataset.datasetId);
+        setPendingDatasetId(null); // Clear the pending ID once resolved
+      }
+    }
+  }, [datasetsList, pendingDatasetId, selectedDataset]);
+
   const fetchSystems = async () => {
     setLoading(true);
     try {
@@ -96,7 +158,7 @@ const Systems = () => {
       };
 
       const response = await makeAPICall(
-        "https://api.jcms-st.jiolabs.com:8443/registry/api/v1/systems",
+        config.registry_systems,
         "GET",
         null,
         headers
@@ -119,6 +181,87 @@ const Systems = () => {
     }
   };
 
+  const fetchDatasets = async () => {
+    try {
+      const headers = {
+        "Content-Type": "application/json",
+        "X-Tenant-ID": tenant_id || "",
+        "X-Business-ID": businessId || "",
+      };
+
+      const response = await makeAPICall(
+        config.registry_datasets,
+        "GET",
+        null,
+        headers
+      );
+
+      if (response && response.data) {
+        // Handle response data - adjust based on actual API response structure
+        const datasetsData = Array.isArray(response.data) ? response.data : (response.data.datasets || response.data.data || response.data.searchList || []);
+        
+        // Parse datasetYaml to extract name if needed
+        const parsedDatasets = datasetsData.map(dataset => {
+          let name = dataset.name;
+          
+          // If name is not directly available, try to parse from datasetYaml
+          if (dataset.datasetYaml && !name) {
+            try {
+              const yamlContent = dataset.datasetYaml;
+              // Priority: dataset.name > direct name field > first collection name
+              // Extract dataset name from YAML (format: "dataset:\n  name: value")
+              const datasetNameMatch = yamlContent.match(/dataset:\s*\n\s*name:\s*(.+?)(?:\n|$)/);
+              if (datasetNameMatch) {
+                name = datasetNameMatch[1].trim();
+              } else {
+                // Fallback: try to find any top-level "name:" field (but not from collections)
+                const nameMatch = yamlContent.match(/^name:\s*(.+?)(?:\n|$)/m);
+                if (nameMatch) {
+                  name = nameMatch[1].trim();
+                } else {
+                  // Last fallback: try to get first collection name
+                  const collectionNameMatch = yamlContent.match(/collections:\s*\n\s*-\s*name:\s*(.+)/);
+                  if (collectionNameMatch) {
+                    name = collectionNameMatch[1].trim();
+                  }
+                }
+              }
+            } catch (e) {
+              console.error("Error parsing dataset YAML:", e);
+            }
+          }
+          
+          // Always prioritize dataset.name from YAML if available (even if name was already set)
+          if (dataset.datasetYaml) {
+            try {
+              const yamlContent = dataset.datasetYaml;
+              const datasetNameMatch = yamlContent.match(/dataset:\s*\n\s*name:\s*(.+?)(?:\n|$)/);
+              if (datasetNameMatch) {
+                name = datasetNameMatch[1].trim();
+              }
+            } catch (e) {
+              console.error("Error parsing dataset name from YAML:", e);
+            }
+          }
+          
+          return {
+            ...dataset,
+            name: name || dataset.datasetId || "Unnamed Dataset",
+            id: dataset.id || dataset.datasetId
+          };
+        });
+        
+        setDatasetsList(parsedDatasets);
+      } else {
+        setDatasetsList([]);
+      }
+    } catch (error) {
+      console.error("Error fetching datasets:", error);
+      // Don't show error toast - datasets might not be critical for system creation
+      setDatasetsList([]);
+    }
+  };
+
   const fetchSystemById = async (systemId) => {
     setLoading(true);
     try {
@@ -129,7 +272,7 @@ const Systems = () => {
       };
 
       const response = await makeAPICall(
-        `https://api.jcms-st.jiolabs.com:8443/registry/api/v1/systems/${systemId}`,
+        config.registry_systems_by_id(systemId),
         "GET",
         null,
         headers
@@ -144,6 +287,10 @@ const Systems = () => {
         setSelectedTags(tags);
         setSelectedSystem(system);
         setIsEditMode(true);
+        
+        // Fetch integration data separately (pass datasetsList so it's available)
+        await fetchIntegrationData(systemId, datasetsList);
+        
         return system;
       }
       return null;
@@ -154,6 +301,166 @@ const Systems = () => {
       return null;
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Fetch integration data for a system
+  const fetchIntegrationData = async (systemId, datasetsListRef = null) => {
+    try {
+      const headers = {
+        "Content-Type": "application/json",
+        "X-Tenant-ID": tenant_id || "",
+        "X-Business-ID": businessId || "",
+      };
+
+      const response = await makeAPICall(
+        `${config.registry_db_integration}?systemId=${systemId}`,
+        "GET",
+        null,
+        headers
+      );
+
+      console.log("fetchIntegrationData - Full response:", response);
+      console.log("fetchIntegrationData - response.data:", response?.data);
+      console.log("fetchIntegrationData - response.status:", response?.status);
+      console.log("fetchIntegrationData - Looking for systemId:", systemId);
+
+      // Handle different response structures
+      let integration = null;
+      if (response && response.data) {
+        // Check if response.data has integrations array
+        if (response.data.integrations && Array.isArray(response.data.integrations)) {
+          console.log("Found integrations array with", response.data.integrations.length, "items");
+          console.log("All integrations systemIds:", response.data.integrations.map(int => int.systemId));
+          // Find the integration matching the systemId
+          integration = response.data.integrations.find(
+            (int) => {
+              const matches = int.systemId === systemId || String(int.systemId) === String(systemId);
+              if (matches) {
+                console.log("Matched integration:", int);
+              }
+              return matches;
+            }
+          );
+          console.log("Found integration from integrations array:", integration);
+          if (!integration) {
+            console.warn("No integration found for systemId:", systemId, "Available systemIds:", response.data.integrations.map(int => int.systemId));
+          }
+        } else if (Array.isArray(response.data)) {
+          // Response.data is an array directly
+          integration = response.data.find(
+            (int) => int.systemId === systemId || String(int.systemId) === String(systemId)
+          ) || response.data[0];
+        } else {
+          // Single integration object
+          integration = response.data;
+        }
+      } else if (response && !response.data && typeof response === 'object' && !response.status) {
+        // Response might be the integration object directly (not wrapped in data)
+        integration = Array.isArray(response) ? response[0] : response;
+      }
+      
+      if (integration) {
+        console.log("Integration data received:", integration);
+        console.log("Integration connectionDetails:", integration.connectionDetails);
+        console.log("Integration systemId:", integration.systemId, "Looking for:", systemId);
+        
+        // Map dbType back to lowercase for dropdown
+        const dbTypeMap = {
+          MYSQL: "mysql",
+          MONGODB: "mongodb",
+          POSTGRESQL: "postgresql",
+          ORACLE: "oracle",
+          SQL_SERVER: "sqlserver",
+          API: "api",
+        };
+        
+        // Set integration type
+        if (integration.dbType) {
+        setIntegrationType(dbTypeMap[integration.dbType] || integration.dbType?.toLowerCase() || "mysql");
+        }
+        
+        // Set enable integration toggle
+        setEnableIntegration(integration.enabled !== false);
+        
+        // Set integration identifier
+        setIntegrationIdentifier(integration.integrationId || integration.identifier || "");
+        
+        // Extract connection details - check both connectionDetails object and direct properties
+        const conn = integration.connectionDetails || integration;
+        
+        console.log("Connection details object:", conn);
+        console.log("conn.host:", conn?.host);
+        console.log("conn.port:", conn?.port);
+        console.log("conn.username:", conn?.username);
+        console.log("conn.database:", conn?.database);
+        
+        // Set connection fields
+        setHost(conn?.host || integration?.host || "");
+        setPort(conn?.port?.toString() || integration?.port?.toString() || "");
+        setUsername(conn?.username || integration?.username || "");
+        setPassword(conn?.password || integration?.password || "");
+        setDatabase(conn?.database || conn?.databaseName || integration?.database || integration?.databaseName || "");
+        
+        // Handle SSH - can be boolean (sshRequired) or string
+        if (conn.sshRequired !== undefined) {
+        setSsh(conn.sshRequired ? "yes" : "");
+        } else if (integration.sshRequired !== undefined) {
+          setSsh(integration.sshRequired ? "yes" : "");
+        } else if (conn.ssh) {
+          setSsh(conn.ssh);
+        } else if (integration.ssh) {
+          setSsh(integration.ssh);
+        } else {
+          setSsh("");
+        }
+        
+        // Set dataset if available
+        if (integration.datasetId || integration.dataset) {
+          const datasetId = integration.datasetId || integration.dataset?.id || integration.dataset;
+          // Always store the raw datasetId so it can be resolved later
+          // if datasetsList hasn't loaded yet (race condition fix)
+          setPendingDatasetId(datasetId);
+          // Find the dataset in datasetsList
+          const datasetListToUse = datasetsListRef || datasetsList;
+          const dataset = datasetListToUse.find(d => 
+            d.id === datasetId || 
+            d.datasetId === datasetId ||
+            String(d.id) === String(datasetId) ||
+            String(d.datasetId) === String(datasetId)
+          );
+          if (dataset) {
+            setSelectedDataset({
+              value: dataset.id || dataset.datasetId,
+              label: dataset.name || dataset.datasetId || "Unnamed Dataset"
+            });
+            console.log("Set selected dataset:", dataset.name || dataset.datasetId);
+            setPendingDatasetId(null); // Already resolved, clear pending
+          } else {
+            console.log("Dataset not found in list yet, stored as pending:", datasetId, "Available datasets:", datasetListToUse.map(d => ({ id: d.id, datasetId: d.datasetId, name: d.name })));
+          }
+        }
+        
+        console.log("Form populated with:", {
+          integrationType: dbTypeMap[integration.dbType] || integration.dbType?.toLowerCase(),
+          integrationIdentifier: integration.integrationId || integration.identifier,
+          host: conn.host || integration.host,
+          port: conn.port?.toString() || integration.port?.toString(),
+          username: conn.username || integration.username,
+          password: conn.password || integration.password ? "***" : "",
+          database: conn.database || conn.databaseName || integration.database || integration.databaseName,
+          ssh: conn.sshRequired || integration.sshRequired ? "yes" : ""
+        });
+        
+        return integration;
+      } else {
+        console.warn("No integration data found in response. Response:", response);
+      }
+      return null;
+    } catch (error) {
+      console.error("Error fetching integration data:", error);
+      // Don't show error toast - integration might not exist yet
+      return null;
     }
   };
 
@@ -201,7 +508,7 @@ const Systems = () => {
     setActiveTab(0);
     setCreatedSystemId(null);
     // Reset integration fields
-    setIntegrationType("mysql");
+    setIntegrationType(null);
     setEnableIntegration(true);
     setIntegrationIdentifier("");
     setHost("");
@@ -211,6 +518,7 @@ const Systems = () => {
     setDatabase("");
     setSsh("");
     setSelectedDataset(null);
+    setPendingDatasetId(null);
     // Navigate to add route to hide side nav
     navigate("/consent-system/add");
   };
@@ -223,7 +531,7 @@ const Systems = () => {
     setIsEditMode(false);
     setCreatedSystemId(null);
     // Reset integration fields
-    setIntegrationType("mysql");
+    setIntegrationType(null);
     setEnableIntegration(true);
     setIntegrationIdentifier("");
     setHost("");
@@ -233,6 +541,7 @@ const Systems = () => {
     setDatabase("");
     setSsh("");
     setSelectedDataset(null);
+    setPendingDatasetId(null);
     // Navigate back to list
     navigate("/consent-system");
   };
@@ -324,13 +633,13 @@ const Systems = () => {
       };
 
       const response = await makeAPICall(
-        "http://10.173.184.32:8080/registry/api/v1/db-integration/test",
+        config.registry_db_integration_test,
         "POST",
         body,
         headers
       );
 
-      if (response && response.status === 200) {
+      if (response && (response.status === 200 || response.status === 201)) {
         toast.success("Integration test successful");
       } else {
         toast.error("Integration test failed");
@@ -367,22 +676,24 @@ const Systems = () => {
         };
 
         const response = await makeAPICall(
-          "http://10.173.184.32:30011/api/v1/system-register",
+          config.registry_systems,
           "POST",
           body,
           headers
         );
 
-        if (response && response.status === 200) {
-          // Extract systemId from response
-          const systemId = response.data?.id || response.data?.systemId || response.data?.data?.id || response.data?.data?.systemId;
-          if (systemId) {
-            setCreatedSystemId(systemId);
-          }
+        if (response && (response.status === 200 || response.status === 201)) {
           toast.success("System created successfully");
-          // Don't navigate back - allow user to continue to Integration tab
-          // handleBackToList();
-          // fetchSystems();
+          // Extract system ID from response and switch to Integration tab
+          const createdId = response.data?.id || response.data?.systemId || response.data?.data?.id || response.data?.data?.systemId;
+          if (createdId) {
+            setCreatedSystemId(createdId);
+            // Update selectedSystem for integration tab
+            setSelectedSystem({ id: createdId, systemId: createdId });
+            setIsEditMode(true);
+          }
+          // Switch to Integration tab instead of navigating away
+          setActiveTab(1);
         } else {
           toast.error("Failed to create system");
         }
@@ -419,7 +730,7 @@ const Systems = () => {
         };
 
         const response = await makeAPICall(
-          `https://api.jcms-st.jiolabs.com:8443/registry/api/v1/systems/${systemId}`,
+          config.registry_systems_by_id(systemId),
           "PUT",
           body,
           headers
@@ -427,8 +738,10 @@ const Systems = () => {
 
         if (response && response.status === 200) {
           toast.success("System updated successfully");
-          handleBackToList();
+          // Refresh systems list but stay on the page
           fetchSystems();
+          // Switch to Integration tab instead of navigating away
+          setActiveTab(1);
         } else {
           toast.error("Failed to update system");
         }
@@ -493,6 +806,54 @@ const Systems = () => {
         };
         const dbType = dbTypeMap[integrationType] || integrationType.toUpperCase();
 
+        // Extract datasetId from selectedDataset (react-select format: {value, label})
+        let datasetId = null;
+        
+        console.log("=== Saving Integration ===");
+        console.log("selectedDataset state:", JSON.stringify(selectedDataset, null, 2));
+        console.log("selectedDataset type:", typeof selectedDataset);
+        console.log("selectedDataset keys:", selectedDataset ? Object.keys(selectedDataset) : "null/undefined");
+        console.log("datasetOptions available:", datasetOptions.length);
+        console.log("datasetOptions sample:", datasetOptions.slice(0, 3));
+        
+        if (selectedDataset) {
+          if (typeof selectedDataset === 'object' && selectedDataset !== null) {
+            // React-select format: {value, label}
+            console.log("selectedDataset.value:", selectedDataset.value);
+            console.log("selectedDataset.id:", selectedDataset.id);
+            console.log("selectedDataset.datasetId:", selectedDataset.datasetId);
+            
+            // Priority: value (from react-select) > id > datasetId
+            if (selectedDataset.value !== undefined && selectedDataset.value !== null && selectedDataset.value !== "") {
+              datasetId = selectedDataset.value;
+            } else if (selectedDataset.id !== undefined && selectedDataset.id !== null && selectedDataset.id !== "") {
+              datasetId = selectedDataset.id;
+            } else if (selectedDataset.datasetId !== undefined && selectedDataset.datasetId !== null && selectedDataset.datasetId !== "") {
+              datasetId = selectedDataset.datasetId;
+            } else {
+              datasetId = null;
+            }
+          } else if (typeof selectedDataset === 'string' || typeof selectedDataset === 'number') {
+            // Direct ID value
+            datasetId = selectedDataset;
+          }
+        } else {
+          console.warn("⚠️ selectedDataset is null/undefined - no dataset selected!");
+        }
+        
+        // Ensure datasetId is a valid value (not empty string or undefined)
+        if (datasetId === "" || datasetId === undefined) {
+          datasetId = null;
+        }
+        
+        console.log("Extracted datasetId:", datasetId);
+        console.log("Final datasetId to send:", datasetId);
+        console.log("datasetId type:", typeof datasetId);
+        
+        // Check if we're updating an existing integration (has integrationIdentifier)
+        const isUpdate = isEditMode && integrationIdentifier && integrationIdentifier.trim() !== "";
+        
+        // Build the body object
         const body = {
           systemId: systemId,
           dbType: dbType,
@@ -505,15 +866,43 @@ const Systems = () => {
             sshRequired: ssh.trim().length > 0,
           },
         };
+        
+        // Explicitly add datasetId only if it has a valid value
+        if (datasetId !== null && datasetId !== undefined && datasetId !== "") {
+          body.datasetId = datasetId;
+        } else {
+          body.datasetId = null;
+        }
+        
+        // If updating, include integrationId in the body
+        if (isUpdate) {
+          body.integrationId = integrationIdentifier.trim();
+          console.log("🔄 Updating existing integration with ID:", integrationIdentifier);
+        } else {
+          console.log("➕ Creating new integration");
+        }
+        
+        console.log("Final body being sent:", JSON.stringify({ ...body, connectionDetails: { ...body.connectionDetails, password: "***" } }, null, 2));
+        console.log("datasetId in body:", body.datasetId);
+        console.log("typeof datasetId in body:", typeof body.datasetId);
+
+        // Use PUT for updates, POST for creates
+        const method = isUpdate ? "PUT" : "POST";
+        const url = isUpdate && integrationIdentifier 
+          ? config.registry_db_integration_by_id(integrationIdentifier)
+          : config.registry_db_integration;
+        
+        console.log("API Method:", method);
+        console.log("API URL:", url);
 
         const response = await makeAPICall(
-          "http://10.173.184.32:8080/system/api/v1/db-integration",
-          "POST",
+          url,
+          method,
           body,
           headers
         );
 
-        if (response && response.status === 200) {
+        if (response && (response.status === 200 || response.status === 201)) {
           toast.success("Integration saved successfully");
           handleBackToList();
           fetchSystems();
@@ -531,19 +920,42 @@ const Systems = () => {
     }
   };
 
-  const handleDeleteSystem = async (systemId) => {
+  const handleDeleteSystem = async (system) => {
     if (!window.confirm("Are you sure you want to delete this system?")) {
+      return;
+    }
+
+    const systemId = system.id || system.systemId;
+    if (!systemId) {
+      toast.error("System ID not found");
       return;
     }
 
     setLoading(true);
     try {
-      // TODO: Implement API call to delete system
-      // await dispatch(deleteSystem(systemId));
-      toast.success("System deleted successfully");
-      fetchSystems();
+      const headers = {
+        "Content-Type": "application/json",
+        "X-Tenant-ID": tenant_id || "",
+        "X-Business-ID": businessId || "",
+      };
+
+      const response = await makeAPICall(
+        config.registry_systems_by_id(systemId),
+        "DELETE",
+        null,
+        headers
+      );
+
+      if (response && (response.status === 200 || response.status === 204)) {
+        toast.success("System deleted successfully");
+        fetchSystems();
+      } else {
+        toast.error("Failed to delete system");
+      }
     } catch (error) {
-      toast.error("Failed to delete system");
+      console.error("Error deleting system:", error);
+      const errorMessage = error?.errorList?.[0]?.errorMessage || error?.message || "Failed to delete system";
+      toast.error(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -565,19 +977,20 @@ const Systems = () => {
   // Integration type options
   const integrationTypeOptions = [
     { value: "mysql", label: "MySQL" },
-    // { value: "postgresql", label: "PostgreSQL" },
+    { value: "postgresql", label: "PostgreSQL" },
     { value: "mongodb", label: "MongoDB" },
-    // { value: "oracle", label: "Oracle" },
-    // { value: "sqlserver", label: "SQL Server" },
-    // { value: "api", label: "API" },
+    { value: "oracle", label: "Oracle" },
+    { value: "sqlserver", label: "SQL Server" },
+    { value: "api", label: "API" },
   ];
 
-  // Dataset options (can be fetched from API)
-  const datasetOptions = [
-    { value: "dataset1", label: "Customer Data" },
-    { value: "dataset2", label: "Transaction Data" },
-    { value: "dataset3", label: "User Profile Data" },
-  ];
+  // Dataset options - dynamically generated from fetched datasets
+  const datasetOptions = useMemo(() => {
+    return datasetsList.map(dataset => ({
+      value: dataset.id || dataset.datasetId,
+      label: dataset.name || dataset.datasetId || "Unnamed Dataset"
+    }));
+  }, [datasetsList]);
 
   // Get connection instructions based on integration type
   const getConnectionInstructions = (type) => {
@@ -698,12 +1111,27 @@ const Systems = () => {
               )}
             </div>
             <div
-              onClick={() => setActiveTab(1)}
+              onClick={() => {
+                // Disable Integration tab if in create mode and system hasn't been saved yet
+                if (!isEditMode && !createdSystemId) {
+                  return;
+                }
+                setActiveTab(1);
+                // Fetch integration data when switching to Integration tab in edit mode
+                if (isEditMode && selectedSystem) {
+                  const systemId = selectedSystem.id || selectedSystem.systemId;
+                  if (systemId && !host && !port) {
+                    // Only fetch if form is empty (data not loaded yet)
+                    fetchIntegrationData(systemId, datasetsList);
+                  }
+                }
+              }}
               style={{
-                cursor: "pointer",
+                cursor: (!isEditMode && !createdSystemId) ? "not-allowed" : "pointer",
                 paddingBottom: "12px",
                 position: "relative",
-                marginBottom: "-1px"
+                marginBottom: "-1px",
+                opacity: (!isEditMode && !createdSystemId) ? 0.5 : 1
               }}
             >
               <Text 
@@ -740,14 +1168,18 @@ const Systems = () => {
 
             {/* Name Field */}
             <div style={{ marginBottom: "24px" }}>
-              <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "8px", fontSize: "14px", fontWeight: "600" }}>
-                Name (Required)
+              <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "8px" }}>
+                <Text appearance="body-s-bold" color="primary-grey-100" style={{ fontSize: "14px", fontWeight: "600" }}>
+                  Name
               </Text>
+                <Text appearance="body-s-bold" color="primary-grey-100" style={{ fontSize: "14px", fontWeight: "600", color: "#666" }}>
+                  (Required)
+                </Text>
+              </div>
               <InputFieldV2
                 value={systemName}
                 onChange={(e) => setSystemName(e.target.value)}
                 placeholder="Enter system name"
-                required
               />
               <Text appearance="body-xs" color="primary-grey-60" style={{ marginTop: "4px", fontSize: "12px" }}>
                 Unique name of system
@@ -769,7 +1201,7 @@ const Systems = () => {
             </div>
 
             {/* System Tags Field */}
-            <div style={{ marginBottom: "24px" }}>
+            {/* <div style={{ marginBottom: "24px" }}>
               <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "8px", fontSize: "14px", fontWeight: "600" }}>
                 System tags
               </Text>
@@ -799,7 +1231,7 @@ const Systems = () => {
               <Text appearance="body-xs" color="primary-grey-60" style={{ marginTop: "4px", fontSize: "12px" }}>
                 What services does this system perform
               </Text>
-            </div>
+            </div> */}
 
             {/* Save Button */}
             <div style={{ marginTop: "32px" }}>
@@ -834,8 +1266,10 @@ const Systems = () => {
               </Text>
               <Select
                 options={integrationTypeOptions}
-                value={integrationTypeOptions.find(opt => opt.value === integrationType)}
-                onChange={(selected) => setIntegrationType(selected.value)}
+                value={integrationType ? integrationTypeOptions.find(opt => opt.value === integrationType) : null}
+                onChange={(selected) => setIntegrationType(selected ? selected.value : null)}
+                placeholder="Select integration type"
+                isClearable={false}
                 styles={{
                   control: (base) => ({
                     ...base,
@@ -855,6 +1289,9 @@ const Systems = () => {
               />
             </div>
 
+            {/* Show other fields: always in edit mode, or when integration type is selected in create mode */}
+            {(isEditMode || integrationType) && (
+              <>
             {/* Connection Instructions Box */}
             <div
               style={{
@@ -893,10 +1330,9 @@ const Systems = () => {
             {/* Integration Fields - Only show when toggle is enabled */}
             {enableIntegration && (
               <>
-
-                {/* Integration Fields */}
-                <div style={{ marginBottom: "24px" }}>
-                  <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "8px" }}>
+                    {/* Integration identifier field - commented out as it's auto-created in backend */}
+                    {/* <div style={{ marginBottom: "24px" }}>
+                      <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "8px", fontSize: "14px", fontWeight: "600" }}>
                     Integration identifier
                   </Text>
                   <InputFieldV2
@@ -904,34 +1340,42 @@ const Systems = () => {
                     onChange={(e) => setIntegrationIdentifier(e.target.value)}
                     placeholder="Enter integration identifier"
                   />
-                </div>
+                    </div> */}
 
                 <div style={{ marginBottom: "24px" }}>
-                  <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "8px" }}>
-                    Host (Required)
+                  <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "8px" }}>
+                    <Text appearance="body-s-bold" color="primary-grey-100" style={{ fontSize: "14px", fontWeight: "600" }}>
+                      Host
                   </Text>
+                    <Text appearance="body-s-bold" color="primary-grey-100" style={{ fontSize: "14px", fontWeight: "600", color: "#666" }}>
+                      (Required)
+                    </Text>
+                  </div>
                   <InputFieldV2
                     value={host}
                     onChange={(e) => setHost(e.target.value)}
                     placeholder="Enter host"
-                    required
                   />
                 </div>
 
                 <div style={{ marginBottom: "24px" }}>
-                  <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "8px" }}>
-                    Port (Required)
+                  <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "8px" }}>
+                    <Text appearance="body-s-bold" color="primary-grey-100" style={{ fontSize: "14px", fontWeight: "600" }}>
+                      Port
                   </Text>
+                    <Text appearance="body-s-bold" color="primary-grey-100" style={{ fontSize: "14px", fontWeight: "600", color: "#666" }}>
+                      (Required)
+                    </Text>
+                  </div>
                   <InputFieldV2
                     value={port}
                     onChange={(e) => setPort(e.target.value)}
                     placeholder="Enter port"
-                    required
                   />
                 </div>
 
                 <div style={{ marginBottom: "24px" }}>
-                  <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "8px" }}>
+                  <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "8px", fontSize: "14px", fontWeight: "600" }}>
                     Username
                   </Text>
                   <InputFieldV2
@@ -942,7 +1386,7 @@ const Systems = () => {
                 </div>
 
                 <div style={{ marginBottom: "24px" }}>
-                  <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "8px" }}>
+                  <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "8px", fontSize: "14px", fontWeight: "600" }}>
                     Password
                   </Text>
                   <InputFieldV2
@@ -954,37 +1398,57 @@ const Systems = () => {
                 </div>
 
                 <div style={{ marginBottom: "24px" }}>
-                  <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "8px" }}>
-                    Database (Required)
+                  <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "8px" }}>
+                    <Text appearance="body-s-bold" color="primary-grey-100" style={{ fontSize: "14px", fontWeight: "600" }}>
+                      Database
                   </Text>
+                    <Text appearance="body-s-bold" color="primary-grey-100" style={{ fontSize: "14px", fontWeight: "600", color: "#666" }}>
+                      (Required)
+                    </Text>
+                  </div>
                   <InputFieldV2
                     value={database}
                     onChange={(e) => setDatabase(e.target.value)}
                     placeholder="Enter database name"
-                    required
                   />
                 </div>
 
                 <div style={{ marginBottom: "24px" }}>
-                  <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "8px" }}>
-                    SSH (Required)
+                  <div style={{ display: "flex", alignItems: "center", gap: "4px", marginBottom: "8px" }}>
+                    <Text appearance="body-s-bold" color="primary-grey-100" style={{ fontSize: "14px", fontWeight: "600" }}>
+                      SSH
                   </Text>
+                    <Text appearance="body-s-bold" color="primary-grey-100" style={{ fontSize: "14px", fontWeight: "600", color: "#666" }}>
+                      (Optional)
+                    </Text>
+                  </div>
                   <InputFieldV2
                     value={ssh}
                     onChange={(e) => setSsh(e.target.value)}
-                    placeholder="Enter SSH details"
-                    required
+                    placeholder="Enter SSH details (leave empty if not required)"
                   />
                 </div>
 
                 <div style={{ marginBottom: "32px" }}>
-                  <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "8px" }}>
+                  <Text appearance="body-s-bold" color="primary-grey-100" style={{ marginBottom: "8px", fontSize: "14px", fontWeight: "600" }}>
                     Dataset
                   </Text>
                   <Select
                     options={datasetOptions}
                     value={selectedDataset}
-                    onChange={setSelectedDataset}
+                    onChange={(option) => {
+                      console.log("Dataset onChange triggered with option:", option);
+                      console.log("Option type:", typeof option);
+                      console.log("Option value:", option?.value);
+                      console.log("Option label:", option?.label);
+                      if (option) {
+                        setSelectedDataset(option);
+                        console.log("✅ selectedDataset state updated to:", option);
+                      } else {
+                        console.warn("⚠️ Option is null - clearing selection");
+                        setSelectedDataset(null);
+                      }
+                    }}
                     placeholder="Select dataset"
                     styles={{
                       control: (base) => ({
@@ -1037,17 +1501,19 @@ const Systems = () => {
               </>
             )}
 
-            {/* Save Button - Show when toggle is off */}
-            {!enableIntegration && (
-              <div style={{ marginTop: "32px" }}>
-                <Button
-                  label="Save"
-                  onClick={handleSaveSystem}
-                  variant="primary"
-                  size="medium"
-                  disabled={loading}
-                />
-              </div>
+                {/* Save Button - Show when toggle is off */}
+                {!enableIntegration && (
+                  <div style={{ marginTop: "32px" }}>
+                    <Button
+                      label="Save"
+                      onClick={handleSaveSystem}
+                      variant="primary"
+                      size="medium"
+                      disabled={loading}
+                    />
+                  </div>
+                )}
+              </>
             )}
           </div>
         )}
@@ -1191,6 +1657,7 @@ const Systems = () => {
                     <Icon ic={<IcSort />} color="primary_60" size="small" />
                   </div>
                 </th>
+                {/* System tag column - commented out
                 <th
                   style={{
                     padding: "12px 16px",
@@ -1206,6 +1673,7 @@ const Systems = () => {
                     <Icon ic={<IcSort />} color="primary_60" size="small" />
                   </div>
                 </th>
+                */}
                 <th
                   style={{
                     padding: "12px 16px",
@@ -1224,7 +1692,7 @@ const Systems = () => {
             <tbody>
               {sortedSystems.length === 0 ? (
                 <tr>
-                  <td colSpan="4" style={{ padding: "80px 20px", textAlign: "center" }}>
+                  <td colSpan="3" style={{ padding: "80px 20px", textAlign: "center" }}>
                     <div
                       style={{
                         display: "flex",
@@ -1272,29 +1740,67 @@ const Systems = () => {
                         {system.description || "-"}
                       </Text>
                     </td>
+                    {/* System tag column - commented out
                     <td style={{ padding: "12px 16px" }}>
                       <Text appearance="body-xs" color="primary-grey-100">
                         {system.tag || "-"}
                       </Text>
                     </td>
+                    */}
                     <td style={{ padding: "12px 16px" }}>
-                      <div style={{ display: "flex", gap: "8px" }}>
-                        <ActionButton
-                          icon={<IcEditPen />}
+                      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                        <button
                           onClick={() => handleEditSystem(system)}
-                          variant="ghost"
-                          size="small"
                           aria-label="Edit system"
-                          style={{ backgroundColor: "transparent", color: "#666" }}
-                        />
-                        <ActionButton
-                          icon={<IcTrash />}
-                          onClick={() => handleDeleteSystem(system.id)}
-                          variant="ghost"
-                          size="small"
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "32px",
+                            height: "32px",
+                            borderRadius: "50%",
+                            border: "none",
+                            backgroundColor: "transparent",
+                            color: "#666",
+                            cursor: "pointer",
+                            transition: "background-color 0.2s ease",
+                            padding: 0,
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = "transparent";
+                          }}
+                        >
+                          <IcEditPen height={18} width={18} color="#666" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteSystem(system)}
                           aria-label="Delete system"
-                          style={{ backgroundColor: "transparent", color: "#666" }}
-                        />
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            width: "32px",
+                            height: "32px",
+                            borderRadius: "50%",
+                            border: "none",
+                            backgroundColor: "transparent",
+                            color: "#666",
+                            cursor: "pointer",
+                            transition: "background-color 0.2s ease",
+                            padding: 0,
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundColor = "rgba(0, 0, 0, 0.05)";
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundColor = "transparent";
+                          }}
+                        >
+                          <IcTrash height={18} width={18} color="#666" />
+                        </button>
                       </div>
                     </td>
                   </tr>
@@ -1307,11 +1813,16 @@ const Systems = () => {
 
 
       <ToastContainer
+        position="top-right"
         transition={Slide}
         autoClose={3000}
-        hideProgressBar
-        closeButton={CustomToast.CloseButton}
+        hideProgressBar={false}
+        newestOnTop
         closeOnClick
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
       />
     </div>
   );

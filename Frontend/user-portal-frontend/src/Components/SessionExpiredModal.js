@@ -1,6 +1,5 @@
 import React from "react";
 import "../Styles/SessionExpiredModal.css";
-import { IcWarning } from "@jds/core-icons";
 
 const SessionExpiredModal = ({ isOpen, onClose }) => {
   if (!isOpen) return null;

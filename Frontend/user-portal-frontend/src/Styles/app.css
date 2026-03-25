@@ -1,8 +1,42 @@
+:root {
+  --font-app: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  --app-sidebar-width: 240px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-app);
+}
+
+#root {
+  min-height: 100vh;
+  width: 100%;
+}
+
 .app-layout {
   display: grid;
-  grid-template-columns: 240px 1fr;
-  overflow-x: hidden; /* 250px sidebar + rest main */
-  /* height: 100vh; full height */
+  grid-template-columns: var(--app-sidebar-width) minmax(0, 1fr);
+  width: 100%;
+  align-items: stretch;
+  overflow-x: hidden;
+}
+
+/* Second column (main route outlet): allow shrinking so wide tables don’t break the grid */
+.app-layout > *:last-child {
+  min-width: 0;
 }
 
 /* Screen reader only - visually hidden but accessible to assistive technologies */

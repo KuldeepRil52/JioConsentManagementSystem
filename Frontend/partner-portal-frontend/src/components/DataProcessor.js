@@ -4,7 +4,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { Text, InputFieldV2, ActionButton, Icon, Spinner, InputCheckbox } from "../custom-components";
 import {
   IcClose, IcEditPen, IcSuccess, IcUpload, IcChevronLeft, IcChevronRight, IcWarningColored,
-  IcAttachment, IcDocumentViewer
+  IcAttachment, IcDocumentViewer, IcInfo
 } from "../custom-components/Icon";
 import { useDispatch, useSelector } from "react-redux";
 import { CLEAR_SESSION } from "../store/constants/Constants";
@@ -36,6 +36,7 @@ const DataProcessor = ({ selectedLanguage }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const multilingualConfigSaved = useSelector((state) => state.common.multilingualConfigSaved);
+  const businessId = useSelector((state) => state.common.business_id);
   const [dataProcessorModal, setDataProcessorModal] = useState(false);
   const [updateProcessorModal, setUpdateProcessorModal] = useState(false);
   const [viewProcessorModal, setViewProcessorModal] = useState(false);
@@ -319,7 +320,7 @@ const DataProcessor = ({ selectedLanguage }) => {
   useEffect(() => {
     fetchProcessor();
     fetchSystemConfig(); // Fetch system config on mount to get default callback URL
-  }, [dispatch]);
+  }, [dispatch, businessId]);
 
   // Translation effect for processor list
   useEffect(() => {

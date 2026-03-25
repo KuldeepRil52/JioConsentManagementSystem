@@ -51,6 +51,7 @@ const SideNav = ({ isOpen }) => {
     "Grievance Redressal": false,
     "Administration": false,
     "Notifications": false,
+    "Monitoring": false,
   });
 
   // Toggle accordion section - closes all others when opening one
@@ -67,6 +68,7 @@ const SideNav = ({ isOpen }) => {
         "Grievance Redressal": false,
         "Administration": false,
         "Notifications": false,
+        "Monitoring": false,
       };
       
       // If the clicked section was closed, open it. If it was open, keep it closed.

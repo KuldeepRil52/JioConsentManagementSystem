@@ -18,26 +18,26 @@ const AuditCompliance = () => {
   const sessionToken = useSelector((state) => state.common.session_token);
   const businessId = useSelector((state) => state.common.business_id);
 
-  const [auditReports, setAuditReports] = useState([]);
+  // ── All data from API (fetched once) ──
+  const [allAuditReports, setAllAuditReports] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
 
+  // ── Filter state ──
   const [filterDrawerOpen, setFilterDrawerOpen] = useState(false);
   const [filters, setFilters] = useState({
+    status: "", // "", "SUCCESS", "FAILED", "PENDING"
     dateFrom: "",
     dateTo: "",
   });
 
-  // Pagination state
+  // ── Client-side pagination state ──
   const [currentPage, setCurrentPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
-  const [totalRecords, setTotalRecords] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
-  const [correctedTotal, setCorrectedTotal] = useState(null); // Track corrected total when we detect last page
 
   const [sortColumn, setSortColumn] = useState(null);
-  const [sortDirection, setSortDirection] = useState('asc');
+  const [sortDirection, setSortDirection] = useState("asc");
 
   // Format text to uppercase for consistency
   const formatToUpperCase = (text) => {
@@ -48,188 +48,180 @@ const AuditCompliance = () => {
   // Format initiator display
   const formatInitiator = (initiator) => {
     if (!initiator || initiator === "N/A") return initiator;
-    if (initiator === 'DF') {
-      return 'DATA_FIDUCIARY';
-    }
+    if (initiator === "DF") return "DATA_FIDUCIARY";
     return initiator.toUpperCase();
   };
 
-  // Fetch audit reports from API
+  // ── Fetch ALL audit reports (paginate through every API page) ──
   const fetchAuditReports = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      const txnId = generateTransactionId();
+      const PAGE_SIZE = 100; // Typical API max; we'll loop until we get all pages
+      let allReports = [];
+      let pageNo = 0;
+      let hasMore = true;
 
-      const response = await fetch(
-        `${config.audit_reports}?page=${currentPage}&size=${pageSize}&sort=DESC`,
-        {
-          method: 'GET',
-          headers: {
-            'accept': '*/*',
-            'X-Tenant-ID': tenantId,
-            'X-Business-ID': businessId,
-            'X-Transaction-ID': txnId,
-            'Content-Type': 'application/json',
-            'business-id': businessId,
-            'x-session-token': sessionToken,
-          },
+      while (hasMore) {
+        const txnId = generateTransactionId();
+        const response = await fetch(
+          `${config.audit_reports}?page=${pageNo}&size=${PAGE_SIZE}&sort=DESC`,
+          {
+            method: "GET",
+            headers: {
+              accept: "*/*",
+              "X-Tenant-ID": tenantId,
+              "tenant-id": tenantId,
+              "X-Business-ID": businessId,
+              "X-Transaction-ID": txnId,
+              "Content-Type": "application/json",
+              "business-id": businessId,
+              "x-session-token": sessionToken,
+            },
+          }
+        );
+
+        if (!response.ok) {
+          if (pageNo === 0) {
+            const errorText = await response.text();
+            console.error("Failed to fetch audit reports:", errorText);
+            setError(`Failed to fetch audit reports: ${response.status}`);
+            return;
+          }
+          break; // Got some pages at least, stop here
         }
-      );
 
-      if (response.ok) {
         const data = await response.json();
+        const pageReports = data?.data || data?.content || [];
+        if (!Array.isArray(pageReports) || pageReports.length === 0) {
+          hasMore = false;
+        } else {
+          allReports = allReports.concat(pageReports);
+          // Stop if we got fewer than requested (last page) or reached API total
+          const totalElements = data?.totalElements || data?.total || data?.totalRecords;
+          if (pageReports.length < PAGE_SIZE) {
+            hasMore = false;
+          } else if (totalElements && allReports.length >= totalElements) {
+            hasMore = false;
+          } else {
+            pageNo++;
+          }
+        }
+      }
 
-        // Map API response to table format first
-        const reports = data?.data || data?.content || [];
+      if (allReports.length > 0) {
+        const reports = allReports;
 
-        const mappedReports = Array.isArray(reports) ? reports.map((item, index) => {
-          // Format date in IST (Indian Standard Time) - convert from UTC
-          const formatDate = (dateString) => {
-            if (!dateString) return "N/A";
-            try {
-              // IMPORTANT: Append 'Z' to treat the date string as UTC if it's not already present.
-              // This ensures correct parsing before converting to the target timezone.
-              const date = new Date(dateString.endsWith('Z') ? dateString : dateString + 'Z');
-
-              // Options for formatting. All parts will be in the specified timezone.
-              const options = {
-                timeZone: 'Asia/Kolkata',
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true,
+        const mappedReports = Array.isArray(reports)
+          ? reports.map((item) => {
+              // ── helper: parse any date-like value into a Date object ──
+              const parseAnyDate = (val) => {
+                if (!val) return null;
+                // epoch (seconds or ms)
+                if (typeof val === "number") {
+                  const ms = val < 1e12 ? val * 1000 : val;
+                  const d = new Date(ms);
+                  return isNaN(d.getTime()) ? null : d;
+                }
+                if (typeof val !== "string") return null;
+                // ISO string – append Z if missing timezone info
+                let str = val;
+                if (!/[Zz]$/.test(str) && !/[+-]\d{2}:\d{2}$/.test(str)) {
+                  str += "Z";
+                }
+                const d = new Date(str);
+                return isNaN(d.getTime()) ? null : d;
               };
 
-              // Create a formatter for Indian English locale
-              const formatter = new Intl.DateTimeFormat('en-IN', options);
+              // ── helper: format Date → "DD-MM-YYYY at HH:mm:ss AM/PM" in IST ──
+              const formatDate = (dateString) => {
+                const date = parseAnyDate(dateString);
+                if (!date) return "N/A";
+                try {
+                  const options = {
+                    timeZone: "Asia/Kolkata",
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                    hour12: true,
+                  };
+                  const formatter = new Intl.DateTimeFormat("en-IN", options);
+                  const parts = formatter.formatToParts(date);
+                  const p = parts.reduce((acc, part) => {
+                    acc[part.type] = part.value;
+                    return acc;
+                  }, {});
+                  return `${p.day}-${p.month}-${p.year} at ${p.hour}:${p.minute}:${p.second} ${(p.dayPeriod || "").toUpperCase()}`;
+                } catch {
+                  return String(dateString);
+                }
+              };
 
-              // Get the parts of the date
-              const parts = formatter.formatToParts(date);
-              const partMap = parts.reduce((acc, part) => {
-                acc[part.type] = part.value;
-                return acc;
-              }, {});
+              // ── helper: Date → "YYYY-MM-DD" in IST (for filtering) ──
+              const toISTDateStr = (date) => {
+                if (!date) return null;
+                // Use formatToParts for guaranteed 2-digit month/day
+                const parts = new Intl.DateTimeFormat("en-IN", {
+                  timeZone: "Asia/Kolkata",
+                  year: "numeric",
+                  month: "2-digit",
+                  day: "2-digit",
+                }).formatToParts(date);
+                const p = parts.reduce((acc, part) => {
+                  acc[part.type] = part.value;
+                  return acc;
+                }, {});
+                return `${p.year}-${p.month}-${p.day}`;
+              };
 
-              // Assemble the final string in "DD-MM-YYYY at HH:mm:ss AM/PM" format
-              const formattedDate = `${partMap.day}-${partMap.month}-${partMap.year}`;
-              const timeString = `${partMap.hour}:${partMap.minute}:${partMap.second} ${partMap.dayPeriod.toUpperCase()}`;
+              // Pick the best available timestamp (try all common field names)
+              const eventRaw =
+                item.createdAt ||
+                item.timestamp ||
+                item.created_at ||
+                item.eventTime ||
+                item.eventTimestamp ||
+                item.updatedAt ||
+                item.updated_at;
+              const eventDateObj = parseAnyDate(eventRaw);
 
-              return `${formattedDate} at ${timeString}`;
+              return {
+                auditId: item.auditId || item.id || "N/A",
+                status: item.status || "N/A",
+                updatedOn: formatDate(item.updatedAt),
+                createdOn: formatDate(item.timestamp),
+                businessId: item.businessId || "N/A",
+                businessName:
+                  item.businessName || item.business?.name || "N/A",
+                moduleName: formatToUpperCase(item.group) || "N/A",
+                component: formatToUpperCase(item.component) || "N/A",
+                actionType: formatToUpperCase(item.actionType) || "N/A",
+                initiatedBy: item.initiator || "N/A",
+                actorId: item.actor?.id || "N/A",
+                actorRole: item.actor?.role || "N/A",
+                actorType: formatToUpperCase(item.actor?.type) || "N/A",
+                resourceId: item.resource?.id || "N/A",
+                resourceType: item.resource?.type || "N/A",
+                transactionId: item.context?.txnId || "N/A",
+                referenceId: item.id || "N/A",
+                ipAddress: item.context?.ipAddress || "N/A",
+                eventTimestamp: formatDate(eventRaw),
+                payloadHash: item.payloadHash || "N/A",
+                // Pre-computed IST date for fast & reliable filtering
+                _filterDateIST: toISTDateStr(eventDateObj),
+                rawData: item,
+              };
+            })
+          : [];
 
-            } catch (error) {
-              console.error("Error formatting date:", error);
-              return dateString; // Fallback to original string on error
-            }
-          };
-
-          return {
-            // Basic audit info
-            auditId: item.auditId || item.id || "N/A",
-            status: item.status || "N/A",
-            updatedOn: formatDate(item.updatedAt),
-            createdOn: formatDate(item.timestamp), // Using Event timestamp for Created on
-            businessId: item.businessId || "N/A",
-            businessName: item.businessName || item.business?.name || "N/A",
-            moduleName: formatToUpperCase(item.group) || "N/A",
-            component: formatToUpperCase(item.component) || "N/A",
-            actionType: formatToUpperCase(item.actionType) || "N/A",
-            initiatedBy: item.initiator || "N/A",
-
-            // Actor details
-            actorId: item.actor?.id || "N/A",
-            actorRole: item.actor?.role || "N/A",
-            actorType: formatToUpperCase(item.actor?.type) || "N/A",
-
-            // Resource details
-            resourceId: item.resource?.id || "N/A",
-            resourceType: item.resource?.type || "N/A",
-
-            // Transaction details
-            transactionId: item.context?.txnId || "N/A",
-            referenceId: item.id || "N/A",
-            ipAddress: item.context?.ipAddress || "N/A",
-            eventTimestamp: formatDate(item.createdAt || item.timestamp),
-            payloadHash: item.payloadHash || "N/A",
-
-            rawData: item,
-          };
-        }) : [];
-
-        setAuditReports(mappedReports);
-
-        // Update pagination info - handle different API response structures
-        // Get total from API response first
-        let apiTotal = data?.totalElements || data?.total || data?.totalRecords;
-
-        // If we're on the last page (fewer records than pageSize), 
-        // calculate the actual total from the data we have
-        // This corrects cases where API returns incorrect total
-        let total;
-        if (mappedReports.length < pageSize) {
-          // We're on the last page - total is exactly: (current page * pageSize) + records on this page
-          const actualTotal = (currentPage * pageSize) + mappedReports.length;
-          // Use the actual total and remember it for future pages
-          total = actualTotal;
-          setCorrectedTotal(actualTotal);
-        } else if (correctedTotal !== null) {
-          // We've previously detected the last page, use the corrected total
-          total = correctedTotal;
-        } else if (apiTotal) {
-          // API provided total - use it (even if it might be wrong, we'll correct when we reach last page)
-          total = apiTotal;
-        } else {
-          // API didn't provide total - estimate based on current page
-          // If we have full page, assume there might be more
-          if (mappedReports.length === pageSize) {
-            // We have a full page, so there might be more - estimate conservatively
-            total = (currentPage + 2) * pageSize; // Assume at least one more page
-          } else {
-            // Less than full page, this is the last page
-            total = (currentPage * pageSize) + mappedReports.length;
-          }
-        }
-
-        // Calculate total pages
-        const apiTotalPages = data?.totalPages;
-        let pages;
-        if (apiTotalPages) {
-          pages = apiTotalPages;
-        } else {
-          pages = Math.ceil(total / pageSize);
-        }
-
-        // If we have exactly pageSize records and we're not on the last detected page,
-        // ensure we can navigate to the next page to check for more records
-        // This handles cases where API total might be incorrect
-        if (mappedReports.length === pageSize && correctedTotal === null) {
-          // We have a full page, so there might be more records
-          // Ensure we can navigate to at least the next page
-          const minPages = currentPage + 2; // At least current page + next page
-          pages = Math.max(pages, minPages);
-          // Update total to allow navigation (conservative estimate)
-          // This ensures the "of X records" text allows for more records
-          const minTotal = minPages * pageSize;
-          if (!apiTotal || total < minTotal) {
-            total = minTotal; // Conservative estimate to allow navigation
-          }
-        }
-
-        // Ensure at least 1 page if we have data
-        if (pages === 0 && mappedReports.length > 0) {
-          pages = 1;
-        }
-
-        setTotalRecords(total);
-        setTotalPages(pages);
+        setAllAuditReports(mappedReports);
       } else {
-        const errorText = await response.text();
-        console.error("Failed to fetch audit reports:", errorText);
-        setError(`Failed to fetch audit reports: ${response.status}`);
+        // No records fetched at all
+        setAllAuditReports([]);
       }
     } catch (err) {
       console.error("Error fetching audit reports:", err);
@@ -239,129 +231,94 @@ const AuditCompliance = () => {
     }
   };
 
-  const handleSort = (column) => {
-    if (sortColumn === column) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortColumn(column);
-      setSortDirection('asc');
-    }
-  };
-
-  const renderSortIcon = (column) => {
-    return <Icon ic={<IcSort />} size="small" color="black" />;
-  };
-
-  // Apply filters: date range based on Event timestamp column (rawData.createdAt || rawData.timestamp)
-  const filteredAuditReports = useMemo(() => {
-    return auditReports.filter((audit) => {
-      const eventDateStr = audit.rawData?.createdAt || audit.rawData?.timestamp;
-      const hasDateFilter = filters.dateFrom || filters.dateTo;
-
-      if (!hasDateFilter) return true;
-
-      // When date filter is set but row has no event timestamp, exclude it
-      if (!eventDateStr) return false;
-
-      const eventTime = new Date(eventDateStr.endsWith('Z') ? eventDateStr : eventDateStr + 'Z').getTime();
-      if (filters.dateFrom) {
-        const fromTime = new Date(filters.dateFrom + 'T00:00:00.000Z').getTime();
-        if (eventTime < fromTime) return false;
-      }
-      if (filters.dateTo) {
-        const toTime = new Date(filters.dateTo + 'T23:59:59.999Z').getTime();
-        if (eventTime > toTime) return false;
-      }
-      return true;
-    });
-  }, [auditReports, filters.dateFrom, filters.dateTo]);
-
-  // Sort the filtered reports (table and CSV use this)
-  const sortedFilteredReports = useMemo(() => {
-    if (!sortColumn) return filteredAuditReports;
-
-    return [...filteredAuditReports].sort((a, b) => {
-      const aValue = a[sortColumn] || '';
-      const bValue = b[sortColumn] || '';
-
-      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
-      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
-      return 0;
-    });
-  }, [filteredAuditReports, sortColumn, sortDirection]);
-
-  // Fetch data on component mount and when pagination changes
+  // Fetch data once on mount
   useEffect(() => {
     if (tenantId && sessionToken && businessId) {
       fetchAuditReports();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tenantId, sessionToken, businessId, currentPage, pageSize]);
+  }, [tenantId, sessionToken, businessId]);
 
-  // Reset corrected total when search query changes
-  useEffect(() => {
-    setCorrectedTotal(null);
-  }, [searchQuery]);
+  // ── Filtering (status + date + search) applied to full dataset ──
+  const filteredAuditReports = useMemo(() => {
+    return allAuditReports.filter((audit) => {
+      // 1) Status filter
+      if (filters.status) {
+        const statusUpper = (audit.status || "").toUpperCase();
+        if (statusUpper !== filters.status.toUpperCase()) return false;
+      }
 
-  const handleView = (id) => {
-    // TODO: Implement view functionality
-  };
+      // 2) Date range filter (uses pre-computed IST date YYYY-MM-DD)
+      const hasDateFilter = filters.dateFrom || filters.dateTo;
+      if (hasDateFilter) {
+        const eventDateIST = audit._filterDateIST; // e.g. "2026-03-12"
+        if (!eventDateIST) return false;
 
-  const handleDownload = (id) => {
-    // TODO: Implement download functionality
-  };
+        if (filters.dateFrom && eventDateIST < filters.dateFrom) return false;
+        if (filters.dateTo && eventDateIST > filters.dateTo) return false;
+      }
 
-  const handleDownloadCSV = () => {
-    if (!sortedFilteredReports || sortedFilteredReports.length === 0) {
-      alert("No data available to download");
-      return;
-    }
+      // 3) Search query
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        const matchesSearch =
+          audit.auditId?.toLowerCase().includes(q) ||
+          audit.status?.toLowerCase().includes(q) ||
+          audit.moduleName?.toLowerCase().includes(q) ||
+          audit.component?.toLowerCase().includes(q) ||
+          audit.actionType?.toLowerCase().includes(q) ||
+          audit.businessName?.toLowerCase().includes(q) ||
+          audit.initiatedBy?.toLowerCase().includes(q) ||
+          audit.actorRole?.toLowerCase().includes(q);
+        if (!matchesSearch) return false;
+      }
 
-    // Filter audit reports based on search query
-    const filteredData = sortedFilteredReports.filter((audit) => {
-      if (!searchQuery) return true;
-      const query = searchQuery.toLowerCase();
-      return (
-        audit.auditId?.toLowerCase().includes(query) ||
-        audit.status?.toLowerCase().includes(query) ||
-        audit.moduleName?.toLowerCase().includes(query) ||
-        audit.component?.toLowerCase().includes(query) ||
-        audit.actionType?.toLowerCase().includes(query)
-      );
+      return true;
     });
+  }, [allAuditReports, filters.status, filters.dateFrom, filters.dateTo, searchQuery]);
 
-    if (filteredData.length === 0) {
-      alert("No matching data to download");
-      return;
+  // ── Sorting ──
+  const sortedFilteredReports = useMemo(() => {
+    if (!sortColumn) return filteredAuditReports;
+    return [...filteredAuditReports].sort((a, b) => {
+      const aValue = a[sortColumn] || "";
+      const bValue = b[sortColumn] || "";
+      if (aValue < bValue) return sortDirection === "asc" ? -1 : 1;
+      if (aValue > bValue) return sortDirection === "asc" ? 1 : -1;
+      return 0;
+    });
+  }, [filteredAuditReports, sortColumn, sortDirection]);
+
+  // ── Client-side pagination derived values ──
+  const totalRecords = sortedFilteredReports.length;
+  const totalPages = Math.max(1, Math.ceil(totalRecords / pageSize));
+
+  // Rows for the current page only
+  const paginatedReports = useMemo(() => {
+    const start = currentPage * pageSize;
+    return sortedFilteredReports.slice(start, start + pageSize);
+  }, [sortedFilteredReports, currentPage, pageSize]);
+
+  // Reset to page 0 whenever filters, search, or pageSize change
+  useEffect(() => {
+    setCurrentPage(0);
+  }, [filters.status, filters.dateFrom, filters.dateTo, searchQuery, pageSize]);
+
+  // ── Sort handler ──
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortColumn(column);
+      setSortDirection("asc");
     }
-
-    // Prepare data for CSV export
-    const csvData = filteredData.map(audit => ({
-      'Audit ID': audit.auditId || 'N/A',
-      'Business Name': audit.businessName || 'N/A',
-      'Event Timestamp': audit.eventTimestamp || 'N/A',
-      'Business ID': audit.businessId || 'N/A',
-      'Module Name': audit.moduleName || 'N/A',
-      'Component': audit.component || 'N/A',
-      'Action Type': audit.actionType || 'N/A',
-      'Initiated By': formatInitiator(audit.initiatedBy) || 'N/A',
-      'Actor ID': audit.actorId || 'N/A',
-      'Actor Role': audit.actorRole || 'N/A',
-      'Actor Type': audit.actorType || 'N/A',
-      'Resource ID': audit.resourceId || 'N/A',
-      'Resource Type': audit.resourceType || 'N/A',
-      'Transaction ID': audit.transactionId || 'N/A',
-      'Reference ID': audit.referenceId || 'N/A'
-    }));
-
-    exportToCSV(csvData, 'audit_compliance');
   };
 
-  const handleNewAudit = () => {
-    navigate("/createAudit");
-  };
+  const renderSortIcon = () => (
+    <Icon ic={<IcSort />} size="small" color="black" />
+  );
 
-  // Pagination handlers
+  // ── Pagination handlers ──
   const handlePageChange = (newPage) => {
     if (newPage >= 0 && newPage < totalPages) {
       setCurrentPage(newPage);
@@ -370,48 +327,97 @@ const AuditCompliance = () => {
 
   const handlePageSizeChange = (newSize) => {
     setPageSize(newSize);
-    setCurrentPage(0); // Reset to first page when changing page size
-    setCorrectedTotal(null); // Reset corrected total when page size changes
+    // currentPage reset handled by the useEffect above
   };
 
-  // Handle filter changes
+  // ── Filter handlers ──
   const handleClearFilters = () => {
-    setFilters({
-      dateFrom: "",
-      dateTo: "",
-    });
+    setFilters({ status: "", dateFrom: "", dateTo: "" });
   };
 
   const handleApplyFilters = () => {
     setFilterDrawerOpen(false);
   };
 
-  // Get active filter count (date range only)
-  const activeFilterCount =
-    (filters.dateFrom ? 1 : 0) + (filters.dateTo ? 1 : 0);
+  const toggleStatusFilter = (status) => {
+    setFilters((prev) => ({
+      ...prev,
+      status: prev.status === status ? "" : status,
+    }));
+  };
 
+  // Active filter count (for badge)
+  const activeFilterCount =
+    (filters.status ? 1 : 0) +
+    (filters.dateFrom ? 1 : 0) +
+    (filters.dateTo ? 1 : 0);
+
+  // ── CSV download ──
+  const handleDownloadCSV = () => {
+    if (!sortedFilteredReports || sortedFilteredReports.length === 0) {
+      alert("No data available to download");
+      return;
+    }
+
+    const csvData = sortedFilteredReports.map((audit) => ({
+      "Audit ID": audit.auditId || "N/A",
+      "Business Name": audit.businessName || "N/A",
+      "Event Timestamp": audit.eventTimestamp || "N/A",
+      "Business ID": audit.businessId || "N/A",
+      "Module Name": audit.moduleName || "N/A",
+      Component: audit.component || "N/A",
+      "Action Type": audit.actionType || "N/A",
+      "Initiated By": formatInitiator(audit.initiatedBy) || "N/A",
+      "Actor ID": audit.actorId || "N/A",
+      "Actor Role": audit.actorRole || "N/A",
+      "Actor Type": audit.actorType || "N/A",
+      "Resource ID": audit.resourceId || "N/A",
+      "Resource Type": audit.resourceType || "N/A",
+      "Transaction ID": audit.transactionId || "N/A",
+      "Reference ID": audit.referenceId || "N/A",
+    }));
+
+    exportToCSV(csvData, "audit_compliance");
+  };
+
+  const handleNewAudit = () => {
+    navigate("/createAudit");
+  };
+
+  // ── Status badge helper ──
+  const getStatusBadge = (status) => {
+    const s = (status || "").toUpperCase();
+    let cls = "status-badge ";
+    if (s === "SUCCESS" || s === "COMPLETED") cls += "status-completed";
+    else if (s === "FAILED" || s === "ERROR") cls += "status-failed";
+    else if (s === "PENDING" || s === "IN_PROGRESS") cls += "status-progress";
+    return <span className={cls}>{status}</span>;
+  };
+
+  // ── Render ──
   return (
     <>
       <div className="configurePage">
         {/* Header Section */}
         <div className="audit-header-section">
           <div className="audit-title-section">
-            <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
-              <Text appearance="heading-s" color="primary-grey-100">Audit & Compliance Report</Text>
-              <div className="dataProtectionOfficer-badge" style={{ marginTop: '5px' }}>
-                <Text appearance="body-xs-bold" color="primary-grey-80">Governance</Text>
+            <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+              <Text appearance="heading-s" color="primary-grey-100">
+                Audit & Compliance Report
+              </Text>
+              <div
+                className="dataProtectionOfficer-badge"
+                style={{ marginTop: "5px" }}
+              >
+                <Text appearance="body-xs-bold" color="primary-grey-80">
+                  Governance
+                </Text>
               </div>
             </div>
           </div>
           <div className="audit-button-group">
             {/* Uncomment when create functionality is ready */}
-            {/* <ActionButton
-              kind="primary"
-              size="medium"
-              state="normal"
-              label="Create New Audit"
-              onClick={handleNewAudit}
-            /> */}
+            {/* <ActionButton kind="primary" size="medium" label="Create New Audit" onClick={handleNewAudit} /> */}
           </div>
         </div>
 
@@ -425,7 +431,13 @@ const AuditCompliance = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
-            <svg className="audit-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <svg
+              className="audit-search-icon"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
               <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2" />
               <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
@@ -441,20 +453,24 @@ const AuditCompliance = () => {
                 <span className="filter-badge">{activeFilterCount}</span>
               )}
             </button>
-            <button className="audit-icon-button" onClick={handleDownloadCSV} title="Download CSV">
+            <button
+              className="audit-icon-button"
+              onClick={handleDownloadCSV}
+              title="Download CSV"
+            >
               <IcDownload height={20} width={20} />
             </button>
           </div>
         </div>
 
-        {/* Filter Drawer */}
+        {/* ── Filter Drawer ── */}
         {filterDrawerOpen && (
           <>
             <div
-              className="filter-drawer-overlay"
+              className="audit-filter-drawer-overlay"
               onClick={() => setFilterDrawerOpen(false)}
             />
-            <div className="filter-drawer">
+            <div className="audit-filter-drawer">
               <div className="filter-drawer-header">
                 <div className="filter-drawer-title">
                   <IcFilter height={24} width={24} />
@@ -482,16 +498,34 @@ const AuditCompliance = () => {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     style={{
-                      width: '100%',
-                      padding: '10px 12px',
-                      border: '1px solid #e0e0e0',
-                      borderRadius: '6px',
-                      fontSize: '14px',
+                      width: "100%",
+                      padding: "10px 12px",
+                      border: "1px solid #e0e0e0",
+                      borderRadius: "6px",
+                      fontSize: "14px",
                     }}
                   />
                 </div>
 
-                {/* Event date range - filters table by Event timestamp column */}
+                {/* Status filter chips */}
+                <div className="filter-section">
+                  <Text appearance="body-s-bold" color="primary-grey-100">
+                    Status
+                  </Text>
+                  <div className="filter-chips">
+                    {["SUCCESS", "FAILED", "PENDING"].map((status) => (
+                      <button
+                        key={status}
+                        className={`filter-chip ${filters.status === status ? "active" : ""}`}
+                        onClick={() => toggleStatusFilter(status)}
+                      >
+                        {status.charAt(0) + status.slice(1).toLowerCase()}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Event date range */}
                 <div className="filter-section">
                   <Text appearance="body-s-bold" color="primary-grey-100">
                     Event date range
@@ -502,6 +536,7 @@ const AuditCompliance = () => {
                       <input
                         type="date"
                         value={filters.dateFrom}
+                        max={filters.dateTo || new Date().toISOString().split("T")[0]}
                         onChange={(e) =>
                           setFilters({ ...filters, dateFrom: e.target.value })
                         }
@@ -512,6 +547,8 @@ const AuditCompliance = () => {
                       <input
                         type="date"
                         value={filters.dateTo}
+                        min={filters.dateFrom || ""}
+                        max={new Date().toISOString().split("T")[0]}
                         onChange={(e) =>
                           setFilters({ ...filters, dateTo: e.target.value })
                         }
@@ -539,145 +576,111 @@ const AuditCompliance = () => {
           </>
         )}
 
-        {/* Table Section */}
+        {/* ── Table Section ── */}
         <div className="audit-table-wrapper">
           <table className="audit-table">
             <thead>
               <tr>
-                <th onClick={() => handleSort('auditId')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("auditId")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Audit ID
-                    </Text>
-                    {renderSortIcon('auditId')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Audit ID</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('businessName')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("businessName")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Business Name
-                    </Text>
-                    {renderSortIcon('businessName')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Business Name</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('eventTimestamp')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("eventTimestamp")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Event timestamp
-                    </Text>
-                    {renderSortIcon('eventTimestamp')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Event timestamp</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('businessId')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("businessId")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Business ID
-                    </Text>
-                    {renderSortIcon('businessId')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Business ID</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('moduleName')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("moduleName")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Module name
-                    </Text>
-                    {renderSortIcon('moduleName')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Module name</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('component')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("component")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Component
-                    </Text>
-                    {renderSortIcon('component')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Component</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('actionType')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("actionType")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Action type
-                    </Text>
-                    {renderSortIcon('actionType')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Action type</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('initiatedBy')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("initiatedBy")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Initiated by
-                    </Text>
-                    {renderSortIcon('initiatedBy')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Initiated by</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('actorId')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("actorId")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Actor ID
-                    </Text>
-                    {renderSortIcon('actorId')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Actor ID</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('actorRole')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("actorRole")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Actor role
-                    </Text>
-                    {renderSortIcon('actorRole')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Actor role</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('actorType')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("actorType")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Actor type
-                    </Text>
-                    {renderSortIcon('actorType')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Actor type</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('resourceId')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("resourceId")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Resource ID
-                    </Text>
-                    {renderSortIcon('resourceId')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Resource ID</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('resourceType')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("resourceType")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Resource type
-                    </Text>
-                    {renderSortIcon('resourceType')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Resource type</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('transactionId')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("transactionId")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Transaction ID
-                    </Text>
-                    {renderSortIcon('transactionId')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Transaction ID</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('referenceId')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("referenceId")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Reference ID
-                    </Text>
-                    {renderSortIcon('referenceId')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Reference ID</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('ipAddress')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("ipAddress")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      IP Address
-                    </Text>
-                    {renderSortIcon('ipAddress')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">IP Address</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
-                <th onClick={() => handleSort('payloadHash')} style={{ cursor: 'pointer' }}>
+                <th onClick={() => handleSort("payloadHash")} style={{ cursor: "pointer" }}>
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
-                      Payload hash
-                    </Text>
-                    {renderSortIcon('payloadHash')}
+                    <Text appearance="body-xs-bold" color="primary-grey-80">Payload hash</Text>
+                    {renderSortIcon()}
                   </div>
                 </th>
               </tr>
@@ -685,115 +688,79 @@ const AuditCompliance = () => {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan="17" style={{ textAlign: 'center', padding: '40px' }}>
-                    <Text appearance="body-m" color="primary-grey-80">
-                      Loading audit reports...
-                    </Text>
+                  <td colSpan="17" style={{ textAlign: "center", padding: "40px" }}>
+                    <Text appearance="body-m" color="primary-grey-80">Loading audit reports...</Text>
                   </td>
                 </tr>
               ) : error ? (
                 <tr>
-                  <td colSpan="17" style={{ textAlign: 'center', padding: '40px' }}>
-                    <Text appearance="body-m" color="feedback_error_50">
-                      {error}
-                    </Text>
+                  <td colSpan="17" style={{ textAlign: "center", padding: "40px" }}>
+                    <Text appearance="body-m" color="feedback_error_50">{error}</Text>
                   </td>
                 </tr>
-              ) : sortedFilteredReports.length === 0 ? (
+              ) : paginatedReports.length === 0 ? (
                 <tr>
-                  <td colSpan="17" style={{ textAlign: 'center', padding: '40px' }}>
+                  <td colSpan="17" style={{ textAlign: "center", padding: "40px" }}>
                     <Text appearance="body-m" color="primary-grey-80">
-                      {searchQuery || activeFilterCount > 0 ? `No results found for current filters` : "No audit reports found."}
+                      {searchQuery || activeFilterCount > 0
+                        ? "No results found for current filters"
+                        : "No audit reports found."}
                     </Text>
                   </td>
                 </tr>
               ) : (
-                sortedFilteredReports.map((audit) => (
-                  <tr key={audit.auditId}>
+                paginatedReports.map((audit) => (
+                  <tr key={audit.auditId + audit.referenceId}>
                     <td>
-                      <Text appearance="body-xs-bold" color="black">
-                        {audit.auditId}
-                      </Text>
+                      <Text appearance="body-xs-bold" color="black">{audit.auditId}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs" color="black">
-                        {audit.businessName}
-                      </Text>
+                      <Text appearance="body-xs" color="black">{audit.businessName}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs" color="black">
-                        {audit.eventTimestamp}
-                      </Text>
+                      <Text appearance="body-xs" color="black">{audit.eventTimestamp}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs-bold" color="black">
-                        {audit.businessId}
-                      </Text>
+                      <Text appearance="body-xs-bold" color="black">{audit.businessId}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs-bold" color="black">
-                        {audit.moduleName}
-                      </Text>
+                      <Text appearance="body-xs-bold" color="black">{audit.moduleName}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs-bold" color="black">
-                        {audit.component}
-                      </Text>
+                      <Text appearance="body-xs-bold" color="black">{audit.component}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs-bold" color="black">
-                        {audit.actionType}
-                      </Text>
+                      <Text appearance="body-xs-bold" color="black">{audit.actionType}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs" color="black">
-                        {formatInitiator(audit.initiatedBy)}
-                      </Text>
+                      <Text appearance="body-xs" color="black">{formatInitiator(audit.initiatedBy)}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs" color="black">
-                        {audit.actorId}
-                      </Text>
+                      <Text appearance="body-xs" color="black">{audit.actorId}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs" color="black">
-                        {audit.actorRole}
-                      </Text>
+                      <Text appearance="body-xs" color="black">{audit.actorRole}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs" color="black">
-                        {audit.actorType}
-                      </Text>
+                      <Text appearance="body-xs" color="black">{audit.actorType}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs" color="black">
-                        {audit.resourceId}
-                      </Text>
+                      <Text appearance="body-xs" color="black">{audit.resourceId}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs-bold" color="black">
-                        {audit.resourceType}
-                      </Text>
+                      <Text appearance="body-xs-bold" color="black">{audit.resourceType}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs-bold" color="black">
-                        {audit.transactionId}
-                      </Text>
+                      <Text appearance="body-xs-bold" color="black">{audit.transactionId}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs-bold" color="black">
-                        {audit.referenceId}
-                      </Text>
+                      <Text appearance="body-xs-bold" color="black">{audit.referenceId}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs" color="black">
-                        {audit.ipAddress}
-                      </Text>
+                      <Text appearance="body-xs" color="black">{audit.ipAddress}</Text>
                     </td>
                     <td>
-                      <Text appearance="body-xs" color="black">
-                        {audit.payloadHash}
-                      </Text>
+                      <Text appearance="body-xs" color="black">{audit.payloadHash}</Text>
                     </td>
                   </tr>
                 ))
@@ -802,12 +769,14 @@ const AuditCompliance = () => {
           </table>
         </div>
 
-        {/* Pagination Controls */}
-        {!loading && !error && (totalRecords > 0 || sortedFilteredReports.length > 0) && (
+        {/* ── Pagination Controls ── */}
+        {!loading && !error && totalRecords > 0 && (
           <div className="audit-pagination-container">
             <div className="audit-pagination-info">
               <Text appearance="body-xs" color="primary-grey-80">
-                Showing {currentPage * pageSize + 1} to {Math.min(currentPage * pageSize + sortedFilteredReports.length, totalRecords)} of {totalRecords} records
+                Showing {currentPage * pageSize + 1} to{" "}
+                {Math.min((currentPage + 1) * pageSize, totalRecords)} of{" "}
+                {totalRecords} records
               </Text>
             </div>
 
@@ -829,6 +798,7 @@ const AuditCompliance = () => {
               </div>
 
               <div className="audit-pagination-buttons">
+                {/* First page */}
                 <button
                   className="audit-pagination-button"
                   onClick={() => handlePageChange(0)}
@@ -841,6 +811,7 @@ const AuditCompliance = () => {
                   </svg>
                 </button>
 
+                {/* Previous page */}
                 <button
                   className="audit-pagination-button"
                   onClick={() => handlePageChange(currentPage - 1)}
@@ -852,31 +823,35 @@ const AuditCompliance = () => {
                   </svg>
                 </button>
 
+                {/* Page numbers */}
                 <div className="audit-page-numbers">
-                  {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                    let pageNum;
-                    if (totalPages <= 5) {
-                      pageNum = i;
-                    } else if (currentPage < 3) {
-                      pageNum = i;
-                    } else if (currentPage > totalPages - 3) {
-                      pageNum = totalPages - 5 + i;
-                    } else {
-                      pageNum = currentPage - 2 + i;
+                  {Array.from(
+                    { length: Math.min(5, totalPages) },
+                    (_, i) => {
+                      let pageNum;
+                      if (totalPages <= 5) {
+                        pageNum = i;
+                      } else if (currentPage < 3) {
+                        pageNum = i;
+                      } else if (currentPage > totalPages - 3) {
+                        pageNum = totalPages - 5 + i;
+                      } else {
+                        pageNum = currentPage - 2 + i;
+                      }
+                      return (
+                        <button
+                          key={pageNum}
+                          className={`audit-page-number ${currentPage === pageNum ? "active" : ""}`}
+                          onClick={() => handlePageChange(pageNum)}
+                        >
+                          {pageNum + 1}
+                        </button>
+                      );
                     }
-
-                    return (
-                      <button
-                        key={pageNum}
-                        className={`audit-page-number ${currentPage === pageNum ? 'active' : ''}`}
-                        onClick={() => handlePageChange(pageNum)}
-                      >
-                        {pageNum + 1}
-                      </button>
-                    );
-                  })}
+                  )}
                 </div>
 
+                {/* Next page */}
                 <button
                   className="audit-pagination-button"
                   onClick={() => handlePageChange(currentPage + 1)}
@@ -888,6 +863,7 @@ const AuditCompliance = () => {
                   </svg>
                 </button>
 
+                {/* Last page */}
                 <button
                   className="audit-pagination-button"
                   onClick={() => handlePageChange(totalPages - 1)}

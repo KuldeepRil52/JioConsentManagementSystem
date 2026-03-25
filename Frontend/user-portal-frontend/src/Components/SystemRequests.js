@@ -1,12 +1,5 @@
-import {
-  ActionButton,
-  BadgeV2,
-  Icon,
-  Modal,
-  SearchBox,
-  Spinner,
-  Text,
-} from "@jds/core";
+import { textStyle, FONT_FAMILY_STACK } from "../utils/textStyles";
+import { ICON_SIZE } from "../utils/iconSizes";
 import "../Styles/toast.css";
 import SessionExpiredModal from "./SessionExpiredModal";
 import { saveAs } from "file-saver";
@@ -14,20 +7,8 @@ import { Slide, ToastContainer, toast } from "react-toastify";
 import * as XLSX from "xlsx-js-style";
 import CustomToast from "./CustomToastContainer";
 import "../Styles/fiduciaryRequest.css";
-import {
-  IcBack,
-  IcChevronDown,
-  IcChevronUp,
-  IcClose,
-  IcDownload,
-  IcEditPen,
-  IcFilter,
-  IcNext,
-  IcSearch,
-  IcVisible,
-} from "@jds/core-icons";
+
 import { useEffect, useRef, useState, useMemo } from "react";
-import { IcArrowDown, IcLanguage, IcNetwork } from "@jds/extended-icons";
 import "../Styles/configurePage.css";
 import {
   getConsentHandleByHandleID,
@@ -49,6 +30,20 @@ import FilterPanel from "./FilterPanel";
 import useTranslation, {
   getApiValueFromLanguage,
 } from "../hooks/useTranslation";
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiDownload,
+  FiFilter,
+  FiSearch,
+} from "react-icons/fi";
+import {
+  FaChevronDown,
+  FaChevronUp,
+  FaLanguage,
+  FaPenAlt,
+  FaPencilAlt,
+} from "react-icons/fa";
 
 const SystemRequests = () => {
   const [currentModalStep, setCurrentModalStep] = useState(1);
@@ -2066,18 +2061,18 @@ const SystemRequests = () => {
         <header className="fiduciaryHeaderContainer" role="banner">
           <div className="fiduciaryHeader">
             <h1>
-              <Text appearance="heading-s" color="primary-grey-100">
+              <span style={textStyle("heading-s", "primary-grey-100")}>
                 {getTranslation("sys_pending_requests", "Pending requests")}
-              </Text>
+              </span>
             </h1>
             <div
               className="badge"
               role="status"
               aria-label="Page type: Consent"
             >
-              <Text appearance="body-xs-bold" color="primary-grey-80">
+              <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                 {getTranslation("sys_consent_badge", "Consent")}
-              </Text>
+              </span>
             </div>
           </div>
         </header>
@@ -2090,12 +2085,12 @@ const SystemRequests = () => {
           }}
         >
           <div>
-            <Text appearance="body-s" color="primary-grey-80">
+            <span style={textStyle("body-s", "primary-grey-80")}>
               {getTranslation(
                 "sys_description",
                 "View and respond to new or updated consent requests awaiting your action.",
               )}
-            </Text>
+            </span>
           </div>
           <div
             className="fiduciaryHeaderButtonContainer"
@@ -2106,7 +2101,7 @@ const SystemRequests = () => {
             }}
           >
             <div className="search-input-wrapper" style={{ width: "100%" }}>
-              <Icon ic={<IcSearch />} size="m" color="primary_grey_100" />
+              <FiSearch size={ICON_SIZE} />
               <input
                 type="text"
                 className="search-input"
@@ -2122,15 +2117,22 @@ const SystemRequests = () => {
                 )}
               />
             </div>
-            <ActionButton
-              kind="tertiary"
-              ariaLabel="Open filter panel"
+            <div
+              role="button"
+              aria-label="Open filter panel"
+              tabIndex={0}
               onClick={() => setShowFilter(true)}
-              icon={
-                <Icon ic={<IcFilter />} size="m" color="primary_grey_80"></Icon>
-              }
-              size="medium"
-            />
+              style={{
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "6px",
+                borderRadius: "6px",
+              }}
+            >
+              <FiFilter size={ICON_SIZE} color="#555" />
+            </div>
             <FilterPanel
               open={showFilter}
               showStatus={false}
@@ -2147,17 +2149,37 @@ const SystemRequests = () => {
                 })
               }
             />
-            <ActionButton
-              kind="tertiary"
-              ariaLabel="downlod Report"
-              icon={
-                <Icon ic={<IcDownload />} size="m" color="primary_grey_80" />
-              }
+
+            <div
+              role="button"
+              tabIndex={0}
+              aria-label="Download Report"
               onClick={() =>
                 downloadPendingRequestExcel(consentsByTempId, listOfObjects)
               }
-              size="medium"
-            />
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  downloadConsentExcel(consentsByTempId);
+                }
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.backgroundColor = "#f5f5f5")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.backgroundColor = "transparent")
+              }
+              style={{
+                cursor: "pointer",
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                padding: "6px",
+                borderRadius: "6px",
+                transition: "0.2s",
+              }}
+            >
+              <FiDownload size={ICON_SIZE} color="#555" />
+            </div>
           </div>
         </div>
         <br></br>
@@ -2182,45 +2204,45 @@ const SystemRequests = () => {
                 <th></th>
                 <th className="parentheader">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       {getTranslation("sys_request_id", "Request ID")}
-                    </Text>
+                    </span>
                   </div>
                 </th>
                 <th className="parentheader">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       {getTranslation("sys_request_date", "Request date")}
-                    </Text>
+                    </span>
                   </div>
                 </th>
                 {/* <th className="parentheader">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       Request expiry
-                    </Text>
+                    </span>
                   </div>
                 </th> */}
 
                 <th className="parentheader">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       {getTranslation("sys_request_type", "Request type")}
-                    </Text>
+                    </span>
                   </div>
                 </th>
                 <th className="parentheader">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       {getTranslation("sys_status", "Status")}
-                    </Text>
+                    </span>
                   </div>
                 </th>
                 <th className="parentheader">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       {getTranslation("sys_actions", "Actions")}
-                    </Text>
+                    </span>
                   </div>
                 </th>
               </tr>
@@ -2234,11 +2256,27 @@ const SystemRequests = () => {
                     style={{ textAlign: "center", padding: "1rem" }}
                   >
                     <div className="customerActivityLoader">
-                      <Spinner
-                        kind="normal"
-                        labelPosition="right"
-                        size="small"
-                      />
+                      <>
+                        <style>
+                          {`
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `}
+                        </style>
+
+                        <div
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            border: "3px solid #f3f3f3",
+                            borderTop: "3px solid #0a2885",
+                            borderRadius: "50%",
+                            animation: "spin 1s linear infinite",
+                          }}
+                        />
+                      </>
                     </div>
                   </td>
                 </tr>
@@ -2249,9 +2287,9 @@ const SystemRequests = () => {
                     colSpan="6"
                     style={{ textAlign: "center", padding: "1rem" }}
                   >
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       {getTranslation("sys_no_data", "No Data to Display")}
-                    </Text>
+                    </span>
                   </td>
                 </tr>
               ) : (
@@ -2322,9 +2360,9 @@ const SystemRequests = () => {
                         colSpan="6"
                         style={{ textAlign: "center", padding: "1rem" }}
                       >
-                        <Text appearance="body-xs-bold" color="primary-grey-80">
+                        <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                           No matching records found
-                        </Text>
+                        </span>
                       </td>
                     </tr>
                   ) : (
@@ -2341,52 +2379,47 @@ const SystemRequests = () => {
                         >
                           <td className="chevron-cell">
                             <div className="chevron-wrapper">
-                              <Text
-                                appearance="body-xs"
-                                color="primary-grey-100"
+                              <span
+                                style={textStyle("body-xs", "primary-grey-100")}
                               >
                                 {expandedRow === `row${index}` ? (
-                                  <IcChevronUp height={25} width={25} />
+                                  <FaChevronUp size={ICON_SIZE} />
                                 ) : (
-                                  <IcChevronDown height={25} width={25} />
+                                  <FaChevronDown size={ICON_SIZE} />
                                 )}
-                              </Text>
+                              </span>
                             </div>
                           </td>
                           <td>
-                            <Text
-                              appearance="body-xs-bold"
-                              color="primary-grey-80"
+                            <span
+                              style={textStyle("body-xs-bold", "primary-grey-80")}
                             >
                               {consent.consentHandleId}
-                            </Text>
+                            </span>
                           </td>
                           <td>
-                            <Text
-                              appearance="body-xs-bold"
-                              color="primary-grey-80"
+                            <span
+                              style={textStyle("body-xs-bold", "primary-grey-80")}
                             >
                               {formatToIST(consent.createdAt)}
-                            </Text>
+                            </span>
                           </td>
                           {/* <td>
-                            <Text
-                              appearance="body-xs-bold"
-                              color="primary-grey-80"
+                            <span
+                              style={textStyle("body-xs-bold", "primary-grey-80")}
                             >
                               -
-                            </Text>
+                            </span>
                           </td> */}
                           <td>
-                            <Text
-                              appearance="body-xs-bold"
-                              color="primary-grey-80"
+                            <span
+                              style={textStyle("body-xs-bold", "primary-grey-80")}
                             >
                               {getTranslation(
                                 "sys_renewal_request",
                                 "Renewal request",
                               )}
-                            </Text>
+                            </span>
                           </td>
                           <td>
                             <div className="warningbadge">
@@ -2395,7 +2428,7 @@ const SystemRequests = () => {
                               </p>
                             </div>
                           </td>
-                          <td>
+                          <td className="consent-actions-cell">
                             <div
                               style={{
                                 display: "flex",
@@ -2403,9 +2436,8 @@ const SystemRequests = () => {
                                 alignItems: "center",
                               }}
                             >
-                              <IcEditPen
-                                height={20}
-                                width={20}
+                              <FaPencilAlt
+                                size={ICON_SIZE}
                                 style={{ cursor: "pointer" }}
                                 onClick={() =>
                                   handleCallAPI2(
@@ -2437,56 +2469,51 @@ const SystemRequests = () => {
                                 <thead>
                                   <tr>
                                     <th>
-                                      <Text
-                                        appearance="body-xs-bold"
-                                        color="primary-grey-80"
+                                      <span
+                                        style={textStyle("body-xs-bold", "primary-grey-80")}
                                       >
                                         {getTranslation(
                                           "sys_purpose_name",
                                           "Purpose Name",
                                         )}
-                                      </Text>
+                                      </span>
                                     </th>
                                     <th>
-                                      <Text
-                                        appearance="body-xs-bold"
-                                        color="primary-grey-80"
+                                      <span
+                                        style={textStyle("body-xs-bold", "primary-grey-80")}
                                       >
                                         {getTranslation(
                                           "sys_data_type",
                                           "Data type",
                                         )}
-                                      </Text>
+                                      </span>
                                     </th>
                                     <th>
-                                      <Text
-                                        appearance="body-xs-bold"
-                                        color="primary-grey-80"
+                                      <span
+                                        style={textStyle("body-xs-bold", "primary-grey-80")}
                                       >
                                         {getTranslation(
                                           "sys_data_item",
                                           "Data Item",
                                         )}
-                                      </Text>
+                                      </span>
                                     </th>
                                     <th>
-                                      <Text
-                                        appearance="body-xs-bold"
-                                        color="primary-grey-80"
+                                      <span
+                                        style={textStyle("body-xs-bold", "primary-grey-80")}
                                       >
                                         {getTranslation(
                                           "sys_data_used_by",
                                           "Data used by",
                                         )}
-                                      </Text>
+                                      </span>
                                     </th>
                                     {/* <th>
-                                      <Text
-                                        appearance="body-xs-bold"
-                                        color="primary-grey-80"
+                                      <span
+                                        style={textStyle("body-xs-bold", "primary-grey-80")}
                                       >
                                         Status
-                                      </Text>
+                                      </span>
                                     </th> */}
                                   </tr>
                                 </thead>
@@ -2506,20 +2533,18 @@ const SystemRequests = () => {
                                         pref.purposeList.map((purpose) => (
                                           <tr key={purpose.purposeId}>
                                             <td>
-                                              <Text
-                                                appearance="body-xs-bold"
-                                                color="primary-grey-80"
+                                              <span
+                                                style={textStyle("body-xs-bold", "primary-grey-80")}
                                               >
                                                 {getDynamicTranslation(
                                                   purpose?.purposeInfo
                                                     ?.purposeName,
                                                 )}
-                                              </Text>
+                                              </span>
                                             </td>
                                             <td>
-                                              <Text
-                                                appearance="body-xs-bold"
-                                                color="primary-grey-80"
+                                              <span
+                                                style={textStyle("body-xs-bold", "primary-grey-80")}
                                               >
                                                 {pref.processorActivityList
                                                   .flatMap((pa) =>
@@ -2531,12 +2556,11 @@ const SystemRequests = () => {
                                                     ),
                                                   )
                                                   .join(", ")}
-                                              </Text>
+                                              </span>
                                             </td>
                                             <td>
-                                              <Text
-                                                appearance="body-xs-bold"
-                                                color="primary-grey-80"
+                                              <span
+                                                style={textStyle("body-xs-bold", "primary-grey-80")}
                                               >
                                                 {pref.processorActivityList
                                                   .flatMap((pa) =>
@@ -2551,12 +2575,11 @@ const SystemRequests = () => {
                                                     ),
                                                   )
                                                   .join(", ")}
-                                              </Text>
+                                              </span>
                                             </td>
                                             <td>
-                                              <Text
-                                                appearance="body-xs-bold"
-                                                color="primary-grey-80"
+                                              <span
+                                                style={textStyle("body-xs-bold", "primary-grey-80")}
                                               >
                                                 {pref.processorActivityList
                                                   .map((pa) =>
@@ -2566,7 +2589,7 @@ const SystemRequests = () => {
                                                     ),
                                                   )
                                                   .join(", ")}
-                                              </Text>
+                                              </span>
                                             </td>
                                             {/* <td>
                                               <span
@@ -2577,12 +2600,11 @@ const SystemRequests = () => {
                                                     : "not-accepted"
                                                 }
                                               >
-                                                <Text
-                                                  appearance="body-xs-bold"
-                                                  color="primary-grey-80"
+                                                <span
+                                                  style={textStyle("body-xs-bold", "primary-grey-80")}
                                                 >
                                                   {pref.preferenceStatus}
-                                                </Text>
+                                                </span>
                                               </span>
                                             </td> */}
                                           </tr>
@@ -2603,26 +2625,73 @@ const SystemRequests = () => {
           </table>
           {Array.isArray(paginatedConsents) && paginatedConsents.length > 0 && (
             <div className="pagination-container">
-              <ActionButton
-                icon={<IcBack />}
-                kind="secondary"
+              <div
+                role="button"
+                tabIndex={0}
+                aria-label="Previous page"
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                disabled={currentPage === 1}
-              ></ActionButton>
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    setCurrentPage((p) => Math.max(p - 1, 1));
+                  }
+                }}
+                style={{
+                  cursor: currentPage === 1 ? "not-allowed" : "pointer",
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "50%",
+                  backgroundColor: "#fff", // white background
+                  border: "1px solid #d1d5db", // light grey border
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  opacity: currentPage === 1 ? 0.5 : 1,
+                }}
+              >
+                <FiChevronLeft size={ICON_SIZE} color="#555" />
+              </div>
 
               <span className="pagination-text">
                 {getTranslation("sys_page", "Page")} {currentPage}{" "}
                 {getTranslation("sys_of", "of")} {totalPages}
               </span>
 
-              <ActionButton
-                kind="secondary"
-                icon={<IcNext />}
+              <div
+                role="button"
+                tabIndex={0}
+                aria-label="Next page"
                 onClick={() =>
                   setCurrentPage((p) => Math.min(p + 1, totalPages))
                 }
-                disabled={currentPage === totalPages}
-              ></ActionButton>
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    setCurrentPage((p) => Math.min(p + 1, totalPages));
+                  }
+                }}
+                style={{
+                  cursor:
+                    currentPage === totalPages ? "not-allowed" : "pointer",
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "50%",
+                  backgroundColor: "#fff", // white background
+                  border: "1px solid #d1d5db", // light grey border
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  opacity: currentPage === totalPages ? 0.5 : 1,
+                }}
+                onMouseEnter={(e) => {
+                  if (currentPage !== totalPages) {
+                    e.currentTarget.style.backgroundColor = "#e0e0e0";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "#f0f0f0";
+                }}
+              >
+                <FiChevronRight size={ICON_SIZE} color="#555" />
+              </div>
             </div>
           )}
         </div>
@@ -2661,9 +2730,8 @@ const SystemRequests = () => {
                     {/* Icon positioned inside the select box */}
                     <div className="container-2-left-2-dropdown">
                       {/* Icon */}
-                      <IcLanguage
-                        height={20}
-                        width={20}
+                      <FaLanguage
+                        size={ICON_SIZE}
                         className="container-2-left-2-dropdown-Icon"
                         style={{ color: `${activeTheme.cardFont}` }}
                       />
@@ -2687,16 +2755,14 @@ const SystemRequests = () => {
                         ))}
                       </select>
                       {isOpen ? (
-                        <IcChevronUp
-                          height={20}
-                          width={20}
+                        <FaChevronUp
+                          size={ICON_SIZE}
                           className="container-2-left-2-dropdown-Icon-right"
                           style={{ color: `${activeTheme.cardFont}` }}
                         />
                       ) : (
-                        <IcChevronDown
-                          height={20}
-                          width={20}
+                        <FaChevronDown
+                          size={ICON_SIZE}
                           className="container-2-left-2-dropdown-Icon-right"
                           style={{ color: `${activeTheme.cardFont}` }}
                         />
@@ -3209,7 +3275,7 @@ const SystemRequests = () => {
               </div>
               <h1
                 style={{
-                  fontSize: "18px",
+                  fontSize: "11px",
                   fontWeight: "700",
                   marginBottom: "20px",
                 }}
@@ -3265,7 +3331,7 @@ const SystemRequests = () => {
                         padding: "6px 10px",
                         borderRadius: "6px",
                         border: "1px solid #ccc",
-                        fontSize: "14px",
+                        fontSize: "11px",
                       }}
                     />
                   </div>
@@ -3284,10 +3350,10 @@ const SystemRequests = () => {
                   style={{
                     padding: "8px 18px",
                     borderRadius: "24px",
-                    fontFamily: "system-ui",
+                    fontFamily: FONT_FAMILY_STACK,
                     fontWeight: 700,
                     color: activeTheme.buttonBackground,
-                    fontSize: "18px",
+                    fontSize: "11px",
                     backgroundColor: activeTheme.buttonFont,
                     border: "1px solid rgba(181, 181, 181, 1)",
                     cursor: "pointer",
@@ -3303,8 +3369,8 @@ const SystemRequests = () => {
                     borderRadius: "24px",
                     backgroundColor: activeTheme.buttonBackground,
                     border: "1px solid rgba(181, 181, 181, 1)",
-                    fontSize: "18px",
-                    fontFamily: "system-ui",
+                    fontSize: "11px",
+                    fontFamily: FONT_FAMILY_STACK,
                     fontWeight: 700,
                     color: activeTheme.buttonFont,
 
@@ -3368,7 +3434,7 @@ const SystemRequests = () => {
 
                   {/* <p
                     className="step-text-parent"
-                    style={{ fontWeight: 700, fontSize: "16px" }}
+                    style={{ fontWeight: 700, fontSize: "11px" }}
                   >
                     Step {currentModalStep}/2
                   </p> */}
@@ -3397,7 +3463,7 @@ const SystemRequests = () => {
                           paddingLeft: "8px",
                           paddingRight: "8px",
                           appearance: "none",
-                          fontSize: "14px",
+                          fontSize: "11px",
                         }}
                       >
                         <option value="">Select Method</option>
@@ -3414,9 +3480,8 @@ const SystemRequests = () => {
                         </option>
                       </select>
                       {isOpenParent ? (
-                        <IcChevronUp
-                          height={20}
-                          width={20}
+                        <FaChevronUp
+                          size={ICON_SIZE}
                           style={{
                             position: "absolute",
                             right: "8px",
@@ -3425,9 +3490,8 @@ const SystemRequests = () => {
                           }}
                         />
                       ) : (
-                        <IcChevronDown
-                          height={20}
-                          width={20}
+                        <FaChevronDown
+                          size={ICON_SIZE}
                           style={{
                             position: "absolute",
                             right: "8px",
@@ -3497,10 +3561,10 @@ const SystemRequests = () => {
                   >
                     <p
                       style={{
-                        fontFamily: "system-ui",
+                        fontFamily: FONT_FAMILY_STACK,
                         fontWeight: 700,
                         color: activeTheme.buttonBackground,
-                        fontSize: "18px",
+                        fontSize: "11px",
                       }}
                     >
                       {parentModalCancelBtnText}
@@ -3666,10 +3730,10 @@ const SystemRequests = () => {
                 >
                   <p
                     style={{
-                      fontFamily: "system-ui",
+                      fontFamily: FONT_FAMILY_STACK,
                       fontWeight: 700,
                       color: activeTheme.buttonFont,
-                      fontSize: "18px",
+                      fontSize: "11px",
                     }}
                   >
                     {parentModalNextBtnText}

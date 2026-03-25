@@ -935,11 +935,6 @@ const CreateGrievanceForm = () => {
         grievanceType,
         grievanceItems,
       }));
-      // ✅ Always returns a NUMBER (or fallback) — never "12px" chages by shailendra9.sharma
-
-      // normalize before building the config
-      const fontSizeNumber = toNumericFontSize(fontStyles?.size, 12);
-
       // request body
       const requestBody = {
         ...(!templateId && {
@@ -1140,7 +1135,6 @@ const CreateGrievanceForm = () => {
         grievanceType,
         grievanceItems,
       }));
-      const fontSizeNumber = toNumericFontSize(fontStyles?.size, 12);
       // request body
       const requestBody = {
         ...(!templateId && {

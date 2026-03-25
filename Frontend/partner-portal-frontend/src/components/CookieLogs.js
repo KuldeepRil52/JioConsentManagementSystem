@@ -9,19 +9,19 @@ import {
   IcSuccessColored,
   IcError,
   IcWarningColored,
-  IcDownload,
   IcFilter,
   IcSearch,
-  IcCookies,
-  IcStatusSuccessful,
   IcSort,
+  IcClose,
+  IcDownload,
+  IcCookies,
+  IcStatusSuccessful
 } from "../custom-components/Icon";
 import { exportToCSV } from "../utils/csvExport";
 import config from "../utils/config";
 import { formatToIST } from "../utils/dateUtils";
 
 const BASE_URL = config.cookie_base;
-const BASE_URL_AUDIT = "https://api.jcms-st.jiolabs.com:8443/audit/v1/consent/checkIntegrity";
 /* STATUS BADGE */
 function StatusBadge({ status }) {
   const cls =
@@ -108,50 +108,6 @@ export default function CookieLogs() {
     exportToCSV(csvData, "cookie_logs");
   };
 
-  /* ---------------- INTEGRITY PDF DOWNLOAD FUNCTION ---------------- */
-  const downloadIntegrityPDF = async (consentId) => {
-    try {
-      const res = await fetch(
-        `${config.check_integrity}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Tenant-ID": tenantId,
-            "X-Business-id": businessId,
-            "consentId": consentId,
-            "X-Consent-Type": "consent_cookies",
-            "x-session-token": token
-          }
-        }
-      );
-
-      const json = await res.json();
-      const base64 = json?.pdfBase64;
-
-      if (!base64) {
-        alert("PDF not found for this consent record");
-        return;
-      }
-
-      const byteCharacters = atob(base64);
-      const byteNumbers = new Array(byteCharacters.length)
-        .fill(0)
-        .map((_, i) => byteCharacters.charCodeAt(i));
-      const byteArray = new Uint8Array(byteNumbers);
-
-      const blob = new Blob([byteArray], { type: "application/pdf" });
-
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `Form65B-${consentId}.pdf`;
-      link.click();
-      URL.revokeObjectURL(url);
-    } catch (e) {
-      alert("Failed to download Form 65B PDF");
-    }
-  };
   async function getConsentExpiryStatus(consentId) {
     try {
       const res = await fetch(`${BASE_URL}/consent/${consentId}/history`, {
@@ -517,6 +473,7 @@ export default function CookieLogs() {
                     <input
                       type="date"
                       value={filters.dateFrom}
+                      max={filters.dateTo || new Date().toISOString().split('T')[0]}
                       onChange={(e) =>
                         setFilters({ ...filters, dateFrom: e.target.value })
                       }
@@ -528,6 +485,8 @@ export default function CookieLogs() {
                     <input
                       type="date"
                       value={filters.dateTo}
+                      min={filters.dateFrom || ''}
+                      max={new Date().toISOString().split('T')[0]}
                       onChange={(e) =>
                         setFilters({ ...filters, dateTo: e.target.value })
                       }
@@ -571,8 +530,7 @@ export default function CookieLogs() {
                 { key: "version", label: "Version" },
                 { key: "category", label: "Cookie category" },
                 { key: "site", label: "Scanned site" },
-                { key: "status", label: "Status" },
-                { key: "form65b", label: "Form 65B" }
+                { key: "status", label: "Status" }
               ].map((col) => (
                 <th
                   key={col.key}
@@ -603,7 +561,7 @@ export default function CookieLogs() {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="8" style={{ textAlign: "center", padding: 40 }}>
+                <td colSpan="7" style={{ textAlign: "center", padding: 40 }}>
                   <div className="cookie-loader-container" style={{ height: "auto", padding: 20 }}>
                     <div className="cookie-spinner" />
                     <div className="cookie-loader-text">Loading logs...</div>
@@ -612,7 +570,7 @@ export default function CookieLogs() {
               </tr>
             ) : error ? (
               <tr>
-                <td colSpan="8" style={{ textAlign: "center", padding: 40 }}>
+                <td colSpan="7" style={{ textAlign: "center", padding: 40 }}>
                   <div style={{ color: "#991b1b", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
                     <Icon ic={<IcError />} size="xl" />
                     <Text appearance="body-m-bold" color="primary-grey-80">Failed to load logs</Text>
@@ -632,25 +590,11 @@ export default function CookieLogs() {
                   <td>
                     <StatusBadge status={r.status} />
                   </td>
-
-                  {/* FORM 65B DOWNLOAD BUTTON */}
-                  <td>
-                    {r.consentId ? (
-                      <button
-                        className="cookie-65b-download-btn"
-                        onClick={() => downloadIntegrityPDF(r.consentId)}
-                      >
-                        <Icon ic={<IcDownload />} size="sm" />
-                      </button>
-                    ) : (
-                      <Text appearance="body-xs">—</Text>
-                    )}
-                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="8" style={{ textAlign: "center", padding: 40 }}>
+                <td colSpan="7" style={{ textAlign: "center", padding: 40 }}>
                   <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}>
                     <Icon ic={<IcCookies />} size="xl" color="primary-grey-40" />
                     <Text appearance="body-m-bold" color="primary-grey-80">No logs found</Text>

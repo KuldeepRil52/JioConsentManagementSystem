@@ -731,12 +731,13 @@ export const getProcessor = () => {
   return async (dispatch, getState) => {
     let tenant_id = getState().common.tenant_id;
     let session_token = getState().common.session_token;
+    let business_id = getState().common.business_id;
     try {
       const headers = {
         txn: uuidv4(),
         "tenant-id": tenant_id,
         "x-session-token": session_token,
-
+        "business-id": business_id,
         Accept: "application/json",
       };
 
@@ -893,6 +894,7 @@ export const getProcessingActivity = () => {
         txn: uuidv4(),
         "tenant-id": tenant_id,
         "x-session-token": session_token,
+        "business-id": business_id,
         Accept: "application/json",
       };
 

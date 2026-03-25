@@ -2,14 +2,6 @@ import "../styles/masterSetup.css";
 import "../styles/PreviewFile.css";
 import { useState, useEffect, useMemo } from "react";
 import { useRef } from "react";
-import { Text, InputFieldV2, ActionButton, Icon, Spinner } from "../custom-components";
-import {
-  IcClose,
-  IcEditPen,
-  IcSuccess,
-  IcUpload,
-  IcWarningColored,
-} from "../custom-components/Icon";
 import { Text, InputFieldV2, ActionButton, Icon, Spinner, InputCheckbox } from "../custom-components";
 import {
   IcClose,
@@ -17,6 +9,7 @@ import {
   IcSuccess,
   IcUpload,
   IcWarningColored,
+  IcInfo,
 } from "../custom-components/Icon";
 
 import { useDispatch, useSelector } from "react-redux";

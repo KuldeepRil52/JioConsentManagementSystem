@@ -164,7 +164,7 @@
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-app);
   border-left: #941a7f 2px solid;
   flex-direction: column;
   gap: 12px;
@@ -176,7 +176,7 @@
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-app);
   border-left: #5d7c2c 2px solid;
   flex-direction: column;
   gap: 12px;
@@ -188,7 +188,7 @@
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-app);
   border-left: #443985 2px solid;
   flex-direction: column;
   gap: 12px;
@@ -200,7 +200,7 @@
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-app);
   border-left: #317781 2px solid;
   flex-direction: column;
   gap: 12px;
@@ -212,7 +212,7 @@
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-app);
   border-left: black 2px solid;
   flex-direction: column;
   gap: 12px;
@@ -224,7 +224,7 @@
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-app);
   border-left: #1d6e40 2px solid;
   flex-direction: column;
   gap: 12px;
@@ -236,7 +236,7 @@
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-app);
   border-left: #8c2928 2px solid;
   flex-direction: column;
   gap: 12px;
@@ -248,7 +248,7 @@
   background: #fff;
   border: 1px solid #e0e0e0;
   border-radius: 6px;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-app);
   border-left: #725508 2px solid;
   flex-direction: column;
   gap: 12px;
@@ -263,7 +263,7 @@
   gap: 6px;
   border-radius: 4px 0 4px 0;
   padding: 4px 8px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   margin-right: 10px;
 }
@@ -275,7 +275,7 @@
   gap: 6px;
   border-radius: 4px 0 4px 0;
   padding: 4px 8px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   margin-right: 10px;
 }
@@ -287,7 +287,7 @@
   gap: 6px;
   border-radius: 4px 0 4px 0;
   padding: 4px 8px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   margin-right: 10px;
 }
@@ -299,7 +299,7 @@
   gap: 6px;
   border-radius: 4px 0 4px 0;
   padding: 4px 8px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   margin-right: 10px;
 }
@@ -311,7 +311,7 @@
   gap: 6px;
   border-radius: 4px 0 4px 0;
   padding: 4px 8px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   margin-right: 10px;
 }
@@ -323,7 +323,7 @@
   gap: 6px;
   border-radius: 4px 0 4px 0;
   padding: 4px 8px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   margin-right: 10px;
 }
@@ -335,7 +335,7 @@
   gap: 6px;
   border-radius: 4px 0 4px 0;
   padding: 4px 8px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   margin-right: 10px;
 }
@@ -347,13 +347,13 @@
   gap: 6px;
   border-radius: 4px 0 4px 0;
   padding: 4px 8px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: bold;
   margin-right: 10px;
 }
 
 .landmark-number {
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .landmark-content {
@@ -384,7 +384,7 @@
 .landmark-tag {
   background: #f5f5f5;
   color: #555;
-  font-size: 13px;
+  font-size: 11px;
   padding: 4px 8px;
   border-radius: 6px;
   font-weight: 600;
@@ -413,7 +413,7 @@
 }
 
 .tabs-container {
-  font-family: Arial, sans-serif;
+  font-family: var(--font-app);
   width: 100%;
   /* max-width: 700px; */
 }
@@ -435,7 +435,7 @@
   padding: 8px 16px;
   border-radius: 25px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 11px;
   font-weight: 600;
   transition: background 0.2s, color 0.2s;
   display: flex;
@@ -450,7 +450,7 @@
   padding: 8px 16px;
   border-radius: 25px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 11px;
   font-weight: 600;
   transition: background 0.2s, color 0.2s;
   display: flex;
@@ -478,7 +478,7 @@
 .accordion {
   width: 100%;
   border-radius: 8px;
-  font-family: Arial, sans-serif;
+  font-family: var(--font-app);
   background: #fff;
 }
 
@@ -517,7 +517,7 @@
 }
 
 .accordion-label {
-  font-size: 13px;
+  font-size: 11px;
   color: gray;
   border: 1px solid #e0e0e0;
   border-radius: 20px;
@@ -526,7 +526,7 @@
 
 .accordion-content {
   padding: 12px 24px;
-  font-size: 14px;
+  font-size: 11px;
   color: #333;
   background: #fff;
 }
@@ -542,9 +542,9 @@
 }
 
 .btn {
-  font-family: Arial, sans-serif;
+  font-family: var(--font-app);
   font-weight: bold;
-  font-size: 15px;
+  font-size: 11px;
   padding: 5px 20px;
   border-radius: 20px;
   cursor: pointer;
@@ -574,16 +574,16 @@
 }
 
 h1.custom-head {
-  font-family: system-ui;
-  font-size: 32px;
+  font-family: var(--font-app);
+  font-size: 28px;
   font-weight: 800;
   color: black; /* dark blue */
   margin: 0;
 }
 
 p.custom-text-p {
-  font-family: system-ui;
-  font-size: 14px;
+  font-family: var(--font-app);
+  font-size: 11px;
   font-weight: 500;
   color: rgba(208, 207, 207, 0.65);
 }
@@ -634,8 +634,8 @@ p.custom-text-p {
 }
 
 .dropdown-group label {
-  font-family: Arial, sans-serif;
-  font-size: 13px;
+  font-family: var(--font-app);
+  font-size: 11px;
   font-weight: 600;
   color: rgb(118, 118, 118);
   margin-top: 10px;
@@ -644,7 +644,7 @@ p.custom-text-p {
 
 .dropdown-group select {
   padding: 10px 14px;
-  font-size: 14px;
+  font-size: 11px;
   border: 1px solid #ccc;
   border-radius: 6px;
   height: 40px;
@@ -665,7 +665,7 @@ p.custom-text-p {
 }
 
 .dropdown-group small {
-  font-size: 12px;
+  font-size: 11px;
   color: #666;
 }
 
@@ -696,7 +696,7 @@ p.custom-text-p {
   width: 100%;
   height: 100px;
   padding: 10px;
-  font-size: 14px;
+  font-size: 11px;
   border: 1px solid #ccc;
   border-radius: 6px;
   outline: none;

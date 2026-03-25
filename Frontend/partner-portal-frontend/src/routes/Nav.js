@@ -1,7 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 
-import Cookie from "../components/Cookie";
 import About from "../components/About";
 import AdminLogin from "../components/AdminLogin";
 import SignUp from "../components/SignUp";
@@ -20,7 +19,6 @@ import Users from "../components/Users";
 import Dashboard from "../components/Dashboard";
 import Templates from "../components/Templates";
 import CreateConsent from "../components/CreateConsent";
-import EmailTemplate from "../components/CreateEmailTemplate";
 import ProtectedRoutes from "../utils/ProtectedRoutes";
 import CreateEmailTemplate from "../components/CreateEmailTemplate";
 import EmailTemplate from "../components/EmailTemplate";
@@ -70,9 +68,6 @@ import Systems from "../components/Systems";
 import Datasets from "../components/Datasets";
 
 const Nav = () => {
-  // debug logs — remove after fixing
-  // console.log({ RegisteredCookies, CookieReportContainer });
-
   return (
     <Routes>
       <Route path="/" element={<LandingPage />} />
@@ -126,8 +121,6 @@ const Nav = () => {
         <Route path="/addUser" element={<AddUser />} />
         <Route path="/updateRole/:roleId" element={<UpdateRole />} />
         <Route path="/updateUser/:userId" element={<UpdateUser />} />
-
-        <Route path="/createConsent" element={<CreateConsent />} />
         <Route path="/consentLogs" element={<ConsentLogs />} />
         <Route path="/grievacneLogs" element={<GrievanceLogs />} />
         <Route path="/pendingRequests" element={<PendingRequests />} />
@@ -148,7 +141,6 @@ const Nav = () => {
         <Route path="/test-pdf" element={<TestPDFDownload />} />
       </Route>
       <Route path="/registercookies" element={<RegisteredCookies />} end />
-
       <Route path="/registercookies/report/:txId" element={<Cookie />} />
       <Route path="/cookieslogs" element={<CookieLogs />} />
     </Routes>

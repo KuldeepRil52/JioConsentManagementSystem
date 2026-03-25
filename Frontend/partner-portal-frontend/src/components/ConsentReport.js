@@ -409,7 +409,7 @@ const ConsentReport = () => {
                         Created
                       </Text>
                       <Text appearance="body-s" color="primary-grey-100">
-                        {formatToIST(consent.createdAt)}
+                        {formatToIST(consent.startDate || consent.createdAt)}
                       </Text>
                     </div>
                     <div className="detail-item">
@@ -417,7 +417,7 @@ const ConsentReport = () => {
                         Valid Until
                       </Text>
                       <Text appearance="body-s" color="primary-grey-100">
-                        {formatToIST(consent.endDate)}
+                        {formatToIST(consent.endDate || consent.expiryDate)}
                       </Text>
                     </div>
                   </div>
@@ -532,20 +532,16 @@ const ConsentReport = () => {
                     <div className="section-title">📅 Timeline</div>
                     <div className="info-grid">
                       <div className="info-item">
-                        <div className="info-label">Created At</div>
-                        <div className="info-value">{formatToIST(selectedConsent.createdAt)}</div>
+                        <div className="info-label">Created Date</div>
+                        <div className="info-value">{formatToIST(selectedConsent.startDate || selectedConsent.createdAt)}</div>
                       </div>
                       <div className="info-item">
                         <div className="info-label">Updated At</div>
                         <div className="info-value">{formatToIST(selectedConsent.updatedAt)}</div>
                       </div>
                       <div className="info-item">
-                        <div className="info-label">Start Date</div>
-                        <div className="info-value">{formatToIST(selectedConsent.startDate)}</div>
-                      </div>
-                      <div className="info-item">
-                        <div className="info-label">End Date</div>
-                        <div className="info-value">{formatToIST(selectedConsent.endDate)}</div>
+                        <div className="info-label">Valid Until</div>
+                        <div className="info-value">{formatToIST(selectedConsent.endDate || selectedConsent.expiryDate)}</div>
                       </div>
                     </div>
                   </div>

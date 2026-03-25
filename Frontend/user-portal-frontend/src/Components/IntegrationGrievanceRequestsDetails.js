@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import "../Styles/createRequest.css";
-import { ActionButton, Icon, Text, Button } from "@jds/core";
+import { textStyle, FONT_FAMILY_STACK } from "../utils/textStyles";
+import { ICON_SIZE } from "../utils/iconSizes";
 import "../Styles/toast.css";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import CustomToast from "./CustomToastContainer";
@@ -8,8 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { useRef } from "react";
 import Select from "react-select";
-import { IcLanguage } from "@jds/extended-icons";
-import { IcChevronDown, IcUpload, IcSuccess, IcClose } from "@jds/core-icons";
+import { FiChevronLeft } from "react-icons/fi";
 import {
   createGrievanceRequest,
   createIntegrationGrievanceRequest,
@@ -19,6 +19,7 @@ import {
   getIntegrationGrievnaceTemplateData,
 } from "../store/actions/CommonAction";
 import useTranslation from "../hooks/useTranslation";
+import { FaChevronDown, FaLanguage, FaTimes, FaUpload } from "react-icons/fa";
 
 const IntegrationGrievanceRequestsDetails = () => {
   const DEFAULT_DETAILS = {
@@ -40,7 +41,7 @@ const IntegrationGrievanceRequestsDetails = () => {
   const [age, setAge] = useState("I'm below 18 years of age.");
   const [purposeHeading, setPurposeHeading] = useState("Purpose: ");
   const [processingHeading, setProcessingHeading] = useState(
-    "Processing activity: "
+    "Processing activity: ",
   );
   const [usedByHeading, setUsedByHeading] = useState("Used By: ");
   const [durationHeading, setDurationHeading] = useState("Duration: ");
@@ -57,22 +58,35 @@ const IntegrationGrievanceRequestsDetails = () => {
       { id: "int_details_grievance_details", source: "Grievance Details" },
       { id: "int_details_select_category", source: "Select Category" },
       { id: "int_details_grievance_category", source: "Grievance Category" },
-      { id: "int_details_grievance_subcategory", source: "Grievance Subcategory" },
-      { id: "int_details_enter_subcategory", source: "Enter Grievance Subcategory" },
+      {
+        id: "int_details_grievance_subcategory",
+        source: "Grievance Subcategory",
+      },
+      {
+        id: "int_details_enter_subcategory",
+        source: "Enter Grievance Subcategory",
+      },
       { id: "int_details_description", source: "Description (Required)" },
-      { id: "int_details_description_placeholder", source: "Enter description of the group's function or scope." },
+      {
+        id: "int_details_description_placeholder",
+        source: "Enter description of the group's function or scope.",
+      },
       { id: "int_details_user_details", source: "User Details" },
       { id: "int_details_user_type", source: "User Type" },
       { id: "int_details_select_user_type", source: "Select user type" },
       { id: "int_details_upload_files", source: "Upload Files" },
       { id: "int_details_upload", source: "Upload" },
-      { id: "int_details_upload_instruction", source: "Drag and drop or upload a document with hyperlink with the consent banner in .pdf or .doc format." },
+      {
+        id: "int_details_upload_instruction",
+        source:
+          "Drag and drop or upload a document with hyperlink with the consent banner in .pdf or .doc format.",
+      },
       { id: "int_details_required", source: "Required" },
       { id: "int_details_enter", source: "Enter" },
       { id: "int_details_submit_request", source: "Submit Request" },
       { id: "int_details_always_active", source: "Always Active" },
     ],
-    []
+    [],
   );
 
   // Use translation hook
@@ -89,7 +103,7 @@ const IntegrationGrievanceRequestsDetails = () => {
     const fetchData = async () => {
       try {
         const templateRes = await dispatch(
-          getIntegrationGrievnaceTemplateData()
+          getIntegrationGrievnaceTemplateData(),
         );
 
         if (templateRes.status === 200) {
@@ -109,7 +123,7 @@ const IntegrationGrievanceRequestsDetails = () => {
                   selectedLanguage.toUpperCase() ||
                 lang.heading
                   ?.toUpperCase()
-                  ?.includes(selectedLanguage.toUpperCase())
+                  ?.includes(selectedLanguage.toUpperCase()),
             );
 
             if (matchingLanguageEntry) {
@@ -125,7 +139,7 @@ const IntegrationGrievanceRequestsDetails = () => {
 
         if (grievanceId) {
           const grievanceRes = await dispatch(
-            getIntegrationGrievanceRequestDetails(grievanceId)
+            getIntegrationGrievanceRequestDetails(grievanceId),
           );
 
           if (grievanceRes.status === 200) {
@@ -148,11 +162,11 @@ const IntegrationGrievanceRequestsDetails = () => {
                 .toUpperCase()
                 .replace(/[^A-Z0-9]/g, "");
               const matchedKey = Object.keys(
-                grievanceData.userDetails || {}
+                grievanceData.userDetails || {},
               ).find(
                 (key) =>
                   key.toUpperCase().replace(/[^A-Z0-9]/g, "") ===
-                  normalizedLabel
+                  normalizedLabel,
               );
               if (matchedKey) {
                 filledInputs[label] = grievanceData.userDetails[matchedKey];
@@ -192,19 +206,52 @@ const IntegrationGrievanceRequestsDetails = () => {
   const [userDetailInputs, setUserDetailInputs] = useState({});
 
   // Get translated labels from hook
-  const grievanceDetailsHeading = getTranslation("int_details_grievance_details", "Grievance Details");
-  const selectCategoryPlaceholder = getTranslation("int_details_select_category", "Select Category");
-  const grievanceCategoryLabel = getTranslation("int_details_grievance_category", "Grievance Category");
-  const grievanceSubCategoryLabel = getTranslation("int_details_grievance_subcategory", "Grievance Subcategory");
-  const subCategoryPlaceholder = getTranslation("int_details_enter_subcategory", "Enter Grievance Subcategory");
-  const descriptionLabel = getTranslation("int_details_description", "Description (Required)");
-  const descriptionPlaceholder = getTranslation("int_details_description_placeholder", "Enter description of the group's function or scope.");
-  const userDetailsHeading = getTranslation("int_details_user_details", "User Details");
+  const grievanceDetailsHeading = getTranslation(
+    "int_details_grievance_details",
+    "Grievance Details",
+  );
+  const selectCategoryPlaceholder = getTranslation(
+    "int_details_select_category",
+    "Select Category",
+  );
+  const grievanceCategoryLabel = getTranslation(
+    "int_details_grievance_category",
+    "Grievance Category",
+  );
+  const grievanceSubCategoryLabel = getTranslation(
+    "int_details_grievance_subcategory",
+    "Grievance Subcategory",
+  );
+  const subCategoryPlaceholder = getTranslation(
+    "int_details_enter_subcategory",
+    "Enter Grievance Subcategory",
+  );
+  const descriptionLabel = getTranslation(
+    "int_details_description",
+    "Description (Required)",
+  );
+  const descriptionPlaceholder = getTranslation(
+    "int_details_description_placeholder",
+    "Enter description of the group's function or scope.",
+  );
+  const userDetailsHeading = getTranslation(
+    "int_details_user_details",
+    "User Details",
+  );
   const userTypeLabel = getTranslation("int_details_user_type", "User Type");
-  const userTypePlaceholder = getTranslation("int_details_select_user_type", "Select user type");
-  const uploadFilesHeading = getTranslation("int_details_upload_files", "Upload Files");
+  const userTypePlaceholder = getTranslation(
+    "int_details_select_user_type",
+    "Select user type",
+  );
+  const uploadFilesHeading = getTranslation(
+    "int_details_upload_files",
+    "Upload Files",
+  );
   const uploadButtonText = getTranslation("int_details_upload", "Upload");
-  const uploadInstruction = getTranslation("int_details_upload_instruction", "Drag and drop or upload a document with hyperlink with the consent banner in .pdf or .doc format.");
+  const uploadInstruction = getTranslation(
+    "int_details_upload_instruction",
+    "Drag and drop or upload a document with hyperlink with the consent banner in .pdf or .doc format.",
+  );
   const requiredLable = getTranslation("int_details_required", "Required");
   const enterLable = getTranslation("int_details_enter", "Enter");
 
@@ -299,7 +346,7 @@ const IntegrationGrievanceRequestsDetails = () => {
         <div className="accordion-header" onClick={() => setIsOpen(!isOpen)}>
           <div className="accordion-left">
             <span className={`accordion-icon ${isOpen ? "open" : ""}`}>
-              <IcChevronDown height={25} width={25} />
+              <FaChevronDown size={ICON_SIZE} />
             </span>
             <span className="accordion-title">{title}</span>
           </div>
@@ -339,7 +386,7 @@ const IntegrationGrievanceRequestsDetails = () => {
                       ? `${item.preferenceValidity.value} ${toTitleCase(
                           item.preferenceValidity.value === 1
                             ? item.preferenceValidity.unit.replace(/s$/i, "") // singular
-                            : item.preferenceValidity.unit // plural
+                            : item.preferenceValidity.unit, // plural
                         )}`
                       : "N/A"}
                   </p>
@@ -378,7 +425,7 @@ const IntegrationGrievanceRequestsDetails = () => {
   };
 
   const [text, setText] = useState(
-    "While using JioMeet, your activities create data which will be used with your consent to offer customised services. Details of data usage are provided below. "
+    "While using JioMeet, your activities create data which will be used with your consent to offer customised services. Details of data usage are provided below. ",
   );
 
   //purpose container states
@@ -466,7 +513,7 @@ const IntegrationGrievanceRequestsDetails = () => {
           if (!userDetailInputs[item] || userDetailInputs[item].trim() === "") {
             errors.push(`Please enter ${item}.`);
           }
-        }
+        },
       );
     }
 
@@ -491,18 +538,18 @@ const IntegrationGrievanceRequestsDetails = () => {
             }
           />
         ),
-        { icon: false }
+        { icon: false },
       );
       return;
     } else if (errors.length === 1) {
       toast.error(
         (props) => <CustomToast {...props} type="error" message={errors[0]} />,
-        { icon: false }
+        { icon: false },
       );
       return;
     } else if (true) {
       const formattedGrievanceInformation = Object.entries(
-        grievanceFormTemplate?.grievances || {}
+        grievanceFormTemplate?.grievances || {},
       ).map(([grievanceType, grievanceItems]) => ({
         grievanceType,
         grievanceItems,
@@ -514,7 +561,7 @@ const IntegrationGrievanceRequestsDetails = () => {
             acc[key] = userDetailInputs[label] || "";
             return acc;
           },
-          {}
+          {},
         );
       // request body
       const requestBody = {
@@ -543,7 +590,7 @@ const IntegrationGrievanceRequestsDetails = () => {
               message={"Form Template Published successfully."}
             />
           ),
-          { icon: false }
+          { icon: false },
         );
       }
 
@@ -555,7 +602,7 @@ const IntegrationGrievanceRequestsDetails = () => {
             message={"Grievance Request Raised Succesfully!"}
           />
         ),
-        { icon: false }
+        { icon: false },
       );
 
       // navigate("/grievanceFormTemplates");
@@ -570,20 +617,31 @@ const IntegrationGrievanceRequestsDetails = () => {
         <div className="right-half">
           <div className="preview-header">
             <div className="header-left">
-              <Button
-                ariaControls="Button Clickable"
-                ariaDescribedby="Button"
-                ariaExpanded="Expanded"
-                ariaLabel="Button"
-                className="Button"
-                icon="ic_back"
-                iconAriaLabel="Icon Favorite"
-                iconLeft="ic_back"
-                kind="secondary"
+              <div
+                role="button"
+                tabIndex={0}
+                aria-label="Go back"
                 onClick={handleBack}
-                size="medium"
-                state="normal"
-              />
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleBack();
+                  }
+                }}
+                style={{
+                  cursor: "pointer",
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "50%",
+                  backgroundColor: "#fff",
+                  border: "1px solid #d1d5db",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <FiChevronLeft size={ICON_SIZE} color="#555" />
+              </div>
             </div>
             <div className="header-right">
               <div
@@ -612,20 +670,7 @@ const IntegrationGrievanceRequestsDetails = () => {
                     >
                       {title ? title : "Register your grievance"}
                     </h1>
-                    <Button
-                      ariaControls="Button Clickable"
-                      ariaDescribedby="Button"
-                      ariaExpanded="Expanded"
-                      ariaLabel="Button"
-                      className="Button"
-                      icon="ic_chevron_down"
-                      iconLeft={<IcLanguage />}
-                      iconAriaLabel="Icon Favorite"
-                      kind="secondary"
-                      label="English"
-                      size="small"
-                      state="normal"
-                    />
+                    <FaLanguage />
                   </div>
 
                   <img
@@ -646,7 +691,7 @@ const IntegrationGrievanceRequestsDetails = () => {
                       backgroundColor: activePopupColors.cardBackground,
                       color: activePopupColors.cardFont,
                       marginBottom: "8px",
-                      fontSize: "14px",
+                      fontSize: "11px",
                       letterSpacing: "-0.5px",
                       color: "rgba(0, 0, 0, 0.65)",
                       fontWeight: "500",
@@ -661,9 +706,9 @@ const IntegrationGrievanceRequestsDetails = () => {
                     <div>
                       {/* --- Section heading --- */}
                       <div style={{ marginBottom: "10px" }}>
-                        <Text appearance="heading-xxs" color="primary-grey-80">
+                        <span style={textStyle("heading-xxs", "primary-grey-80")}>
                           {grievanceDetailsHeading}
-                        </Text>
+                        </span>
                       </div>
 
                       {/* --- Grievance Category Dropdown --- */}
@@ -686,7 +731,7 @@ const IntegrationGrievanceRequestsDetails = () => {
                               <option key={idx} value={info.grievanceType}>
                                 {info.grievanceType}
                               </option>
-                            )
+                            ),
                           )}
                         </select>
                       </div>
@@ -738,9 +783,9 @@ const IntegrationGrievanceRequestsDetails = () => {
                     ?.userType?.length > 0 ||
                     grievanceFormTemplate?.multilingual?.userInformation[0]
                       ?.userItems?.length > 0) && (
-                    <Text appearance="heading-xxs" color="primary-grey-80">
+                    <span style={textStyle("heading-xxs", "primary-grey-80")}>
                       {userDetailsHeading}
-                    </Text>
+                    </span>
                   )}
 
                   {grievanceFormTemplate?.multilingual?.userInformation[0]
@@ -765,7 +810,7 @@ const IntegrationGrievanceRequestsDetails = () => {
                               <option key={index} value={type}>
                                 {type}
                               </option>
-                            )
+                            ),
                           )}
                         </select>
                       </div>
@@ -780,9 +825,9 @@ const IntegrationGrievanceRequestsDetails = () => {
                               <label
                                 style={{
                                   display: "block",
-                                  fontSize: "13px",
+                                  fontSize: "11px",
                                   fontWeight: "600",
-                                  fontFamily: "Arial, sans-serif",
+                                  fontFamily: FONT_FAMILY_STACK,
                                   marginBottom: "5px",
                                   color: "#767676",
                                 }}
@@ -806,16 +851,16 @@ const IntegrationGrievanceRequestsDetails = () => {
                                   padding: "10px 12px",
                                   border: "1px solid #ccc",
                                   borderRadius: "8px",
-                                  fontSize: "14px",
+                                  fontSize: "11px",
                                   fontWeight: 400,
                                   color: "#333",
                                   outline: "none",
-                                  fontFamily: "Arial, sans-serif",
+                                  fontFamily: FONT_FAMILY_STACK,
                                 }}
                               />
                             </div>
                           </div>
-                        )
+                        ),
                       )}
                     </div>
                   )}
@@ -824,12 +869,9 @@ const IntegrationGrievanceRequestsDetails = () => {
                     !isViewMode && (
                       <>
                         <div className="">
-                          <Text
-                            appearance="heading-xxs"
-                            color="primary-grey-80"
-                          >
+                          <span style={textStyle("heading-xxs", "primary-grey-80")}>
                             {uploadFilesHeading}
-                          </Text>
+                          </span>
                         </div>
 
                         <div
@@ -853,20 +895,17 @@ const IntegrationGrievanceRequestsDetails = () => {
                             />
 
                             <div className="flex items-center justify-center">
-                              <Icon
-                                ic={<IcUpload height={23} width={23} />}
-                                color="primary_60"
-                              />
-                              <Text appearance="button" color="primary-60">
+                              <FaUpload size={ICON_SIZE} />
+                              <span style={textStyle("button", "primary-60")}>
                                 {uploadButtonText}
-                              </Text>
+                              </span>
                             </div>
                           </div>
 
                           <div style={{}}>
-                            <Text appearance="body-xs" color="primary-grey-80">
+                            <span style={textStyle("body-xs", "primary-grey-80")}>
                               {uploadInstruction}
-                            </Text>
+                            </span>
                           </div>
                         </div>
                       </>
@@ -878,21 +917,16 @@ const IntegrationGrievanceRequestsDetails = () => {
                         onClick={handlePreviewUploadFile}
                         className="previewFile"
                       >
-                        <Icon
-                          ic={<IcSuccess width={15} height={15} />}
-                          color="feedback_success_50"
+                        <FaCheckCircle
+                          style={{ color: "green" }}
+                          size={ICON_SIZE}
                         />
-                        <Text appearance="body-xs" color="primary-grey-80">
+                        <span style={textStyle("body-xs", "primary-grey-80")}>
                           {uploadFileName}
-                        </Text>
+                        </span>
                       </div>
                       {!isViewMode && (
-                        <Icon
-                          ic={<IcClose width={15} height={15} />}
-                          color="primary_60"
-                          className="selecetd-file-display"
-                          onClick={handleRemoveUploadFile}
-                        />
+                        <FaTimes size={ICON_SIZE} onClick={handleRemoveUploadFile} />
                       )}
                     </div>
                   )}
@@ -905,13 +939,23 @@ const IntegrationGrievanceRequestsDetails = () => {
                 >
                   {!isViewMode && (
                     <div style={{}}>
-                      <ActionButton
-                        kind="primary"
-                        size="medium"
-                        state="normal"
-                        label="Submit Request"
+                      <button
                         onClick={handlePublish}
-                      />
+                        ariaLabel="Submit Request"
+                        style={{
+                          backgroundColor: "#2563eb",
+                          color: "",
+                          border: "none",
+                          padding: "10px 20px",
+                          borderRadius: "999px",
+                          fontSize: "11px",
+                          fontWeight: "600",
+                          cursor: "pointer",
+                          transition: "0.2s",
+                        }}
+                      >
+                        Submit Request
+                      </button>
                     </div>
                   )}
                 </div>

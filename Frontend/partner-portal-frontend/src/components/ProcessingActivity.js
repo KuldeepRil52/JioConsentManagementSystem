@@ -19,7 +19,6 @@ import { createProcessingActivity } from "../store/actions/CommonAction";
 
 import { useDispatch, useSelector } from "react-redux";
 import WordLimitedTextarea from "./wordLimitedTextForActivity";
-import { ProcessingActivityModal } from "./DataProcessorUpdateModal";
 import ProcessingActivityUpdateModal from "./ProcessingActivityUpdateModal";
 import { useNavigate } from "react-router-dom";
 import { languages } from "../utils/languages";
@@ -28,6 +27,7 @@ const ProcessingActivity = ({ selectedLanguage }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const multilingualConfigSaved = useSelector((state) => state.common.multilingualConfigSaved);
+  const businessId = useSelector((state) => state.common.business_id);
   const wordLimit = 300;
   const [activityName, setActivityName] = useState("");
   const [activityDetails, setActivityDetails] = useState("");
@@ -419,7 +419,7 @@ const ProcessingActivity = ({ selectedLanguage }) => {
     fetchProcessingActivity();
     fetchProcessor();
     fetchDataTypes();
-  }, [dispatch]);
+  }, [dispatch, businessId]);
 
   // Translation effect for processing activity list
   useEffect(() => {

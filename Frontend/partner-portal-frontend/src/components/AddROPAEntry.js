@@ -61,80 +61,137 @@ const AddROPAEntry = () => {
   useEffect(() => {
     if (!editMode || !entryData) return;
 
-    const hasMasterData = processingActivities.length > 0 && purposes.length > 0 && dataCategoryOptions.length > 0;
-    const businessFunctionValue = entryData.processOverview?.businessFunction || entryData.processOverview?.department;
-
-    const findBusinessGroupOption = () => {
-      if (!businessFunctionValue) return null;
-      const found = businessGroups.find(
-        (opt) => opt.value === businessFunctionValue || opt.label === businessFunctionValue
-      );
-      if (found) return found;
-      return { value: businessFunctionValue, label: businessFunctionValue };
-    };
-
-    if (!hasMasterData) return;
-
-    const businessGroupOption = findBusinessGroupOption();
-
     console.log("Prefilling form with entry data:", entryData);
 
-    // Find matching options for select fields
-    const findOption = (options, value) => {
-      return options.find(opt => opt.value === value) || null;
+    // ── Helpers ──
+    const findOption = (options, value) =>
+      options.find((opt) => opt.value === value) || null;
+
+    const findOptionByLabel = (options, label) => {
+      if (!label) return null;
+      const trimmed = label.trim().toLowerCase();
+      return options.find((opt) => opt.label?.trim().toLowerCase() === trimmed) || null;
     };
 
-    // Find processing activity - check multiple possible locations
-    const processingActivityId = entryData.processorActivityId
-      || entryData.processOverview?.processingActivityId
-      || entryData.processOverview?.processingActivity?.activityId
-      || entryData.processOverview?.processingActivity?.id;
+    // ── Business Function / Department ──
+    const businessFunctionValue =
+      entryData.processOverview?.businessFunction ||
+      entryData.processOverview?.department ||
+      entryData.businessFunction ||
+      entryData.department ||
+      "";
 
-    let processingActivity = findOption(processingActivities, processingActivityId);
-    if (!processingActivity && entryData.processOverview?.processingActivityName) {
-      processingActivity = processingActivities.find(opt =>
-        opt.label === entryData.processOverview.processingActivityName
-      );
+    let businessGroupOption = null;
+    if (businessFunctionValue && businessGroups.length > 0) {
+      businessGroupOption =
+        findOption(businessGroups, businessFunctionValue) ||
+        findOptionByLabel(businessGroups, businessFunctionValue);
+    }
+    if (!businessGroupOption && businessFunctionValue) {
+      businessGroupOption = { value: businessFunctionValue, label: businessFunctionValue };
     }
 
-    // Find purpose - check multiple possible locations
-    const purposeId = entryData.purposeForProcessingId
-      || entryData.processOverview?.purposeForProcessingId
-      || entryData.processOverview?.purpose?.purposeId
-      || entryData.processOverview?.purpose?.id;
-    console.log(purposeId)
-    let purpose = findOption(purposes, purposeId);
-    if (!purpose && entryData.processOverview?.purposeForProcessing) {
-      purpose = purposes.find(opt =>
-        opt.label === entryData.processOverview.purposeForProcessing
-      );
+    // ── Processing Activity ── (needs processingActivities loaded)
+    const processingActivityId =
+      entryData.processingActivityId ||
+      entryData.processOverview?.processingActivityId ||
+      entryData.processOverview?.processingActivity?.activityId ||
+      entryData.processOverview?.processingActivity?.id ||
+      "";
+
+    const processingActivityName =
+      entryData.processingActivityName ||
+      entryData.processOverview?.processingActivityName ||
+      "";
+
+    let processingActivity = null;
+    if (processingActivities.length > 0) {
+      if (processingActivityId) {
+        processingActivity = findOption(processingActivities, processingActivityId);
+      }
+      if (!processingActivity && processingActivityName) {
+        processingActivity = findOptionByLabel(processingActivities, processingActivityName);
+      }
+    }
+    if (!processingActivity && (processingActivityName || processingActivityId)) {
+      processingActivity = {
+        value: processingActivityId || processingActivityName,
+        label: processingActivityName || processingActivityId,
+      };
     }
 
-    // Map data categories (sourceOfPersonalData)
-    const dataCategories = (entryData.sourceOfPersonalData || []).map(cat => {
-      return dataCategoryOptions.find(opt => opt.value === cat) || { value: cat, label: cat };
+    // ── Purpose of Processing ── (needs purposes loaded)
+    const purposeId =
+      entryData.purposeForProcessingId ||
+      entryData.processOverview?.purposeForProcessingId ||
+      entryData.processOverview?.purpose?.purposeId ||
+      entryData.processOverview?.purpose?.id ||
+      "";
+
+    const purposeName =
+      entryData.purposeForProcessing ||
+      entryData.processOverview?.purposeForProcessing ||
+      "";
+
+    let purpose = null;
+    if (purposes.length > 0) {
+      if (purposeId) {
+        purpose = findOption(purposes, purposeId);
+      }
+      if (!purpose && purposeName) {
+        purpose = findOptionByLabel(purposes, purposeName);
+      }
+    }
+    if (!purpose && (purposeName || purposeId)) {
+      purpose = {
+        value: purposeId || purposeName,
+        label: purposeName || purposeId,
+      };
+    }
+
+    // ── Data Categories ── (sourceOfPersonalData)
+    const sourceData = entryData.sourceOfPersonalData || [];
+    const dataCategories = sourceData.map((cat) => {
+      const found = dataCategoryOptions.find(
+        (opt) => opt.value === cat || opt.value?.toLowerCase() === cat?.toLowerCase()
+      );
+      return found || { value: cat, label: cat };
     });
 
-    // Format retention period
-    const retentionPeriod = entryData.retentionPeriod;
+    // ── Retention Period ──
+    const retentionRaw = entryData.retentionPeriod;
     let retentionPeriodStr = "";
-    if (retentionPeriod && retentionPeriod.value != null && retentionPeriod.unit) {
-      retentionPeriodStr = `${retentionPeriod.value} ${retentionPeriod.unit.toLowerCase()}`;
+    if (retentionRaw) {
+      if (typeof retentionRaw === "string") {
+        // Already a string (e.g. "2 years") — use as-is
+        retentionPeriodStr = retentionRaw;
+      } else if (typeof retentionRaw === "object" && retentionRaw.value != null && retentionRaw.unit) {
+        retentionPeriodStr = `${retentionRaw.value} ${retentionRaw.unit.toLowerCase()}`;
+      }
     }
 
-    // Format categories of individual (special nature)
-    const categoriesIndividualStr = (entryData.categoriesOfSpecialNature || []).join(', ');
+    // ── Categories of Individual / Special Nature ──
+    const categoriesIndividualArr =
+      entryData.categoriesOfSpecialNature ||
+      entryData.categoryOfIndividual ||
+      [];
+    const categoriesIndividualStr = Array.isArray(categoriesIndividualArr)
+      ? categoriesIndividualArr.join(", ")
+      : String(categoriesIndividualArr || "");
 
-    // Extract processOwner object or create default
-    const processOwnerData = entryData.processOverview?.processOwner || {};
+    // ── Process Owner ──
+    const processOwnerData =
+      entryData.processOverview?.processOwner ||
+      entryData.processOwner ||
+      {};
     const processOwner = {
       name: processOwnerData.name || "",
       mobile: processOwnerData.mobile || "",
-      email: processOwnerData.email || ""
+      email: processOwnerData.email || "",
     };
 
     setFormData({
-      businessGroup: businessGroupOption ?? (businessFunctionValue ? { value: businessFunctionValue, label: businessFunctionValue } : null),
+      businessGroup: businessGroupOption,
       processOwner: processOwner,
       processingActivity: processingActivity,
       purpose: purpose,
@@ -149,7 +206,6 @@ const AddROPAEntry = () => {
       storageDetails: entryData.storageLocation || "",
       breachRecords: entryData.breachDocumentation || "",
     });
-    console.log(formData)
   }, [editMode, entryData, processingActivities, purposes, dataCategoryOptions, businessGroups]);
 
   // Fetch data categories from PII master data
@@ -354,13 +410,56 @@ const AddROPAEntry = () => {
           return { value, unit };
         }
 
+        // If only a number is entered, default to YEARS
+        const numOnly = period.match(/^(\d+)$/);
+        if (numOnly) {
+          return { value: parseInt(numOnly[1], 10), unit: "YEARS" };
+        }
+
+        // Try to extract any number + text combo (e.g. "6 mths", "3yr")
+        const fuzzy = period.match(/(\d+)\s*(\w+)/i);
+        if (fuzzy) {
+          const value = parseInt(fuzzy[1], 10);
+          const unitText = fuzzy[2].toLowerCase();
+          if (unitText.startsWith("m")) return { value, unit: "MONTHS" };
+          if (unitText.startsWith("d")) return { value, unit: "DAYS" };
+          if (unitText.startsWith("w")) return { value, unit: "WEEKS" };
+          return { value, unit: "YEARS" };
+        }
+
         return { value: 0, unit: "YEARS" };
       };
 
+      // Build processOwner object
+      const processOwnerObj = {
+        name: formData.processOwner?.name || "",
+        mobile: formData.processOwner?.mobile || "",
+        email: formData.processOwner?.email || "",
+      };
+
+      // Build processOverview to match API structure
+      const processOverview = {
+        businessFunction: formData.businessGroup?.label || "",
+        department: formData.businessGroup?.label || "",
+        processingActivityId: formData.processingActivity?.value || "",
+        processingActivityName: formData.processingActivity?.label || "",
+        purposeForProcessingId: formData.purpose?.value || "",
+        purposeForProcessing: formData.purpose?.label || "",
+        processOwner: processOwnerObj,
+      };
+
       const requestBody = {
-        processingActivityId: formData.processingActivity.value,
-        purposeForProcessingId: formData.purpose.value,
-        processOwner: formData.processOwner, // Include processOwner object
+        // Send processOverview as a wrapper (API stores it this way)
+        processOverview: processOverview,
+        // Also send flat fields for backend compatibility
+        processingActivityId: formData.processingActivity?.value || "",
+        processingActivityName: formData.processingActivity?.label || "",
+        purposeForProcessingId: formData.purpose?.value || "",
+        purposeForProcessing: formData.purpose?.label || "",
+        businessFunction: formData.businessGroup?.label || "",
+        department: formData.businessGroup?.label || "",
+        businessId: formData.businessGroup?.value || businessId,
+        processOwner: processOwnerObj,
         categoriesOfSpecialNature: formData.categoriesIndividual
           ? formData.categoriesIndividual.split(',').map(item => item.trim()).filter(item => item)
           : [],
@@ -385,7 +484,7 @@ const AddROPAEntry = () => {
         financialPrecautions: "",
         technicalPrecautions: formData.securityDescription || "",
         retentionPeriod: parseRetentionPeriod(formData.retentionPeriod),
-        storageLocation: formData.storageLocation || "",
+        storageLocation: formData.storageLocation || formData.storageDetails || "",
         breachDocumentation: formData.breachRecords || "N/A",
         lastBreachDate: null,
         breachSummary: null,
@@ -393,6 +492,10 @@ const AddROPAEntry = () => {
 
       // For edit mode, include additional fields if they exist in entryData
       if (editMode && entryData) {
+        // Preserve ropaId for updates
+        if (entryData.ropaId) {
+          requestBody.ropaId = entryData.ropaId;
+        }
         // Preserve existing values that might not be in the form
         if (entryData.businessFunctionsSharedWith) {
           requestBody.businessFunctionsSharedWith = entryData.businessFunctionsSharedWith;
@@ -426,6 +529,10 @@ const AddROPAEntry = () => {
         }
         if (entryData.breachSummary !== undefined) {
           requestBody.breachSummary = entryData.breachSummary;
+        }
+        // Preserve status
+        if (entryData.status) {
+          requestBody.status = entryData.status;
         }
       }
 
@@ -602,7 +709,18 @@ const AddROPAEntry = () => {
               <div className="form-field">
                 <label>Name of processing activity (Required)</label>
                 <Select
-                  options={processingActivities}
+                  options={
+                    formData.processingActivity &&
+                      editMode &&
+                      entryData &&
+                      !processingActivities.some(
+                        (o) =>
+                          o.value === formData.processingActivity?.value ||
+                          o.label === formData.processingActivity?.label
+                      )
+                      ? [formData.processingActivity, ...processingActivities]
+                      : processingActivities
+                  }
                   value={formData.processingActivity}
                   onChange={(value) => handleInputChange("processingActivity", value)}
                   placeholder="Select processing activity"
@@ -614,7 +732,18 @@ const AddROPAEntry = () => {
               <div className="form-field">
                 <label>Purpose of processing (Required)</label>
                 <Select
-                  options={purposes}
+                  options={
+                    formData.purpose &&
+                      editMode &&
+                      entryData &&
+                      !purposes.some(
+                        (o) =>
+                          o.value === formData.purpose?.value ||
+                          o.label === formData.purpose?.label
+                      )
+                      ? [formData.purpose, ...purposes]
+                      : purposes
+                  }
                   value={formData.purpose}
                   onChange={(value) => handleInputChange("purpose", value)}
                   placeholder="Select purposes"
@@ -634,7 +763,17 @@ const AddROPAEntry = () => {
                 <label>Categories of personal data</label>
                 <Select
                   isMulti
-                  options={dataCategoryOptions}
+                  options={(() => {
+                    if (!editMode || !entryData || !formData.categoriesPersonalData?.length) {
+                      return dataCategoryOptions;
+                    }
+                    const missingOptions = formData.categoriesPersonalData.filter(
+                      (sel) => !dataCategoryOptions.some((o) => o.value === sel.value)
+                    );
+                    return missingOptions.length > 0
+                      ? [...missingOptions, ...dataCategoryOptions]
+                      : dataCategoryOptions;
+                  })()}
                   value={formData.categoriesPersonalData}
                   onChange={(value) => handleInputChange("categoriesPersonalData", value)}
                   placeholder={loadingCategories ? "Loading data categories..." : "Select data categories"}

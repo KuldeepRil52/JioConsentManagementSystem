@@ -74,6 +74,8 @@ import {
   BsBellSlashFill,
   BsTranslate,
   BsCookie, // No fill version available - using regular
+  BsImageFill,
+  BsQuestionCircleFill,
 } from "react-icons/bs";
 
 /**
@@ -95,6 +97,7 @@ const iconMap = {
   
   // User & Person
   IcPerson: BsPersonFill,
+  IcUser: BsPersonFill,
   IcBusinessman: BsPersonFill,
   
   // Communication
@@ -141,6 +144,7 @@ const iconMap = {
   IcError: BsXCircleFill,
   IcWarning: BsExclamationTriangleFill,
   IcInfo: BsInfoCircleFill,
+  IcHelp: BsQuestionCircleFill,
   IcCheck: BsCheckCircleFill,
   IcStatusSuccessful: BsCheckCircleFill,
   IcSuccessColored: BsCheckCircleFill,
@@ -179,6 +183,9 @@ const iconMap = {
   // Cookies & Data
   IcCookies: BsCookie,
   IcDatabase: BsDatabaseFill,
+  
+  // Media
+  IcImage: BsImageFill,
   
   // Special
   IcJioDot: BsCircleFill,
@@ -407,3 +414,6 @@ export const IcFlipVertical = Icon.IcFlipVertical;
 export const IcDownloads = Icon.IcDownloads;
 export const IcAlarmSensor = Icon.IcAlarmSensor;
 export const IcDataLoan = Icon.IcDataLoan;
+export const IcUser = Icon.IcUser;
+export const IcImage = Icon.IcImage;
+export const IcHelp = Icon.IcHelp;

@@ -491,8 +491,12 @@ const ROPA = () => {
       return;
     }
 
-    // Helper function to format DPO details
-    const getDpoDetails = (processOwner) => {
+    // Helper function to format DPO details — check both nested and top-level
+    const getDpoDetails = (entry) => {
+      const processOwner =
+        entry.processOverview?.processOwner ||
+        entry.processOwner ||
+        null;
       if (!processOwner) return '-';
       const parts = [];
       if (processOwner.name) parts.push(processOwner.name);
@@ -509,10 +513,10 @@ const ROPA = () => {
 
     // Prepare data for CSV export
     const csvData = filteredData.map(entry => ({
-      'Business Function / Department': entry.processOverview?.businessFunction || entry.processOverview?.department || '-',
-      'Process Owner (DPO)': getDpoDetails(entry.processOverview?.processOwner),
-      'Processing Activity Name': entry.processOverview?.processingActivityName || '-',
-      'Purpose for Processing': entry.processOverview?.purposeForProcessing || '-',
+      'Business Function / Department': entry.processOverview?.businessFunction || entry.processOverview?.department || entry.businessFunction || entry.department || '-',
+      'Process Owner (DPO)': getDpoDetails(entry),
+      'Processing Activity Name': entry.processOverview?.processingActivityName || entry.processingActivityName || '-',
+      'Purpose for Processing': entry.processOverview?.purposeForProcessing || entry.purposeForProcessing || '-',
       'Categories of Personal Data': formatArray(entry.categoriesOfPersonalData),
       'Categories of Special Nature': formatArray(entry.categoriesOfSpecialNature),
       'Source of Personal Data': formatArray(entry.sourceOfPersonalData),
@@ -825,7 +829,12 @@ const ROPA = () => {
                   })
                   .map((entry, index) => {
                     // Helper function to format DPO details
-                    const getDpoDetails = (processOwner) => {
+                    // Check both processOverview.processOwner and top-level processOwner
+                    const getDpoDetails = (entry) => {
+                      const processOwner =
+                        entry.processOverview?.processOwner ||
+                        entry.processOwner ||
+                        null;
                       if (!processOwner) return '-';
                       const parts = [];
                       if (processOwner.name) parts.push(processOwner.name);
@@ -845,22 +854,22 @@ const ROPA = () => {
                         {/* Process Overview */}
                         <td>
                           <Text appearance="body-xs-bold" color="black">
-                            {getNestedValue(entry, 'processOverview.businessFunction') || getNestedValue(entry, 'processOverview.department') || '-'}
+                            {getNestedValue(entry, 'processOverview.businessFunction') || getNestedValue(entry, 'processOverview.department') || entry.businessFunction || entry.department || '-'}
                           </Text>
                         </td>
                         <td>
                           <Text appearance="body-xs-bold" color="black">
-                            {getDpoDetails(entry.processOverview?.processOwner)}
+                            {getDpoDetails(entry)}
                           </Text>
                         </td>
                         <td>
                           <Text appearance="body-xs-bold" color="black">
-                            {getNestedValue(entry, 'processOverview.processingActivityName') || '-'}
+                            {getNestedValue(entry, 'processOverview.processingActivityName') || entry.processingActivityName || '-'}
                           </Text>
                         </td>
                         <td>
                           <Text appearance="body-xs-bold" color="black">
-                            {getNestedValue(entry, 'processOverview.purposeForProcessing') || '-'}
+                            {getNestedValue(entry, 'processOverview.purposeForProcessing') || entry.purposeForProcessing || '-'}
                           </Text>
                         </td>
 

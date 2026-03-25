@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "../Styles/FilterPanel.css";
-import { ActionButton, Icon, Text } from "@jds/core";
-import { IcAdd, IcClose, IcFilter, IcSearch } from "@jds/core-icons";
+import { textStyle } from "../utils/textStyles";
+import { ICON_SIZE } from "../utils/iconSizes";
+import { FaFilter, FaPlus, FaTimes } from "react-icons/fa";
+import { FiSearch } from "react-icons/fi";
 
 const FilterPanel = ({
   open,
@@ -18,7 +20,7 @@ const FilterPanel = ({
   // Toggle status selection
   const toggleStatus = (value) => {
     setStatus((prev) =>
-      prev.includes(value) ? prev.filter((s) => s !== value) : [...prev, value]
+      prev.includes(value) ? prev.filter((s) => s !== value) : [...prev, value],
     );
   };
 
@@ -52,29 +54,36 @@ const FilterPanel = ({
         {/* Header */}
         <div className="filter-header">
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Icon size="m" ic={<IcFilter />} color="primary_grey_100" />
-            <Text
-              appearance="heading-xs"
-              color="primary_grey_100"
+            <FaFilter size={ICON_SIZE} />
+            <span
               id="filterPanelTitle"
+              style={textStyle("heading-xs", "primary-grey-100")}
             >
               Filters
-            </Text>
+            </span>
           </div>
-          <ActionButton
-            ariaLabel="Close filter panel"
+          <button
+            aria-label="Close filter panel"
             onClick={onClose}
-            kind="tertiary"
-            icon={<Icon ic={<IcClose />} size="l" color="primary_grey_100" />}
-            size="medium"
-          />
+            style={{
+              background: "transparent",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <FaTimes size={ICON_SIZE} color="#6B7280" />
+          </button>
         </div>
 
         {/* Body */}
         <div className="filter-body">
           {/* Search */}
           <div className="search-input-wrapper">
-            <Icon ic={<IcSearch />} size="m" color="primary_grey_100" />
+            <FiSearch size={ICON_SIZE} />
             <input
               type="text"
               className="search-input"
@@ -86,13 +95,12 @@ const FilterPanel = ({
           </div>
 
           {/* Status */}
-          <Text
-            appearance="body-s-bold"
-            color="primary_grey_80"
+          <span
             className="filter-label"
+            style={textStyle("body-s-bold", "primary-grey-80")}
           >
             Status
-          </Text>
+          </span>
 
           {showStatus && (
             <div className="status-options">
@@ -116,10 +124,10 @@ const FilterPanel = ({
                       alignItems: "center",
                     }}
                   >
-                    <Text appearance="body-s" color="primary_grey_100">
+                    <span style={textStyle("body-s", "primary-grey-100")}>
                       Active
-                    </Text>
-                    <IcClose height={20} width={20}></IcClose>
+                    </span>
+                    <FaTimes size={ICON_SIZE} />
                   </div>
                 ) : (
                   <div
@@ -129,10 +137,10 @@ const FilterPanel = ({
                       alignItems: "center",
                     }}
                   >
-                    <Text appearance="body-s" color="primary_grey_100">
+                    <span style={textStyle("body-s", "primary-grey-100")}>
                       Active
-                    </Text>
-                    <IcAdd height={20} width={20}></IcAdd>
+                    </span>
+                    <FaPlus size={ICON_SIZE} />
                   </div>
                 )}
               </div>
@@ -157,10 +165,10 @@ const FilterPanel = ({
                       alignItems: "center",
                     }}
                   >
-                    <Text appearance="body-s" color="primary_grey_100">
+                    <span style={textStyle("body-s", "primary-grey-100")}>
                       Withdrawn
-                    </Text>
-                    <IcClose height={20} width={20}></IcClose>
+                    </span>
+                    <FaTimes size={ICON_SIZE} />
                   </div>
                 ) : (
                   <div
@@ -170,10 +178,10 @@ const FilterPanel = ({
                       alignItems: "center",
                     }}
                   >
-                    <Text appearance="body-s" color="primary_grey_100">
+                    <span style={textStyle("body-s", "primary-grey-100")}>
                       Withdrawn
-                    </Text>
-                    <IcAdd height={20} width={20}></IcAdd>
+                    </span>
+                    <FaPlus size={ICON_SIZE} />
                   </div>
                 )}
               </div>
@@ -198,10 +206,10 @@ const FilterPanel = ({
                       alignItems: "center",
                     }}
                   >
-                    <Text appearance="body-s" color="primary_grey_100">
+                    <span style={textStyle("body-s", "primary-grey-100")}>
                       Expired
-                    </Text>
-                    <IcClose height={20} width={20}></IcClose>
+                    </span>
+                    <FaTimes size={ICON_SIZE} />
                   </div>
                 ) : (
                   <div
@@ -211,10 +219,10 @@ const FilterPanel = ({
                       alignItems: "center",
                     }}
                   >
-                    <Text appearance="body-s" color="primary_grey_100">
+                    <span style={textStyle("body-s", "primary-grey-100")}>
                       Expired
-                    </Text>
-                    <IcAdd height={20} width={20}></IcAdd>
+                    </span>
+                    <FaPlus size={ICON_SIZE} />
                   </div>
                 )}
               </div>
@@ -223,13 +231,12 @@ const FilterPanel = ({
 
           {/* Date Range */}
           <br />
-          <Text
-            appearance="body-s-bold"
-            color="primary_grey_80"
+          <span
             className="filter-label"
+            style={textStyle("body-s-bold", "primary-grey-80")}
           >
             Created Date Range
-          </Text>
+          </span>
 
           <div className="date-range-row">
             <input
@@ -253,18 +260,40 @@ const FilterPanel = ({
 
         {/* Footer */}
         <div className="filter-footer">
-          <ActionButton
-            kind="secondary"
-            label="Clear All"
+          <button
             onClick={handleClear}
             ariaLabel="Clear All Filter"
-          />
-          <ActionButton
-            kind="primary"
-            label="Apply"
+            style={{
+              background: "white",
+              color: "#2563eb",
+              border: "1px solid rgb(224, 224, 224)",
+              padding: "10px 20px",
+              borderRadius: "999px",
+              fontSize: "11px",
+              fontWeight: "600",
+              cursor: "pointer",
+              transition: "0.2s",
+            }}
+          >
+            Clear All
+          </button>
+          <button
             onClick={handleApply}
-            ariaLabel="Apply filters"
-          />
+            aria-label="Apply Filters"
+            style={{
+              backgroundColor: "#2563eb",
+              color: "#fff",
+              border: "none",
+              padding: "10px 20px",
+              borderRadius: "999px",
+              fontSize: "11px",
+              fontWeight: "600",
+              cursor: "pointer",
+              transition: "0.2s",
+            }}
+          >
+            Apply Filters
+          </button>
         </div>
       </div>
     </>

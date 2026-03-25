@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useMemo } from "react";
 import "../Styles/createRequest.css";
-import { ActionButton, Icon, Image, Text, Button } from "@jds/core";
+import { textStyle, FONT_FAMILY_STACK } from "../utils/textStyles";
+import { ICON_SIZE } from "../utils/iconSizes";
 import "../Styles/toast.css";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import CustomToast from "./CustomToastContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useRef } from "react";
-import { IcLanguage } from "@jds/extended-icons";
 import "../Styles/loader.css";
-import { IcChevronDown, IcUpload, IcSuccess, IcClose } from "@jds/core-icons";
 import {
   createGrievanceRequest,
   createIntegrationGrievanceRequest,
@@ -17,6 +16,7 @@ import {
   getIntegrationGrievnaceTemplateData,
 } from "../store/actions/CommonAction";
 import useTranslation from "../hooks/useTranslation";
+import { FaChevronDown, FaLanguage, FaTimes, FaUpload } from "react-icons/fa";
 
 const IntegrationCreateRequest = () => {
   const logos = new URL("../Assets/popup.svg", import.meta.url).href;
@@ -28,7 +28,7 @@ const IntegrationCreateRequest = () => {
   const [title, setTitle] = useState("Register your grievance");
   const [purposeHeading, setPurposeHeading] = useState("Purpose: ");
   const [processingHeading, setProcessingHeading] = useState(
-    "Processing activity: "
+    "Processing activity: ",
   );
   const [usedByHeading, setUsedByHeading] = useState("Used By: ");
   const [durationHeading, setDurationHeading] = useState("Duration: ");
@@ -45,21 +45,34 @@ const IntegrationCreateRequest = () => {
       { id: "int_create_grievance_details", source: "Grievance Details" },
       { id: "int_create_select_category", source: "Select Category" },
       { id: "int_create_grievance_category", source: "Grievance Category" },
-      { id: "int_create_grievance_subcategory", source: "Grievance Subcategory" },
-      { id: "int_create_enter_subcategory", source: "Enter Grievance Subcategory" },
+      {
+        id: "int_create_grievance_subcategory",
+        source: "Grievance Subcategory",
+      },
+      {
+        id: "int_create_enter_subcategory",
+        source: "Enter Grievance Subcategory",
+      },
       { id: "int_create_description", source: "Description (Required)" },
-      { id: "int_create_description_placeholder", source: "Enter description of the group's function or scope." },
+      {
+        id: "int_create_description_placeholder",
+        source: "Enter description of the group's function or scope.",
+      },
       { id: "int_create_user_details", source: "User Details" },
       { id: "int_create_user_type", source: "User Type" },
       { id: "int_create_select_user_type", source: "Select user type" },
       { id: "int_create_upload_files", source: "Upload Files" },
       { id: "int_create_upload", source: "Upload" },
-      { id: "int_create_upload_instruction", source: "Drag and drop or upload a document with hyperlink with the consent banner in .pdf or .doc format." },
+      {
+        id: "int_create_upload_instruction",
+        source:
+          "Drag and drop or upload a document with hyperlink with the consent banner in .pdf or .doc format.",
+      },
       { id: "int_create_required", source: "Required" },
       { id: "int_create_enter", source: "Enter" },
       { id: "int_create_submit_request", source: "Submit Request" },
     ],
-    []
+    [],
   );
 
   // Use translation hook
@@ -99,8 +112,8 @@ const IntegrationCreateRequest = () => {
             tenantId,
             businessId,
             grievanceTemplateId,
-            secureCode
-          )
+            secureCode,
+          ),
         );
         if (response.status === 200) {
           setGrievanceFormTemplate(response.data);
@@ -122,7 +135,7 @@ const IntegrationCreateRequest = () => {
                   selectedLanguage.toUpperCase() ||
                 lang.heading
                   ?.toUpperCase()
-                  .includes(selectedLanguage.toUpperCase())
+                  .includes(selectedLanguage.toUpperCase()),
             );
 
             if (matchingLanguageEntry) {
@@ -166,19 +179,19 @@ const IntegrationCreateRequest = () => {
   const [grievanceCategoryLabel, setGrievanceCategoryLabel] =
     useState("Grievance Category");
   const [grievanceSubCategoryLabel, setGrievanceSubCategoryLabel] = useState(
-    "Grievance Subcategory"
+    "Grievance Subcategory",
   );
   const [text, setText] = useState(
-    "While using JioMeet, your activities create data which will be used with your consent to offer customised services. Details of data usage are provided below. "
+    "While using JioMeet, your activities create data which will be used with your consent to offer customised services. Details of data usage are provided below. ",
   );
   const [subCategoryPlaceholder, setSubCategoryPlaceholder] = useState(
-    "Enter Grievance Subcategory"
+    "Enter Grievance Subcategory",
   );
   const [descriptionLabel, setDescriptionLabel] = useState(
-    "Description (Required)"
+    "Description (Required)",
   );
   const [descriptionPlaceholder, setDescriptionPlaceholder] = useState(
-    "Enter description of the group's function or scope."
+    "Enter description of the group's function or scope.",
   );
   const [userDetailsHeading, setUserDetailsHeading] = useState("User Details");
   const [userTypeLabel, setUserTypeLabel] = useState("User Type");
@@ -187,7 +200,7 @@ const IntegrationCreateRequest = () => {
   const [uploadFilesHeading, setUploadFilesHeading] = useState("Upload Files");
   const [uploadButtonText, setUploadButtonText] = useState("Upload");
   const [uploadInstruction, setUploadInstruction] = useState(
-    "Drag and drop or upload a document with hyperlink with the consent banner in .pdf or .doc format."
+    "Drag and drop or upload a document with hyperlink with the consent banner in .pdf or .doc format.",
   );
   const [requiredLable, setRequiredLable] = useState("Required");
   const [enterLable, setEnterLable] = useState("Enter");
@@ -274,7 +287,7 @@ const IntegrationCreateRequest = () => {
       border: "1px solid #ccc",
       borderRadius: "8px",
       padding: "2px 4px",
-      fontSize: "14px",
+      fontSize: "11px",
       minHeight: "40px",
       boxShadow: "none",
       borderColor: state.isFocused ? "#ccc" : "#ccc",
@@ -292,7 +305,7 @@ const IntegrationCreateRequest = () => {
     placeholder: (base) => ({
       ...base,
       color: "#666",
-      fontSize: "14px",
+      fontSize: "11px",
     }),
 
     multiValue: (base) => ({
@@ -305,7 +318,7 @@ const IntegrationCreateRequest = () => {
     multiValueLabel: (base) => ({
       ...base,
       color: "#333",
-      fontSize: "13px",
+      fontSize: "11px",
     }),
 
     multiValueRemove: (base) => ({
@@ -333,14 +346,14 @@ const IntegrationCreateRequest = () => {
 
     option: (base, state) => ({
       ...base,
-      fontSize: "14px",
+      fontSize: "11px",
       padding: "8px 12px",
       cursor: "pointer",
       backgroundColor: state.isSelected
         ? "#e6f0ff"
         : state.isFocused
-        ? "#f5f5f5"
-        : "#fff",
+          ? "#f5f5f5"
+          : "#fff",
       color: "#333",
       ":active": {
         backgroundColor: "#e6f0ff",
@@ -378,7 +391,7 @@ const IntegrationCreateRequest = () => {
         <div className="accordion-header" onClick={() => setIsOpen(!isOpen)}>
           <div className="accordion-left">
             <span className={`accordion-icon ${isOpen ? "open" : ""}`}>
-              <IcChevronDown height={25} width={25} />
+              <FaChevronDown size={ICON_SIZE} />
             </span>
             <span className="accordion-title">{title}</span>
           </div>
@@ -418,7 +431,7 @@ const IntegrationCreateRequest = () => {
                       ? `${item.preferenceValidity.value} ${toTitleCase(
                           item.preferenceValidity.value === 1
                             ? item.preferenceValidity.unit.replace(/s$/i, "") // singular
-                            : item.preferenceValidity.unit // plural
+                            : item.preferenceValidity.unit, // plural
                         )}`
                       : "N/A"}
                   </p>
@@ -457,10 +470,10 @@ const IntegrationCreateRequest = () => {
   };
 
   const [rights, setRights] = useState(
-    "To withdraw your consent, exercise your rights, or file complaints with the Board click here."
+    "To withdraw your consent, exercise your rights, or file complaints with the Board click here.",
   );
   const [permission, setPermission] = useState(
-    "By clicking ‘Allow all’ or ’Save my choices’, you are providing your consent to Reliance Medlab using your data as outlined above."
+    "By clicking ‘Allow all’ or ’Save my choices’, you are providing your consent to Reliance Medlab using your data as outlined above.",
   );
   const [supportedLanguages, setSupportedLanguages] = useState([]);
   const [language, setLanguage] = useState("");
@@ -479,7 +492,7 @@ const IntegrationCreateRequest = () => {
   const [activityOptions, setActivityOptions] = useState([]);
   const [purposeOptions, setPurposeOptions] = useState([]);
   const [processingActivityOptions, setProcessingActivityOptions] = useState(
-    []
+    [],
   );
   const [purposeList, setPurposeList] = useState([]);
 
@@ -632,7 +645,7 @@ const IntegrationCreateRequest = () => {
           if (!userDetailInputs[item] || userDetailInputs[item].trim() === "") {
             errors.push(`Please enter ${item}.`);
           }
-        }
+        },
       );
     }
 
@@ -657,19 +670,19 @@ const IntegrationCreateRequest = () => {
             }
           />
         ),
-        { icon: false }
+        { icon: false },
       );
       return;
     } else if (errors.length === 1) {
       toast.error(
         (props) => <CustomToast {...props} type="error" message={errors[0]} />,
-        { icon: false }
+        { icon: false },
       );
       return;
     } else if (true) {
       // Format grievance information (if needed for later use)
       const formattedGrievanceInformation = Object.entries(
-        grievanceFormTemplate?.grievances || {}
+        grievanceFormTemplate?.grievances || {},
       ).map(([grievanceType, grievanceItems]) => ({
         grievanceType,
         grievanceItems,
@@ -685,7 +698,7 @@ const IntegrationCreateRequest = () => {
             acc[key] = userDetailInputs[label] || "";
             return acc;
           },
-          {}
+          {},
         );
 
       // --- Final request body ---
@@ -712,7 +725,7 @@ const IntegrationCreateRequest = () => {
           tenantId,
           businessId,
           secureCode,
-        })
+        }),
       );
 
       if (res?.status === 201) {
@@ -724,7 +737,7 @@ const IntegrationCreateRequest = () => {
               message={"Grievance Request Raised Succesfully!"}
             />
           ),
-          { icon: false }
+          { icon: false },
         );
         setShowSuccessTick(true);
       }
@@ -790,20 +803,7 @@ const IntegrationCreateRequest = () => {
                     >
                       {title ? title : "Register your grievance"}
                     </h1>
-                    <Button
-                      ariaControls="Button Clickable"
-                      ariaDescribedby="Button"
-                      ariaExpanded="Expanded"
-                      ariaLabel="Button"
-                      className="Button"
-                      icon="ic_chevron_down"
-                      iconLeft={<IcLanguage />}
-                      iconAriaLabel="Icon Favorite"
-                      kind="secondary"
-                      label="English"
-                      size="small"
-                      state="normal"
-                    />
+                    <FaLanguage />
                   </div>
 
                   <img
@@ -824,7 +824,7 @@ const IntegrationCreateRequest = () => {
                       backgroundColor: activePopupColors.cardBackground,
                       color: activePopupColors.cardFont,
                       marginBottom: "8px",
-                      fontSize: "14px",
+                      fontSize: "11px",
                       letterSpacing: "-0.5px",
                       color: "rgba(0, 0, 0, 0.65)",
                       fontWeight: "500",
@@ -839,9 +839,9 @@ const IntegrationCreateRequest = () => {
                     <div>
                       {/* --- Section heading --- */}
                       <div style={{ marginBottom: "10px" }}>
-                        <Text appearance="heading-xxs" color="primary-grey-80">
+                        <span style={textStyle("heading-xxs", "primary-grey-80")}>
                           {grievanceDetailsHeading}
-                        </Text>
+                        </span>
                       </div>
 
                       {/* --- Grievance Category Dropdown --- */}
@@ -863,7 +863,7 @@ const IntegrationCreateRequest = () => {
                               <option key={idx} value={info.grievanceType}>
                                 {info.grievanceType}
                               </option>
-                            )
+                            ),
                           )}
                         </select>
                       </div>
@@ -887,7 +887,7 @@ const IntegrationCreateRequest = () => {
                             {(
                               grievanceFormTemplate?.multilingual.grievanceInformation.find(
                                 (info) =>
-                                  info.grievanceType === selectedGrievanceType
+                                  info.grievanceType === selectedGrievanceType,
                               )?.grievanceItems || []
                             ).map((item, idx) => (
                               <option key={idx} value={item}>
@@ -917,9 +917,9 @@ const IntegrationCreateRequest = () => {
                     ?.userType?.length > 0 ||
                     grievanceFormTemplate?.multilingual?.userInformation[0]
                       ?.userItems?.length > 0) && (
-                    <Text appearance="heading-xxs" color="primary-grey-80">
+                    <span style={textStyle("heading-xxs", "primary-grey-80")}>
                       {userDetailsHeading}
-                    </Text>
+                    </span>
                   )}
 
                   {grievanceFormTemplate?.multilingual?.userInformation[0]
@@ -943,7 +943,7 @@ const IntegrationCreateRequest = () => {
                               <option key={index} value={type}>
                                 {type}
                               </option>
-                            )
+                            ),
                           )}
                         </select>
                       </div>
@@ -958,9 +958,9 @@ const IntegrationCreateRequest = () => {
                               <label
                                 style={{
                                   display: "block",
-                                  fontSize: "13px",
+                                  fontSize: "11px",
                                   fontWeight: "600",
-                                  fontFamily: "Arial, sans-serif",
+                                  fontFamily: FONT_FAMILY_STACK,
                                   marginBottom: "5px",
                                   color: "#767676",
                                 }}
@@ -983,16 +983,16 @@ const IntegrationCreateRequest = () => {
                                   padding: "10px 12px",
                                   border: "1px solid #ccc",
                                   borderRadius: "8px",
-                                  fontSize: "14px",
+                                  fontSize: "11px",
                                   fontWeight: 400,
                                   color: "rgba(20, 20, 20, 1)",
                                   outline: "none",
-                                  fontFamily: "Arial, sans-serif",
+                                  fontFamily: FONT_FAMILY_STACK,
                                 }}
                               />
                             </div>
                           </div>
-                        )
+                        ),
                       )}
                     </div>
                   )}
@@ -1000,9 +1000,9 @@ const IntegrationCreateRequest = () => {
                   {grievanceFormTemplate?.multilingual?.uploadFiles && (
                     <>
                       <div className="">
-                        <Text appearance="heading-xxs" color="primary-grey-80">
+                        <span style={textStyle("heading-xxs", "primary-grey-80")}>
                           {uploadFilesHeading}
-                        </Text>
+                        </span>
                       </div>
 
                       <div
@@ -1026,20 +1026,17 @@ const IntegrationCreateRequest = () => {
                           />
 
                           <div className="flex items-center justify-center">
-                            <Icon
-                              ic={<IcUpload height={23} width={23} />}
-                              color="primary_60"
-                            />
-                            <Text appearance="button" color="primary-60">
+                            <FaUpload size={ICON_SIZE} />
+                            <span style={textStyle("button", "primary-60")}>
                               {uploadButtonText}
-                            </Text>
+                            </span>
                           </div>
                         </div>
 
                         <div style={{}}>
-                          <Text appearance="body-xs" color="primary-grey-80">
+                          <span style={textStyle("body-xs", "primary-grey-80")}>
                             {uploadInstruction}
-                          </Text>
+                          </span>
                         </div>
                       </div>
                     </>
@@ -1052,21 +1049,12 @@ const IntegrationCreateRequest = () => {
                         className="previewFile"
                       >
                         <div className="iconandText">
-                          <Icon
-                            ic={<IcSuccess width={15} height={15} />}
-                            color="feedback_success_50"
-                          />
-                          <Text appearance="body-xs" color="primary-grey-80">
+                          <span style={textStyle("body-xs", "primary-grey-80")}>
                             {uploadFileName}
-                          </Text>
+                          </span>
                         </div>
                       </div>
-                      <Icon
-                        ic={<IcClose width={15} height={15} />}
-                        color="primary_60"
-                        className="selecetd-file-display"
-                        onClick={handleRemoveUploadFile}
-                      />
+                      <FaTimes size={ICON_SIZE} onClick={handleRemoveUploadFile} />
                     </div>
                   )}
                 </div>
@@ -1077,13 +1065,23 @@ const IntegrationCreateRequest = () => {
                   }`}
                 >
                   <div style={{}}>
-                    <ActionButton
-                      kind="primary"
-                      size="medium"
-                      state="normal"
-                      label="Submit Request"
+                    <button
                       onClick={handlePublish}
-                    />
+                      ariaLabel="Submit Request"
+                      style={{
+                        backgroundColor: "#2563eb",
+                        color: "",
+                        border: "none",
+                        padding: "10px 20px",
+                        borderRadius: "999px",
+                        fontSize: "11px",
+                        fontWeight: "600",
+                        cursor: "pointer",
+                        transition: "0.2s",
+                      }}
+                    >
+                      Submit Request
+                    </button>
                   </div>
                 </div>
               </div>

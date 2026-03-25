@@ -104,6 +104,23 @@ export default function RegisteredCookies() {
 
   const mountedRef = useRef(true);
   useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem("registercookies_flash_toast");
+      if (!raw) return;
+      const flash = JSON.parse(raw);
+      sessionStorage.removeItem("registercookies_flash_toast");
+
+      if (flash?.type === "success" && flash?.message) {
+        toast.success(<CustomToast type="success" message={flash.message} />, { icon: false });
+      } else if (flash?.type === "error" && flash?.message) {
+        toast.error(<CustomToast type="error" message={flash.message} />, { icon: false });
+      }
+    } catch {
+      sessionStorage.removeItem("registercookies_flash_toast");
+    }
+  }, []);
+
+  useEffect(() => {
     mountedRef.current = true;
     return () => {
       mountedRef.current = false;
@@ -280,7 +297,14 @@ const fetchRegisteredList = useCallback(async () => {
         }
       }
 
-      // ⭐ Cookie count
+      // ⭐ Cookie count (robust fallback chain to avoid null/"null" from API)
+      const toSafeCount = (value) => {
+        if (value === null || value === undefined || value === "") return null;
+        if (typeof value === "string" && value.trim().toLowerCase() === "null") return null;
+        const parsed = Number(value);
+        return Number.isFinite(parsed) ? parsed : null;
+      };
+
       const prefCount = (fullTemplate.preferencesWithCookies || []).reduce(
         (sum, pref) =>
           sum + ((Array.isArray(pref.cookies) && pref.cookies.length) || 0),
@@ -289,7 +313,22 @@ const fetchRegisteredList = useCallback(async () => {
       const topLevelCount = Array.isArray(fullTemplate.cookies)
         ? fullTemplate.cookies.length
         : 0;
-      const totalCookies = prefCount + topLevelCount;
+      const totalFromPreferences = Array.isArray(fullTemplate.preferences)
+        ? fullTemplate.preferences.reduce((sum, pref) => {
+            const prefCountValue =
+              toSafeCount(pref?.cookieCount) ??
+              toSafeCount(pref?.totalCookies) ??
+              toSafeCount(pref?.cookiesCount) ??
+              0;
+            return sum + prefCountValue;
+          }, 0)
+        : 0;
+      const computedCount = prefCount + topLevelCount;
+      const apiCount =
+        toSafeCount(fullTemplate.totalCookies) ??
+        toSafeCount(fullTemplate.totalCookieCount) ??
+        toSafeCount(fullTemplate.cookiesCount);
+      const totalCookies = apiCount ?? (computedCount > 0 ? computedCount : totalFromPreferences);
 
       // ⭐ Dates
       let lastScanned = "—";
@@ -957,7 +996,7 @@ const handleScanSubmit = async () => {
                               color="primary-grey-100"
 
                             >
-                              {r.totalCookies ?? "—"}
+                              {Number.isFinite(Number(r.totalCookies)) ? Number(r.totalCookies) : 0}
                             </Text>
                           </td>
 

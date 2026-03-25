@@ -20,6 +20,7 @@ const Purpose = ({ selectedLanguage }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const multilingualConfigSaved = useSelector((state) => state.common.multilingualConfigSaved);
+  const businessId = useSelector((state) => state.common.business_id);
   const [dataPurposeModal, setDataPurposeModal] = useState(false);
   const [purposeId, setPurposeId] = useState("");
   const [showMultilingualWarningModal, setShowMultilingualWarningModal] = useState(false);
@@ -512,7 +513,7 @@ const Purpose = ({ selectedLanguage }) => {
   };
   useEffect(() => {
     fetchPurposes();
-  }, [dispatch]);
+  }, [dispatch, businessId]);
 
   // Translation effect for purpose list
   useEffect(() => {

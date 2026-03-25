@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { InputFieldV2, Text, Icon, InputToggle } from "../custom-components";
 import { IcClose, IcSuccess, IcUpload } from "../custom-components/Icon";
 import { useState } from "react";
@@ -46,6 +46,13 @@ const FormBranding = ({
   setColors,
   darkColors,
   setDarkColors,
+  fontName,
+  setFontName,
+  fontBase64,
+  setFontBase64,
+  fontInputRef,
+  fontStyles,
+  setFontStyles,
 }) => {
   const handleDarkMode = () => {
     setDarkMode((prev) => !prev);
@@ -190,16 +197,16 @@ const FormBranding = ({
   const handleLogoClick = () => {
     logoInputRef.current.click();
   };
-  
+
   const validateLogoDimensions = (file) => {
     return new Promise((resolve) => {
       const img = new Image();
       const objectUrl = URL.createObjectURL(file);
-      
+
       img.onload = () => {
         URL.revokeObjectURL(objectUrl);
         const { width, height } = img;
-        
+
         // Check minimum dimensions
         if (width < 100 || height < 100) {
           toast.error(
@@ -215,7 +222,7 @@ const FormBranding = ({
           resolve(false);
           return;
         }
-        
+
         // Check maximum dimensions
         if (width > 1000 || height > 1000) {
           toast.error(
@@ -231,7 +238,7 @@ const FormBranding = ({
           resolve(false);
           return;
         }
-        
+
         // Check aspect ratio (warn if not square)
         const aspectRatio = width / height;
         if (aspectRatio < 0.9 || aspectRatio > 1.1) {
@@ -247,10 +254,10 @@ const FormBranding = ({
           );
           // Still allow but show warning
         }
-        
+
         resolve(true);
       };
-      
+
       img.onerror = () => {
         URL.revokeObjectURL(objectUrl);
         toast.error(
@@ -265,19 +272,19 @@ const FormBranding = ({
         );
         resolve(false);
       };
-      
+
       img.src = objectUrl;
     });
   };
-  
+
   // ✅ SECURE: Image validation with XSS detection + dimension check
   const validateLogo = async (file) => {
     console.log("file.type", file.type);
-    
+
     try {
       // First, run secure validation (magic numbers, XSS detection, size check)
       const validationResult = await validateImageFile(file);
-      
+
       if (!validationResult.valid) {
         const errorMessage = formatValidationErrors(validationResult);
         toast.error(
@@ -292,7 +299,7 @@ const FormBranding = ({
         );
         return false;
       }
-      
+
       // Then, validate dimensions for logo-specific requirements
       const dimensionsValid = await validateLogoDimensions(file);
       if (!dimensionsValid) {
@@ -374,6 +381,110 @@ const FormBranding = ({
     }
   };
 
+  const handleFontClick = () => {
+    fontInputRef.current.click();
+  };
+
+  const handleRemoveFont = () => {
+    setFontName("");
+    setFontBase64("");
+    setFontStyles(s => ({ ...s, url: '', family: '' }));
+    if (fontInputRef.current) fontInputRef.current.value = "";
+  };
+
+  const handleFontFileChange = async (e) => {
+    if (e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const isValid = await validateFontFile(file);
+      if (isValid) {
+        setFontName(file.name);
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          const base64String = reader.result;
+          setFontBase64(base64String);
+          setFontStyles(s => ({ ...s, url: base64String, family: file.name.split('.')[0] }));
+        };
+        reader.readAsDataURL(file);
+      } else {
+        handleRemoveFont();
+      }
+    }
+  };
+
+  const handleFontDragOver = (e) => {
+    e.preventDefault();
+  };
+
+  const handleFontDragLeave = (e) => {
+    e.preventDefault();
+  };
+
+  const handleFontDrop = async (e) => {
+    e.preventDefault();
+    if (e.dataTransfer.files.length > 0) {
+      const file = e.dataTransfer.files[0];
+      const isValid = await validateFontFile(file);
+      if (isValid) {
+        if (fontInputRef.current) fontInputRef.current.files = e.dataTransfer.files;
+        handleFontFileChange({ target: { files: [file] } });
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (fontBase64) {
+      const styleId = 'custom-font-style-grievance';
+      let style = document.getElementById(styleId);
+      if (!style) {
+        style = document.createElement("style");
+        style.id = styleId;
+        document.head.appendChild(style);
+      }
+
+      // Check if it already has data URI prefix
+      const fontSrc = fontBase64.startsWith("data:")
+        ? fontBase64
+        : `data:application/octet-stream;base64,${fontBase64}`;
+
+      style.innerHTML = `
+        @font-face {
+          font-family: '${fontStyles.family || 'CustomFont'}';
+          src: url(${fontSrc});
+        }
+      `;
+    }
+  }, [fontBase64, fontStyles.family]);
+
+  const validateFontFile = async (file) => {
+    const allowedTypes = ["font/woff", "font/woff2", "font/ttf", "application/font-woff", "application/font-woff2", "application/x-font-ttf"];
+    const maxSize = 1 * 1024 * 1024; // 1MB
+
+    // Some browsers might not report the correct MIME type, so we can also check the extension as a fallback.
+    const allowedExtensions = ['.woff', '.woff2', '.ttf'];
+    const fileExtension = '.' + file.name.split('.').pop();
+
+    if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(fileExtension.toLowerCase())) {
+      toast.error(
+        <CustomToast
+          type="error"
+          message={"Invalid file type. Only WOFF, WOFF2, and TTF fonts are allowed."}
+        />
+      );
+      return false;
+    }
+
+    if (file.size > maxSize) {
+      toast.error(
+        <CustomToast
+          type="error"
+          message={"Font file size must be 1MB or less."}
+        />
+      );
+      return false;
+    }
+    return true;
+  };
+
   return (
     <div className="purpose-con">
       <div className="language-heading-upload">
@@ -414,7 +525,7 @@ const FormBranding = ({
         </div>
 
         <Text appearance="body-xs" color="primary-grey-80">
-          Drag and drop or upload image under 500KB. Formats: PNG, JPEG, JPG. 
+          Drag and drop or upload image under 500KB. Formats: PNG, JPEG, JPG.
           Dimensions: 100x100px to 1000x1000px (Square recommended for best display).
         </Text>
 
@@ -589,7 +700,7 @@ const FormBranding = ({
         style={{
           padding: "0px 15px",
           marginBottom: "20px",
-          opacity:  1,
+          opacity: 1,
           pointerEvents: darkMode ? "auto" : "none",
         }}
       >
@@ -709,7 +820,83 @@ const FormBranding = ({
           </div>
         </div>
       </div>
+      {false && (
+        <>
+          <div className="language-heading">
+            <Text appearance="heading-xxs" color="primary-grey-80">
+              Font settings
+            </Text>
+          </div>
 
+          <div
+            style={{
+              padding: "0px 15px",
+              marginBottom: "20px",
+            }}
+          >
+            {/* Font upload */}
+            <div
+              className="fileUploader-custom1"
+              onClick={handleFontClick}
+              onDragOver={handleFontDragOver}
+              onDragLeave={handleFontDragLeave}
+              onDrop={handleFontDrop}
+            >
+              <input
+                type="file"
+                ref={fontInputRef}
+                style={{ display: "none" }}
+                onChange={handleFontFileChange}
+                accept=".woff,.woff2,.ttf"
+              />
+
+              <div className="flex items-center justify-center">
+                <Icon ic={<IcUpload height={23} width={23} />} color="primary_60" />
+                <Text appearance="button" color="primary-60">
+                  Upload Font
+                </Text>
+              </div>
+            </div>
+            <Text appearance="body-xs" color="primary-grey-80">
+              Upload a font file (WOFF, WOFF2, TTF). Max size 1MB.
+            </Text>
+
+            {fontName && (
+              <div className="systemConfiguration-file-uploader">
+                <div className="previewFile">
+                  <Icon
+                    ic={<IcSuccess width={15} height={15} />}
+                    color="feedback_success_50"
+                  />
+                  <Text appearance="body-xs" color="primary-grey-80">
+                    {fontName}
+                  </Text>
+                </div>
+                <Icon
+                  ic={<IcClose width={15} height={15} />}
+                  color="primary_60"
+                  className="selecetd-file-display"
+                  onClick={handleRemoveFont}
+                />
+              </div>
+            )}
+
+            {/* Font style inputs */}
+            <div style={{ marginTop: "1rem", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+              <InputFieldV2
+                label="Font Size (e.g., 14px)"
+                value={fontStyles.size}
+                onChange={(e) => setFontStyles((s) => ({ ...s, size: e.target.value }))}
+              />
+              <InputFieldV2
+                label="Font Weight (e.g., 400)"
+                value={fontStyles.weight}
+                onChange={(e) => setFontStyles((s) => ({ ...s, weight: e.target.value }))}
+              />
+            </div>
+          </div>
+        </>
+      )}
       {/* <div className="brand-controls">
         <div>
           <Text appearance="heading-xxs" color="primary-grey-80">

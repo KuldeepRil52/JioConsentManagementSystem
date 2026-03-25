@@ -130,8 +130,8 @@
   border-color: #0066ff;
 }
 
-/* Filter Drawer Styles */
-.filter-drawer-overlay {
+/* Filter Drawer Styles – audit-specific classes to avoid CSS conflicts */
+.audit-filter-drawer-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -142,7 +142,7 @@
   animation: fadeIn 0.2s ease-in-out;
 }
 
-.filter-drawer {
+.audit-filter-drawer {
   position: fixed;
   top: 0;
   right: 0;

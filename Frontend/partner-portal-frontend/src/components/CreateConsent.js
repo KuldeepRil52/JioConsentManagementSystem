@@ -2243,14 +2243,9 @@ const CreateConsent = () => {
           <div className="cc-body">
             <div className="notif-tabs">
               <Tabs
-                appearance="normal"
-                onChange={() => {
+                onTabChange={() => {
                   setActiveTab("popup");
                 }}
-                onNextClick={function noRefCheck() { }}
-                onPrevClick={function noRefCheck() { }}
-                onScroll={function noRefCheck() { }}
-                overflow="fit"
               >
                 <TabItem
                   data-tour="purpose-tab"

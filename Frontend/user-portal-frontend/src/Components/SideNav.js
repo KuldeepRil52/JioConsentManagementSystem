@@ -1,15 +1,12 @@
 import React, { useMemo, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { Icon, Text } from "@jds/core";
+import { textStyle } from "../utils/textStyles";
 import {
-  IcAddCircle,
-  IcHome,
-  IcNotification,
-  IcTime,
-  IcUser,
-} from "@jds/core-icons";
+  NAV_ICON_OUTLINE,
+  NAV_ICON_PILL,
+  NAV_ICON_PILL_INSET,
+} from "../utils/iconSizes";
 import "../Styles/sideNav.css";
-import { IcStatusSuccessful } from "@jds/extended-icons";
 import { useSelector } from "react-redux";
 import useTranslation from "../hooks/useTranslation";
 
@@ -29,7 +26,7 @@ const SideNav = () => {
       { id: "nav_grievance_redressal", source: "Grievance redressal" },
       { id: "nav_requests", source: "Requests" },
     ],
-    []
+    [],
   );
 
   const { getTranslation, translateContent, currentLanguage } =
@@ -42,23 +39,108 @@ const SideNav = () => {
     }
   }, [currentLanguage, translationInputs, translateContent]);
 
+  const SuccessIcon = ({ isActive }) => {
+    const successPath = `M4.6 7.88a1 1 0 00.82-.43 8.06 8.06 0 011.74-1.81A1 1 0 106 4.05a9.93 9.93 0 00-2.22 2.27A1 1 0 004 7.71a1 1 0 00.6.17zm-.49 5.36A8.35 8.35 0 014 12a8.23 8.23 0 01.11-1.24 1.012 1.012 0 00-2-.31 9.31 9.31 0 000 3.1 1 1 0 001 .85h.15a1.001 1.001 0 00.85-1.16zM12 2a10.3 10.3 0 00-2 .2 1.02 1.02 0 10.4 2A7.85 7.85 0 0112 4a8 8 0 010 16 7.85 7.85 0 01-1.61-.16 1.019 1.019 0 10-.4 2 10.3 10.3 0 002 .2A10.02 10.02 0 0012 2zM5.42 16.55a1.001 1.001 0 00-1.863.354 1 1 0 00.223.776A9.93 9.93 0 006 20a1 1 0 001.18.012 1 1 0 00.03-1.602 8.06 8.06 0 01-1.79-1.86zm1.37-5.26a1 1 0 000 1.42l3 3a1 1 0 001.42 0l6-6a1.004 1.004 0 00-1.42-1.42l-5.29 5.3-2.29-2.3a1.001 1.001 0 00-1.42 0z`;
+
+    if (isActive) {
+      return (
+        <div
+          style={{
+            width: NAV_ICON_PILL,
+            height: NAV_ICON_PILL,
+            backgroundColor: "#2563eb",
+            borderRadius: "999px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            height={NAV_ICON_PILL_INSET}
+            width={NAV_ICON_PILL_INSET}
+          >
+            <path d={successPath} fill="#fff" />
+          </svg>
+        </div>
+      );
+    }
+
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        height={NAV_ICON_OUTLINE}
+        width={NAV_ICON_OUTLINE}
+        style={{ color: "#6b7280", flexShrink: 0 }}
+      >
+        <path d={successPath} fill="currentColor" />
+      </svg>
+    );
+  };
+  const TimeIcon = ({ isActive }) => {
+    if (isActive) {
+      return (
+        <div
+          style={{
+            width: NAV_ICON_PILL,
+            height: NAV_ICON_PILL,
+            backgroundColor: "#2563eb", // blue
+            borderRadius: "999px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            flexShrink: 0,
+          }}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            height={NAV_ICON_PILL_INSET}
+            width={NAV_ICON_PILL_INSET}
+          >
+            <path
+              d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 11a1 1 0 01-1 1H9a1 1 0 010-2h2V9a1 1 0 012 0v4z"
+              fill="#fff"
+            />
+          </svg>
+        </div>
+      );
+    }
+
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        height={NAV_ICON_OUTLINE}
+        width={NAV_ICON_OUTLINE}
+        style={{ color: "#6b7280", flexShrink: 0 }} // grey
+      >
+        <path
+          d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 11a1 1 0 01-1 1H9a1 1 0 010-2h2V9a1 1 0 012 0v4z"
+          fill="currentColor"
+        />
+      </svg>
+    );
+  };
+
   const menuItems = [
     { type: "heading", label: getTranslation("nav_consent", "Consent") },
     {
       label: getTranslation("nav_granted_consents", "Granted consents"),
-      icon: <IcStatusSuccessful height={23} width={23} aria-hidden="true" />,
+      icon: "success",
       path: "/",
     },
     {
       label: getTranslation("nav_pending_requests", "Pending requests"),
-      icon: <IcTime height={23} width={23} aria-hidden="true" />,
+      icon: "time",
       path: "/systemRequests",
     },
-
-    { type: "heading", label: getTranslation("nav_grievance_redressal", "Grievance redressal") },
+    {
+      type: "heading",
+      label: getTranslation("nav_grievance_redressal", "Grievance redressal"),
+    },
     {
       label: getTranslation("nav_requests", "Requests"),
-      icon: <IcStatusSuccessful height={23} width={23} aria-hidden="true" />,
+      icon: "success",
       path: "/requests",
     },
   ];
@@ -76,26 +158,31 @@ const SideNav = () => {
     return null;
   } else {
     return (
-      <nav
-        className="sideBar-outer-container"
-        aria-label="Main Navigation"
-      >
+      <nav className="sideBar-outer-container" aria-label="Main Navigation">
         <div role="menu" aria-label="Navigation menu">
           {cusId && (
             <div
               className="sideBar-menu-click inactive"
               aria-label={`Customer ID: ${cusId}`}
             >
-              <Icon
-                kind="default"
-                ic={<IcUser height={23} width={23} aria-hidden="true" />}
-                color="primary_grey_80"
-                size="medium"
-              />
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                height={NAV_ICON_OUTLINE}
+                width={NAV_ICON_OUTLINE}
+                aria-hidden="true"
+                role="img"
+                style={{ color: "#555", flexShrink: 0 }}
+              >
+                <path
+                  d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 4a3 3 0 110 6 3 3 0 010-6zm0 14a8 8 0 01-6.54-3.41C6.46 15.08 9 14 12 14s5.54 1.08 6.54 2.59A8 8 0 0112 20z"
+                  fill="currentColor"
+                />
+              </svg>
               <div className="sideBar-cusId" title={cusId}>
-                <Text appearance="body-xs-bold" color="primary-grey-80">
+                <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                   {cusId}
-                </Text>
+                </span>
               </div>
             </div>
           )}
@@ -103,15 +190,16 @@ const SideNav = () => {
           {menuItems.map((item) => {
             if (item.type === "heading") {
               return (
-                <Text
+                <p
                   key={item.label}
-                  appearance="body-xs-bold"
-                  color="primary-grey-80"
-                  className="sideBar-menu-item"
-                  aria-label={`${item.label} section`}
+                  style={{
+                    ...textStyle("body-xs-bold", "primary-grey-80"),
+                    marginTop: "12px",
+                    marginBottom: "4px",
+                  }}
                 >
                   {item.label}
-                </Text>
+                </p>
               );
             }
 
@@ -120,34 +208,22 @@ const SideNav = () => {
             return (
               <div
                 key={item.path}
-                className={`sideBar-menu-click ${
-                  isActive ? "active" : "inactive"
-                }`}
+                className={`sideBar-menu-click ${isActive ? "active" : ""}`}
                 onClick={() => handleNavigation(item.path)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    handleNavigation(item.path);
-                  }
-                }}
                 tabIndex={0}
                 role="menuitem"
-                aria-label={`Navigate to ${item.label}`}
-                aria-current={isActive ? "page" : undefined}
               >
-                <Icon
-                  kind={isActive ? "background-bold" : "default"}
-                  ic={item.icon}
-                  color={isActive ? "primary_60" : "primary_grey_80"}
-                  size="medium"
-                />
-                <Text
-                  appearance="body-xs-bold"
-                  color={isActive ? "primary_60" : "primary-grey-80"}
-                  style={{ marginLeft: "8px" }}
+                {item.icon === "success" && <SuccessIcon isActive={isActive} />}
+                {item.icon === "time" && <TimeIcon isActive={isActive} />}
+
+                <span
+                  style={{
+                    ...textStyle("body-xs-bold", "primary-grey-80"),
+                    marginLeft: "8px",
+                  }}
                 >
                   {item.label}
-                </Text>
+                </span>
               </div>
             );
           })}

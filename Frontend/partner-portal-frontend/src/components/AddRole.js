@@ -28,16 +28,24 @@ const AddRole = () => {
   const nameCharLimit = 25;
   const charLimit = 200;
 
-  // Module-level access (System, Dataset) + Monitoring pages - ensure they appear in the list even if not returned by API
+  // Valid UUID pattern – only componentIds matching this are sent to the backend
+  const isValidUUID = (id) => /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+
+  // Module-level access (System, Dataset) + Monitoring pages
+  // These appear in the UI even if the backend's listComponents doesn't return them.
+  // If their componentId is a placeholder string (not a UUID), they act as UI-only
+  // umbrella controls and are filtered out before the API call.
   const STATIC_MODULES = [
     { componentName: 'SYSTEM', componentId: 'SYSTEM' },
     { componentName: 'DATASET', componentId: 'DATASET' },
     { componentName: 'MONITORING', componentId: 'MONITORING' },
-    // Monitoring has 3 pages in side nav: Scheduler Stats, Data Compliance Report, Data deletion and purge dashboard
     { componentName: 'SCHEDULER_STATS', componentId: 'SCHEDULER_STATS' },
     { componentName: 'DATA_COMPLIANCE_REPORT', componentId: 'DATA_COMPLIANCE_REPORT' },
     { componentName: 'DATA_DELETION_PURGE_DASHBOARD', componentId: 'DATA_DELETION_PURGE_DASHBOARD' },
   ];
+
+  // Monitoring child components – toggled when the MONITORING umbrella is checked
+  const MONITORING_CHILDREN = ['SCHEDULER_STATS', 'DATA_COMPLIANCE_REPORT', 'DATA_DELETION_PURGE_DASHBOARD'];
 
   // Function to convert component names to exact sidenav labels
   const getDisplayName = (componentName) => {
@@ -386,6 +394,29 @@ const AddRole = () => {
         },
       };
       
+      // MONITORING umbrella: toggle all child monitoring pages together
+      if (item === 'MONITORING') {
+        MONITORING_CHILDREN.forEach(child => {
+          if (updated[child] !== undefined) {
+            updated[child] = { access: newAccessValue };
+          }
+        });
+      }
+      
+      // If a monitoring child is unchecked, uncheck the MONITORING umbrella
+      if (MONITORING_CHILDREN.includes(item) && !newAccessValue) {
+        if (updated['MONITORING'] !== undefined) {
+          updated['MONITORING'] = { access: false };
+        }
+      }
+      // If all monitoring children are checked, auto-check the MONITORING umbrella
+      if (MONITORING_CHILDREN.includes(item) && newAccessValue) {
+        const allChildrenSelected = MONITORING_CHILDREN.every(child => updated[child]?.access === true);
+        if (allChildrenSelected && updated['MONITORING'] !== undefined) {
+          updated['MONITORING'] = { access: true };
+        }
+      }
+      
       // If selecting a Consent component, auto-select Master Data
       if (isConsentComponent && newAccessValue && masterKey) {
         updated[masterKey] = {
@@ -619,10 +650,16 @@ const AddRole = () => {
     const permissionsPayload = [];
     for (const componentName in permissions) {
       if (permissions[componentName].access) {
-        permissionsPayload.push({ 
-          componentId: accessToItems[componentName], 
-          access: "YES"
-        });
+        const compId = accessToItems[componentName];
+        // Only send componentIds that the backend recognizes (valid UUIDs).
+        // Static/umbrella modules (MONITORING, SYSTEM, DATASET etc.) have
+        // string-based placeholder IDs and are UI-only controls.
+        if (isValidUUID(compId)) {
+          permissionsPayload.push({ 
+            componentId: compId, 
+            access: "YES"
+          });
+        }
       }
     }
 

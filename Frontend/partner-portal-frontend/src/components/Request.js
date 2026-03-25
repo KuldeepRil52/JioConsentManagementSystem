@@ -648,6 +648,7 @@ const Request = () => {
                         <input
                           type="date"
                           value={filters.dateFrom}
+                          max={filters.dateTo || new Date().toISOString().split('T')[0]}
                           onChange={(e) => setFilters(prev => ({ ...prev, dateFrom: e.target.value }))}
                           style={{
                             width: '100%',
@@ -664,6 +665,8 @@ const Request = () => {
                         <input
                           type="date"
                           value={filters.dateTo}
+                          min={filters.dateFrom || ''}
+                          max={new Date().toISOString().split('T')[0]}
                           onChange={(e) => setFilters(prev => ({ ...prev, dateTo: e.target.value }))}
                           style={{
                             width: '100%',

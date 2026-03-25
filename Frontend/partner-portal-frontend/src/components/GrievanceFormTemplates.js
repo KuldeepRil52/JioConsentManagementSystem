@@ -533,6 +533,7 @@ const GrievanceFormTemplates = () => {
                         <input
                           type="date"
                           value={filters.dateFrom}
+                          max={filters.dateTo || new Date().toISOString().split('T')[0]}
                           onChange={(e) =>
                             setFilters({ ...filters, dateFrom: e.target.value })
                           }
@@ -543,6 +544,8 @@ const GrievanceFormTemplates = () => {
                         <input
                           type="date"
                           value={filters.dateTo}
+                          min={filters.dateFrom || ''}
+                          max={new Date().toISOString().split('T')[0]}
                           onChange={(e) =>
                             setFilters({ ...filters, dateTo: e.target.value })
                           }

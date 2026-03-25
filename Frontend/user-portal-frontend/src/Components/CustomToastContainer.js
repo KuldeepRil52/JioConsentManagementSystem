@@ -1,6 +1,11 @@
 import React from "react";
-import { Icon, Text } from "@jds/core";
-import { IcClose, IcError, IcSuccess } from "@jds/core-icons";
+import { textStyle } from "../utils/textStyles";
+import { ICON_SIZE } from "../utils/iconSizes";
+import {
+  FaCheckCircle,
+  FaExclamationCircle,
+  FaTimesCircle,
+} from "react-icons/fa";
 
 const CustomToast = ({ type, message, closeToast }) => {
   return (
@@ -8,28 +13,26 @@ const CustomToast = ({ type, message, closeToast }) => {
       {/* Left Icon */}
       <span className="toast-icon">
         {type === "success" ? (
-          <Icon
-            ic={<IcSuccess width={15} height={15} />}
-            color="feedback_success_50"
-          />
+          <FaCheckCircle style={{ color: "green" }} size={ICON_SIZE} />
         ) : (
-          <Icon
-            ic={<IcError width={15} height={15} />}
-            color="feedback_error_50"
-          />
+          <FaExclamationCircle style={{ color: "red" }} size={ICON_SIZE} />
         )}
       </span>
 
       {/* Message */}
       <div className="toast-message">
-        <Text appearance="body-s-bold" color="primary-background">
+        <span style={textStyle("body-s-bold", "primary-background")}>
           {message}
-        </Text>
+        </span>
       </div>
 
       {/* Close button */}
       <span className="toast-close">
-        <Icon ic={<IcClose />} color="none" onClick={closeToast} />
+        <FaTimesCircle
+          style={{ color: "red" }}
+          size={ICON_SIZE}
+          onClick={closeToast}
+        />
       </span>
     </div>
   );

@@ -14,8 +14,8 @@ export const exportToCSV = (data, filename, headers = null) => {
     // Get headers from first object if not provided
     const csvHeaders = headers || Object.keys(data[0]);
     
-    // Create CSV content
-    let csvContent = '';
+    // Create CSV content – prepend BOM so Excel opens with correct encoding
+    let csvContent = '\uFEFF';
     
     // Add headers
     csvContent += csvHeaders.map(header => `"${header}"`).join(',') + '\n';
@@ -31,7 +31,14 @@ export const exportToCSV = (data, filename, headers = null) => {
         }
         
         // Convert value to string and escape quotes
-        const stringValue = String(value).replace(/"/g, '""');
+        let stringValue = String(value).replace(/"/g, '""');
+
+        // Prevent Excel from auto-interpreting fraction-like values (e.g. 0/1)
+        // as dates by prefixing with a tab character when the pattern matches.
+        if (/^\d+\s*\/\s*\d+$/.test(stringValue)) {
+          stringValue = '\t' + stringValue;
+        }
+
         return `"${stringValue}"`;
       });
       

@@ -2,7 +2,6 @@ import React from "react";
 
 import { useLocation } from "react-router-dom";
 import "./JDS_Styles/main.scss";
-import { Footer, TokenProvider } from "@jds/core";
 import SideNav from "./Components/SideNav";
 import Nav from "./Routes/Nav";
 import "./Styles/app.css";
@@ -23,14 +22,14 @@ function App() {
   );
 
   return (
-    <TokenProvider theme="JioBase" mode="light">
+    <>
       <HeaderComponent />
       <div className={!hideSideNav ? "app-layout" : ""}>
         {!hideSideNav && <SideNav />}
         <Nav />
       </div>
       {!hideSideNav && <FooterComponent />}
-    </TokenProvider>
+    </>
   );
 }
 

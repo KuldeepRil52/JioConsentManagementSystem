@@ -891,8 +891,7 @@ const Notification = () => {
         </div>
         <div className="notif-tabs-setup">
         <Tabs
-                appearance="normal"
-                onChange={function noRefCheck(){}}
+                onTabChange={function noRefCheck(){}}
                 onNextClick={function noRefCheck(){}}
                 onPrevClick={function noRefCheck(){}}
                 onScroll={function noRefCheck(){}}

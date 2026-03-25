@@ -19,7 +19,7 @@ import { IcAdd, IcClose, IcChevronLeft, IcChevronRight, ic_search } from "../cus
 import { CLEAR_SESSION } from "../store/constants/Constants";
 import "../styles/sessionModal.css";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getDataTypes,
   createDataType,
@@ -33,6 +33,7 @@ import { languages } from "../utils/languages";
 const PII = ({ selectedLanguage }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const businessId = useSelector((state) => state.common.business_id);
   const [modalLanguage, setModalLanguage] = useState('en');
   const [dataTypeLabel, setDataTypeLabel] = useState("Enter data type");
   const [dataItemLabel, setDataItemLabel] = useState("Enter data item");
@@ -175,7 +176,7 @@ const PII = ({ selectedLanguage }) => {
     };
 
     fetchPurposes();
-  }, [dispatch]);
+  }, [dispatch, businessId]);
   const [showSessionModal, setShowSessionModal] = useState(false);
   const [searchText, setSearchText] = useState("");
 

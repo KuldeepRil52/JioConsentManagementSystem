@@ -1,22 +1,7 @@
-import {
-  ActionButton,
-  BadgeV2,
-  Icon,
-  Modal,
-  SearchBox,
-  Spinner,
-  Text,
-} from "@jds/core";
+import { textStyle } from "../utils/textStyles";
+import { ICON_SIZE } from "../utils/iconSizes";
 import "../Styles/requests.css";
 
-import {
-  IcInfo,
-  IcSort,
-  IcStar,
-  IcSuccessColored,
-  IcTime,
-  IcVisible,
-} from "@jds/core-icons";
 import { useEffect, useState, useMemo } from "react";
 import "../Styles/configurePage.css";
 import {
@@ -30,6 +15,8 @@ import { GRIEVANCE_STATUS } from "../store/constants/Constants";
 import StarRating from "./StarRating";
 import StarIntegrationRating from "./StarIntegrationRating";
 import useTranslation from "../hooks/useTranslation";
+import { FaInfoCircle, FaSort } from "react-icons/fa";
+import { AiFillClockCircle } from "react-icons/ai";
 
 const IntegrationGrievanceRequests = () => {
   const [loadLogs, setLoadLogs] = useState(true);
@@ -42,13 +29,13 @@ const IntegrationGrievanceRequests = () => {
   const [newCount, setNewCount] = useState(0);
 
   const integration_tenant_id = useSelector(
-    (state) => state.common.integration_tenant_id
+    (state) => state.common.integration_tenant_id,
   );
   const integration_business_id = useSelector(
-    (state) => state.common.integration_business_id
+    (state) => state.common.integration_business_id,
   );
   const integration_grievanceTemplate_id = useSelector(
-    (state) => state.common.integration_grievanceTemplate_id
+    (state) => state.common.integration_grievanceTemplate_id,
   );
 
   // Translation inputs for static text
@@ -70,7 +57,7 @@ const IntegrationGrievanceRequests = () => {
       { id: "int_requests_feedback", source: "Feedback" },
       { id: "int_requests_no_data", source: "No Data to Display" },
     ],
-    []
+    [],
   );
 
   // Use translation hook
@@ -114,19 +101,23 @@ const IntegrationGrievanceRequests = () => {
     const fetchData = async () => {
       try {
         const searchList = await dispatch(
-          getGrievnaceRequestByParams(tenantId, businessId, grievanceTemplateId)
+          getGrievnaceRequestByParams(
+            tenantId,
+            businessId,
+            grievanceTemplateId,
+          ),
         );
         if (searchList.status === 200) {
           const data = [...(searchList?.data?.data || [])].reverse();
 
           const resolved = data.filter(
-            (item) => item.status === GRIEVANCE_STATUS.GRIEVANCE_RESOLVED
+            (item) => item.status === GRIEVANCE_STATUS.GRIEVANCE_RESOLVED,
           ).length;
           const inProgress = data.filter(
-            (item) => item.status === GRIEVANCE_STATUS.GRIEVANCE_INPROCESS
+            (item) => item.status === GRIEVANCE_STATUS.GRIEVANCE_INPROCESS,
           ).length;
           const newReqCount = data.filter(
-            (item) => item.status === GRIEVANCE_STATUS.NEW
+            (item) => item.status === GRIEVANCE_STATUS.NEW,
           ).length;
           // Update states
           setResolvedCount(resolved);
@@ -152,22 +143,44 @@ const IntegrationGrievanceRequests = () => {
       <div className="pageConfig">
         <div className="fiduciaryHeaderContainer">
           <div className="fiduciaryHeader">
-            <Text appearance="heading-s" color="primary-grey-100">
+            <span style={textStyle("heading-s", "primary-grey-100")}>
               Requests
-            </Text>
+            </span>
             <div className="badge">
-              <Text appearance="body-xs-bold" color="primary-grey-80">
+              <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                 Grievance redressal
-              </Text>
+              </span>
             </div>
           </div>
           <div className="requestsButtonContainer">
-            <ActionButton
-              kind="primary"
-              size="large"
-              label="Raise new request"
+            <button />
+            <button
               onClick={createGrievanceRequest}
-            ></ActionButton>
+              disabled={disableRaiseButton}
+              aria-label="Raise a new grievance request"
+              style={{
+                backgroundColor: "#1f4ed8", // blue color
+                color: "#fff",
+                border: "none",
+                padding: "12px 24px",
+                borderRadius: "999px", // fully rounded
+                fontSize: "11px",
+                fontWeight: "600",
+                cursor: disableRaiseButton ? "not-allowed" : "pointer",
+                opacity: disableRaiseButton ? 0.6 : 1,
+                transition: "0.2s",
+              }}
+              onMouseEnter={(e) => {
+                if (!disableRaiseButton) {
+                  e.currentTarget.style.backgroundColor = "#1a3fb8";
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "#1f4ed8";
+              }}
+            >
+              {getTranslation("requests_raise_new", "Raise new request")}
+            </button>
           </div>
         </div>
         <div
@@ -201,7 +214,7 @@ const IntegrationGrievanceRequests = () => {
                 alignItems: "center",
               }}
             >
-              <IcInfo height={35} width={35} />
+              <FaInfoCircle size={ICON_SIZE} />
               <div
                 style={{
                   display: "flex",
@@ -209,12 +222,12 @@ const IntegrationGrievanceRequests = () => {
                   alignItems: "flex-start",
                 }}
               >
-                <Text appearance="body-xs-bold" color="primary-grey-100">
+                <span style={textStyle("body-xs-bold", "primary-grey-100")}>
                   {newCount || "0"}
-                </Text>
-                <Text appearance="body-xs" color="primary-grey-80">
+                </span>
+                <span style={textStyle("body-xs", "primary-grey-80")}>
                   New
-                </Text>
+                </span>
               </div>
             </div>
           </div>
@@ -240,11 +253,7 @@ const IntegrationGrievanceRequests = () => {
                 alignItems: "center",
               }}
             >
-              <Icon
-                ic={<IcTime height={35} width={35} />}
-                color="primary_60"
-                size="large"
-              />
+              <AiFillClockCircle size={ICON_SIZE} />
               <div
                 style={{
                   display: "flex",
@@ -252,12 +261,12 @@ const IntegrationGrievanceRequests = () => {
                   alignItems: "flex-start",
                 }}
               >
-                <Text appearance="body-xs-bold" color="primary-grey-100">
+                <span style={textStyle("body-xs-bold", "primary-grey-100")}>
                   {inProgressCount || "0"}
-                </Text>
-                <Text appearance="body-xs" color="primary-grey-80">
+                </span>
+                <span style={textStyle("body-xs", "primary-grey-80")}>
                   In Process
-                </Text>
+                </span>
               </div>
             </div>
           </div>
@@ -282,7 +291,7 @@ const IntegrationGrievanceRequests = () => {
                 gap: "0.5rem",
               }}
             >
-              <IcSuccessColored height={35} width={35} />
+              <FaCheckCircle style={{ color: "green" }} size={ICON_SIZE} />
               <div
                 style={{
                   display: "flex",
@@ -290,12 +299,12 @@ const IntegrationGrievanceRequests = () => {
                   alignItems: "flex-start",
                 }}
               >
-                <Text appearance="body-xs-bold" color="primary-grey-100">
+                <span style={textStyle("body-xs-bold", "primary-grey-100")}>
                   {resolvedCount || "0"}
-                </Text>
-                <Text appearance="body-xs" color="primary-grey-80">
+                </span>
+                <span style={textStyle("body-xs", "primary-grey-80")}>
                   Resolved
-                </Text>
+                </span>
               </div>
             </div>
           </div>
@@ -307,63 +316,75 @@ const IntegrationGrievanceRequests = () => {
               <tr>
                 <th className="parentheader">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       Grievance ID
-                    </Text>
-                    <Icon ic={<IcSort />} color="primary_60" size="small" />
+                    </span>
+                    <FaSort size={ICON_SIZE} />
                   </div>
                 </th>
                 <th className="parentheader">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       Date submitted
-                    </Text>
-                    <Icon ic={<IcSort />} color="primary_60" size="small" />
+                    </span>
+                    <MdUnfoldMore
+                      size={ICON_SIZE}
+                      style={{ cursor: "pointer", color: "#0a2885" }}
+                    />
                   </div>
                 </th>
                 <th className="parentheader">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       Last updated
-                    </Text>
-                    <Icon ic={<IcSort />} color="primary_60" size="small" />
+                    </span>
+                    <MdUnfoldMore
+                      size={ICON_SIZE}
+                      style={{ cursor: "pointer", color: "#0a2885" }}
+                    />{" "}
                   </div>
                 </th>
                 <th className="parentheader">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       Grievance type
-                    </Text>
-                    <Icon ic={<IcSort />} color="primary_60" size="small" />
+                    </span>
+                    <MdUnfoldMore
+                      size={ICON_SIZE}
+                      style={{ cursor: "pointer", color: "#0a2885" }}
+                    />
                   </div>
                 </th>
                 <th className="parentheader">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       Remarks
-                    </Text>
+                    </span>
                   </div>
                 </th>
                 <th className="parentheader">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       Status
-                    </Text>
-                    <Icon ic={<IcSort />} color="primary_60" size="small" />
+                    </span>
+                    <MdUnfoldMore
+                      size={ICON_SIZE}
+                      style={{ cursor: "pointer", color: "#0a2885" }}
+                    />
                   </div>
                 </th>
                 <th className="parentheader">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       Actions
-                    </Text>
+                    </span>
                   </div>
                 </th>
                 <th className="parentheader">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       Feedback
-                    </Text>
+                    </span>
                   </div>
                 </th>
               </tr>
@@ -377,11 +398,27 @@ const IntegrationGrievanceRequests = () => {
                     style={{ textAlign: "center", padding: "1rem" }}
                   >
                     <div className="customerActivityLoader">
-                      <Spinner
-                        kind="normal"
-                        labelPosition="right"
-                        size="small"
-                      />
+                      <>
+                        <style>
+                          {`
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `}
+                        </style>
+
+                        <div
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            border: "3px solid #f3f3f3",
+                            borderTop: "3px solid #0a2885",
+                            borderRadius: "50%",
+                            animation: "spin 1s linear infinite",
+                          }}
+                        />
+                      </>
                     </div>
                   </td>
                 </tr>
@@ -392,9 +429,9 @@ const IntegrationGrievanceRequests = () => {
                     colSpan="6"
                     style={{ textAlign: "center", padding: "1rem" }}
                   >
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       No Data to Display
-                    </Text>
+                    </span>
                   </td>
                 </tr>
               ) : (
@@ -407,36 +444,36 @@ const IntegrationGrievanceRequests = () => {
                     }
                   >
                     <td style={{ textAlign: "left" }}>
-                      <Text appearance="body-xs" color="primary-grey-100">
+                      <span style={textStyle("body-xs", "primary-grey-100")}>
                         {grievance.grievanceId || ""}
-                      </Text>
+                      </span>
                     </td>
                     <td>
-                      <Text appearance="body-xs" color="primary-grey-100">
+                      <span style={textStyle("body-xs", "primary-grey-100")}>
                         {grievance.createdAt || ""}
-                      </Text>
+                      </span>
                     </td>
                     <td>
-                      <Text appearance="body-xs" color="primary-grey-100">
+                      <span style={textStyle("body-xs", "primary-grey-100")}>
                         {grievance.updatedAt || ""}
-                      </Text>
+                      </span>
                     </td>
                     <td>
-                      <Text appearance="body-xs" color="primary-grey-100">
+                      <span style={textStyle("body-xs", "primary-grey-100")}>
                         {grievance.grievanceType || ""}
-                      </Text>
+                      </span>
                     </td>
                     <td>
-                      <Text appearance="body-xs" color="primary-grey-100">
+                      <span style={textStyle("body-xs", "primary-grey-100")}>
                         {grievance.grievanceDescription || ""}
-                      </Text>
+                      </span>
                     </td>
                     <td>
                       <span
                         style={{
                           display: "inline-block",
                           fontWeight: "700",
-                          fontSize: "14px",
+                          fontSize: "11px",
                           lineHeight: "24px",
                           borderRadius: "6px",
                           padding: "0 10px",
@@ -451,33 +488,35 @@ const IntegrationGrievanceRequests = () => {
                                 color: "rgba(245, 0, 49, 1)",
                               }
                             : grievance?.status ===
-                              GRIEVANCE_STATUS.GRIEVANCE_RESOLVED
-                            ? {
-                                backgroundColor: "rgba(233, 247, 233, 1)",
-                                color: "rgba(19, 86, 16, 1)",
-                              }
-                            : grievance?.status ===
-                              GRIEVANCE_STATUS.GRIEVANCE_INPROCESS
-                            ? {
-                                backgroundColor: "rgba(231, 235, 248, 1)",
-                                color: "rgba(10, 40, 133, 1)",
-                              }
-                            : { backgroundColor: "#f1f1f1", color: "#333" }),
+                                GRIEVANCE_STATUS.GRIEVANCE_RESOLVED
+                              ? {
+                                  backgroundColor: "rgba(233, 247, 233, 1)",
+                                  color: "rgba(19, 86, 16, 1)",
+                                }
+                              : grievance?.status ===
+                                  GRIEVANCE_STATUS.GRIEVANCE_INPROCESS
+                                ? {
+                                    backgroundColor: "rgba(231, 235, 248, 1)",
+                                    color: "rgba(10, 40, 133, 1)",
+                                  }
+                                : {
+                                    backgroundColor: "#f1f1f1",
+                                    color: "#333",
+                                  }),
                         }}
                       >
                         {grievance.status || ""}
                       </span>
                     </td>
 
-                    <td>
-                      <IcVisible
-                        height={20}
-                        width={20}
+                    <td className="consent-actions-cell">
+                      <FaEye
+                        size={ICON_SIZE}
                         style={{ cursor: "pointer" }}
                         onClick={() =>
                           grievance?.grievanceId &&
                           navigate(
-                            `/integrationGrievanceRequests/${grievance.grievanceId}`
+                            `/integrationGrievanceRequests/${grievance.grievanceId}`,
                           )
                         }
                       />

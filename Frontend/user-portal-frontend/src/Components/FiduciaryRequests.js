@@ -1,13 +1,5 @@
-import {
-  ActionButton,
-  Icon,
-  InputCode,
-  InputFieldV2,
-  Modal,
-  SearchBox,
-  Spinner,
-  Text,
-} from "@jds/core";
+import { textStyle, FONT_FAMILY_STACK } from "../utils/textStyles";
+import { ICON_SIZE } from "../utils/iconSizes";
 import "../Styles/loader.css";
 import "../Styles/FilterPanel.css";
 import * as XLSX from "xlsx-js-style";
@@ -17,25 +9,9 @@ import "../Styles/toast.css";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import CustomToast from "./CustomToastContainer";
 import { saveAs } from "file-saver";
-import {
-  IcAddCircle,
-  IcArrowBack,
-  IcBack,
-  IcChevronDown,
-  IcChevronUp,
-  IcDownload,
-  IcEditPen,
-  IcErrorColored,
-  IcFilter,
-  IcForward,
-  IcNext,
-  IcSearch,
-  IcSuccessColored,
-  IcVisible,
-  IcWarningColored,
-} from "@jds/core-icons";
+
 import { useState } from "react";
-import { IcArrowDown, IcLanguage } from "@jds/extended-icons";
+
 import "../Styles/configurePage.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -57,6 +33,28 @@ import SessionExpiredModal from "./SessionExpiredModal";
 import useTranslation, {
   getApiValueFromLanguage,
 } from "../hooks/useTranslation";
+import {
+  FaCheckCircle,
+  FaChevronDown,
+  FaChevronUp,
+  FaEdit,
+  FaExclamation,
+  FaExclamationCircle,
+  FaEye,
+  FaInfoCircle,
+  FaLanguage,
+  FaPencilAlt,
+  FaSearch,
+  FaTimes,
+  FaTimesCircle,
+} from "react-icons/fa";
+import {
+  FiChevronLeft,
+  FiChevronRight,
+  FiDownload,
+  FiFilter,
+  FiSearch,
+} from "react-icons/fi";
 
 const FiduciaryRequests = () => {
   const parentNameRef = useRef();
@@ -1299,8 +1297,9 @@ const FiduciaryRequests = () => {
     try {
       const wb = XLSX.utils.book_new();
       const ws_data = [];
+      const rows = Array.isArray(consentsByTempId) ? consentsByTempId : [];
 
-      consentsByTempId.forEach((consent) => {
+      rows.forEach((consent) => {
         ws_data.push([
           "Consent ID",
           "Created Date",
@@ -2199,9 +2198,10 @@ const FiduciaryRequests = () => {
     setLoadLogs(true);
     getConsentsByTemplateId(cusId, tenantId, scCode)
       .then((searchList) => {
-        setConsentsByTempId(searchList);
-        console.log("SearchList recieved", JSON.stringify(searchList));
-        const consentLanguageList2 = searchList.map((item) => ({
+        const list = Array.isArray(searchList) ? searchList : [];
+        setConsentsByTempId(list);
+        console.log("SearchList recieved", JSON.stringify(list));
+        const consentLanguageList2 = list.map((item) => ({
           consentHandleId: item.consentHandleId,
           languagePreferences: item.languagePreferences,
         }));
@@ -2210,17 +2210,13 @@ const FiduciaryRequests = () => {
           "Consent Language List",
           JSON.stringify(consentLanguageList2),
         );
-        generateAutoRenewStatus(searchList);
+        generateAutoRenewStatus(list);
 
-        const withdraw = searchList.filter(
+        const withdraw = list.filter(
           (item) => item.status === "WITHDRAWN",
         ).length;
-        const active = searchList.filter(
-          (item) => item.status === "ACTIVE",
-        ).length;
-        const expire = searchList.filter(
-          (item) => item.status === "EXPIRED",
-        ).length;
+        const active = list.filter((item) => item.status === "ACTIVE").length;
+        const expire = list.filter((item) => item.status === "EXPIRED").length;
 
         setWithdrawCount(withdraw);
         setActiveCount(active);
@@ -2306,27 +2302,27 @@ const FiduciaryRequests = () => {
         <header className="fiduciaryHeaderContainer" role="banner">
           <div className="fiduciaryHeader">
             <h1>
-              <Text appearance="heading-s" color="primary-grey-100">
+              <span style={textStyle("heading-s", "primary-grey-100")}>
                 {getTranslation("fid_granted_consents", "Granted consents")}
-              </Text>
+              </span>
             </h1>
             <div
               className="badge"
               role="status"
               aria-label="Page type: Consent"
             >
-              <Text appearance="body-xs-bold" color="primary-grey-80">
+              <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                 {getTranslation("fid_consent_badge", "Consent")}
-              </Text>
+              </span>
             </div>
           </div>
         </header>
-        <Text appearance="body-s" color="primary-grey-80">
+        <span style={textStyle("body-s", "primary-grey-80")}>
           {getTranslation(
             "fid_description",
             "View and respond to your consent requests awaiting your action.",
           )}
-        </Text>
+        </span>
         <br></br>
         <div className="status-container">
           <div
@@ -2337,14 +2333,14 @@ const FiduciaryRequests = () => {
             )}: ${activeCount} consents`}
           >
             <div className="status-content">
-              <IcSuccessColored height={35} width={35} />
+              <FaCheckCircle style={{ color: "green" }} size={ICON_SIZE} />
               <div className="status-text">
-                <Text appearance="body-xs-bold" color="primary-grey-100">
+                <span style={textStyle("body-xs-bold", "primary-grey-100")}>
                   {String(activeCount)}
-                </Text>
-                <Text appearance="body-xs" color="primary-grey-80">
+                </span>
+                <span style={textStyle("body-xs", "primary-grey-80")}>
                   {getTranslation("fid_active", "Active")}
-                </Text>
+                </span>
               </div>
             </div>
           </div>
@@ -2357,14 +2353,14 @@ const FiduciaryRequests = () => {
             )}: ${withdrawCount} consents`}
           >
             <div className="status-content">
-              <IcErrorColored height={35} width={35} />
+              <FaTimesCircle style={{ color: "red" }} size={ICON_SIZE} />
               <div className="status-text">
-                <Text appearance="body-xs-bold" color="primary-grey-100">
+                <span style={textStyle("body-xs-bold", "primary-grey-100")}>
                   {String(withdrawCount)}
-                </Text>
-                <Text appearance="body-xs" color="primary-grey-80">
+                </span>
+                <span style={textStyle("body-xs", "primary-grey-80")}>
                   {getTranslation("fid_withdrawn", "Withdrawn")}
-                </Text>
+                </span>
               </div>
             </div>
           </div>
@@ -2378,14 +2374,17 @@ const FiduciaryRequests = () => {
             )}: ${expiredCount} consents`}
           >
             <div className="status-content">
-              <IcWarningColored height={35} width={35} />
+              <FaExclamationCircle
+                style={{ color: "rgb(240, 109, 15)" }}
+                size={ICON_SIZE}
+              />
               <div className="status-text">
-                <Text appearance="body-xs-bold" color="primary-grey-100">
+                <span style={textStyle("body-xs-bold", "primary-grey-100")}>
                   {String(expiredCount)}
-                </Text>
-                <Text appearance="body-xs" color="primary-grey-80">
+                </span>
+                <span style={textStyle("body-xs", "primary-grey-80")}>
                   {getTranslation("fid_expired", "Expired")}
-                </Text>
+                </span>
               </div>
             </div>
           </div>
@@ -2394,12 +2393,12 @@ const FiduciaryRequests = () => {
           className="fiduciaryHeaderButtonContainer"
           style={{
             justifyContent: "flex-end",
-            opacity: consentsByTempId.length === 0 ? 0.5 : 1,
-            pointerEvents: consentsByTempId.length === 0 ? "none" : "auto",
+            opacity: (consentsByTempId?.length ?? 0) === 0 ? 0.5 : 1,
+            pointerEvents: (consentsByTempId?.length ?? 0) === 0 ? "none" : "auto",
           }}
         >
           <div className="search-input-wrapper" style={{ width: "100%" }}>
-            <Icon ic={<IcSearch />} size="m" color="primary_grey_100" />
+            <FiSearch size={ICON_SIZE} />
             <input
               type="text"
               className="search-input"
@@ -2415,16 +2414,22 @@ const FiduciaryRequests = () => {
               )}
             />
           </div>
-          <ActionButton
-            kind="tertiary"
-            ariaLabel="Open filter panel"
+          <div
+            role="button"
+            aria-label="Open filter panel"
+            tabIndex={0}
             onClick={() => setShowFilter(true)}
-            ariaExpanded={showFilter}
-            icon={
-              <Icon ic={<IcFilter />} size="m" color="primary_grey_80"></Icon>
-            }
-            size="medium"
-          />
+            style={{
+              cursor: "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "6px",
+              borderRadius: "6px",
+            }}
+          >
+            <FiFilter size={ICON_SIZE} color="#555" />
+          </div>
           <FilterPanel
             open={showFilter}
             showStatus={true}
@@ -2442,15 +2447,34 @@ const FiduciaryRequests = () => {
             }
           />
 
-          <ActionButton
-            kind="tertiary"
-            ariaLabel="downlod Report"
-            icon={
-              <Icon ic={<IcDownload />} size="m" color="primary_grey_80"></Icon>
-            }
+          <div
+            role="button"
+            tabIndex={0}
+            aria-label="Download Report"
             onClick={() => downloadConsentExcel(consentsByTempId)}
-            size="medium"
-          />
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                downloadConsentExcel(consentsByTempId);
+              }
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.backgroundColor = "#f5f5f5")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.backgroundColor = "transparent")
+            }
+            style={{
+              cursor: "pointer",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: "6px",
+              borderRadius: "6px",
+              transition: "0.2s",
+            }}
+          >
+            <FiDownload size={ICON_SIZE} color="#555" />
+          </div>
         </div>
         <br></br>
 
@@ -2476,37 +2500,37 @@ const FiduciaryRequests = () => {
                 <th scope="col"></th>
                 <th className="parentheader" scope="col">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       {getTranslation("fid_consent_id", "Consent ID")}
-                    </Text>
+                    </span>
                   </div>
                 </th>
                 <th className="parentheader" scope="col">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       {getTranslation("fid_created_date", "Created date")}
-                    </Text>
+                    </span>
                   </div>
                 </th>
                 <th className="parentheader" scope="col">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       {getTranslation("fid_expiry_date", "Expiry date")}
-                    </Text>
+                    </span>
                   </div>
                 </th>
                 <th className="parentheader" scope="col">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       {getTranslation("fid_status", "Status")}
-                    </Text>
+                    </span>
                   </div>
                 </th>
                 <th className="parentheader" scope="col">
                   <div className="header-with-icon">
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       {getTranslation("fid_actions", "Actions")}
-                    </Text>
+                    </span>
                   </div>
                 </th>
               </tr>
@@ -2520,11 +2544,27 @@ const FiduciaryRequests = () => {
                     style={{ textAlign: "center", padding: "1rem" }}
                   >
                     <div className="customerActivityLoader">
-                      <Spinner
-                        kind="normal"
-                        labelPosition="right"
-                        size="small"
-                      />
+                      <>
+                        <style>
+                          {`
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `}
+                        </style>
+
+                        <div
+                          style={{
+                            width: "20px",
+                            height: "20px",
+                            border: "3px solid #f3f3f3",
+                            borderTop: "3px solid #0a2885",
+                            borderRadius: "50%",
+                            animation: "spin 1s linear infinite",
+                          }}
+                        />
+                      </>
                     </div>
                   </td>
                 </tr>
@@ -2535,9 +2575,9 @@ const FiduciaryRequests = () => {
                     colSpan="6"
                     style={{ textAlign: "center", padding: "1rem" }}
                   >
-                    <Text appearance="body-xs-bold" color="primary-grey-80">
+                    <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                       {getTranslation("fid_no_data", "No Data to Display")}
-                    </Text>
+                    </span>
                   </td>
                 </tr>
               ) : (
@@ -2600,9 +2640,9 @@ const FiduciaryRequests = () => {
                         colSpan="6"
                         style={{ textAlign: "center", padding: "1rem" }}
                       >
-                        <Text appearance="body-xs-bold" color="primary-grey-80">
+                        <span style={textStyle("body-xs-bold", "primary-grey-80")}>
                           No matching records found
-                        </Text>
+                        </span>
                       </td>
                     </tr>
                   ) : (
@@ -2625,41 +2665,37 @@ const FiduciaryRequests = () => {
                         >
                           <td className="chevron-cell">
                             <div className="chevron-wrapper">
-                              <Text
-                                appearance="body-xs"
-                                color="primary-grey-100"
+                              <span
+                                style={textStyle("body-xs", "primary-grey-100")}
                               >
                                 {expandedRow === `row${index}` ? (
-                                  <IcChevronUp height={25} width={25} />
+                                  <FaChevronUp size={ICON_SIZE} />
                                 ) : (
-                                  <IcChevronDown height={25} width={25} />
+                                  <FaChevronDown size={ICON_SIZE} />
                                 )}
-                              </Text>
+                              </span>
                             </div>
                           </td>
                           <td>
-                            <Text
-                              appearance="body-xs-bold"
-                              color="primary-grey-80"
+                            <span
+                              style={textStyle("body-xs-bold", "primary-grey-80")}
                             >
                               {consent.consentId}
-                            </Text>
+                            </span>
                           </td>
                           <td>
-                            <Text
-                              appearance="body-xs-bold"
-                              color="primary-grey-80"
+                            <span
+                              style={textStyle("body-xs-bold", "primary-grey-80")}
                             >
                               {formatToIST(consent.startDate)}
-                            </Text>
+                            </span>
                           </td>
                           <td>
-                            <Text
-                              appearance="body-xs-bold"
-                              color="primary-grey-80"
+                            <span
+                              style={textStyle("body-xs-bold", "primary-grey-80")}
                             >
                               {formatToIST(consent.endDate)}
-                            </Text>
+                            </span>
                           </td>
                           <td>
                             <div
@@ -2688,7 +2724,7 @@ const FiduciaryRequests = () => {
                               </p>
                             </div>
                           </td>
-                          <td>
+                          <td className="consent-actions-cell">
                             <div
                               style={{
                                 display: "flex",
@@ -2696,12 +2732,11 @@ const FiduciaryRequests = () => {
                                 alignItems: "center",
                               }}
                             >
-                              <IcVisible
+                              <FaEye
                                 aria-label={`View details for consent ${consent.consentId}`}
                                 role="button"
-                                tabIndex="0"
-                                height={20}
-                                width={20}
+                                tabIndex={0}
+                                size={ICON_SIZE}
                                 style={{ cursor: "pointer" }}
                                 onClick={() =>
                                   handleCallAPI(
@@ -2714,12 +2749,11 @@ const FiduciaryRequests = () => {
                                 }
                               />
                               {consent.status === "ACTIVE" && (
-                                <IcEditPen
+                                <FaPencilAlt
                                   aria-label={`Edit consent ${consent.consentId}`}
                                   role="button"
-                                  tabIndex="0"
-                                  height={20}
-                                  width={20}
+                                  tabIndex={0}
+                                  size={ICON_SIZE} // instead of height & width
                                   style={{ cursor: "pointer" }}
                                   onClick={() =>
                                     handleCallAPI2(
@@ -2737,9 +2771,8 @@ const FiduciaryRequests = () => {
                                 consent.status != "EXPIRED" &&
                                 consentIdListForAutoRenew[consent.consentId] ===
                                   true && (
-                                  <IcWarningColored
-                                    height={20}
-                                    width={20}
+                                  <FaExclamationCircle
+                                    size={ICON_SIZE}
                                     onClick={() =>
                                       handleCallAPI3(
                                         consent.consentId,
@@ -2776,60 +2809,55 @@ const FiduciaryRequests = () => {
                                 <thead>
                                   <tr>
                                     <th>
-                                      <Text
-                                        appearance="body-xs-bold"
-                                        color="primary-grey-80"
+                                      <span
+                                        style={textStyle("body-xs-bold", "primary-grey-80")}
                                       >
                                         {getTranslation(
                                           "fid_purpose_name",
                                           "Purpose Name",
                                         )}
-                                      </Text>
+                                      </span>
                                     </th>
 
                                     <th>
-                                      <Text
-                                        appearance="body-xs-bold"
-                                        color="primary-grey-80"
+                                      <span
+                                        style={textStyle("body-xs-bold", "primary-grey-80")}
                                       >
                                         {getTranslation(
                                           "fid_data_type",
                                           "Data type",
                                         )}
-                                      </Text>
+                                      </span>
                                     </th>
                                     <th>
-                                      <Text
-                                        appearance="body-xs-bold"
-                                        color="primary-grey-80"
+                                      <span
+                                        style={textStyle("body-xs-bold", "primary-grey-80")}
                                       >
                                         {getTranslation(
                                           "fid_data_item",
                                           "Data Item",
                                         )}
-                                      </Text>
+                                      </span>
                                     </th>
                                     <th>
-                                      <Text
-                                        appearance="body-xs-bold"
-                                        color="primary-grey-80"
+                                      <span
+                                        style={textStyle("body-xs-bold", "primary-grey-80")}
                                       >
                                         {getTranslation(
                                           "fid_data_used_by",
                                           "Data used by",
                                         )}
-                                      </Text>
+                                      </span>
                                     </th>
                                     <th>
-                                      <Text
-                                        appearance="body-xs-bold"
-                                        color="primary-grey-80"
+                                      <span
+                                        style={textStyle("body-xs-bold", "primary-grey-80")}
                                       >
                                         {getTranslation(
                                           "fid_data_status",
                                           "Status",
                                         )}
-                                      </Text>
+                                      </span>
                                     </th>
                                   </tr>
                                 </thead>
@@ -2839,21 +2867,19 @@ const FiduciaryRequests = () => {
                                     pref.purposeList.map((purpose) => (
                                       <tr key={purpose.purposeId}>
                                         <td>
-                                          <Text
-                                            appearance="body-xs-bold"
-                                            color="primary-grey-80"
-                                          >
+                                              <span
+                                                style={textStyle("body-xs-bold", "primary-grey-80")}
+                                              >
                                             {getDynamicTranslation(
                                               purpose?.purposeInfo?.purposeName,
                                             )}
-                                          </Text>
+                                          </span>
                                         </td>
 
                                         <td>
-                                          <Text
-                                            appearance="body-xs-bold"
-                                            color="primary-grey-80"
-                                          >
+                                              <span
+                                                style={textStyle("body-xs-bold", "primary-grey-80")}
+                                              >
                                             {pref.processorActivityList
                                               .flatMap((pa) =>
                                                 pa?.processActivityInfo?.dataTypesList.map(
@@ -2864,13 +2890,12 @@ const FiduciaryRequests = () => {
                                                 ),
                                               )
                                               .join(", ")}
-                                          </Text>
+                                          </span>
                                         </td>
                                         <td>
-                                          <Text
-                                            appearance="body-xs-bold"
-                                            color="primary-grey-80"
-                                          >
+                                              <span
+                                                style={textStyle("body-xs-bold", "primary-grey-80")}
+                                              >
                                             {pref.processorActivityList
                                               .flatMap((pa) =>
                                                 pa?.processActivityInfo?.dataTypesList.flatMap(
@@ -2883,13 +2908,12 @@ const FiduciaryRequests = () => {
                                                 ),
                                               )
                                               .join(", ")}
-                                          </Text>
+                                          </span>
                                         </td>
                                         <td>
-                                          <Text
-                                            appearance="body-xs-bold"
-                                            color="primary-grey-80"
-                                          >
+                                              <span
+                                                style={textStyle("body-xs-bold", "primary-grey-80")}
+                                              >
                                             {pref.processorActivityList
                                               .flatMap((pa) =>
                                                 getDynamicTranslation(
@@ -2898,7 +2922,7 @@ const FiduciaryRequests = () => {
                                                 ),
                                               )
                                               .join(", ")}
-                                          </Text>
+                                          </span>
                                         </td>
                                         <td>
                                           <span
@@ -2909,14 +2933,13 @@ const FiduciaryRequests = () => {
                                                 : "not-accepted"
                                             }
                                           >
-                                            <Text
-                                              appearance="body-xs-bold"
-                                              color="primary-grey-80"
-                                            >
+                                              <span
+                                                style={textStyle("body-xs-bold", "primary-grey-80")}
+                                              >
                                               {getTranslatedPrefStatus(
                                                 pref?.preferenceStatus,
                                               )}
-                                            </Text>
+                                            </span>
                                           </span>
                                         </td>
                                       </tr>
@@ -2936,26 +2959,73 @@ const FiduciaryRequests = () => {
           </table>
           {Array.isArray(paginatedConsents) && paginatedConsents.length > 0 && (
             <div className="pagination-container">
-              <ActionButton
-                icon={<IcBack />}
-                kind="secondary"
+              <div
+                role="button"
+                tabIndex={0}
+                aria-label="Previous page"
                 onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-                disabled={currentPage === 1}
-              ></ActionButton>
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    setCurrentPage((p) => Math.max(p - 1, 1));
+                  }
+                }}
+                style={{
+                  cursor: currentPage === 1 ? "not-allowed" : "pointer",
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "50%",
+                  backgroundColor: "#fff", // white background
+                  border: "1px solid #d1d5db", // light grey border
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  opacity: currentPage === 1 ? 0.5 : 1,
+                }}
+              >
+                <FiChevronLeft size={ICON_SIZE} color="#555" />
+              </div>
 
               <span className="pagination-text">
                 {getTranslation("fid_page", "Page")} {currentPage}{" "}
                 {getTranslation("fid_of", "of")} {totalPages}
               </span>
 
-              <ActionButton
-                kind="secondary"
-                icon={<IcNext />}
+              <div
+                role="button"
+                tabIndex={0}
+                aria-label="Next page"
                 onClick={() =>
                   setCurrentPage((p) => Math.min(p + 1, totalPages))
                 }
-                disabled={currentPage === totalPages}
-              ></ActionButton>
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    setCurrentPage((p) => Math.min(p + 1, totalPages));
+                  }
+                }}
+                style={{
+                  cursor:
+                    currentPage === totalPages ? "not-allowed" : "pointer",
+                  width: "36px",
+                  height: "36px",
+                  borderRadius: "50%",
+                  backgroundColor: "#fff", // white background
+                  border: "1px solid #d1d5db", // light grey border
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  opacity: currentPage === totalPages ? 0.5 : 1,
+                }}
+                onMouseEnter={(e) => {
+                  if (currentPage !== totalPages) {
+                    e.currentTarget.style.backgroundColor = "#e0e0e0";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = "#f0f0f0";
+                }}
+              >
+                <FiChevronRight size={ICON_SIZE} color="#555" />
+              </div>
             </div>
           )}
         </div>
@@ -2993,9 +3063,8 @@ const FiduciaryRequests = () => {
                   <p className="container-2-left-1">{modalHeading}</p>
                   <div className="container-2-left-2">
                     <div className="container-2-left-2-dropdown">
-                      <IcLanguage
-                        height={20}
-                        width={20}
+                      <FaLanguage
+                        size={ICON_SIZE}
                         className="container-2-left-2-dropdown-Icon"
                         style={{ color: `${activeTheme.cardFont}` }}
                       />
@@ -3016,15 +3085,13 @@ const FiduciaryRequests = () => {
                         ))}
                       </select>
                       {isOpen ? (
-                        <IcChevronUp
-                          height={20}
-                          width={20}
+                        <FaChevronUp
+                          size={ICON_SIZE}
                           className="container-2-left-2-dropdown-Icon-right"
                         />
                       ) : (
-                        <IcChevronDown
-                          height={20}
-                          width={20}
+                        <FaChevronDown
+                          size={ICON_SIZE}
                           className="container-2-left-2-dropdown-Icon-right"
                         />
                       )}
@@ -3508,11 +3575,11 @@ const FiduciaryRequests = () => {
                   >
                     <p
                       style={{
-                        fontFamily: "system-ui",
+                        fontFamily: FONT_FAMILY_STACK,
                         fontWeight: 700,
                         // color: "rgba(102, 0, 20, 1)",
                         color: activeTheme.buttonBackground,
-                        fontSize: "18px",
+                        fontSize: "11px",
                       }}
                     >
                       {withdrawConsentBtnText}
@@ -3563,9 +3630,8 @@ const FiduciaryRequests = () => {
                   <p className="container-2-left-1">{modalHeading}</p>
                   <div className="container-2-left-2">
                     <div className="container-2-left-2-dropdown">
-                      <IcLanguage
-                        height={20}
-                        width={20}
+                      <FaLanguage
+                        size={ICON_SIZE}
                         className="container-2-left-2-dropdown-Icon"
                         style={{ color: `${activeTheme.cardFont}` }}
                       />
@@ -3589,16 +3655,14 @@ const FiduciaryRequests = () => {
                         ))}
                       </select>
                       {isOpen ? (
-                        <IcChevronUp
-                          height={20}
-                          width={20}
+                        <FaChevronUp
+                          size={ICON_SIZE}
                           className="container-2-left-2-dropdown-Icon-right"
                           style={{ color: `${activeTheme.cardFont}` }}
                         />
                       ) : (
-                        <IcChevronDown
-                          height={20}
-                          width={20}
+                        <FaChevronDown
+                          size={ICON_SIZE}
                           className="container-2-left-2-dropdown-Icon-right"
                           style={{ color: `${activeTheme.cardFont}` }}
                         />
@@ -4134,9 +4198,8 @@ const FiduciaryRequests = () => {
                   <p className="container-2-left-1">{modalHeading}</p>
                   <div className="container-2-left-2">
                     <div className="container-2-left-2-dropdown">
-                      <IcLanguage
-                        height={20}
-                        width={20}
+                      <FaLanguage
+                        size={ICON_SIZE}
                         className="container-2-left-2-dropdown-Icon"
                         style={{ color: `${activeTheme.cardFont}` }}
                       />
@@ -4160,16 +4223,14 @@ const FiduciaryRequests = () => {
                         ))}
                       </select>
                       {isOpen ? (
-                        <IcChevronUp
-                          height={20}
-                          width={20}
+                        <FaChevronUp
+                          size={ICON_SIZE}
                           className="container-2-left-2-dropdown-Icon-right"
                           style={{ color: `${activeTheme.cardFont}` }}
                         />
                       ) : (
-                        <IcChevronDown
-                          height={20}
-                          width={20}
+                        <FaChevronDown
+                          size={ICON_SIZE}
                           className="container-2-left-2-dropdown-Icon-right"
                           style={{ color: `${activeTheme.cardFont}` }}
                         />
@@ -4709,7 +4770,7 @@ const FiduciaryRequests = () => {
 
                   <p
                     className="step-text-parent"
-                    style={{ fontWeight: 700, fontSize: "16px" }}
+                    style={{ fontWeight: 700, fontSize: "11px" }}
                   >
                     Step {currentModalStep}/2
                   </p>
@@ -4740,7 +4801,7 @@ const FiduciaryRequests = () => {
                           paddingLeft: "8px",
                           paddingRight: "8px",
                           appearance: "none",
-                          fontSize: "14px",
+                          fontSize: "11px",
                         }}
                       >
                         <option value="">Select Method</option>
@@ -4751,9 +4812,8 @@ const FiduciaryRequests = () => {
                         <option value="declaration">Declaration based</option>
                       </select>
                       {isOpenParent ? (
-                        <IcChevronUp
-                          height={20}
-                          width={20}
+                        <FaChevronUp
+                          size={ICON_SIZE}
                           style={{
                             position: "absolute",
                             right: "8px",
@@ -4762,9 +4822,8 @@ const FiduciaryRequests = () => {
                           }}
                         />
                       ) : (
-                        <IcChevronDown
-                          height={20}
-                          width={20}
+                        <FaChevronDown
+                          size={ICON_SIZE}
                           style={{
                             position: "absolute",
                             right: "8px",
@@ -4838,10 +4897,10 @@ const FiduciaryRequests = () => {
                   >
                     <p
                       style={{
-                        fontFamily: "system-ui",
+                        fontFamily: FONT_FAMILY_STACK,
                         fontWeight: 700,
                         color: activeTheme.buttonBackground,
-                        fontSize: "18px",
+                        fontSize: "11px",
                       }}
                     >
                       Cancel
@@ -5010,10 +5069,10 @@ const FiduciaryRequests = () => {
                 >
                   <p
                     style={{
-                      fontFamily: "system-ui",
+                      fontFamily: FONT_FAMILY_STACK,
                       fontWeight: 700,
                       color: activeTheme.buttonFont,
-                      fontSize: "18px",
+                      fontSize: "11px",
                     }}
                   >
                     {currentModalStep === 2 ? "Verify" : "Next"}
@@ -5042,31 +5101,95 @@ const FiduciaryRequests = () => {
           </div>
         )}
         {showConfirmationModal && (
-          <Modal
-            close={false}
-            kind="acknowledgement"
-            onClose={handleConfirmationModalClose}
+          <div
+            style={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              backgroundColor: "rgba(0,0,0,0.4)",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              zIndex: 1000,
+            }}
+            onClick={handleConfirmationModalClose}
           >
-            <div>
-              <Text appearance="heading-xs" color="primary-grey-100">
-                Are you sure like to revoke consent?
-              </Text>
-              <br></br>
-              <br></br>
-              <Text appearance="body-s" color="primary-grey-80">
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                position: "relative", // IMPORTANT for positioning close icon
+                backgroundColor: "#fff",
+                padding: "20px",
+                borderRadius: "10px",
+                width: "400px",
+                maxWidth: "90%",
+                boxShadow: "0 4px 12px rgba(0,0,0,0.2)",
+              }}
+            >
+              <FaTimes
+                size={ICON_SIZE}
+                onClick={handleConfirmationModalClose}
+                style={{
+                  position: "absolute",
+                  top: "12px",
+                  right: "12px",
+                  cursor: "pointer",
+                  color: "#666",
+                }}
+              />
+
+              {/* Heading */}
+              <p
+                style={{
+                  fontSize: "11px",
+                  fontWeight: "600",
+                  color: "#1a1a1a",
+                  margin: 0,
+                }}
+              >
+                Are you sure you would like to revoke consent?
+              </p>
+
+              <br />
+
+              {/* Description */}
+              <p
+                style={{
+                  fontSize: "11px",
+                  color: "#555",
+                  margin: 0,
+                }}
+              >
                 You might not be able to continue using some/all of{" "}
-                {businessName} features.{" "}
-              </Text>
-              <div className="confirm-modal-buttton-contaier">
+                {businessName} features.
+              </p>
+
+              {/* Button */}
+              <div
+                style={{
+                  marginTop: "20px",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
                 <button
-                  className="confirm-modal-buttton"
                   onClick={withdrawConsent}
+                  style={{
+                    backgroundColor: "#fee6ea",
+                    color: "black",
+                    border: "none",
+                    padding: "7px 16px",
+                    borderRadius: "250px",
+                    cursor: "pointer",
+                  }}
                 >
-                  <p className="confirm-modal-text">Withdraw consent</p>
+                  Withdraw consent
                 </button>
               </div>
             </div>
-          </Modal>
+          </div>
         )}
         {withdrawLoader && (
           <div className="withdraw-overlay">

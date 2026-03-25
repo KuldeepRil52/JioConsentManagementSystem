@@ -1,5 +1,5 @@
 .sideBar-outer-container {
-  width: 240px;
+  width: var(--app-sidebar-width, 240px);
   /* height: calc(100vh - 110px); */
   min-height: 100vh; /* always at least full viewport */
   height: auto;

@@ -1,13 +1,10 @@
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { InputFieldV2, Text, Icon, InputToggle } from "../custom-components";
 import { IcClose, IcSuccess, IcUpload } from "../custom-components/Icon";
-import { useState } from "react";
-import { useRef } from "react";
 import "../styles/toast.css";
 import { Slide, ToastContainer, toast } from "react-toastify";
 import CustomToast from "./CustomToastContainer";
 import "../styles/branding.css";
-import { validateImageFile, formatValidationErrors } from "../utils/fileValidation";
 
 const Branding = ({
   fileName,
@@ -273,38 +270,95 @@ const Branding = ({
   };
 
   // ✅ SECURE: Image validation with XSS detection + dimension check
+  // const validateLogo = async (file) => {
+  //   console.log("file.type", file.type);
+
+  //   try {
+  //     // First, run secure validation (magic numbers, XSS detection, size check)
+  //     const validationResult = await validateImageFile(file);
+
+  //     if (!validationResult.valid) {
+  //       const errorMessage = formatValidationErrors(validationResult);
+  //       toast.error(
+  //         (props) => (
+  //           <CustomToast
+  //             {...props}
+  //             type="error"
+  //             message={errorMessage}
+  //           />
+  //         ),
+  //         { icon: false }
+  //       );
+  //       return false;
+  //     }
+
+  //     // Then, validate dimensions for logo-specific requirements
+  //     const dimensionsValid = await validateLogoDimensions(file);
+  //     if (!dimensionsValid) {
+  //       return false;
+  //     }
+
+  //     // ✅ Validation passed - don't show toast yet, wait for actual upload success
+  //     return true;
+  //   } catch (error) {
+  //     console.error('Logo validation error:', error);
+  //     toast.error(
+  //       (props) => (
+  //         <CustomToast
+  //           {...props}
+  //           type="error"
+  //           message="File validation failed. Please try again."
+  //         />
+  //       ),
+  //       { icon: false }
+  //     );
+  //     return false;
+  //   }
+  // };
+
+  //Changes by shailendra9.sharma 18-02-2026 03:45PM 
   const validateLogo = async (file) => {
-    console.log("file.type", file.type);
-    
     try {
-      // First, run secure validation (magic numbers, XSS detection, size check)
-      const validationResult = await validateImageFile(file);
-      
-      if (!validationResult.valid) {
-        const errorMessage = formatValidationErrors(validationResult);
+      const allowedTypes = ["image/png", "image/jpeg"];
+      const maxSize = 500 * 1024;
+
+      // Type check
+      if (!allowedTypes.includes(file.type)) {
         toast.error(
           (props) => (
             <CustomToast
               {...props}
               type="error"
-              message={errorMessage}
+              message={"Only PNG/JPEG/JPG files are allowed."}
             />
           ),
           { icon: false }
         );
         return false;
       }
-      
-      // Then, validate dimensions for logo-specific requirements
-      const dimensionsValid = await validateLogoDimensions(file);
-      if (!dimensionsValid) {
+
+      // Size check
+      if (file.size > maxSize) {
+        toast.error(
+          (props) => (
+            <CustomToast
+              {...props}
+              type="error"
+              message={"Logo size must be 500KB or less."}
+            />
+          ),
+          { icon: false }
+        );
         return false;
       }
 
-      // ✅ Validation passed - don't show toast yet, wait for actual upload success
+      // Dimension check (your existing logic)
+      const dimensionsValid = await validateLogoDimensions(file);
+      if (!dimensionsValid) return false;
+
       return true;
     } catch (error) {
-      console.error('Logo validation error:', error);
+      console.error("Logo validation error:", error);
       toast.error(
         (props) => (
           <CustomToast
@@ -318,6 +372,7 @@ const Branding = ({
       return false;
     }
   };
+
 
   const handleLogoChange = async (e) => {
     if (e.target.files.length > 0) {
@@ -885,5 +940,4 @@ const Branding = ({
     </div>
   );
 };
-
 export default Branding;

@@ -503,6 +503,7 @@ const ReportBreach = () => {
                     <input
                       type="date"
                       value={formData.dateTimeOfDiscovery}
+                      max={new Date().toISOString().split('T')[0]}
                       onChange={(e) =>
                         handleInputChange("dateTimeOfDiscovery", e.target.value)
                       }
@@ -530,6 +531,7 @@ const ReportBreach = () => {
                     <input
                       type="date"
                       value={formData.dateTimeOfOccurrence}
+                      max={new Date().toISOString().split('T')[0]}
                       onChange={(e) =>
                         handleInputChange("dateTimeOfOccurrence", e.target.value)
                       }

@@ -1,5 +1,4 @@
-import { Avatar, Text } from "@jds/core";
-import { IcJioDot } from "@jds/core-icons";
+import { textStyle } from "../utils/textStyles";
 import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { SET_CURRENT_LANGUAGE } from "../store/constants/Constants";
@@ -39,10 +38,31 @@ const HeaderComponent = () => {
   const initials = businessName ? businessName.charAt(0).toUpperCase() : "";
   const location = useLocation();
 
+  const JioDotIcon = ({ size = 55 }) => (
+    <svg
+      viewBox="0 0 24 24"
+      height={size}
+      width={size}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g clipPath="url(#clip0)">
+        <rect width="24" height="24" rx="12" fill="#3535F3" />
+        <path
+          d="M8.478 7.237h-.4c-.76 0-1.174.428-1.174 1.285v4.129c0 1.063-.359 1.436-1.201 1.436-.663 0-1.202-.29-1.63-.815-.041-.055-.91.36-.91 1.381 0 1.105 1.034 1.782 2.955 1.782 2.333 0 3.563-1.174 3.563-3.742V8.521c-.002-.856-.416-1.285-1.203-1.285zm9.3 2.017c-2.265 0-3.77 1.436-3.77 3.577 0 2.196 1.45 3.605 3.728 3.605 2.265 0 3.756-1.409 3.756-3.59.001-2.156-1.477-3.592-3.714-3.592zm-.028 5.15c-.884 0-1.491-.648-1.491-1.574 0-.91.622-1.56 1.491-1.56.87 0 1.491.65 1.491 1.574 0 .898-.634 1.56-1.49 1.56zm-5.656-5.082h-.277c-.676 0-1.187.318-1.187 1.285v4.419c0 .98.497 1.285 1.215 1.285h.277c.676 0 1.16-.332 1.16-1.285v-4.42c0-.993-.47-1.284-1.188-1.284zm-.152-3.203c-.856 0-1.395.484-1.395 1.243 0 .773.553 1.256 1.436 1.256.857 0 1.395-.483 1.395-1.256s-.552-1.243-1.436-1.243z"
+          fill="#fff"
+        />
+      </g>
+      <defs>
+        <clipPath id="clip0">
+          <path fill="#fff" d="M0 0h24v24H0z" />
+        </clipPath>
+      </defs>
+    </svg>
+  );
   const handleLanguageChange = (e) => {
     const selectedValue = e.target.value;
     const selectedOption = LANGUAGE_OPTIONS.find(
-      (opt) => opt.value === selectedValue
+      (opt) => opt.value === selectedValue,
     );
 
     if (selectedOption) {
@@ -85,26 +105,24 @@ const HeaderComponent = () => {
           }}
           aria-label="Business Information"
         >
-          <IcJioDot height={40} width={40} aria-hidden="true" />
+          <JioDotIcon size={40} />
           <div style={{ display: "flex", gap: "5px" }}>
-            <Text
-              appearance="body-s-bold"
-              color="primary-grey-100"
+            <span
+              style={textStyle("body-s-bold", "primary-grey-100")}
               aria-label={`Business name: ${
                 businessName || "Test Business Name"
               }`}
             >
               Consent Management |
-            </Text>
-            <Text
-              appearance="body-s"
-              color="primary-grey-80"
+            </span>
+            <span
+              style={textStyle("body-s", "primary-grey-80")}
               aria-label={`Business name: ${
                 businessName || "Test Business Name"
               }`}
             >
               {businessName || "Test Business Name"}
-            </Text>
+            </span>
           </div>
         </div>
 
@@ -138,7 +156,7 @@ const HeaderComponent = () => {
                 border: "1px solid #d1d5db",
                 borderRadius: "8px",
                 padding: "10px 40px 10px 16px",
-                fontSize: "16px",
+                fontSize: "11px",
                 fontWeight: "500",
                 color: "#1a1a1a",
                 cursor: "pointer",
@@ -196,11 +214,20 @@ const HeaderComponent = () => {
                   style={{ width: "40px", height: "40px", borderRadius: "50%" }}
                 />
               ) : (
-                <Avatar
-                  kind="initials"
-                  initials={initials || "J"}
-                  aria-label={`User profile: ${initials}`}
-                />
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  height="23"
+                  width="23"
+                  aria-hidden="true"
+                  role="img"
+                  style={{ color: "#555" }}
+                >
+                  <path
+                    d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 4a3 3 0 110 6 3 3 0 010-6zm0 14a8 8 0 01-6.54-3.41C6.46 15.08 9 14 12 14s5.54 1.08 6.54 2.59A8 8 0 0112 20z"
+                    fill="currentColor"
+                  />
+                </svg>
               )}
             </div>
           )}

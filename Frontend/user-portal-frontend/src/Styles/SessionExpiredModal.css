@@ -26,7 +26,7 @@
 /* Main red text */
 .session-title {
   color: #d40000;
-  font-size: 20px;
+  font-size: 11px;
   margin-bottom: 10px;
   font-weight: 700;
 }
@@ -34,7 +34,7 @@
 /* Grey subtitle */
 .session-subtitle {
   color: #666;
-  font-size: 14px;
+  font-size: 11px;
   margin-bottom: 20px;
 }
 
@@ -46,7 +46,7 @@
   border-radius: 8px;
   border: none;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 11px;
 }
 
 .session-close-btn:hover {

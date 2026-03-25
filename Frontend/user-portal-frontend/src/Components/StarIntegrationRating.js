@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Icon } from "@jds/core";
-import { IcStar } from "@jds/core-icons";
 import {
   updateFeedback,
   updateIntegrationFeedback,
 } from "../store/actions/CommonAction";
 import { useDispatch } from "react-redux";
+import { FaStar } from "react-icons/fa";
+import { ICON_SIZE } from "../utils/iconSizes";
 
 const StarIntegrationRating = ({
   grievanceId,
@@ -55,10 +55,9 @@ const StarIntegrationRating = ({
               cursor: readOnly ? "default" : "pointer",
             }}
           >
-            <Icon
-              ic={<IcStar />}
-              size="m"
-              color={isFilled ? "primary_blue" : "primary_grey_60"}
+            <FaStar
+              size={ICON_SIZE}
+              color={isFilled ? "#2563EB" : "#9CA3AF"}
               style={{
                 opacity: isFilled ? 1 : 0.4,
                 transition: "opacity 0.2s ease",
