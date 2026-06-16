@@ -1,0 +1,181 @@
+# =============================================================================
+# JCMS Consent Management System — .gitignore
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# Java / Maven
+# -----------------------------------------------------------------------------
+target/
+*.class
+*.jar
+!**/test-fixtures/**/*.jar
+*.war
+*.ear
+*.nar
+.mvn/wrapper/maven-wrapper.jar
+mvnw
+mvnw.cmd
+*.iml
+.flattened-pom.xml
+dependency-reduced-pom.xml
+release.properties
+
+# -----------------------------------------------------------------------------
+# IDE — IntelliJ IDEA
+# -----------------------------------------------------------------------------
+.idea/
+*.iws
+out/
+
+# IDE — Eclipse / STS
+.eclipse/
+.settings/
+.project
+.classpath
+.factorypath
+bin/
+
+# IDE — VS Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json.example
+
+# IDE — NetBeans
+nbproject/private/
+nbbuild/
+dist/nbdist/
+.nb-gradle/
+
+# Generic editor swap files
+*.swp
+*.swo
+*~
+
+# -----------------------------------------------------------------------------
+# Node / Frontend
+# -----------------------------------------------------------------------------
+node_modules/
+dist/
+.parcel-cache/
+.cache/
+.next/
+.nuxt/
+.output/
+.quasar/
+.temp/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+package-lock.json.bak
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# -----------------------------------------------------------------------------
+# Secrets, Credentials & Sensitive Configuration
+# -----------------------------------------------------------------------------
+.env
+.env.local
+.env.dev
+.env.development
+.env.nonprod
+.env.staging
+.env.prod
+.env.production
+*.p12
+*.jks
+*.pfx
+*.pem
+*.der
+*.key
+*.crt
+*.csr
+keytab
+krb5.conf
+*-secret.yml
+*-secret.yaml
+*-credentials.yml
+*-credentials.yaml
+secrets/
+private/
+
+# Spring Boot local overrides (never commit environment-specific configs)
+application-local.yml
+application-local.properties
+application-dev.yml
+application-dev.properties
+bootstrap-local.yml
+bootstrap-local.properties
+
+# -----------------------------------------------------------------------------
+# OS-generated files
+# -----------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# -----------------------------------------------------------------------------
+# Build outputs & logs
+# -----------------------------------------------------------------------------
+*.log
+logs/
+build/
+builds/
+*.tmp
+*.temp
+crash.log
+crash-*.log
+hs_err_pid*.log
+
+# -----------------------------------------------------------------------------
+# Docker
+# -----------------------------------------------------------------------------
+.docker/
+docker-compose.override.yml
+.dockerenv
+
+# -----------------------------------------------------------------------------
+# Kubernetes / Helm (local overrides only — committed manifests stay)
+# -----------------------------------------------------------------------------
+*-override.yaml
+*-override.yml
+kubeconfig
+.kube/
+
+# -----------------------------------------------------------------------------
+# Testing & Coverage
+# -----------------------------------------------------------------------------
+.nyc_output/
+coverage/
+*.lcov
+surefire-reports/
+failsafe-reports/
+jacoco.exec
+jacoco/
+
+# -----------------------------------------------------------------------------
+# Terraform / Infrastructure (if ever added)
+# -----------------------------------------------------------------------------
+.terraform/
+*.tfstate
+*.tfstate.backup
+*.tfvars
+
+# -----------------------------------------------------------------------------
+# Miscellaneous
+# -----------------------------------------------------------------------------
+*.patch
+*.orig
+.gradle/
+gradle-app.setting
+!gradle-wrapper.jar

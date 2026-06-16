@@ -1,0 +1,95 @@
+# ================= Deployment =================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-module-apis
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: notification-module-apis
+  template:
+    metadata:
+      labels:
+        app: notification-module-apis
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: notification-module-apis
+          image: notification-module-apis:latest
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+          ports:
+            - containerPort: 9005
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          envFrom:
+            - configMapRef:
+                name: notification-module-apis-config
+          env:
+            - name: JAVA_OPTS
+              value: "-Djava.security.krb5.conf=/etc/krb5.conf"
+            - name: KRB5_CONFIG
+              value: /etc/krb5.conf
+            - name: KEYTAB_CONFIG
+              value: /etc/si_digigov.keytab
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: uri
+          volumeMounts:
+            - name: logs
+              mountPath: /opt/logs
+            - name: krb5-conf-volume
+              mountPath: /etc/krb5.conf
+              subPath: krb5.conf
+              readOnly: true
+            - name: krb5-keytab-volume
+              mountPath: /etc/si_digigov.keytab
+              subPath: si_digigov.keytab
+              readOnly: true
+      volumes:
+        - name: logs
+          emptyDir: {}
+        - name: krb5-conf-volume
+          secret:
+            secretName: kafka-krb5
+        - name: krb5-keytab-volume
+          secret:
+            secretName: kafka-keytab
+
+---
+# ================= Service =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-module-apis
+spec:
+  type: NodePort
+  selector:
+    app: notification-module-apis
+  ports:
+    - protocol: TCP
+      port: 9005
+      targetPort: 9005
+      nodePort: 30005
+

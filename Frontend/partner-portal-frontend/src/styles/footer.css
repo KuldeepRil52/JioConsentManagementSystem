@@ -1,0 +1,25 @@
+.footer-fixed {
+    width: calc(100% - 240px);
+    margin-left: 240px;
+    margin-top: auto;
+    z-index: 10;
+    background-color: #ffffff;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+    transition: width 0.3s ease, margin-left 0.3s ease;
+}
+
+/* Tablet view - full width footer */
+@media (max-width: 1024px) {
+  .footer-fixed {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .footer-fixed {
+    width: 100%;
+    margin-left: 0;
+  }
+}

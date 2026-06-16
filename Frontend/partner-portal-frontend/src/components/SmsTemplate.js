@@ -1,0 +1,274 @@
+import { ActionButton, Text, Icon } from "../custom-components";
+import { IcEditPen, IcSort, IcSwap } from "../custom-components/Icon";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useState, useEffect, useMemo } from "react";
+import "../styles/EmailTemplate.css";
+import { IcSmartSwitchPlug, IcWhatsapp } from "../custom-components/Icon";
+import config from "../utils/config";
+const SmsTemplate = () => {
+  const navigate = useNavigate();
+  const tenantId = useSelector((state) => state.common.tenant_id);
+  const businessId = useSelector((state) => state.common.business_id);
+  const sessionToken = useSelector((state) => state.common.session_token);
+  
+  const [templates, setTemplates] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [sortColumn, setSortColumn] = useState(null);
+  const [sortDirection, setSortDirection] = useState("asc");
+
+  const createSmsTemp = () => {
+    navigate("/createSmsTemplate");
+  };
+
+  // Fetch SMS templates from API
+  const fetchSmsTemplates = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      // Calculate scope level based on tenantId and businessId
+      const scopeLevel = tenantId === businessId ? 'TENANT' : 'BUSINESS';
+
+      const response = await fetch(
+        `${config.notification_templates}?channel=SMS&type=NOTIFICATION`,
+        {
+          method: 'GET',
+          headers: {
+            'X-Scope-Level': scopeLevel,
+            'X-Tenant-Id': tenantId,
+            'X-Business-Id': businessId,
+            'x-session-token': sessionToken,
+            'Accept': 'application/json'
+          }
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status} ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log("SMS templates received:", data);
+      
+      // Extract templates from nested data structure
+      const templatesArray = data?.data?.data || [];
+      
+      // Filter templates to show only those with eventType starting with "CONSENT"
+      const filteredTemplates = templatesArray.filter(template => 
+        template.eventType && template.eventType.startsWith('CONSENT')
+      );
+      
+      setTemplates(Array.isArray(filteredTemplates) ? filteredTemplates : []);
+    } catch (err) {
+      console.error("Error fetching SMS templates:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSort = (column) => {
+    if (sortColumn === column) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortColumn(column);
+      setSortDirection("asc");
+    }
+  };
+
+  const sortedTemplates = useMemo(() => {
+    if (!sortColumn) return templates;
+
+    return [...templates].sort((a, b) => {
+      let aValue, bValue;
+
+      switch (sortColumn) {
+        case 'dltTemplateId':
+          aValue = a.smsConfig?.dltTemplateId || a.templateId || '';
+          bValue = b.smsConfig?.dltTemplateId || b.templateId || '';
+          break;
+        case 'template':
+          aValue = a.template || '';
+          bValue = b.template || '';
+          break;
+        default:
+          aValue = a[sortColumn] || '';
+          bValue = b[sortColumn] || '';
+      }
+
+      if (aValue < bValue) return sortDirection === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortDirection === 'asc' ? 1 : -1;
+      return 0;
+    });
+  }, [templates, sortColumn, sortDirection]);
+
+  useEffect(() => {
+    if (tenantId && businessId) {
+      fetchSmsTemplates();
+    }
+  }, [tenantId, businessId]);
+
+  return (
+    <>
+      <div className="configurePage">
+        <div className="emailTemplateWidth">
+          <div className="emailTemplate-Heading-Button">
+            <div className="emailTemplate-Heading-badge">
+              <Text appearance="heading-s" color="primary-grey-100">
+                SMS template
+              </Text>
+              <div className="tag">
+                <Text appearance="body-xs-bold" color="primary-grey-80">
+                  Consent
+                </Text>
+              </div>
+            </div>
+            <div>
+              <ActionButton
+                label="Add SMS template"
+                onClick={createSmsTemp}
+                kind="primary"
+              ></ActionButton>
+            </div>
+          </div>
+          <br></br>
+          <div>
+            <div className="emailTemplate-custom-table-outer-div">
+              <table className="emailTempalte-custom-table">
+                <thead>
+                  <tr>
+                    <th>
+                      <div className="emailTemplate-table-header-icon">
+                        <Text appearance="body-xs-bold" color="primary-grey-80">
+                          Event
+                        </Text>
+                        <Icon
+                          ic={<IcSort height={16} width={16} />}
+                          color="primary_60"
+                          size="small"
+                          onClick={() => handleSort('eventType')}
+                          style={{ cursor: 'pointer' }}
+                        />
+                      </div>
+                    </th>
+                    <th>
+                      <div className="emailTemplate-table-header-icon">
+                        <Text appearance="body-xs-bold" color="primary-grey-80">
+                          DLT Template Id
+                        </Text>
+                        <Icon
+                          ic={<IcSort height={16} width={16} />}
+                          color="primary_60"
+                          size="small"
+                          onClick={() => handleSort('dltTemplateId')}
+                          style={{ cursor: 'pointer' }}
+                        />
+                      </div>
+                    </th>
+                    <th>
+                      {" "}
+                      <div className="emailTemplate-table-header-icon">
+                        <Text appearance="body-xs-bold" color="primary-grey-80">
+                          Messege
+                        </Text>
+                        <Icon
+                          ic={<IcSort height={16} width={16} />}
+                          color="primary_60"
+                          size="small"
+                          onClick={() => handleSort('template')}
+                          style={{ cursor: 'pointer' }}
+                        />
+                      </div>
+                    </th>
+
+                    <th>
+                      {" "}
+                      <Text appearance="body-xs-bold" color="primary-grey-80">
+                        Action
+                      </Text>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {loading ? (
+                    <tr>
+                      <td colSpan="4" style={{ textAlign: 'center', padding: '20px' }}>
+                        <Text appearance="body-xs-bold" color="primary-grey-60">
+                          Loading templates...
+                        </Text>
+                      </td>
+                    </tr>
+                  ) : error ? (
+                    <tr>
+                      <td colSpan="4" style={{ textAlign: 'center', padding: '20px' }}>
+                        <Text appearance="body-xs-bold" color="error">
+                          Error: {error}
+                        </Text>
+                        <br />
+                        <ActionButton
+                          label="Retry"
+                          onClick={fetchSmsTemplates}
+                          kind="secondary"
+                          size="small"
+                        />
+                      </td>
+                    </tr>
+                  ) : sortedTemplates.length === 0 ? (
+                    <tr>
+                      <td colSpan="4" style={{ textAlign: 'center', padding: '20px' }}>
+                        <Text appearance="body-xs-bold" color="primary-grey-60">
+                          No SMS templates found
+                        </Text>
+                      </td>
+                    </tr>
+                  ) : (
+                    sortedTemplates.map((template, index) => (
+                      <tr key={template.id || index}>
+                        <td>
+                          <Text appearance="body-xs-bold" color="black">
+                            {template.eventType || 'N/A'}
+                          </Text>
+                        </td>
+                        <td>
+                          <Text appearance="body-xs-bold" color="black">
+                            {template.smsConfig?.dltTemplateId || template.templateId || 'N/A'}
+                          </Text>
+                        </td>
+                        <td>
+                          <Text appearance="body-xs-bold" color="black">
+                            {template.template?.substring(0, 50) || 'N/A'}{template.template?.length > 50 ? '...' : ''}
+                          </Text>
+                        </td>
+                        <td>
+                          <Icon
+                            ic={<IcEditPen height={24} width={24} />}
+                            color="primary_grey_80"
+                            kind="default"
+                            size="medium"
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => {
+                              // Navigate to create page with template data for editing
+                              navigate("/createSmsTemplate", { 
+                                state: { 
+                                  editMode: true,
+                                  templateData: template 
+                                } 
+                              });
+                            }}
+                          />
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+export default SmsTemplate;

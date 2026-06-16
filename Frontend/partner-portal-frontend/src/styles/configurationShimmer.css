@@ -1,0 +1,183 @@
+/* Shimmer Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+.shimmer-box {
+  background: linear-gradient(
+    90deg,
+    #f0f0f0 0%,
+    #f8f8f8 50%,
+    #f0f0f0 100%
+  );
+  background-size: 1000px 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 4px;
+}
+
+/* Main Container */
+.shimmer-config-container {
+  width: 80%;
+  padding: 0;
+  padding-right: 2%;
+  box-sizing: border-box;
+}
+
+/* Header Section */
+.shimmer-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.shimmer-title {
+  width: 200px;
+  height: 32px;
+}
+
+.shimmer-badge {
+  width: 120px;
+  height: 24px;
+  border-radius: 12px;
+}
+
+/* Content Section */
+.shimmer-content {
+  display: flex;
+  gap: 40px;
+  margin-bottom: 32px;
+}
+
+.shimmer-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Field Groups */
+.shimmer-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.shimmer-label {
+  width: 180px;
+  height: 16px;
+  margin-bottom: 4px;
+}
+
+.shimmer-input {
+  width: 100%;
+  height: 40px;
+}
+
+.shimmer-select {
+  width: 100%;
+  height: 40px;
+}
+
+.shimmer-helper {
+  width: 280px;
+  height: 14px;
+  margin-top: 4px;
+}
+
+/* Input Group (for fields with dropdown) */
+.shimmer-input-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.shimmer-input-group .shimmer-input {
+  flex: 1;
+  width: auto;
+}
+
+.shimmer-dropdown-small {
+  width: 120px;
+  height: 40px;
+}
+
+/* Checkbox Groups */
+.shimmer-checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.shimmer-checkbox {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.shimmer-checkbox-label {
+  width: 200px;
+  height: 16px;
+}
+
+/* Upload Box */
+.shimmer-upload-box {
+  width: 100%;
+  height: 120px;
+  border: 2px dashed #e0e0e0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Button Container */
+.shimmer-button-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.shimmer-button {
+  width: 120px;
+  height: 40px;
+  border-radius: 6px;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .shimmer-content {
+    flex-direction: column;
+    gap: 24px;
+  }
+}
+
+/* Specific adjustments for different page types */
+.shimmer-config-container.consent-page .shimmer-content {
+  flex-direction: column;
+}
+
+.shimmer-config-container.grievance-page .shimmer-content {
+  flex-direction: row;
+}
+
+.shimmer-config-container.notification-page .shimmer-content {
+  flex-direction: column;
+}
+
+.shimmer-config-container.system-config-page .shimmer-content {
+  flex-direction: row;
+}
+
+.shimmer-config-container.dpo-page .shimmer-content {
+  flex-direction: column;
+}
+

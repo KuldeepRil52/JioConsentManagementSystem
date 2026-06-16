@@ -1,0 +1,46 @@
+spring:
+  application:
+    name: grievance-service
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/?authSource=admin}
+      database: ${MONGODB_DATABASE:tenant_db_shared}
+
+multi-tenant:
+  enabled: true
+  shared-database: tenant_db_shared
+  tenant-database-prefix: tenant_db_
+
+server:
+  port: ${SERVER_PORT:9007} 
+  servlet:
+    context-path: /grievance
+
+logging:
+  config: classpath:logback-simple.xml
+  level:
+    root: INFO
+    com.jio.digigov: DEBUG
+    org.springdoc: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+notification:
+  trigger-url: ${NOTIFICATION_MODULE_APIS_URL:http://notification-module-apis:9005}/notification/v1/events/trigger
+  audit-url: ${AUDIT_MODULE_APIS_URL:http://audit-module-apis:9006}/audit/v1/audit
+
+vault:
+  service:
+    base:
+      url: ${VAULT_APIS_URL:http://localhost:30010}
+    endpoints:
+      sign: /client/sign
+
+
+app:
+  sign:
+    response: false
+  verify:
+    request: false
+

@@ -1,0 +1,232 @@
+.dropdown-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%; /* or fixed width like 350px */
+  margin-bottom: 20px;
+}
+
+/* Mobile - adjust dropdown spacing */
+@media (max-width: 768px) {
+  .dropdown-group {
+    margin-bottom: 15px;
+  }
+}
+
+.dropdown-group label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgb(118, 118, 118);
+}
+
+.dropdown-group select {
+  padding: 10px 14px;
+  font-size: 13px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #333;
+  appearance: none; /* remove default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='none' stroke='%23666' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M19 9l-7 7-7-7'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+}
+
+.dropdown-group select:focus {
+  border-color: #999;
+  outline: none;
+}
+
+.sideBar-outer-container {
+  width: 240px;
+  height: calc(100vh - 60px);
+  background-color: rgba(245, 245, 245, 1);
+  top: 60px;
+  left: 0;
+  position: fixed;
+  padding: 15px;
+  padding-top: 20px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  z-index: 90;
+  transition: transform 0.3s ease, left 0.3s ease;
+}
+
+/* Tablet view - hide sidebar off-screen by default */
+@media (max-width: 1024px) {
+  .sideBar-outer-container {
+    transform: translateX(-100%);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sideBar-outer-container.show {
+    transform: translateX(0);
+  }
+}
+
+/* Mobile view - full-width overlay sidebar */
+@media (max-width: 768px) {
+  .sideBar-outer-container {
+    width: 80%;
+    max-width: 300px;
+    transform: translateX(-100%);
+    box-shadow: 2px 0 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .sideBar-outer-container.show {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .sideBar-outer-container {
+    width: 85%;
+    max-width: 280px;
+  }
+}
+
+/* Webkit scrollbar styling */
+.sideBar-outer-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sideBar-outer-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sideBar-outer-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.sideBar-outer-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.sideBar-menu-item {
+  margin-top: 12px;
+  margin-bottom: 4px;
+  margin-left: 0;
+  display: flex;
+  padding-right: 7px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  align-items: center;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+.sideBar-menu-click {
+  display: flex;
+  margin-top: 6px;
+  margin-bottom: 2px;
+  padding: 10px;
+  border-radius: 36px;
+  align-items: center;
+  cursor: pointer;
+}
+
+/* First menu item (Dashboard) spacing */
+.sideBar-menu-click:first-of-type {
+  margin-top: 0;
+}
+
+.sideBar-menu-click.active {
+  background-color: white;
+}
+
+.sideBar-menu-click.inactive {
+  background-color: transparent;
+}
+
+#grievance-type {
+  font-weight: normal; /* default */
+}
+
+#grievance-type option:checked {
+  font-weight: bold; /* selected option bold */
+}
+
+/* Accordion Styles */
+.sideBar-accordion-section {
+  margin-bottom: 4px;
+}
+
+.sideBar-accordion-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 8px 4px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.sideBar-accordion-header:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.sideBar-accordion-header .sideBar-menu-item {
+  margin: 0 !important;
+  padding: 0 !important;
+  flex: 1;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+.sideBar-menu-click Text {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+/* Mobile - adjust font sizes */
+@media (max-width: 768px) {
+  .sideBar-menu-item {
+    font-size: 12px !important;
+  }
+  
+  .sideBar-menu-click Text {
+    font-size: 12px !important;
+  }
+}
+
+.sideBar-accordion-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 8px;
+  width: 16px;
+  height: 16px;
+}
+
+.sideBar-accordion-icon svg {
+  width: 16px !important;
+  height: 16px !important;
+  min-width: 16px !important;
+  min-height: 16px !important;
+  transition: transform 0.2s ease;
+}
+
+.sideBar-accordion-content {
+  overflow: hidden;
+  padding-left: 18px;
+  margin-top: 4px;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 2000px;
+  }
+}
+ 

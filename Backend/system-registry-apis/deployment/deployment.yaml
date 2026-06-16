@@ -1,0 +1,74 @@
+# ================= Deployment =================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: system-registry-apis
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: system-registry-apis
+  template:
+    metadata:
+      labels:
+        app: system-registry-apis
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: system-registry-apis
+          image: system-registry-apis:latest
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+            seccompProfile:
+              type: RuntimeDefault
+          ports:
+            - containerPort: 9011
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "512Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          envFrom:
+            - configMapRef:
+                name: system-registry-apis-config
+          env:
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: uri
+          volumeMounts:
+            - name: logs
+              mountPath: /opt/logs   # container writes logs here
+      volumes:
+        - name: logs
+          emptyDir: {}
+
+---
+# ================= Service =================
+apiVersion: v1
+kind: Service
+metadata:
+  name: system-registry-apis
+spec:
+  type: NodePort
+  selector:
+    app: system-registry-apis
+  ports:
+    - protocol: TCP
+      port: 9011
+      targetPort: 9011
+      nodePort: 30011

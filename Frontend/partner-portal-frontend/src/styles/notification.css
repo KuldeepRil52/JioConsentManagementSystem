@@ -1,0 +1,30 @@
+.notif-page {
+    display: flex;
+    flex-direction: column ;
+}
+
+.notif-heading {
+     display: flex;
+     gap: 10;
+     align-items: center;
+        margin-bottom: 1%;
+}
+
+.tag {
+    height: 24px;
+    width: 159px;
+    background-color: rgba(245, 245, 245, 1);
+    border-radius: 5px;
+    text-align: center;
+    }
+
+.notif-tabs-setup{
+    width: 95%;
+}
+
+.service-inputs-main{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 40%;
+}

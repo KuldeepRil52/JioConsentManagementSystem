@@ -1,0 +1,4 @@
+<configuration>
+    <include resource="applogconfig.xml"/>
+    <include resource="auditlogconfig.xml"/>
+</configuration>

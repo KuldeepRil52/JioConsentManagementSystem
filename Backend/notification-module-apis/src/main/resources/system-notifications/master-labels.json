@@ -1,0 +1,765 @@
+[
+  {
+    "labelName": "MASTER_LABEL_USER_IDENTIFIER",
+    "dataSource": "PAYLOAD",
+    "path": "customerIdentifiers.value",
+    "defaultValue": "User"
+  },
+  {
+    "labelName": "MASTER_LABEL_USER_MOBILE",
+    "dataSource": "PAYLOAD",
+    "path": "customerIdentifiers.value",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_USER_EMAIL",
+    "dataSource": "PAYLOAD",
+    "path": "customerIdentifiers.value",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_CONSENT_ID",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.consentId",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_CONSENT_REQUEST_ID",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.consentHandleId",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_PREFERENCE_ID",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.preferenceId",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_GRIEVANCE_ID",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.grievanceId",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_DATA_REF_ID",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.dataRefId",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_REFERENCE_ID",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.referenceId",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_CREATED_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.createdAt",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_UPDATED_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.updatedAt",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_CREATED_AT",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.createdAt",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_UPDATED_AT",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.updatedAt",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_EXPIRY_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.expiryDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_RENEWAL_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.renewalDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_WITHDRAWN_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.withdrawnDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_RESOLVED_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.resolvedDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_CLOSED_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.closedDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_DELETED_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.deletedDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_SHARED_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.sharedDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_ESCALATED_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.escalatedDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_DENIED_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.deniedDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_BREACH_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.breachDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_EVENT_TIMESTAMP",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.timestamp",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_STATUS",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.status",
+    "defaultValue": "Pending"
+  },
+  {
+    "labelName": "MASTER_LABEL_STATUS_DETAILS",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.statusDetails",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_DENIAL_REASON",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.denialReason",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_RESOLUTION_DETAILS",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.resolutionDetails",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_THIRD_PARTY_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.thirdPartyName",
+    "defaultValue": "Third Party"
+  },
+  {
+    "labelName": "MASTER_LABEL_SHARED_WITH",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.sharedWith",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_ACTION_URL",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.actionUrl",
+    "defaultValue": "#"
+  },
+  {
+    "labelName": "MASTER_LABEL_TRACKING_URL",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.trackingUrl",
+    "defaultValue": "#"
+  },
+  {
+    "labelName": "MASTER_LABEL_REVIEW_URL",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.reviewUrl",
+    "defaultValue": "#"
+  },
+  {
+    "labelName": "MASTER_LABEL_RENEWAL_URL",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.renewalUrl",
+    "defaultValue": "#"
+  },
+  {
+    "labelName": "MASTER_LABEL_DASHBOARD_URL",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.dashboardUrl",
+    "defaultValue": "#"
+  },
+  {
+    "labelName": "MASTER_LABEL_QR_DATA",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.qrData",
+    "defaultValue": "#"
+  },
+  {
+    "labelName": "MASTER_LABEL_ORGANIZATION_NAME",
+    "dataSource": "DB",
+    "collection": "business_applications",
+    "query": {
+      "id": "{{header.X-Business-Id}}"
+    },
+    "path": "name",
+    "defaultValue": "Organization"
+  },
+  {
+    "labelName": "MASTER_LABEL_ORGANIZATION_ID",
+    "dataSource": "PAYLOAD",
+    "path": "header.X-Business-Id",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_DATA_FIDUCIARY_NAME",
+    "dataSource": "DB",
+    "collection": "business_applications",
+    "query": {
+      "id": "{{header.X-Business-Id}}"
+    },
+    "path": "name",
+    "defaultValue": "Data Fiduciary"
+  },
+  {
+    "labelName": "MASTER_LABEL_DATA_FIDUCIARY_ID",
+    "dataSource": "PAYLOAD",
+    "path": "header.X-Business-Id",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_BUSINESS_NAME",
+    "dataSource": "DB",
+    "collection": "business_applications",
+    "query": {
+      "id": "{{header.X-Business-Id}}"
+    },
+    "path": "name",
+    "defaultValue": "Business"
+  },
+  {
+    "labelName": "MASTER_LABEL_BUSINESS_NAME_TENANT_ONBOARDING",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.businessName",
+    "defaultValue": "Business"
+  },
+  {
+    "labelName": "MASTER_LABEL_TENANT_ID",
+    "dataSource": "PAYLOAD",
+    "path": "header.X-Tenant-Id",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_BUSINESS_ID",
+    "dataSource": "PAYLOAD",
+    "path": "header.X-Business-Id",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_TRANSACTION_ID",
+    "dataSource": "PAYLOAD",
+    "path": "header.X-Transaction-Id",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_EVENT_TYPE",
+    "dataSource": "PAYLOAD",
+    "path": "eventType",
+    "defaultValue": "Event"
+  },
+  {
+    "labelName": "MASTER_LABEL_EVENT_SOURCE",
+    "dataSource": "PAYLOAD",
+    "path": "source",
+    "defaultValue": "System"
+  },
+  {
+    "labelName": "MASTER_LABEL_LANGUAGE",
+    "dataSource": "PAYLOAD",
+    "path": "language",
+    "defaultValue": "english"
+  },
+  {
+    "labelName": "MASTER_LABEL_CURRENT_TIMESTAMP",
+    "dataSource": "GENERATE",
+    "generator": "TIMESTAMP",
+    "config": {
+      "format": "ISO_8601"
+    },
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_UNIQUE_ID",
+    "dataSource": "GENERATE",
+    "generator": "UUID",
+    "config": {
+      "version": "v4"
+    },
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_JWT_TOKEN",
+    "dataSource": "GENERATE",
+    "generator": "JWT_TOKEN",
+    "config": {},
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_USER_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "customerIdentifiers.name",
+    "defaultValue": "User"
+  },
+  {
+    "labelName": "MASTER_LABEL_CUSTOMER_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.customerName",
+    "defaultValue": "Valued Customer"
+  },
+  {
+    "labelName": "MASTER_LABEL_TOKEN_CLAIMS",
+    "dataSource": "TOKEN",
+    "path": "claims",
+    "defaultValue": ""
+  },
+  {
+    "labelName": "MASTER_LABEL_TENANT_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.tenantName",
+    "defaultValue": "Tenant"
+  },
+  {
+    "labelName": "MASTER_LABEL_ONBOARDED_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.onboardedDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_ADMIN_CONTACT",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.adminContact",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_TENANT_DESCRIPTION",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.tenantDescription",
+    "defaultValue": "New tenant onboarded"
+  },
+  {
+    "labelName": "MASTER_LABEL_OTP_PURPOSE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.otpPurpose",
+    "defaultValue": "Authentication"
+  },
+  {
+    "labelName": "MASTER_LABEL_OTP",
+    "dataSource": "GENERATE",
+    "generator": "OTP",
+    "config": {
+      "length": 6,
+      "numeric": true,
+      "expiryMinutes": 10,
+      "maxAttempts": 3
+    },
+    "defaultValue": "000000"
+  },
+  {
+    "labelName": "MASTER_LABEL_OTP_CUSTOM",
+    "dataSource": "GENERATE",
+    "generator": "OTP",
+    "config": {
+      "length": 8,
+      "numeric": false,
+      "expiryMinutes": 10,
+      "maxAttempts": 3
+    },
+    "defaultValue": "00000000"
+  },
+  {
+    "labelName": "MASTER_LABEL_OTP_ALPHA",
+    "dataSource": "GENERATE",
+    "generator": "OTP",
+    "config": {
+      "length": 4,
+      "charset": "ALPHA",
+      "expiryMinutes": 10,
+      "maxAttempts": 3
+    },
+    "defaultValue": "AAAA"
+  },
+  {
+    "labelName": "MASTER_LABEL_OTP_EXPIRY_MINUTES",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.otpExpiryMinutes",
+    "defaultValue": "10"
+  },
+  {
+    "labelName": "MASTER_LABEL_ALERT_TITLE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.alertTitle",
+    "defaultValue": "System Alert"
+  },
+  {
+    "labelName": "MASTER_LABEL_ALERT_DETAILS",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.alertDetails",
+    "defaultValue": "System notification"
+  },
+  {
+    "labelName": "MASTER_LABEL_ALERT_REF_ID",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.referenceId",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_ALERT_TIMESTAMP",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.timestamp",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_CONFIG_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.configName",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_MODIFIED_BY",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.modifiedBy",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_MODIFIED_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.modifiedDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_CHANGE_DETAILS",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.changeDetails",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_MAINTENANCE_WINDOW",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.maintenanceWindow",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_MAINTENANCE_DURATION",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.maintenanceDuration",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_OTP_CODE",
+    "dataSource": "GENERATE",
+    "generator": "OTP",
+    "config": {
+      "length": 6,
+      "numeric": true,
+      "expiryMinutes": 10,
+      "maxAttempts": 3
+    },
+    "defaultValue": "000000"
+  },
+  {
+    "labelName": "MASTER_LABEL_OTP_TTL_MINUTES",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.otpTtlMinutes",
+    "defaultValue": "10"
+  },
+  {
+    "labelName": "MASTER_LABEL_ACCOUNT_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.accountName",
+    "defaultValue": "JCMS Account"
+  },
+  {
+    "labelName": "MASTER_LABEL_TOTP_KEY",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.totpKey",
+    "defaultValue": "XXXXXXXXXXXX"
+  },
+  {
+    "labelName": "MASTER_LABEL_CLIENT_ID",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.clientId",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_ORG_PAN",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.organizationPan",
+    "defaultValue": "AAAAA0000A"
+  },
+  {
+    "labelName": "MASTER_LABEL_PROCESSOR_SPOC_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.processorSpocName",
+    "defaultValue": "Processor SPOC"
+  },
+  {
+    "labelName": "MASTER_LABEL_PROCESSOR_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.processorName",
+    "defaultValue": "Processor"
+  },
+  {
+    "labelName": "MASTER_LABEL_PROCESSOR_ID",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.processorId",
+    "defaultValue": "PROC-000"
+  },
+  {
+    "labelName": "MASTER_LABEL_USER_ROLE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.userRole",
+    "defaultValue": "USER"
+  },
+  {
+    "labelName": "MASTER_LABEL_CONSENT_PURPOSE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.consentPurpose",
+    "defaultValue": "Data Processing"
+  },
+  {
+    "labelName": "MASTER_LABEL_BREACH_REFERENCE_ID",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.breachReferenceId",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_AFFECTED_DATA_CATEGORY",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.affectedDataCategory",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_REPORTED_BY",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.reportedBy",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_REPORTED_TO_AUTHORITY_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.reportedToAuthorityDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_DPO_CONTACT_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.dpoContactName",
+    "defaultValue": "Data Protection Officer"
+  },
+  {
+    "labelName": "MASTER_LABEL_DPO_CONTACT_DETAILS",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.dpoContactDetails",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_DATA_PRINCIPAL_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.dataPrincipalName",
+    "defaultValue": "User"
+  },
+  {
+    "labelName": "MASTER_LABEL_DATA_PRINCIPAL_EMAIL",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.dataPrincipalEmail",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_GRIEVANCE_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.grievanceDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_GRIEVANCE_DESCRIPTION",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.grievanceDescription",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_PORTAL_URL",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.portalUrl",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_UPDATE_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.updateDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_ASSIGNED_HANDLER",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.assignedHandler",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_TARGET_RESOLUTION_DATE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.targetResolutionDate",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_ESCALATION_REASON",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.escalationReason",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_ESCALATED_BY",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.escalatedBy",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_ESCALATION_LEVEL",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.escalationLevel",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_HANDLER_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.handlerName",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_RESOLUTION_SUMMARY",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.resolutionSummary",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_REVIEWER_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.reviewerName",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_FINAL_STATUS",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.finalStatus",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_CLOSED_BY",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.closedBy",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_PREVIOUS_STATUS",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.previousStatus",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_CURRENT_STATUS",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.currentStatus",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_DPO_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.dpoName",
+    "defaultValue": "Data Protection Officer"
+  },
+  {
+    "labelName": "MASTER_LABEL_RETENTION_PERIOD_VALUE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.retentionPeriodValue",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_RETENTION_PERIOD_UNIT",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.retentionPeriodUnit",
+    "defaultValue": "days"
+  },
+  {
+    "labelName": "MASTER_LABEL_EXPIRED_RECORDS_COUNT",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.expiredRecordsCount",
+    "defaultValue": "0"
+  },
+  {
+    "labelName": "MASTER_LABEL_PAYLOAD_HASH_VERIFICATION",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.payloadHashVerification",
+    "defaultValue": "UNKNOWN"
+  },
+  {
+    "labelName": "MASTER_LABEL_CHAIN_LINK_VERIFICATION",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.chainLinkVerification",
+    "defaultValue": "UNKNOWN"
+  },
+  {
+    "labelName": "MASTER_LABEL_CONSENT_JSON_MATCH",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.consentJsonMatch",
+    "defaultValue": "UNKNOWN"
+  },
+  {
+    "labelName": "MASTER_LABEL_OVERALL_INTEGRITY_STATUS",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.overallIntegrityStatus",
+    "defaultValue": "UNKNOWN"
+  },
+  {
+    "labelName": "MASTER_LABEL_CLIENT_SECRET",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.clientSecret",
+    "defaultValue": " "
+  },
+  {
+    "labelName": "MASTER_LABEL_PARENT_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.parentName",
+    "defaultValue": "Parent/Guardian"
+  },
+  {
+    "labelName": "MASTER_LABEL_MINOR_NAME",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.minorName",
+    "defaultValue": "Minor"
+  },
+  {
+    "labelName": "MASTER_LABEL_CONSENT_HANDLE",
+    "dataSource": "PAYLOAD",
+    "path": "eventPayload.consentHandle",
+    "defaultValue": " "
+  }
+]

@@ -1,0 +1,70 @@
+/* Base Avatar Styles */
+.custom-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0f3cc9 0%, #1e5ddc 100%);
+  color: #ffffff;
+  font-weight: 600;
+  overflow: hidden;
+  flex-shrink: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+/* Avatar Sizes */
+.custom-avatar-small {
+  width: 32px;
+  height: 32px;
+  font-size: 13px;
+}
+
+.custom-avatar-medium {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+}
+
+.custom-avatar-large {
+  width: 56px;
+  height: 56px;
+  font-size: 22px;
+}
+
+.custom-avatar-xtra-large {
+  width: 80px;
+  height: 80px;
+  font-size: 32px;
+}
+
+/* Clickable Avatar */
+.custom-avatar-clickable {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.custom-avatar-clickable:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(15, 60, 201, 0.3);
+}
+
+.custom-avatar-clickable:active {
+  transform: scale(0.98);
+}
+
+/* Avatar Content */
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-initials {
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.avatar-icon {
+  font-size: 1.2em;
+}
+

@@ -1,0 +1,14 @@
+package com.jio.partnerportal.dto.response;
+
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
+public class UserDashboardThemeResponse {
+
+    private String message;
+    private String themeId;
+    private String theme;
+}
+

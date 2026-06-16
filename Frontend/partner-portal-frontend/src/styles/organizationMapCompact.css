@@ -1,0 +1,416 @@
+/* Compact Professional Organization Map Styles */
+
+/* Override existing styles with compact, professional design */
+
+/* Fix container alignment */
+.org-map-container {
+  padding: 24px;
+  max-width: 100%;
+  margin: 0;
+}
+
+.org-map-header-simple {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: left;
+}
+
+.org-map-content-simple {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  min-height: 400px;
+}
+
+.org-chart-professional {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+}
+
+.org-chart-root {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+}
+
+/* Compact Node Cards */
+.org-node-card-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 24px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s;
+  min-width: 280px;
+  max-width: 300px;
+}
+
+.org-node-card-pro:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.org-node-card-pro.tenant-card-pro {
+  border-color: #d0e4f7;
+  background: #ffffff;
+}
+
+.org-node-card-pro.business-card-pro {
+  border-color: #e0e0e0;
+  background: #ffffff;
+}
+
+.org-node-icon-pro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: transparent;
+  border-radius: 0;
+  flex-shrink: 0;
+}
+
+.org-node-content-pro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.org-node-header-pro {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Minimal Badges */
+.org-badge-pro {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tenant-badge-pro {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.business-badge-pro {
+  background: #e8eaf6;
+  color: #5e35b1;
+}
+
+/* Minimal Connectors */
+.org-connector-line-pro,
+.org-child-connector-pro {
+  width: 2px;
+  height: 40px;
+  background: #c5c5c5;
+  margin: 0;
+}
+
+.org-children-container-pro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  position: relative;
+  width: 100%;
+  margin: 40px 0;
+}
+
+.org-children-grid-pro {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  width: 100%;
+  max-width: 700px;
+  position: relative;
+  padding-top: 40px;
+}
+
+.org-child-wrapper-pro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.org-children-grid-pro::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: #c5c5c5;
+  min-width: 300px;
+}
+
+/* Compact Details Section */
+.org-details-section-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin-top: 60px;
+}
+
+.org-section-title-pro {
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+  text-align: left;
+}
+
+.org-cards-grid-pro {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  max-width: 900px;
+  margin: 0;
+}
+
+/* Compact Detail Cards */
+.org-detail-card-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 24px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.2s;
+}
+
+.org-detail-card-pro:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.processor-detail-card-pro,
+.user-detail-card-pro {
+  border-color: #e0e0e0;
+  background: #ffffff;
+}
+
+.org-detail-header-pro {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.org-detail-icon-pro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 0;
+  flex-shrink: 0;
+  background: transparent;
+}
+
+.org-detail-title-pro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Minimal Badges */
+.status-badge-pro {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.active-badge-pro {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.active-badge-pro::before {
+  content: '●';
+  font-size: 8px;
+}
+
+.org-detail-body-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scope-badge-pro {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #e3f2fd;
+  color: #1976d2;
+  display: inline-block;
+  width: fit-content;
+}
+
+/* Compact User Avatar */
+.org-user-avatar-pro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: #b39ddb;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.avatar-text-pro {
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+  text-transform: uppercase;
+}
+
+.org-user-info-pro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.org-user-email-pro {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.identity-type-badge-pro {
+  padding: 4px 10px;
+  background: #f3f4f6;
+  color: #616161;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  width: fit-content;
+}
+
+/* Compact Roles Section */
+.org-roles-container-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  border: none;
+}
+
+.org-roles-header-pro {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.org-roles-list-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 16px;
+}
+
+.org-role-item-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  border: none;
+}
+
+.org-role-badge-pro {
+  padding: 4px 10px;
+  background: #e8eaf6;
+  color: #5e35b1;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  width: fit-content;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 30px;
+  text-align: center;
+  gap: 12px;
+  background: #fafafa;
+  border: 1px dashed #d1d5db;
+  border-radius: 6px;
+  min-height: 300px;
+}
+
+.empty-state .debug-info {
+  margin-top: 16px;
+  padding: 12px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 11px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .org-map-content-simple {
+    padding: 12px;
+  }
+  
+  .org-cards-grid-pro {
+    grid-template-columns: 1fr;
+  }
+  
+  .org-node-card-pro {
+    min-width: auto;
+    max-width: 100%;
+  }
+}
+

@@ -1,0 +1,193 @@
+/* Prevent horizontal scrollbar globally */
+html,
+body {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+#root {
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Ensure all wrapper components take full height */
+#root > * {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.app-layout {
+  margin-left: 240px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: calc(100vw - 240px);
+  max-width: calc(100vw - 240px);
+  overflow-x: hidden;
+  box-sizing: border-box;
+  padding-bottom: 20px;
+  transition: margin-left 0.3s ease;
+}
+
+/* Tablet view - hide sidebar by default, show on toggle */
+@media (max-width: 1024px) {
+  .app-layout {
+    margin-left: 0;
+    width: 100vw;
+    max-width: 100vw;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .app-layout {
+    margin-left: 0;
+    width: 100vw;
+    max-width: 100vw;
+    padding: 0 10px;
+  }
+}
+
+/* Styling for custom checkboxes in AddRole.js */
+.custom-checkbox-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  cursor: pointer;
+}
+
+.custom-checkbox {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+/* PII Page Custom Search Box */
+.pii-search-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  padding-left: 12px;
+  transition: all 0.2s;
+}
+
+.pii-search-container:focus-within {
+  background-color: white;
+  border-color: #0f3cc9;
+}
+
+.pii-search-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  color: #111827;
+  padding: 10px 8px;
+}
+
+.pii-search-input::placeholder {
+  color: #9ca3af;
+}
+
+.pii-search-clear-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* Remove unwanted borders from pill/badge elements ONLY - exclude form inputs */
+div[style*="borderRadius"][style*="backgroundColor"]:not(input):not(button):not(textarea):not(select),
+div[style*="border-radius"][style*="background-color"]:not(input):not(button):not(textarea):not(select),
+div[style*="borderRadius: 16px"]:not(input):not(button):not(textarea):not(select),
+div[style*="border-radius: 16px"]:not(input):not(button):not(textarea):not(select) {
+  /* border: none !important; */
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Target child TEXT elements inside pills only - NOT form inputs */
+div[style*="borderRadius"] > span:not(input):not(button),
+div[style*="borderRadius"] > div:not(input):not(button) > span,
+div[style*="border-radius"] > span:not(input):not(button),
+div[style*="border-radius"] > div:not(input):not(button) > span {
+  /* border: none !important; */
+  outline: none !important;
+}
+
+/* Specific fix for text elements inside pills - NOT form elements */
+div[style*="backgroundColor"] > span:not(input):not(button),
+div[style*="backgroundColor"] > div:not(input):not(button),
+div[style*="background-color"] > span:not(input):not(button),
+div[style*="background-color"] > div:not(input):not(button) {
+  /* border: none !important; */
+  outline: none !important;
+}
+
+/* Data item pill/badge styling - clean without borders */
+.data-item-pill {
+  background-color: #E8FAF7 !important;
+  border-radius: 16px !important;
+  padding: 4px 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.data-item-pill *:not(input):not(button):not(textarea):not(select) {
+  border: none !important;
+  outline: none !important;
+}
+
+/* Ensure form inputs always have proper borders */
+input[type="checkbox"],
+input[type="radio"],
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+  /* border: inherit !important; */
+  outline: inherit !important;
+}
+
+/* Specifically preserve checkbox and radio button styling */
+.custom-checkbox,
+.custom-radio,
+input[type="checkbox"],
+input[type="radio"] {
+  /* border: 1px solid #ccc !important; */
+  box-shadow: none;
+}
+
+input[type="checkbox"]:checked,
+input[type="radio"]:checked {
+  border-color: #0f3cc9 !important;
+}

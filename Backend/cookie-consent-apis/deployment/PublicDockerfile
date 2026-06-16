@@ -1,0 +1,46 @@
+# ===== Build Stage =====
+FROM maven:3.9.9-eclipse-temurin-21 AS builder
+WORKDIR /app
+
+# Copy all source code to /app inside the container
+COPY . .
+
+# Build the JAR (skip tests to make it faster)
+RUN mvn clean package -Dmaven.test.skip=true
+
+# Base Image
+FROM mcr.microsoft.com/playwright:v1.50.0-noble
+
+# Install Java 21 only (skip Maven since JAR is already built)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends openjdk-21-jdk && \
+    rm -rf /var/lib/apt/lists/*
+
+# Set JAVA_HOME (helpful for Maven/Gradle builds)
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
+ENV PATH="$JAVA_HOME/bin:$PATH"
+
+#Check Java Version
+RUN java -version
+
+LABEL maintainer="Jio Consent Management System <JIOCONSENT@RIL.COM>"
+
+# Create non-root user and standard directories
+RUN useradd --create-home --shell /bin/bash si_digigov \
+    && mkdir -p /opt/deployment /opt/props /opt/logs \
+    && chown -R si_digigov:si_digigov /opt
+
+WORKDIR /opt
+
+# Copy binaries and configs
+COPY --from=builder --chown=si_digigov:si_digigov /app/target/*.jar /opt/deployment/
+COPY --chown=si_digigov:si_digigov src/main/resources/application.* /opt/props/
+
+# Runtime user
+USER si_digigov
+
+# JAVA_OPTS is intentionally left as an override point for ops teams.
+ENV JAVA_OPTS=""
+
+# Entrypoint
+ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -Dlog_path=/opt/logs -Dspring.config.location=/opt/props/ -jar /opt/deployment/*.jar"]

@@ -1,0 +1,10 @@
+[
+  {
+    "dataProcessorId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "dataProcessorName": "BusinessName",
+    "callbackUrl": "",
+    "details": "Own Use",
+    "status": "ACTIVE",
+    "scopeType": "TENANT"
+  }
+]

@@ -1,0 +1,13 @@
+.app-layout {
+  /* display: grid;
+  grid-template-columns: 240px 1fr; */
+  overflow-x: hidden; /* 250px sidebar + rest main */
+  /* height: 100vh; full height */
+}
+
+.app-layout {
+  /* display: grid;
+  grid-template-columns: 240px 1fr; */
+  overflow-x: hidden; /* 250px sidebar + rest main */
+  /* height: 100vh; full height */
+}

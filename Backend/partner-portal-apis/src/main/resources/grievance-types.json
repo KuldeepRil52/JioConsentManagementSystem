@@ -1,0 +1,33 @@
+[
+  {
+    "grievanceType": "Legal Grievances",
+    "grievanceItem": [
+      "Violation of Data Protection Law",
+      "Breach Notification Delay",
+      "Improper Data Sharing",
+      "Retention beyond Purpose"
+    ],
+    "description": "Legal Grievances description"
+  },
+  {
+    "grievanceType": "Consent Related Grievance",
+    "grievanceItem": [
+      "Misuse of Data Consent",
+      "Withdrawal Ignored",
+      "Lack of Informed Consent",
+      "Unsolicited Communication"
+    ],
+    "description": "Consent Related Grievance description"
+  },
+  {
+    "grievanceType": "Data Principal Rights",
+    "grievanceItem": [
+      "Access",
+      "Update",
+      "Delete",
+      "Nominate"
+    ],
+    "description": "Data Principal Rights description"
+  }
+]
+

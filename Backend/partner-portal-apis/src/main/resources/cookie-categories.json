@@ -1,0 +1,28 @@
+[
+  {
+    "category": "Necessary",
+    "description": "Necessary cookies are essential for a website to function properly and provide basic services that you have explicitly requested. They are typically set in response to actions you take and are usually first-party cookies, which means they are created by the website you are visiting.",
+    "isDefault": true
+  },
+  {
+    "category": "Functional",
+    "description": "Functional cookies allow a website to remember your choices and preferences to provide a more personalized and enhanced experience. They remember your settings and other information you've provided but are not strictly essential for the website's basic functionality.",
+    "isDefault": true
+  },
+  {
+    "category": "Analytics",
+    "description": "Analytics cookies, also called performance cookies, collect information about how you interact with a website, such as which pages you visit most often and if you encounter any error messages. The data is aggregated and anonymized, meaning it doesn't directly identify you. This information helps website owners improve how their site works and enhance the user experience.",
+    "isDefault": true
+  },
+  {
+    "category": "Advertisement",
+    "description": "Advertisement, or targeting, cookies are used to deliver targeted ads that are more relevant to you and your interests. They track your browsing activity across different websites to build a profile of your interests and serve you personalized ad content.",
+    "isDefault": true
+  },
+  {
+    "category": "Others",
+    "description": "This category includes any cookies that do not fit into the other defined categories. This can include third-party cookies that are not used for advertising or analytics and may not be clearly defined by their purpose. The 'Others' category is essential for legal compliance, as websites must disclose all cookies being used, even if their function is not yet categorized.",
+    "isDefault": true
+  }
+]
+

@@ -1,0 +1,51 @@
+.dashboard-img {
+  height: 120px;
+  width: 160px;
+  margin-top: 8%;
+  margin-right: 3%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Tablet view */
+@media (max-width: 1024px) {
+  .dashboard-img {
+    height: 100px;
+    width: 140px;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .dashboard-img {
+    height: 80px;
+    width: 120px;
+    margin-right: 0;
+  }
+}
+
+.dashboard-btn {
+  display: flex;
+  gap: 16px;
+  margin-top: 16px;
+  justify-content: center;
+}
+
+/* Mobile view - stack buttons */
+@media (max-width: 768px) {
+  .dashboard-btn {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+}
+
+.configure-dashboard-page {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  padding-right: 5%;
+}

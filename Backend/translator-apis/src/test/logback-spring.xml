@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration scan="true" scanPeriod="2 minutes">
+
+    <logger name="org.eclipse.jetty" level="OFF"/>
+    <logger name="org.springframework.core.env.PropertySourcesPropertyResolver" level="OFF"/>
+    <logger name="org.springframework.web" level="OFF"/>
+
+    <!-- DEV , ST , SIT-->
+    <springProfile name="default,st,sit">
+        <contextName>${translator_log_path}</contextName>
+        <property name="LOG_RETENTION_LOWER" value="3"/>
+        <appender name="FILE-DEBUG"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${CONTEXT_NAME}/translator_Debug.log</file>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>debug</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <Pattern>
+                    %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+                </Pattern>
+            </encoder>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- rollover daily -->
+                <fileNamePattern>${CONTEXT_NAME}/archived/translator_Debug.%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy
+                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+                <maxHistory>${LOG_RETENTION_LOWER}</maxHistory>
+            </rollingPolicy>
+        </appender>
+        <appender name="FILE-ERROR"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${CONTEXT_NAME}/translator_Error.log</file>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>error</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <Pattern>
+                    %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+                </Pattern>
+            </encoder>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- rollover daily -->
+                <fileNamePattern>${CONTEXT_NAME}/archived/translator_Error.%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy
+                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+        </appender>
+        <appender name="FILE-INFO"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${CONTEXT_NAME}/translator_Info.log</file>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>info</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <Pattern>
+                    %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+                </Pattern>
+            </encoder>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- rollover daily -->
+                <fileNamePattern>${CONTEXT_NAME}/archived/translator_Info.%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy
+                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+        </appender>
+
+        <logger name="org.mongodb" level="ERROR">
+            <appender-ref ref="FILE-ERROR" />
+        </logger>
+
+        <root level="debug">
+            <appender-ref ref="FILE-DEBUG" />
+            <appender-ref ref="FILE-ERROR" />
+            <appender-ref ref="FILE-INFO" />
+        </root>
+    </springProfile>
+
+    <!--  prod  -->
+    <springProfile name="prod">
+
+        <contextName>${translator_log_path}</contextName>
+
+        <appender name="FILE-ERROR"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${CONTEXT_NAME}/translator_Error.log</file>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>error</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <Pattern>
+                    %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+                </Pattern>
+            </encoder>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- rollover daily -->
+                <fileNamePattern>${CONTEXT_NAME}/archived/translator_Error.%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+                <timeBasedFileNamingAndTriggeringPolicy
+                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+        </appender>
+        <appender name="FILE-INFO"
+                  class="ch.qos.logback.core.rolling.RollingFileAppender">
+            <file>${CONTEXT_NAME}/translator_Info.log</file>
+            <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                <level>info</level>
+                <onMatch>ACCEPT</onMatch>
+                <onMismatch>DENY</onMismatch>
+            </filter>
+            <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+                <Pattern>
+                    %d{dd-MM-yyyy HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+                </Pattern>
+            </encoder>
+
+            <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+                <!-- rollover daily -->
+                <fileNamePattern>${CONTEXT_NAME}/archived/translator_Info.%d{yyyy-MM-dd}.%i.log
+                </fileNamePattern>
+
+                <timeBasedFileNamingAndTriggeringPolicy
+                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                    <maxFileSize>10MB</maxFileSize>
+                </timeBasedFileNamingAndTriggeringPolicy>
+            </rollingPolicy>
+        </appender>
+
+        <logger name="org.mongodb" level="ERROR">
+            <appender-ref ref="FILE-ERROR" />
+        </logger>
+
+        <root>
+            <appender-ref ref="FILE-ERROR" />
+            <appender-ref ref="FILE-INFO" />
+        </root>
+    </springProfile>
+</configuration>

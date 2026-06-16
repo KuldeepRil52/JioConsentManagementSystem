@@ -1,0 +1,122 @@
+.table-container {
+  max-width: 90%;
+  margin-top: 20px; /* Added spacing */
+}
+
+.cookie-category-save-btn {
+  margin-right: 5%;
+}
+
+.table-container {
+  width: 95%;
+}
+
+.custom-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.custom-table thead {
+  background-color: #f9f9f9; /* Grey background for heading */
+}
+
+.custom-table th, .custom-table td {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 12px 8px;
+  text-align: left;
+}
+
+.custom-table th {
+  border-top: 1px solid #f0f0f0;
+}
+
+.custom-table tbody tr {
+  background-color: white; /* White background for data rows */
+}
+
+/* Tablet view */
+@media (max-width: 1024px) {
+  .table-container {
+    width: 98%;
+    max-width: 100%;
+  }
+  
+  .cookie-category-save-btn {
+    margin-right: 3%;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .table-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .cookie-category-save-btn {
+    margin-right: 0;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .custom-table {
+    min-width: 600px;
+    font-size: 12px;
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    padding: 10px 6px;
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .custom-table {
+    min-width: 500px;
+    font-size: 11px;
+  }
+  
+  .custom-table th,
+  .custom-table td {
+    padding: 8px 4px;
+    font-size: 11px;
+  }
+}
+
+/* Alternative card-based view for very small screens */
+@media screen and (max-width: 360px) {
+  .custom-table thead {
+    display: none;
+  }
+  .custom-table, .custom-table tbody, .custom-table tr, .custom-table td {
+    display: block;
+    width: 100%;
+  }
+  .custom-table tr {
+    margin-bottom: 15px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 10px;
+  }
+  .custom-table td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .custom-table td:last-child {
+    border-bottom: none;
+  }
+  .custom-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 0;
+    width: 50%;
+    padding-left: 10px;
+    font-weight: bold;
+    text-align: left;
+  }
+}

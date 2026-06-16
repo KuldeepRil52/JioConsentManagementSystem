@@ -1,0 +1,399 @@
+.custom-table-outer-div {
+  margin-top: "4%";
+
+  right: 0;
+}
+.custom-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.pii-table-container {
+  display: flex;
+  border: 1px solid rgba(224, 224, 224, 1);
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.dropdown-group select[multiple] {
+  height: 40px; /* or whatever fits like normal dropdown */
+  overflow-y: auto;
+}
+
+.dropdown-group-pa {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%; /* or fixed width like 350px */
+  padding: 0px;
+}
+
+.dropdown-group-pa label {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgb(118, 118, 118);
+}
+
+.dropdown-group-pa select {
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  appearance: none; /* remove default arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='none' stroke='%23666' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'><path d='M19 9l-7 7-7-7'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+}
+
+.dropdown-group-pa select:focus {
+  border-color: #999;
+  outline: none;
+}
+
+.dropdown-group-pa small {
+  font-size: 12px;
+  color: #666;
+}
+
+.custom-table th,
+.custom-table td {
+  border-bottom: 1px solid rgba(245, 245, 245, 1); /* Only horizontal lines */
+  padding: 10px;
+  text-align: left;
+}
+
+.custom-table th {
+  background-color: rgba(245, 245, 245, 1); /* Header background */
+  font-weight: bold;
+}
+
+.pii-outer-div {
+  padding-top: 2%;
+}
+
+.pii-outer-pannel {
+  display: flex;
+  border-color: rgba(224, 224, 224, 1);
+  border-radius: 1px;
+  border-width: 1px;
+  flex-direction: row;
+  overflow: hidden;
+  border-radius: 11px;
+}
+
+.pii-pannel-left {
+  background-color: rgba(231, 235, 248, 1);
+  height: 629px;
+  width: 263px;
+  border-top-left-radius: 11px;
+  border-bottom-left-radius: 11px;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+.pii-pannel-right {
+  flex: 1;
+  background-color: white;
+  padding: 20px;
+  border-top-right-radius: 11px;
+  border-bottom-right-radius: 11px;
+}
+.pii-right-pannel-checkbox-outer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.pii-right-pannel-checkbox {
+  display: flex;
+  align-items: center;
+}
+.pii-right-pannel-add-btn {
+  display: flex;
+}
+.pii-leftPannel_button {
+  display: flex;
+  cursor: pointer;
+}
+
+.modal-outer-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2001;
+}
+
+.master-set-up-modal-container {
+  background-color: white;
+  border-radius: 32px;
+  padding: 20px;
+  width: 600px;
+  /* height: 300px; */
+  max-height: 80vh;
+  overflow-y: auto;
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-close-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.modal-add-btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  align-items: flex-end;
+}
+
+.outer-modal-add-btn {
+  display: flex;
+  justify-content: flex-end;
+}
+
+textarea {
+  border: 1px solid rgba(181, 181, 181, 1);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  resize: none;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  padding: 8px;
+  box-sizing: border-box;
+  font-family: inherit;
+  font-size: 14px;
+}
+.word-count {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.mainDiv-table-and-container {
+  width: 95%;
+}
+
+.common-add-btn {
+  margin-top: 2%;
+  display: flex;
+  justify-content: flex-end;
+}
+.outer-modal-add-btn-inner-container {
+  cursor: pointer;
+  /* padding-top: 2%; */
+  padding-bottom: 1%;
+}
+
+.custom-divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(224, 224, 224, 1);
+}
+
+.attachment-btn {
+  cursor: pointer;
+}
+
+.master-fileUploader-custom {
+  border-radius: 8px;
+  border: 1px dashed rgba(181, 181, 181, 1);
+  padding-top: 25px;
+  padding-bottom: 25px;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  margin-top: 3px;
+  margin-bottom: 3px;
+}
+
+.master-fileUploader-custom.dragover {
+  border-color: #333;
+  background: #595e61;
+}
+
+.master-fileUploader-custom:hover {
+  border-color: #333;
+  background: #595e61;
+}
+
+.master-file-uploader {
+  background-color: rgba(245, 245, 245, 1);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+  margin-top: 12px;
+  border-radius: 16px;
+}
+
+.customerActivityLoader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.title-margin {
+  margin-bottom: 20px;
+}
+
+.clickable-icon {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+}
+
+.masterSetup-new-css-tabs-header {
+  display: flex;
+  gap: 30px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(224, 224, 224, 1); /* gray line */
+}
+
+.masterSetup-new-css-tab-item {
+  position: relative;
+  padding: 8px 0;
+  font-weight: normal;
+  color: rgba(51, 51, 51, 1);
+}
+
+.masterSetup-new-css-tab-item.active {
+  font-weight: bold;
+}
+
+.masterSetup-new-css-underline {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background-color: rgba(15, 60, 201, 1); /* blue underline */
+  border-radius: 5px; /* rounded edges */
+}
+
+.masterSetup-new-css-tab-content {
+  margin-top: 16px;
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  width: 200px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -100px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ========================================
+   RESPONSIVE STYLES FOR MASTER SETUP
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .mainDiv-table-and-container {
+    width: 98%;
+  }
+  
+  .pii-table-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .mainDiv-table-and-container {
+    width: 100%;
+  }
+  
+  .pii-outer-pannel {
+    flex-direction: column;
+  }
+  
+  .pii-pannel-left {
+    width: 100%;
+    height: auto;
+    border-radius: 11px 11px 0 0;
+  }
+  
+  .pii-pannel-right {
+    border-radius: 0 0 11px 11px;
+  }
+  
+  .master-set-up-modal-container {
+    width: 90%;
+    max-width: none;
+    padding: 16px;
+  }
+  
+  .masterSetup-new-css-tabs-header {
+    gap: 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .custom-table {
+    min-width: 600px;
+  }
+}
+
+@media (max-width: 480px) {
+  .master-set-up-modal-container {
+    width: 95%;
+    padding: 12px;
+  }
+  
+  .masterSetup-new-css-tabs-header {
+    gap: 12px;
+  }
+}

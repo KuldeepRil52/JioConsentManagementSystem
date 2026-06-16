@@ -1,0 +1,393 @@
+/* ============================================
+   SCHEDULER STATS - PROFESSIONAL DASHBOARD
+   ============================================ */
+
+.scheduler-stats-container {
+  padding: 24px;
+  max-width: 100%;
+  margin: 0;
+  background-color: #ffffff;
+  min-height: calc(100vh - 60px);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.scheduler-stats-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8eaf0;
+}
+
+.scheduler-header-left {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: center;
+}
+
+.scheduler-header-right {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.scheduler-badge {
+  background-color: #f0f0f0;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+/* ============================================
+   DATE FILTER (Similar to Table Controls)
+   ============================================ */
+.scheduler-date-filter {
+  margin-bottom: 20px;
+  padding: 16px 20px;
+  background: #fafbfc;
+  border: 1px solid #e8eaf0;
+  border-radius: 8px;
+}
+
+.date-filter-inputs {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+.date-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+}
+
+.date-input {
+  padding: 8px 12px;
+  font-size: 13px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  background-color: #fff;
+  color: #333;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+
+.date-input:focus {
+  border-color: #1976d2;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
+}
+
+.date-input:hover {
+  border-color: #9e9e9e;
+}
+
+/* ============================================
+   SUMMARY CARDS (Similar to BreachNotifications)
+   ============================================ */
+.scheduler-summary-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.summary-card {
+  background: white;
+  border: 1px solid #e8eaf0;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s ease;
+}
+
+.summary-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.card-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+.running-indicator,
+.pending-indicator {
+  font-size: 24px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* ============================================
+   TABLE CONTAINER
+   ============================================ */
+.scheduler-stats-table-container {
+  background: white;
+  border: 1px solid #e8eaf0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid #e8eaf0;
+  background: #fafbfc;
+}
+
+.scheduler-stats-table {
+  overflow-x: auto;
+}
+
+.scheduler-stats-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.scheduler-stats-table thead {
+  background: #fafbfc;
+}
+
+.scheduler-stats-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #e8eaf0;
+}
+
+.scheduler-stats-table tbody tr {
+  border-bottom: 1px solid #f3f4f6;
+  transition: all 0.15s ease;
+}
+
+.scheduler-stats-table tbody tr:hover {
+  background-color: #fafbfc;
+}
+
+.scheduler-stats-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.scheduler-stats-table td {
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #374151;
+  vertical-align: middle;
+}
+
+/* Status-specific cells */
+.success-cell {
+  color: #43a047 !important;
+  font-weight: 600;
+}
+
+.failed-cell {
+  color: #e53935 !important;
+  font-weight: 600;
+}
+
+.running-cell {
+  color: #ff9800 !important;
+  font-weight: 600;
+}
+
+.pending-cell {
+  color: #757575 !important;
+  font-weight: 600;
+}
+
+/* Rate Badge */
+.rate-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.rate-badge.high {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  color: #2e7d32;
+}
+
+.rate-badge.medium {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  color: #e65100;
+}
+
+.rate-badge.low {
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  color: #c62828;
+}
+
+.no-data-cell {
+  text-align: center !important;
+  padding: 40px 20px !important;
+}
+
+/* ============================================
+   LOADING & ERROR STATES
+   ============================================ */
+.scheduler-stats-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 16px;
+  background: white;
+}
+
+.scheduler-error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  background: white;
+  border: 1px solid #e8eaf0;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 1200px) {
+  .scheduler-summary-cards {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .scheduler-stats-container {
+    padding: 16px;
+  }
+
+  .scheduler-stats-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .scheduler-header-right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .scheduler-summary-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .date-filter-inputs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .date-input-group {
+    width: 100%;
+  }
+
+  .scheduler-stats-table {
+    overflow-x: scroll;
+  }
+
+  .scheduler-stats-table table {
+    min-width: 800px;
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   SCROLLBAR STYLING
+   ============================================ */
+.scheduler-stats-table::-webkit-scrollbar {
+  height: 8px;
+}
+
+.scheduler-stats-table::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.scheduler-stats-table::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.scheduler-stats-table::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+@media print {
+  .scheduler-stats-container {
+    padding: 0;
+    background: white;
+  }
+
+  .scheduler-header-right,
+  .scheduler-date-filter {
+    display: none;
+  }
+
+  .summary-card {
+    break-inside: avoid;
+  }
+
+  .scheduler-stats-table-container {
+    box-shadow: none;
+    border: 1px solid #e0e0e0;
+  }
+}
+

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <!-- Log path property (overridable from application.properties) -->
+    <property name="LOG_PATH" value="${log_path}" />
+
+    <!-- ========== CONSOLE APPENDER ========== -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>
+                Timestamp: %d{dd-MM-yyyy HH:mm:ss} | SourceIP: %X{SOURCE_IP:-} | tenantId: %X{tenantid:-} |
+                businessId: %X{businessid:-} | %X{HTTP_METHOD:-} %X{URL:-} - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- ================================================================ -->
+    <!-- ========== DEV / ST / SIT / DEFAULT PROFILES =================== -->
+    <!-- ================================================================ -->
+    <springProfile name="default | dev | st | sit">
+
+        <!-- INFO logs per tenant -->
+        <appender name="TENANT_INFO_APPENDER" class="ch.qos.logback.classic.sift.SiftingAppender">
+            <discriminator class="ch.qos.logback.classic.sift.MDCBasedDiscriminator">
+                <key>tenantid</key>
+                <defaultValue>default</defaultValue>
+            </discriminator>
+            <sift>
+                <appender name="INFO-FILE-${tenantid}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                    <file>${LOG_PATH}/${tenantid}/translator_Info.log</file>
+                    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                        <level>INFO</level>
+                        <onMatch>ACCEPT</onMatch>
+                        <onMismatch>DENY</onMismatch>
+                    </filter>
+                    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                        <fileNamePattern>${LOG_PATH}/${tenantid}/info-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                        <maxFileSize>10MB</maxFileSize>
+                        <maxHistory>30</maxHistory>
+                    </rollingPolicy>
+                    <encoder>
+                        <pattern>
+                            Timestamp: %d{dd-MM-yyyy HH:mm:ss} | SourceIP: %X{SOURCE_IP:-} | tenantId: %X{tenantid:-} |
+                            businessId: %X{businessid:-} | %X{HTTP_METHOD:-} %X{URL:-} - %msg%n
+                        </pattern>
+                    </encoder>
+                </appender>
+            </sift>
+        </appender>
+
+        <!-- DEBUG logs per tenant -->
+        <appender name="TENANT_DEBUG_APPENDER" class="ch.qos.logback.classic.sift.SiftingAppender">
+            <discriminator class="ch.qos.logback.classic.sift.MDCBasedDiscriminator">
+                <key>tenantid</key>
+                <defaultValue>default</defaultValue>
+            </discriminator>
+            <sift>
+                <appender name="DEBUG-FILE-${tenantid}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                    <file>${LOG_PATH}/${tenantid}/translator_Debug.log</file>
+                    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                        <level>DEBUG</level>
+                        <onMatch>ACCEPT</onMatch>
+                        <onMismatch>DENY</onMismatch>
+                    </filter>
+                    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                        <fileNamePattern>${LOG_PATH}/${tenantid}/debug-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                        <maxFileSize>10MB</maxFileSize>
+                        <maxHistory>30</maxHistory>
+                    </rollingPolicy>
+                    <encoder>
+                        <pattern>
+                            Timestamp: %d{dd-MM-yyyy HH:mm:ss} | SourceIP: %X{SOURCE_IP:-} | tenantId: %X{tenantid:-} |
+                            businessId: %X{businessid:-} | %X{HTTP_METHOD:-} %X{URL:-} - %msg%n
+                        </pattern>
+                    </encoder>
+                </appender>
+            </sift>
+        </appender>
+
+        <!-- ERROR logs per tenant -->
+        <appender name="TENANT_ERROR_APPENDER" class="ch.qos.logback.classic.sift.SiftingAppender">
+            <discriminator class="ch.qos.logback.classic.sift.MDCBasedDiscriminator">
+                <key>tenantid</key>
+                <defaultValue>default</defaultValue>
+            </discriminator>
+            <sift>
+                <appender name="ERROR-FILE-${tenantid}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                    <file>${LOG_PATH}/${tenantid}/translator_Error.log</file>
+                    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                        <level>ERROR</level>
+                        <onMatch>ACCEPT</onMatch>
+                        <onMismatch>DENY</onMismatch>
+                    </filter>
+                    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                        <fileNamePattern>${LOG_PATH}/${tenantid}/error-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                        <maxFileSize>10MB</maxFileSize>
+                        <maxHistory>30</maxHistory>
+                    </rollingPolicy>
+                    <encoder>
+                        <pattern>
+                            Timestamp: %d{dd-MM-yyyy HH:mm:ss} | SourceIP: %X{SOURCE_IP:-} | tenantId: %X{tenantid:-} |
+                            businessId: %X{businessid:-} | %X{HTTP_METHOD:-} %X{URL:-} - %msg%n
+                        </pattern>
+                    </encoder>
+                </appender>
+            </sift>
+        </appender>
+
+        <!-- Async Wrappers for performance -->
+        <appender name="ASYNC_INFO" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="TENANT_INFO_APPENDER" />
+        </appender>
+        <appender name="ASYNC_DEBUG" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="TENANT_DEBUG_APPENDER" />
+        </appender>
+        <appender name="ASYNC_ERROR" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="TENANT_ERROR_APPENDER" />
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="ASYNC_INFO" />
+            <appender-ref ref="ASYNC_DEBUG" />
+            <appender-ref ref="ASYNC_ERROR" />
+        </root>
+    </springProfile>
+
+    <!-- ================================================================ -->
+    <!-- ========== PROD PROFILE ======================================== -->
+    <!-- ================================================================ -->
+    <springProfile name="prod">
+
+        <!-- INFO logs per tenant -->
+        <appender name="TENANT_INFO_APPENDER" class="ch.qos.logback.classic.sift.SiftingAppender">
+            <discriminator class="ch.qos.logback.classic.sift.MDCBasedDiscriminator">
+                <key>tenantid</key>
+                <defaultValue>default</defaultValue>
+            </discriminator>
+            <sift>
+                <appender name="INFO-FILE-${tenantid}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                    <file>${LOG_PATH}/${tenantid}/translator_Info.log</file>
+                    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                        <level>INFO</level>
+                        <onMatch>ACCEPT</onMatch>
+                        <onMismatch>DENY</onMismatch>
+                    </filter>
+                    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                        <fileNamePattern>${LOG_PATH}/${tenantid}/info-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                        <maxFileSize>10MB</maxFileSize>
+                        <maxHistory>30</maxHistory>
+                    </rollingPolicy>
+                    <encoder>
+                        <pattern>
+                            Timestamp: %d{dd-MM-yyyy HH:mm:ss} | SourceIP: %X{SOURCE_IP:-} | tenantId: %X{tenantid:-} |
+                            businessId: %X{businessid:-} | %X{HTTP_METHOD:-} %X{URL:-} - %msg%n
+                        </pattern>
+                    </encoder>
+                </appender>
+            </sift>
+        </appender>
+
+        <!-- ERROR logs per tenant -->
+        <appender name="TENANT_ERROR_APPENDER" class="ch.qos.logback.classic.sift.SiftingAppender">
+            <discriminator class="ch.qos.logback.classic.sift.MDCBasedDiscriminator">
+                <key>tenantid</key>
+                <defaultValue>default</defaultValue>
+            </discriminator>
+            <sift>
+                <appender name="ERROR-FILE-${tenantid}" class="ch.qos.logback.core.rolling.RollingFileAppender">
+                    <file>${LOG_PATH}/${tenantid}/translator_Error.log</file>
+                    <filter class="ch.qos.logback.classic.filter.LevelFilter">
+                        <level>ERROR</level>
+                        <onMatch>ACCEPT</onMatch>
+                        <onMismatch>DENY</onMismatch>
+                    </filter>
+                    <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+                        <fileNamePattern>${LOG_PATH}/${tenantid}/error-%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+                        <maxFileSize>10MB</maxFileSize>
+                        <maxHistory>30</maxHistory>
+                    </rollingPolicy>
+                    <encoder>
+                        <pattern>
+                            Timestamp: %d{dd-MM-yyyy HH:mm:ss} | SourceIP: %X{SOURCE_IP:-} | tenantId: %X{tenantid:-} |
+                            businessId: %X{businessid:-} | %X{HTTP_METHOD:-} %X{URL:-} - %msg%n
+                        </pattern>
+                    </encoder>
+                </appender>
+            </sift>
+        </appender>
+
+        <!-- Async Wrappers -->
+        <appender name="ASYNC_INFO" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="TENANT_INFO_APPENDER" />
+        </appender>
+        <appender name="ASYNC_ERROR" class="ch.qos.logback.classic.AsyncAppender">
+            <appender-ref ref="TENANT_ERROR_APPENDER" />
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE" />
+            <appender-ref ref="ASYNC_INFO" />
+            <appender-ref ref="ASYNC_ERROR" />
+        </root>
+    </springProfile>
+
+</configuration>
