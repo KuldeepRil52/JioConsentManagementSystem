@@ -1,0 +1,690 @@
+# =============================================================================
+# JCMS — All Microservice ConfigMaps
+# =============================================================================
+# This file is the single source of truth for every service's ConfigMap.
+# Each service keeps its own ConfigMap name so deployment references are
+# unchanged. Fill in all <placeholder> values before deploying.
+#
+#   kubectl apply -f configmap.yaml
+#
+# ⚠  Values marked [SECRET] should be moved to a Kubernetes Secret in prod.
+# =============================================================================
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 1. consent-core-apis
+#    Core consent lifecycle management service.
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: consent-core-apis-config
+data:
+  SERVER_PORT: "9001"
+  PROFILE: "st"
+
+  # MongoDB
+  MONGODB_DATABASE: "cms_db_admin"
+
+  # Internal service URLs
+  VAULT_APIS_URL: "http://vault-apis:9010"
+  AUDIT_MODULE_APIS_URL: "http://audit-module-apis:9006"
+  NOTIFICATION_MODULE_APIS_URL: "http://notification-module-apis:9005"
+  AUTH_APIS_URL: "http://auth-apis:9009"
+  REGISTRY_APIS_URL: "http://system-registry-apis:9011"
+
+  # Parental consent redirect & callback
+  PARENTAL_CONSENT_REDIRECT_BASE_URL: "<parental-redirect-base-url>"
+  PARENTAL_CONSENT_CALLBACK_URL: "<parental-callback-url>"
+
+  # DigiLocker / outbound proxy
+  PROXY_ENABLED: "false"
+  PROXY_HOST: "<proxy-host>"
+  PROXY_PORT: "8080"
+
+  # Feature flags
+  TEMPLATE_HANDLE_BATCH_SIZE: "1000"
+  JWS_SIGNATURE_ENABLED: "false"
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# 2. audit-module-apis
+#    Kafka-based audit event consumer and storage service.
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: audit-module-apis-config
+data:
+  SERVER_PORT: "9006"
+  PROFILE: "st"
+
+  # MongoDB
+  # Note: app.yml binds spring.data.mongodb.database to MONGODB_DEFAULT_DATABASE
+  MONGODB_DEFAULT_DATABASE: "audit_db"
+
+  # Kafka
+  KAFKA_BOOTSTRAP_SERVERS: "<kafka-bootstrap-servers>"
+  KAFKA_GROUP: "DEV_CMS_NOTIFICATION"
+  KAFKA_MAX_REQUEST_SIZE: "52428800"
+  AUDIT_TOPIC: "DEV_CMS_NOTIFICATION_AUDIT"
+
+  # Internal service URLs
+  VAULT_APIS_URL: "http://vault-apis:9010"
+  NOTIFICATION_MODULE_APIS_URL: "http://notification-module-apis:9005"
+
+  # Retry policy
+  RETRY_SMS_MAX_ATTEMPTS: "3"
+  RETRY_EMAIL_MAX_ATTEMPTS: "3"
+  RETRY_CALLBACK_MAX_ATTEMPTS: "3"
+  RETRY_BASE_DELAY_MS: "2000"
+  RETRY_MULTIPLIER: "2.0"
+  RETRY_MAX_DELAY_MS: "60000"
+  RETRY_JITTER_FACTOR: "0.25"
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# 3. auth-apis
+#    Token issuance, secure-code, and WSO2 OAuth integration.
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-apis-config
+data:
+  SERVER_PORT: "9009"
+  PROFILE: "st"
+
+  # MongoDB
+  MONGODB_DATABASE: "cms_db_admin"
+
+  # WSO2 / OAuth2
+  WSO2_BASE_URL: "https://<wso2-host>:9443"
+
+  # Internal service URLs
+  AUDIT_MODULE_APIS_URL: "http://audit-module-apis:9006"
+
+  # Request / response signing
+  APP_SIGN: "false"
+  APP_VERIFY: "false"
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# 4. cookie-consent-apis
+#    Cookie scanner and multi-tenant cookie consent management.
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cookie-consent-apis-config
+data:
+  SERVER_PORT: "9008"
+  PROFILE: "st"
+
+  # MongoDB
+  MONGODB_DATABASE: "cms_db_admin"
+
+  # Internal service URLs
+  AUDIT_MODULE_APIS_URL: "http://audit-module-apis:9006"
+  VAULT_APIS_URL: "http://vault-apis:9010"
+  AUTH_APIS_URL: "http://auth-apis:9009"
+  NOTIFICATION_MODULE_APIS_URL: "http://notification-module-apis:9005"
+
+  # Cookie scanner
+  USE_AI: "false"
+  SCANNER_PROXY_URL: ""
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# 5. grivance-module-apis
+#    Grievance submission, tracking, and escalation service.
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grivance-module-apis-config
+data:
+  SERVER_PORT: "9007"
+  PROFILE: "st"
+
+  # MongoDB
+  MONGODB_DATABASE: "cms_db_admin"
+
+  # Internal service URLs
+  AUDIT_MODULE_APIS_URL: "http://audit-module-apis:9006"
+  NOTIFICATION_MODULE_APIS_URL: "http://notification-module-apis:9005"
+  VAULT_APIS_URL: "http://vault-apis:9010"
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# 6. notification-consumer-apis
+#    Kafka consumer that dispatches SMS / email / callback notifications.
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notification-consumer-apis-config
+data:
+  SERVER_PORT: "9020"
+  PROFILE: "st"
+
+  # MongoDB
+  MONGODB_DATABASE: "cms_db_admin"
+  # Multi-tenancy shared database (spring.data.mongodb.database for SYSTEM tenant)
+  MONGODB_DEFAULT_DATABASE: "cms_db_admin"
+
+  # Kafka bootstrap servers
+  KAFKA_BOOTSTRAP_SERVERS: "<kafka-bootstrap-servers>"
+
+  # Kafka topics & consumer
+  KAFKA_GROUP: "DEV_CMS_NOTIFICATION"
+  SMS_TOPIC: "DEV_CMS_NOTIFICATION_SMS"
+  EMAIL_TOPIC: "DEV_CMS_NOTIFICATION_EMAIL"
+  CALLBACK_TOPIC: "DEV_CMS_NOTIFICATION_CALLBACK"
+  KAFKA_SMS_CONCURRENCY: "1"
+  KAFKA_EMAIL_CONCURRENCY: "1"
+  KAFKA_CALLBACK_CONCURRENCY: "1"
+
+  # Internal service URLs
+  PARTNER_PORTAL_APIS_URL: "http://partner-portal-apis:9002"
+  AUDIT_MODULE_APIS_URL: "http://audit-module-apis:9006"
+  SYSTEM_REGISTRY_APIS_URL: "http://system-registry-apis:9011"
+
+  # DigiGov gateway credentials [SECRET]
+  DIGIGOV_ADMIN_CLIENT_ID: "<digigov-admin-client-id>"
+  DIGIGOV_ADMIN_CLIENT_SECRET: "<digigov-admin-client-secret>"
+  DIGIGOV_SMS_API_TIMEOUT: "60000"
+  DIGIGOV_EMAIL_API_TIMEOUT: "90000"
+
+  # Audit
+  AUDIT_ENABLED: "true"
+
+  # Notification async & webhook
+  NOTIFICATION_ASYNC_ENABLED: "true"
+  NOTIFICATION_WEBHOOK_SECRET: "<webhook-secret>"          # [SECRET]
+  NOTIFICATION_WEBHOOK_TIMEOUT: "60000"
+  NOTIFICATION_WEBHOOK_MAX_RETRIES: "3"
+
+  # Retry policy
+  RETRY_SMS_MAX_ATTEMPTS: "3"
+  RETRY_EMAIL_MAX_ATTEMPTS: "3"
+  RETRY_CALLBACK_MAX_ATTEMPTS: "3"
+  RETRY_BASE_DELAY_MS: "60000"
+  RETRY_MULTIPLIER: "2.0"
+  RETRY_MAX_DELAY_MS: "600000"
+  RETRY_JITTER_FACTOR: "0.25"
+  RETRY_SCHEDULER_ENABLED: "true"
+  RETRY_SCHEDULER_FIXED_DELAY: "30000"
+  RETRY_SCHEDULER_INITIAL_DELAY: "10000"
+  RETRY_SCHEDULER_BATCH_SIZE: "100"
+
+  # JWT callback [SECRET]
+  JWT_CALLBACK_SECRET: "<jwt-callback-secret-min-256-bits>"
+  JWT_CALLBACK_EXPIRATION: "3600"
+  JWT_CALLBACK_ISSUER: "dpdp-notification-service"
+
+  # Webhook
+  WEBHOOK_TIMEOUT: "60000"
+  WEBHOOK_MAX_RETRIES: "3"
+  WEBHOOK_JWT_ISSUER: "dpdp-notification-service"
+  WEBHOOK_JWT_EXPIRY: "300"
+
+  # Callback
+  CALLBACK_TIMEOUT: "60000"
+  CALLBACK_MAX_RETRIES: "3"
+
+  # Email
+  EMAIL_MAX_BODY_SIZE: "2097152"
+
+  # Authorization
+  AUTHORIZATION_ENABLED: "true"
+
+  # OTP defaults
+  OTP_DEFAULT_EXPIRY_MINUTES: "5"
+  OTP_DEFAULT_MAX_ATTEMPTS: "3"
+  OTP_DEFAULT_LENGTH: "6"
+  OTP_DEFAULT_NUMERIC: "true"
+  OTP_ENCRYPTION_PUBLIC_KEY: "<base64-rsa-public-key>"     # [SECRET]
+  OTP_ENCRYPTION_PRIVATE_KEY: "<base64-rsa-private-key>"  # [SECRET]
+
+  # Master list
+  MASTER_LIST_CONFIG_FILE: "master-list-config.json"
+  MASTER_LIST_DB_COLLECTION: "master_list_config"
+  MASTER_LIST_CACHE_DURATION: "PT5M"
+  MASTER_LIST_FAIL_FAST: "false"
+  MASTER_LIST_MAX_RESOLUTION_TIME: "10000"
+  MASTER_LIST_BATCH_DB_QUERIES: "true"
+  MASTER_LIST_USE_DEFAULT_VALUES: "true"
+
+  # Cache (Caffeine)
+  CACHE_ENABLED: "true"
+  CACHE_TYPE: "caffeine"
+  CACHE_CAFFEINE_ENABLED: "true"
+  CACHE_CAFFEINE_TOKENS_MAX_SIZE: "5000"
+  CACHE_CAFFEINE_TOKENS_EXPIRE: "55m"
+  CACHE_CAFFEINE_CONFIGS_MAX_SIZE: "1000"
+  CACHE_CAFFEINE_CONFIGS_EXPIRE: "30m"
+  CACHE_CAFFEINE_MASTERLIST_MAX_SIZE: "2000"
+  CACHE_CAFFEINE_MASTERLIST_EXPIRE: "15m"
+  CACHE_CAFFEINE_TEMPLATES_MAX_SIZE: "500"
+  CACHE_CAFFEINE_TEMPLATES_EXPIRE: "30m"
+  CACHE_CAFFEINE_DB_QUERIES_MAX_SIZE: "10000"
+  CACHE_CAFFEINE_DB_QUERIES_EXPIRE: "10m"
+  CACHE_MONGODB_ENABLED: "false"
+  CACHE_MONGODB_COLLECTION: "cache_entries"
+  CACHE_MONGODB_CREATE_TTL_INDEX: "true"
+  CACHE_TTL_DIGIGOV_TOKEN: "55m"
+  CACHE_TTL_DIGIGOV_ADMIN_TOKEN: "55m"
+  CACHE_TTL_NG_CONFIG: "30m"
+  CACHE_TTL_MASTER_LIST_CONFIG: "15m"
+  CACHE_TTL_MASTER_LIST_DB_VALUE: "10m"
+  CACHE_TTL_EVENT_CONFIG: "20m"
+  CACHE_TTL_TEMPLATES: "30m"
+  CACHE_TTL_DB_QUERY_RESULT: "10m"
+  CACHE_REFRESH_ENABLED: "true"
+  CACHE_REFRESH_TOKENS_BEFORE_EXPIRY: "5m"
+  CACHE_REFRESH_CONFIGS_BEFORE_EXPIRY: "10m"
+  CACHE_REFRESH_TEMPLATES_BEFORE_EXPIRY: "15m"
+  CACHE_REFRESH_CRON: "0 */5 * * * *"
+  CACHE_VALIDATION_FAIL_ON_INVALID: "true"
+  CACHE_VALIDATION_MAX_TTL: "24h"
+  CACHE_VALIDATION_MIN_TTL: "1m"
+
+  # OTP rate limiting
+  RATE_LIMIT_OTP_MAX_REQUESTS: "5"
+  RATE_LIMIT_OTP_WINDOW_MINUTES: "10"
+  RATE_LIMIT_OTP_ENABLED_EVENT_TYPES: "INIT_OTP"
+  RATE_LIMIT_OTP_CACHE_TTL_MINUTES: "10"
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# 7. notification-module-apis
+#    Notification template management, event triggering, OTP, and gateway
+#    integration with DigiGov (SMS / email / OTP).
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: notification-module-apis-config
+data:
+  SERVER_PORT: "9005"
+  PROFILE: "st"
+
+  # MongoDB
+  MONGODB_DATABASE: "cms_db_admin"
+  MONGODB_DEFAULT_DATABASE: "cms_db_admin"
+
+  # Kafka bootstrap & topics
+  KAFKA_BOOTSTRAP_SERVERS: "<kafka-bootstrap-servers>"
+  KAFKA_GROUP: "DEV_CMS_NOTIFICATION"
+  SMS_TOPIC: "DEV_CMS_NOTIFICATION_SMS"
+  EMAIL_TOPIC: "DEV_CMS_NOTIFICATION_EMAIL"
+  CALLBACK_TOPIC: "DEV_CMS_NOTIFICATION_CALLBACK"
+
+  # Internal service URLs
+  PARTNER_PORTAL_APIS_URL: "http://partner-portal-apis:9002"
+  AUDIT_MODULE_APIS_URL: "http://audit-module-apis:9006"
+
+  # DigiGov gateway credentials [SECRET]
+  DIGIGOV_ADMIN_CLIENT_ID: "<digigov-admin-client-id>"
+  DIGIGOV_ADMIN_CLIENT_SECRET: "<digigov-admin-client-secret>"
+  DIGIGOV_SMS_API_TIMEOUT: "60000"
+  DIGIGOV_EMAIL_API_TIMEOUT: "90000"
+
+  # Notification async, webhook & consumer fallback
+  NOTIFICATION_ASYNC_ENABLED: "true"
+  NOTIFICATION_WEBHOOK_SECRET: "<webhook-secret>"          # [SECRET]
+  NOTIFICATION_WEBHOOK_TIMEOUT: "60000"
+  NOTIFICATION_WEBHOOK_MAX_RETRIES: "3"
+  NOTIFICATION_SMS_SEND_ON_MISSING_CONFIG: "true"
+  NOTIFICATION_EMAIL_SEND_ON_MISSING_CONFIG: "true"
+  NOTIFICATION_CALLBACK_SEND_ON_MISSING_CONFIG: "true"
+  NOTIFICATION_CALLBACK_PURGE_SLA_HOURS: "168"
+
+  # Email sender identity
+  EMAIL_FROM: "<system-email-from-address>"
+  EMAIL_REPLYTO: "<support-email@yourdomain.com>"
+  EMAIL_FROM_NAME: "Jio Consent Management System"
+  EMAIL_MAX_BODY_SIZE: "2097152"
+
+  # Retry policy
+  RETRY_SMS_MAX_ATTEMPTS: "3"
+  RETRY_EMAIL_MAX_ATTEMPTS: "3"
+  RETRY_CALLBACK_MAX_ATTEMPTS: "3"
+  RETRY_BASE_DELAY_MS: "60000"
+  RETRY_MULTIPLIER: "2.0"
+  RETRY_MAX_DELAY_MS: "600000"
+  RETRY_JITTER_FACTOR: "0.25"
+  RETRY_SCHEDULER_ENABLED: "true"
+  RETRY_SCHEDULER_FIXED_DELAY: "30000"
+  RETRY_SCHEDULER_INITIAL_DELAY: "10000"
+  RETRY_SCHEDULER_BATCH_SIZE: "100"
+
+  # JWT callback [SECRET]
+  JWT_CALLBACK_SECRET: "<jwt-callback-secret-min-256-bits>"
+  JWT_CALLBACK_EXPIRATION: "3600"
+  JWT_CALLBACK_ISSUER: "dpdp-notification-service"
+
+  # Webhook
+  WEBHOOK_TIMEOUT: "60000"
+  WEBHOOK_MAX_RETRIES: "3"
+  WEBHOOK_JWT_ISSUER: "dpdp-notification-service"
+  WEBHOOK_JWT_EXPIRY: "300"
+
+  # Callback
+  CALLBACK_TIMEOUT: "60000"
+  CALLBACK_MAX_RETRIES: "3"
+
+  # Authorization
+  AUTHORIZATION_ENABLED: "true"
+
+  # OTP defaults
+  OTP_DEFAULT_EXPIRY_MINUTES: "5"
+  OTP_DEFAULT_MAX_ATTEMPTS: "3"
+  OTP_DEFAULT_LENGTH: "6"
+  OTP_DEFAULT_NUMERIC: "true"
+  OTP_ENCRYPTION_PUBLIC_KEY: "<base64-rsa-public-key>"     # [SECRET]
+  OTP_ENCRYPTION_PRIVATE_KEY: "<base64-rsa-private-key>"  # [SECRET]
+
+  # System notification auto-onboarding
+  SYSTEM_NOTIFICATION_ENABLED: "true"
+  SYSTEM_NOTIFICATION_AUTO_ONBOARD: "true"
+
+  # Master list
+  MASTER_LIST_CONFIG_FILE: "master-list-config.json"
+  MASTER_LIST_DB_COLLECTION: "master_list_config"
+  MASTER_LIST_CACHE_DURATION: "PT5M"
+  MASTER_LIST_FAIL_FAST: "false"
+  MASTER_LIST_MAX_RESOLUTION_TIME: "10000"
+  MASTER_LIST_BATCH_DB_QUERIES: "true"
+  MASTER_LIST_USE_DEFAULT_VALUES: "true"
+
+  # Cache (Caffeine)
+  CACHE_ENABLED: "true"
+  CACHE_TYPE: "caffeine"
+  CACHE_CAFFEINE_ENABLED: "true"
+  CACHE_CAFFEINE_TOKENS_MAX_SIZE: "5000"
+  CACHE_CAFFEINE_TOKENS_EXPIRE: "55m"
+  CACHE_CAFFEINE_CONFIGS_MAX_SIZE: "1000"
+  CACHE_CAFFEINE_CONFIGS_EXPIRE: "30m"
+  CACHE_CAFFEINE_MASTERLIST_MAX_SIZE: "2000"
+  CACHE_CAFFEINE_MASTERLIST_EXPIRE: "15m"
+  CACHE_CAFFEINE_TEMPLATES_MAX_SIZE: "500"
+  CACHE_CAFFEINE_TEMPLATES_EXPIRE: "30m"
+  CACHE_CAFFEINE_DB_QUERIES_MAX_SIZE: "10000"
+  CACHE_CAFFEINE_DB_QUERIES_EXPIRE: "10m"
+  CACHE_CAFFEINE_RATE_LIMIT_MAX_SIZE: "10000"
+  CACHE_CAFFEINE_RATE_LIMIT_EXPIRE: "10m"
+  CACHE_MONGODB_ENABLED: "false"
+  CACHE_MONGODB_COLLECTION: "cache_entries"
+  CACHE_MONGODB_CREATE_TTL_INDEX: "true"
+  CACHE_TTL_DIGIGOV_TOKEN: "55m"
+  CACHE_TTL_DIGIGOV_ADMIN_TOKEN: "55m"
+  CACHE_TTL_NG_CONFIG: "30m"
+  CACHE_TTL_MASTER_LIST_CONFIG: "15m"
+  CACHE_TTL_MASTER_LIST_DB_VALUE: "10m"
+  CACHE_TTL_EVENT_CONFIG: "20m"
+  CACHE_TTL_TEMPLATES: "30m"
+  CACHE_TTL_DB_QUERY_RESULT: "10m"
+  CACHE_TTL_RATE_LIMIT: "10m"
+  CACHE_REFRESH_ENABLED: "true"
+  CACHE_REFRESH_TOKENS_BEFORE_EXPIRY: "5m"
+  CACHE_REFRESH_CONFIGS_BEFORE_EXPIRY: "10m"
+  CACHE_REFRESH_TEMPLATES_BEFORE_EXPIRY: "15m"
+  CACHE_REFRESH_CRON: "0 */5 * * * *"
+  CACHE_VALIDATION_FAIL_ON_INVALID: "true"
+  CACHE_VALIDATION_MAX_TTL: "24h"
+  CACHE_VALIDATION_MIN_TTL: "1m"
+
+  # OTP rate limiting
+  RATE_LIMIT_OTP_MAX_REQUESTS: "5"
+  RATE_LIMIT_OTP_WINDOW_MINUTES: "10"
+  RATE_LIMIT_OTP_ENABLED_EVENT_TYPES: "INIT_OTP"
+  RATE_LIMIT_OTP_CACHE_TTL_MINUTES: "10"
+
+  # Audit
+  AUDIT_ENABLED: "true"
+
+  # DigiGov API override URLs (optional — defaults derive from PARTNER_PORTAL_APIS_URL)
+  # Uncomment and set if your SMS/email gateway differs from the partner-portal proxy path.
+  # DIGIGOV_SMS_API_URL: "<digigov-sms-api-url>"
+  # DIGIGOV_EMAIL_API_URL: "<digigov-email-api-url>"
+
+  # ── System-notification provider ─────────────────────────────────────────────
+  # Controls which provider is used for platform-level (SYSTEM) notifications
+  # (e.g. OTP, grievance acknowledgements sent on behalf of the platform itself).
+  # Allowed values: DIGIGOV | SMTP
+  # optional — default: DIGIGOV
+  SYSTEM_NOTIFICATION_PROVIDER: "SMTP"
+
+  # System DigiGov credentials
+  # NOTE: These are SEPARATE from DIGIGOV_ADMIN_CLIENT_ID / SECRET above.
+  # DIGIGOV_ADMIN_* are used for tenant/partner notification channels;
+  # SYSTEM_DIGIGOV_* are used for the platform's own system notifications.
+  SYSTEM_DIGIGOV_CLIENT_ID: "<system-digigov-client-id>"         # [SECRET - REQUIRED if SYSTEM_NOTIFICATION_PROVIDER=DIGIGOV]
+  SYSTEM_DIGIGOV_CLIENT_SECRET: "<system-digigov-client-secret>" # [SECRET - REQUIRED if SYSTEM_NOTIFICATION_PROVIDER=DIGIGOV]
+  SYSTEM_DIGIGOV_SID: "47"                                        # optional - REQUIRED if SYSTEM_NOTIFICATION_PROVIDER=DIGIGOV
+  SYSTEM_DIGIGOV_BASE_URL: "<system-digigov-base-url>"           # [REQUIRED if SYSTEM_NOTIFICATION_PROVIDER=DIGIGOV]
+
+  # Mutual SSL / PKI certificate sent during DigiGov template onboarding.
+  # Value is a Base64-encoded PKCS#12 bundle.
+  # optional — a dev placeholder cert is baked into the source as default;
+  # MUST be replaced with the production certificate before go-live.
+  ONBOARDING_DEFAULT_MUTUAL_CERTIFICATE: "<base64-pkcs12-certificate>"  # [REQUIRED if SYSTEM_NOTIFICATION_PROVIDER=DIGIGOV]
+
+  # optional — leave empty to disable callback on system DigiGov requests
+  SYSTEM_CALLBACK_URL: ""
+
+  # ── SMTP provider (active when SYSTEM_NOTIFICATION_PROVIDER=SMTP) ───────────
+  SYSTEM_SMTP_HOST: "smtp.gmail.com"    # optional, default: smtp.gmail.com
+  SYSTEM_SMTP_PORT: "587"               # optional, default: 587
+  SYSTEM_SMTP_USERNAME: "<smtp-username>"           # [SECRET - REQUIRED if SYSTEM_NOTIFICATION_PROVIDER=SMTP]
+  SYSTEM_SMTP_PASSWORD: "<smtp-password>"           # [SECRET - REQUIRED if SYSTEM_NOTIFICATION_PROVIDER=SMTP]
+  SYSTEM_SMTP_FROM_EMAIL: "<smtp-from-email>"       # REQUIRED if SYSTEM_NOTIFICATION_PROVIDER=SMTP
+  SYSTEM_SMTP_FROM_NAME: "Jio Consent Management System"  # optional, default shown 
+  SYSTEM_SMTP_TLS_SSL: "TLS"            # optional, default: TLS 
+  SYSTEM_SMTP_AUTH_ENABLED: "true"      # optional, default: true 
+  SYSTEM_SMTP_CONNECTION_TIMEOUT: "5000"  # optional, default: 5000 ms
+  SYSTEM_SMTP_SOCKET_TIMEOUT: "5000"      # optional, default: 5000 ms
+
+  # Request / response signing
+  APP_SIGN_RESPONSE: "false"
+  APP_VERIFY_REQUEST: "false"
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# 8. partner-portal-apis
+#    Partner / data-fiduciary onboarding, business configuration, and
+#    WSO2 tenant / application management portal APIs.
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: partner-portal-apis-config
+data:
+  SERVER_PORT: "9002"
+  PROFILE: "dev"
+
+  # MongoDB
+  MONGODB_DATABASE: "cms_db_admin"
+
+  # Security
+  2FA: "true"
+
+  # Internal service URLs
+  WSO2_CRED_GENERATOR_APIS_URL: "http://wso2-cred-generator-apis:9004"
+  NOTIFICATION_MODULE_APIS_URL: "http://notification-module-apis:9005"
+  VAULT_APIS_URL: "http://vault-apis:9010"
+  AUTH_APIS_URL: "http://auth-apis:9009"
+  AUDIT_MODULE_APIS_URL: "http://audit-module-apis:9006"
+
+  # WSO2 base URL (used for OAuth token URL and WSO2 service base URL)
+  WSO2_BASE_URL: "https://<wso2-host>:9443"
+
+  # Public-facing portal URL for deep-links in notifications
+  PORTAL_URL: "<portal-url>"
+
+  # Processor activity search fields
+  PROCESSOR_SEARCH_PARAMS: "processorActivityId"
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# 9. schedular-apis
+#    Cron-based scheduler for consent expiry, grievance escalation,
+#    and data retention jobs across all tenants.
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: schedular-apis-config
+data:
+  SERVER_PORT: "9017"
+  PROFILE: "st"
+
+  # MongoDB
+  MONGODB_DATABASE: "cms_db_admin"
+
+  # Internal service URLs
+  NOTIFICATION_MODULE_APIS_URL: "http://notification-module-apis:9005"
+  AUDIT_MODULE_APIS_URL: "http://audit-module-apis:9006"
+  VAULT_APIS_URL: "http://vault-apis:9010"
+  SYSTEM_REGISTRY_APIS_URL: "http://system-registry-apis:9011"
+
+  # Consent Handle Expiry Job
+  CONSENT_HANDLE_EXPIRY_CRON: "0 0 2 * * ?"
+  CONSENT_HANDLE_EXPIRY_BATCH_SIZE: "5000"
+  CONSENT_HANDLE_EXPIRY_PERIOD_TYPE: "MONTHS"
+  CONSENT_HANDLE_EXPIRY_PERIOD_VALUE: "1"
+  CONSENT_HANDLE_EXPIRY_THREAD_POOL_SIZE: "10"
+
+  # Consent Expiry Job
+  CONSENT_EXPIRY_CRON: "0 30 02 * * ?"
+  CONSENT_EXPIRY_BATCH_SIZE: "1000"
+  CONSENT_EXPIRY_THREAD_POOL_SIZE: "10"
+
+  # Consent Preference Expiry Reminder Job
+  CONSENT_PREFERENCE_EXPIRY_CRON: "0 15 02 * * ?"
+  CONSENT_PREFERENCE_EXPIRY_BATCH_SIZE: "500"
+  CONSENT_PREFERENCE_EXPIRY_THREAD_POOL_SIZE: "10"
+  CONSENT_DEFAULT_REMINDER_DAYS: "30"
+  CONSENT_PREFERENCE_EXPIRY_PORTAL_URL: ""
+
+  # Grievance Escalation Job
+  GRIEVANCE_ESCALATION_CRON: "0 0 3 * * ?"
+  GRIEVANCE_ESCALATION_BATCH_SIZE: "500"
+  GRIEVANCE_ESCALATION_THREAD_POOL_SIZE: "10"
+  GRIEVANCE_DEFAULT_ESCALATION_DAYS: "2"
+
+  # Cookie Consent Expiry Jobs
+  COOKIE_CONSENT_HANDLE_EXPIRY_CRON: "0 * * * * *"
+  COOKIE_CONSENT_EXPIRY_CRON: "0 0 0 * * *"
+
+  # Consent Artifact Retention Job
+  CONSENT_ARTIFACT_RETENTION_CRON: "0 45 02 * * ?"
+  CONSENT_ARTIFACT_RETENTION_BATCH_SIZE: "500"
+  CONSENT_ARTIFACT_RETENTION_THREAD_POOL_SIZE: "10"
+  CONSENT_ARTIFACT_DEFAULT_RETENTION_DAYS: "2"
+
+  # Cookie Consent Retention Job
+  COOKIE_CONSENT_RETENTION_CRON: "0 15 03 * * ?"
+  COOKIE_CONSENT_RETENTION_BATCH_SIZE: "500"
+  COOKIE_CONSENT_RETENTION_THREAD_POOL_SIZE: "10"
+  COOKIE_CONSENT_DEFAULT_RETENTION_DAYS: "2"
+
+  # Grievance Retention Job
+  GRIEVANCE_RETENTION_CRON: "0 30 03 * * ?"
+  GRIEVANCE_RETENTION_BATCH_SIZE: "500"
+  GRIEVANCE_RETENTION_THREAD_POOL_SIZE: "10"
+  GRIEVANCE_DEFAULT_RETENTION_DAYS: "2"
+
+  # Logs Retention Job
+  LOGS_RETENTION_CRON: "0 45 03 * * ?"
+  LOGS_RETENTION_BATCH_SIZE: "500"
+  LOGS_RETENTION_THREAD_POOL_SIZE: "10"
+  LOGS_DEFAULT_RETENTION_DAYS: "2"
+
+  # Data Retention Job
+  DATA_RETENTION_CRON: "0 00 04 * * ?"
+  DATA_RETENTION_BATCH_SIZE: "500"
+  DATA_RETENTION_THREAD_POOL_SIZE: "10"
+  DATA_DEFAULT_RETENTION_DAYS: "2"
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# 10. system-registry-apis
+#     DPDP system registry for consent withdrawal forwarding.
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: system-registry-apis-config
+data:
+  SERVER_PORT: "9011"
+  PROFILE: "sit"
+
+  # Internal service URLs
+  NOTIFICATION_MODULE_APIS_URL: "http://notification-module-apis:9005"
+  AUDIT_MODULE_APIS_URL: "http://audit-module-apis:9006"
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# 11. translator-apis
+#     Multi-language translation / localisation service.
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: translator-apis-config
+data:
+  SERVER_PORT: "9003"
+  PROFILE: "st"
+
+  # MongoDB
+  MONGODB_DATABASE: "cms_db_admin"
+
+  # Outbound proxy for translation provider calls
+  PROXY_ENABLED: "false"
+  PROXY_HOST: "<proxy-host>"
+  PROXY_PORT: "<proxy-port>"
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# 12. vault-apis
+#     Cryptographic operations wrapper over HashiCorp Vault
+#     (encrypt, decrypt, sign, verify).
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vault-apis-config
+data:
+  SERVER_PORT: "9010"
+  PROFILE: "st"
+
+  # MongoDB — vault uses its own dedicated database
+  MONGODB_DATABASE: "jiovault"
+
+  # External HashiCorp Vault instance
+  EXT_VAULT_URL: "http://<vault-host>:8200"
+
+  # [SECRET] Vault root / service token — move to a Kubernetes Secret in prod
+  ROOTKEY: "<vault-root-token>"
+
+---
+# ─────────────────────────────────────────────────────────────────────────────
+# 13. wso2-cred-generator-apis
+#     Automates WSO2 tenant registration and application/key generation.
+# ─────────────────────────────────────────────────────────────────────────────
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wso2-cred-generator-apis-config
+data:
+  SERVER_PORT: "9004"
+  PROFILE: "st"
+
+  # MongoDB
+  MONGODB_DATABASE: "cms_db_admin"
+
+  # WSO2 base URL
+  WSO2_BASE_URL: "https://<wso2-host

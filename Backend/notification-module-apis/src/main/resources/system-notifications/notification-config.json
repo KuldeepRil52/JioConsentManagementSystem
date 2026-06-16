@@ -1,0 +1,39 @@
+{
+  "_comment": "System notification configuration with support for multiple providers",
+  "businessId": "SYSTEM",
+  "scopeLevel": "SYSTEM",
+  "activeProvider": "${SYSTEM_NOTIFICATION_PROVIDER:DIGIGOV}",
+  "configurations": {
+    "DIGIGOV": {
+      "configId": "SHARED_CONFIG_DIGIGOV_001",
+      "providerType": "DIGIGOV",
+      "configurationJson": {
+        "clientId": "${SYSTEM_DIGIGOV_CLIENT_ID}",
+        "clientSecret": "${SYSTEM_DIGIGOV_CLIENT_SECRET}",
+        "sid": "${SYSTEM_DIGIGOV_SID:47}",
+        "baseUrl": "${SYSTEM_DIGIGOV_BASE_URL}",
+        "networkType": "INTERNET",
+        "mutualSSL": true,
+        "mutualCertificate": "${ONBOARDING_DEFAULT_MUTUAL_CERTIFICATE}",
+        "callbackUrl": "${SYSTEM_CALLBACK_URL:}",
+        "defaultLanguage": "english"
+      }
+    },
+    "SMTP": {
+      "configId": "SHARED_CONFIG_SMTP_001",
+      "providerType": "SMTP",
+      "smtpDetails": {
+        "serverAddress": "${SYSTEM_SMTP_HOST:smtp.gmail.com}",
+        "port": "${SYSTEM_SMTP_PORT:587}",
+        "username": "${SYSTEM_SMTP_USERNAME:<smtp-username@yourdomain.com>}",
+        "password": "${SYSTEM_SMTP_PASSWORD}",
+        "fromEmail": "${SYSTEM_SMTP_FROM_EMAIL:<smtp-username@yourdomain.com>}",
+        "senderDisplayName": "${SYSTEM_SMTP_FROM_NAME:Anuj Singh}",
+        "tlsSsl": "${SYSTEM_SMTP_TLS_SSL:TLS}",
+        "smtpAuthEnabled": "${SYSTEM_SMTP_AUTH_ENABLED:true}",
+        "smtpConnectionTimeout": "${SYSTEM_SMTP_CONNECTION_TIMEOUT:5000}",
+        "smtpSocketTimeout": "${SYSTEM_SMTP_SOCKET_TIMEOUT:5000}"
+      }
+    }
+  }
+}

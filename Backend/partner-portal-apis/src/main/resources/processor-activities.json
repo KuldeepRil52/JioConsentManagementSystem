@@ -1,0 +1,264 @@
+[
+  {
+    "processorActivityId": "1a2b3c4d-5e6f-7890-1234-567890abcdef",
+    "activityName": "Data Collection",
+    "processorId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "processorName": "AWS",
+    "dataTypesList": [
+      {
+        "dataTypeId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+        "dataTypeName": "Identity Data",
+        "dataItems": [
+          "Full Name",
+          "Phone Number (Mobile / Landline)",
+          "Email Address",
+          "National Identifier (PAN, Aadhaar)"
+        ]
+      },
+      {
+        "dataTypeId": "c3d4e5f6-7890-1234-5678-90abcdef1234",
+        "dataTypeName": "Financial Data",
+        "dataItems": [
+          "Bank Account Number",
+          "Credit/Debit Card Details (masked storage)",
+          "UPI ID"
+        ]
+      }
+    ],
+    "details": "Collection of personal, financial, and health data for service provision, hosted on a cloud provider.",
+    "businessId": "YOUR_BUSINESS_ID",
+    "scopeType": "TENANT",
+    "status": "ACTIVE"
+  },
+  {
+    "processorActivityId": "2b3c4d5e-6f78-9012-3456-7890abcdef12",
+    "activityName": "Data Storage",
+    "processorId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "processorName": "AWS",
+    "dataTypesList": [
+      {
+        "dataTypeId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+        "dataTypeName": "Identity Data",
+        "dataItems": [
+          "Full Name",
+          "Email Address"
+        ]
+      },
+      {
+        "dataTypeId": "c3d4e5f6-7890-1234-5678-90abcdef1234",
+        "dataTypeName": "Financial Data",
+        "dataItems": [
+          "Bank Account Number",
+          "IFSC Code"
+        ]
+      }
+    ],
+    "details": "Secure storage of personal and financial data in encrypted formats with backups on a cloud provider.",
+    "businessId": "YOUR_BUSINESS_ID",
+    "scopeType": "TENANT",
+    "status": "ACTIVE"
+  },
+  {
+    "processorActivityId": "3c4d5e6f-7890-1234-5678-90abcdef1234",
+    "activityName": "Data Usage / Processing",
+    "processorId": "d4e5f678-9012-3456-7890-abcdef123456",
+    "processorName": "Google Analytics",
+    "dataTypesList": [
+      {
+        "dataTypeId": "c3d4e5f6-7890-1234-5678-90abcdef1234",
+        "dataTypeName": "Financial Data",
+        "dataItems": [
+          "Income Details",
+          "Loan/EMI Records"
+        ]
+      },
+      {
+        "dataTypeId": "d4e5f678-9012-3456-7890-abcdef123456",
+        "dataTypeName": "Authentication & Security Data",
+        "dataItems": [
+          "Biometric (Fingerprint, Face ID, Iris scan)"
+        ]
+      }
+    ],
+    "details": "Using financial data for loan assessment and fraud detection, with some analytics provided by a third-party service.",
+    "businessId": "YOUR_BUSINESS_ID",
+    "scopeType": "TENANT",
+    "status": "ACTIVE"
+  },
+  {
+    "processorActivityId": "4d5e6f78-9012-3456-7890-abcdef123456",
+    "activityName": "Data Sharing / Transfer",
+    "processorId": "e5f67890-1234-5678-90ab-cdef12345678",
+    "processorName": "DigiLocker",
+    "dataTypesList": [
+      {
+        "dataTypeId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+        "dataTypeName": "Identity Data",
+        "dataItems": [
+          "Full Name",
+          "National Identifier (PAN, Aadhaar)"
+        ]
+      },
+      {
+        "dataTypeId": "c3d4e5f6-7890-1234-5678-90abcdef1234",
+        "dataTypeName": "Financial Data",
+        "dataItems": [
+          "Bank Account Number"
+        ]
+      }
+    ],
+    "details": "Sharing identity data for verification with a digital identity service.",
+    "businessId": "YOUR_BUSINESS_ID",
+    "scopeType": "TENANT",
+    "status": "ACTIVE"
+  },
+  {
+    "processorActivityId": "5e6f7890-1234-5678-90ab-cdef12345678",
+    "activityName": "Data Communication",
+    "processorId": "c3d4e5f6-7890-1234-5678-90abcdef1234",
+    "processorName": "SendGrid",
+    "dataTypesList": [
+      {
+        "dataTypeId": "90abcdef-1234-5678-90ab-cdef12345678",
+        "dataTypeName": "Digital Interaction Data",
+        "dataItems": [
+          "IP Address",
+          "Device ID"
+        ]
+      },
+      {
+        "dataTypeId": "bcdef123-4567-890a-bcde-f12345678901",
+        "dataTypeName": "Grievance & Communication Data",
+        "dataItems": [
+          "Grievance Ticket ID",
+          "Description of Issue"
+        ]
+      }
+    ],
+    "details": "Using a third-party email service provider for customer communications.",
+    "businessId": "YOUR_BUSINESS_ID",
+    "scopeType": "TENANT",
+    "status": "ACTIVE"
+  },
+  {
+    "processorActivityId": "6f7890ab-cdef-1234-5678-90abcdef1234",
+    "activityName": "Data Update / Modification",
+    "processorId": "bcdef123-4567-890a-bcde-f12345678901",
+    "processorName": "Zendesk",
+    "dataTypesList": [
+      {
+        "dataTypeId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+        "dataTypeName": "Identity Data",
+        "dataItems": [
+          "Full Name"
+        ]
+      },
+      {
+        "dataTypeId": "b2c3d4e5-f678-9012-3456-7890abcdef12",
+        "dataTypeName": "Contact Data",
+        "dataItems": [
+          "Email Address",
+          "Phone Number (Mobile / Landline)"
+        ]
+      }
+    ],
+    "details": "Updating user contact details and personal identifiers based on requests through a customer support system.",
+    "businessId": "YOUR_BUSINESS_ID",
+    "scopeType": "TENANT",
+    "status": "ACTIVE"
+  },
+  {
+    "processorActivityId": "7890abcd-ef12-3456-7890-abcdef123456",
+    "activityName": "Data Retention & Archival",
+    "processorId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "processorName": "AWS",
+    "dataTypesList": [
+      {
+        "dataTypeId": "abcdef12-3456-7890-abcd-ef1234567890",
+        "dataTypeName": "Transactional Data",
+        "dataItems": [
+          "Purchase History",
+          "Payment History"
+        ]
+      },
+      {
+        "dataTypeId": "c3d4e5f6-7890-1234-5678-90abcdef1234",
+        "dataTypeName": "Financial Data",
+        "dataItems": [
+          "Loan/EMI Records"
+        ]
+      }
+    ],
+    "details": "Retaining transactional and financial data for a defined period as per compliance on a cloud provider's storage services.",
+    "businessId": "YOUR_BUSINESS_ID",
+    "scopeType": "TENANT",
+    "status": "ACTIVE"
+  },
+  {
+    "processorActivityId": "890abcd-ef12-3456-7890-abcdef1234567",
+    "activityName": "Data Deletion / Disposal",
+    "processorId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "processorName": "AWS",
+    "dataTypesList": [
+      {
+        "dataTypeId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+        "dataTypeName": "Identity Data",
+        "dataItems": [
+          "Signature",
+          "National Identifier (PAN, Aadhaar)"
+        ]
+      }
+    ],
+    "details": "Securely deleting user data upon request or after its retention period expires from cloud storage.",
+    "businessId": "YOUR_BUSINESS_ID",
+    "scopeType": "TENANT",
+    "status": "ACTIVE"
+  },
+  {
+    "processorActivityId": "90abcdef-1234-5678-90ab-cdef12345678",
+    "activityName": "Access Management",
+    "processorId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "processorName": "AWS",
+    "dataTypesList": [
+      {
+        "dataTypeId": "d4e5f678-9012-3456-7890-abcdef123456",
+        "dataTypeName": "Authentication & Security Data",
+        "dataItems": [
+          "Username",
+          "Password (hashed only)",
+          "OTP / Token"
+        ]
+      }
+    ],
+    "details": "Managing and authenticating user access to data using security credentials, handled by cloud services.",
+    "businessId": "YOUR_BUSINESS_ID",
+    "scopeType": "TENANT",
+    "status": "ACTIVE"
+  },
+  {
+    "processorActivityId": "abcdef12-3456-7890-abcd-ef1234567890",
+    "activityName": "Special Processing",
+    "processorId": "e5f67890-1234-5678-90ab-cdef12345678",
+    "processorName": "DigiLocker",
+    "dataTypesList": [
+      {
+        "dataTypeId": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+        "dataTypeName": "Identity Data",
+        "dataItems": [
+          "National Identifier (PAN, Aadhaar)"
+        ]
+      },
+      {
+        "dataTypeId": "d4e5f678-9012-3456-7890-abcdef123456",
+        "dataTypeName": "Authentication & Security Data",
+        "dataItems": [
+          "Biometric (Fingerprint, Face ID, Iris scan)"
+        ]
+      }
+    ],
+    "details": "Performing Aadhaar and biometric verification through a specialized third-party processor.",
+    "businessId": "YOUR_BUSINESS_ID",
+    "scopeType": "TENANT",
+    "status": "ACTIVE"
+  }
+]

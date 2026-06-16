@@ -1,0 +1,2066 @@
+/* Organization Map Container */
+.org-map-container {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Tablet view */
+@media (max-width: 1024px) {
+  .org-map-container {
+    padding: 20px;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .org-map-container {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .org-map-container {
+    padding: 12px;
+  }
+}
+
+/* Simple Header */
+.org-map-header-simple {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Simple Content */
+.org-map-content-simple {
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 20px;
+  min-height: 400px;
+}
+
+/* Professional Organization Chart */
+.org-chart-professional {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0;
+  background: transparent;
+}
+
+.org-map-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  gap: 16px;
+}
+
+/* Header */
+.org-map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+/* Tablet view */
+@media (max-width: 1024px) {
+  .org-map-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .org-map-header {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+}
+
+.org-map-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Mobile view */
+@media (max-width: 768px) {
+  .org-map-actions {
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+}
+
+.view-mode-toggle {
+  display: flex;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  padding: 4px;
+}
+
+.view-mode-btn {
+  padding: 8px 16px;
+  background: none;
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.view-mode-btn:hover {
+  background-color: #e5e7eb;
+}
+
+.view-mode-btn.active {
+  background-color: white;
+  color: #0f3cc9;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Search */
+.org-map-search {
+  margin-bottom: 24px;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.search-container:focus-within {
+  border-color: #0f3cc9;
+  box-shadow: 0 0 0 3px rgba(15, 60, 201, 0.1);
+}
+
+.search-input-org {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: #111827;
+}
+
+.search-input-org::placeholder {
+  color: #9ca3af;
+}
+
+/* Statistics */
+.org-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.2s;
+}
+
+.stat-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.stat-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  background-color: #eff6ff;
+}
+
+.stat-icon.business {
+  background-color: #dbeafe;
+}
+
+.stat-icon.role {
+  background-color: #e0e7ff;
+}
+
+.stat-icon.user {
+  background-color: #f3e8ff;
+}
+
+.stat-icon.processor {
+  background-color: #f3e8ff;
+}
+
+.stat-icon.consents {
+  background-color: #d1fae5;
+}
+
+.stat-icon.grievances {
+  background-color: #fed7aa;
+}
+
+.stat-icon.breaches {
+  background-color: #fecaca;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Compact Tree/Org Chart View */
+.tree-org-chart {
+  padding: 32px;
+  background: linear-gradient(135deg, #f8f9fc 0%, #ffffff 100%);
+  border-radius: 16px;
+  overflow-x: auto;
+  min-height: 600px;
+}
+
+/* Organization Sections */
+.org-section {
+  margin-bottom: 60px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.org-section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 40px;
+  padding: 16px 24px;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.org-section-title .jds-text {
+  color: white !important;
+}
+
+.org-tree-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 40px;
+  width: 100%;
+  min-width: 800px;
+}
+
+.tree-node-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-right: 0;
+}
+
+/* Tree Connectors - Horizontal Layout */
+.tree-connector-vertical {
+  width: 40px;
+  height: 2px;
+  background: #3b82f6;
+  margin: 0;
+}
+
+.tree-connector-line {
+  position: absolute;
+  left: -30px;
+  top: 50%;
+  width: 30px;
+  height: 2px;
+  background: #a855f7;
+  transform: translateY(-50%);
+}
+
+/* Horizontal line connecting siblings */
+.tree-branches::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -40px;
+  width: 2px;
+  height: 100%;
+  background: #3b82f6;
+  transform: translateY(-50%);
+}
+
+/* Tree Branches - Horizontal Layout */
+.tree-branches {
+  width: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  justify-content: flex-start;
+  position: relative;
+  flex-wrap: nowrap;
+  margin-left: 0;
+  padding: 0;
+}
+
+.tree-branch-group {
+  flex: none;
+  min-width: 280px;
+  max-width: 320px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  gap: 0;
+}
+
+/* Connector from vertical line to branch - Horizontal */
+.tree-branch-group::before {
+  content: '';
+  position: absolute;
+  left: -40px;
+  top: 50%;
+  width: 40px;
+  height: 2px;
+  background: #3b82f6;
+  transform: translateY(-50%);
+}
+
+.branch-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+  background: white;
+  border: 3px solid #3b82f6;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  min-width: 250px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.branch-title:hover {
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.2);
+  transform: translateY(-2px);
+  transition: all 0.2s;
+}
+
+.tree-children-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  position: relative;
+  margin-top: 30px;
+  width: 100%;
+}
+
+.tree-children-grid.single-column {
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Horizontal connector for children */
+.tree-children-grid::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: #a855f7;
+}
+
+.tree-branch-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 200px;
+}
+
+/* Vertical connector from horizontal line to item */
+.tree-branch-item::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  width: 2px;
+  height: 30px;
+  background: #a855f7;
+  transform: translateX(-50%);
+}
+
+.tree-leaf-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 30px;
+  align-items: center;
+  position: relative;
+}
+
+/* Vertical connector from parent to children */
+.tree-leaf-items::before {
+  content: '';
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  width: 2px;
+  height: 30px;
+  background: #d1d5db;
+  transform: translateX(-50%);
+}
+
+/* Org Cards - Traditional Org Chart Boxes */
+.org-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: white;
+  border: 2px solid #cbd5e1;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+  position: relative;
+  text-align: center;
+  min-width: 140px;
+}
+
+.org-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  transform: translateY(-2px);
+}
+
+.org-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #eff6ff;
+  flex-shrink: 0;
+  margin-bottom: 4px;
+}
+
+.org-card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: center;
+}
+
+.expand-icon, .expand-icon-small {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #6b7280;
+  cursor: pointer;
+}
+
+.expand-icon:hover, .expand-icon-small:hover {
+  background: #e5e7eb;
+}
+
+/* Business Card - Top Level */
+.business-card-compact {
+  border: 2px solid #3b82f6;
+  background: white;
+  min-width: 280px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  text-align: left;
+}
+
+.business-card-compact .card-header {
+  background: #9ca3af;
+  color: white;
+  padding: 10px 14px;
+  border-bottom: 1px solid #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.business-card-compact .card-header .jds-text {
+  color: white !important;
+}
+
+.business-card-compact .card-metrics {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #f3f4f6;
+}
+
+.org-metric-box {
+  border: 1px solid #d1d5db;
+  background: white;
+  padding: 10px 12px;
+  border-radius: 4px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 60px;
+}
+
+.org-metric-box .metric-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.org-metric-box .jds-text {
+  font-size: 11px;
+  line-height: 1.5;
+  white-space: pre-line;
+}
+
+.org-metric-box.processor-box {
+  border-left: 3px solid #a855f7;
+}
+
+.org-metric-box.audit-box {
+  border-left: 3px solid #6b7280;
+}
+
+.org-metric-box.breach-box {
+  border-left: 3px solid #fb923c;
+}
+
+.org-metric-box.consent-box {
+  border-left: 3px solid #10b981;
+}
+
+.business-card-compact.main-entity-card {
+  border-color: #6b7280;
+  background: white;
+  box-shadow: 0 4px 12px rgba(107, 116, 128, 0.2);
+  min-width: 300px;
+}
+
+.business-card-compact.main-entity-card .card-header {
+  background: #6b7280;
+  border-bottom-color: #4b5563;
+}
+
+.business-card-compact.child-business-card {
+  border-color: #9ca3af;
+  min-width: 280px;
+}
+
+.business-card-compact .expand-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.business-card-compact .expand-icon:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* Tree connector for child businesses - Horizontal */
+.tree-connector-vertical-child {
+  width: 30px;
+  height: 2px;
+  background: #3b82f6;
+  margin: 0;
+}
+
+/* Business Branch */
+.business-branch {
+  max-width: 450px;
+}
+
+/* Section Cards */
+.section-card {
+  min-width: 160px;
+  border: 2px solid;
+  padding: 10px 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.section-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.role-section-card {
+  border-color: #a855f7;
+  background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%);
+}
+
+.processor-section-card {
+  border-color: #c084fc;
+  background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%);
+}
+
+.consent-section-card {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+}
+
+.breach-section-card {
+  border-color: #ef4444;
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+}
+
+.grievance-section-card {
+  border-color: #fb923c;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+}
+
+.audit-section-card {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+}
+
+/* Nested items */
+.tree-leaf-items.nested {
+  margin-left: 10px;
+  padding-left: 15px;
+  border-left: 2px dashed #e5e7eb;
+}
+
+/* Role Card - Second Level */
+.role-card-compact {
+  border: 2px solid #a855f7;
+  background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%);
+  min-width: 220px;
+}
+
+.role-card-compact .org-card-icon {
+  background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%);
+}
+
+.role-icon-compact {
+  background: linear-gradient(135deg, #a855f7 0%, #9333ea 100%) !important;
+}
+
+/* User Card - Third Level */
+.user-card-compact {
+  border: 2px solid #e5e7eb;
+  background: white;
+  padding: 12px 16px;
+  min-width: 160px;
+}
+
+.user-card-compact:hover {
+  border-color: #60a5fa;
+}
+
+.user-icon-compact {
+  width: 36px;
+  height: 36px;
+  background: #dbeafe !important;
+}
+
+/* Metric Cards */
+.metric-card-compact {
+  border-width: 2px;
+  cursor: pointer;
+  min-width: 200px;
+}
+
+.grievance-card {
+  border-color: #fb923c;
+  background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
+}
+
+.grievance-icon {
+  background: linear-gradient(135deg, #fb923c 0%, #f97316 100%) !important;
+}
+
+.breach-card {
+  border-color: #ef4444;
+  background: linear-gradient(135deg, #fef2f2 0%, #ffffff 100%);
+}
+
+.breach-icon {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+}
+
+.consent-card {
+  border-color: #10b981;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+}
+
+.consent-icon {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+}
+
+/* Info Cards */
+.info-card-compact {
+  border-color: #d1d5db;
+  padding: 8px 12px;
+  background: white;
+  min-width: 160px;
+  text-align: left;
+  gap: 4px;
+}
+
+.info-card-compact:hover {
+  border-color: #60a5fa;
+  background: #f0f9ff;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(96, 165, 250, 0.12);
+}
+
+.info-card-compact .jds-text {
+  line-height: 1.4;
+}
+
+/* More Card */
+.more-card {
+  border: 2px dashed #d1d5db;
+  background: #f9fafb;
+  padding: 10px 16px;
+  min-width: 140px;
+}
+
+/* Processor Card */
+.processors-card-compact {
+  border: 3px solid #c084fc;
+  background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%);
+  min-width: 280px;
+  padding: 20px 28px;
+}
+
+.processors-card-compact .org-card-icon {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #c084fc 0%, #a855f7 100%);
+}
+
+.processor-item-compact {
+  border-color: #c084fc;
+  border-width: 2px;
+  padding: 14px 18px;
+  min-width: 220px;
+  background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%);
+}
+
+.processor-item-compact:hover {
+  border-color: #a855f7;
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
+  transform: translateY(-1px);
+}
+
+.processor-icon {
+  background: #f3e8ff !important;
+}
+
+/* Responsive Org Chart */
+@media (max-width: 1200px) {
+  .tree-branches {
+    flex-wrap: wrap;
+  }
+  
+  .tree-branch-group {
+    min-width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .tree-org-chart {
+    padding: 16px;
+    overflow-x: scroll;
+  }
+  
+  .org-section {
+    margin-bottom: 40px;
+  }
+  
+  .org-tree-container {
+    min-width: 600px;
+  }
+  
+  .tree-branches {
+    gap: 20px;
+  }
+  
+  .org-card {
+    min-width: 140px;
+    padding: 12px 16px;
+  }
+  
+  .business-card-compact {
+    min-width: 240px;
+    padding: 20px 24px;
+  }
+}
+
+/* Organization Content */
+.org-map-content {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
+  min-height: 400px;
+}
+
+/* Hierarchy View */
+.hierarchy-view {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.business-node {
+  display: flex;
+  flex-direction: column;
+}
+
+.business-card {
+  background-color: #f9fafb;
+  border: 2px solid #3b82f6;
+  border-radius: 12px;
+  padding: 20px;
+  transition: all 0.3s;
+}
+
+.business-card:hover {
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+}
+
+.business-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.business-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: #dbeafe;
+  border-radius: 10px;
+}
+
+.business-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.business-count {
+  display: flex;
+  align-items: center;
+}
+
+.count-badge {
+  padding: 6px 12px;
+  background-color: #3b82f6;
+  color: white;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.count-badge-small {
+  padding: 4px 10px;
+  background-color: #e5e7eb;
+  color: #374151;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Business Metrics */
+.business-metrics {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px dashed #e5e7eb;
+}
+
+.metric-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 14px;
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  min-width: 100px;
+  transition: all 0.2s;
+}
+
+.metric-item:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+/* Roles Container */
+.roles-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-left: 40px;
+  padding-left: 20px;
+  border-left: 2px dashed #cbd5e1;
+}
+
+.role-node {
+  position: relative;
+}
+
+.role-node::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 24px;
+  width: 20px;
+  height: 2px;
+  background-color: #cbd5e1;
+}
+
+.role-card {
+  background-color: white;
+  border: 2px solid #8b5cf6;
+  border-radius: 10px;
+  padding: 16px;
+  transition: all 0.3s;
+}
+
+.role-card:hover {
+  box-shadow: 0 6px 16px rgba(139, 92, 246, 0.15);
+}
+
+.role-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.role-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #ede9fe;
+  border-radius: 8px;
+}
+
+.role-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.role-count {
+  display: flex;
+  align-items: center;
+}
+
+/* Users Container */
+.users-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 12px;
+  margin-left: 40px;
+  padding-left: 20px;
+  border-left: 2px dashed #d1d5db;
+}
+
+.user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.user-card:hover {
+  background-color: white;
+  border-color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: #e0e7ff;
+  border-radius: 50%;
+}
+
+.user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.user-info text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* List View */
+.list-view {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.list-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.list-items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.list-item:hover {
+  background-color: white;
+  border-color: #3b82f6;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+}
+
+.list-item-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.list-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-avatar-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background-color: #e0e7ff;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.user-roles-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.role-tag {
+  display: inline-block;
+  padding: 4px 10px;
+  background-color: #ede9fe;
+  color: #6d28d9;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  text-align: center;
+  gap: 16px;
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  border: 2px dashed #d1d5db;
+  border-radius: 16px;
+  min-height: 400px;
+}
+
+.empty-state .debug-info {
+  margin-top: 24px;
+  padding: 16px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  font-family: monospace;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .org-map-container {
+    padding: 16px;
+  }
+
+  .org-map-header {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .org-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .roles-container {
+    margin-left: 20px;
+    padding-left: 12px;
+  }
+
+  .users-container {
+    grid-template-columns: 1fr;
+    margin-left: 20px;
+    padding-left: 12px;
+  }
+
+  .view-mode-toggle {
+    width: 100%;
+  }
+
+  .view-mode-btn {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .org-map-search,
+  .org-map-actions {
+    display: none;
+  }
+
+  .business-card,
+  .role-card,
+  .user-card {
+    page-break-inside: avoid;
+  }
+}
+
+/* Data Processors Section */
+.processors-section {
+  margin-top: 32px;
+  padding: 24px;
+  background: linear-gradient(135deg, #f3e8ff 0%, #faf5ff 100%);
+  border: 2px solid #a855f7;
+  border-radius: 16px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e9d5ff;
+}
+
+.processors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.processor-card {
+  background: white;
+  border: 2px solid #c084fc;
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.3s;
+}
+
+.processor-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(168, 85, 247, 0.2);
+  border-color: #a855f7;
+}
+
+.processor-header {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.processor-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Enhanced Tree Lines for Better Visibility */
+.roles-container {
+  position: relative;
+}
+
+.roles-container::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #3b82f6 0%, rgba(59, 130, 246, 0.3) 100%);
+  border-radius: 2px;
+}
+
+.users-container::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, #8b5cf6 0%, rgba(139, 92, 246, 0.3) 100%);
+  border-radius: 2px;
+}
+
+.user-card {
+  position: relative;
+}
+
+.user-card::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  width: 20px;
+  height: 2px;
+  background-color: #d1d5db;
+}
+
+/* ===== PRO/PROFESSIONAL SUFFIX CLASSES ===== */
+
+/* Root Organization Chart */
+.org-chart-root {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* Professional Node Cards */
+.org-node-card-pro {
+  display: flex;
+  gap: 12px;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  min-width: 320px;
+  max-width: 100%;
+}
+
+.org-node-card-pro:hover {
+  border-color: #9ca3af;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.org-node-card-pro.tenant-card-pro {
+  border-left: 3px solid #6b7280;
+  background: #f9fafb;
+}
+
+.org-node-card-pro.business-card-pro {
+  border-left: 3px solid #9ca3af;
+  background: #ffffff;
+  min-width: 280px;
+}
+
+.org-node-icon-pro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.org-node-content-pro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.org-node-header-pro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* Badges */
+.org-badge-pro {
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.tenant-badge-pro {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.business-badge-pro {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* Children Container */
+.org-children-container-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-left: 20px;
+  padding-left: 16px;
+  border-left: 1px solid #e5e7eb;
+}
+
+/* Connector Line - Vertical from parent */
+.org-connector-line-pro {
+  width: 1px;
+  height: 20px;
+  background: #d1d5db;
+  margin: 0;
+}
+
+/* Children Grid */
+.org-children-grid-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Child Wrapper */
+.org-child-wrapper-pro {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Connector from horizontal line to child */
+.org-child-connector-pro {
+  display: none;
+}
+
+/* Details Section */
+.org-details-section-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.org-section-title-pro {
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+/* Cards Grid */
+.org-cards-grid-pro {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+/* Detail Card */
+.org-detail-card-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.org-detail-card-pro:hover {
+  border-color: #9ca3af;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.processor-detail-card-pro {
+  border-left: 3px solid #9ca3af;
+}
+
+.user-detail-card-pro {
+  border-left: 3px solid #6b7280;
+}
+
+/* Detail Header */
+.org-detail-header-pro {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.org-detail-icon-pro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  background: #f3f4f6;
+}
+
+.org-detail-title-pro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Status Badge */
+.status-badge-pro {
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.active-badge-pro {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* Detail Body */
+.org-detail-body-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Scope Badge */
+.scope-badge-pro {
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: inline-block;
+  width: fit-content;
+  background: #e5e7eb;
+  color: #374151;
+}
+
+/* User Avatar */
+.org-user-avatar-pro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.avatar-text-pro {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+}
+
+/* User Info */
+.org-user-info-pro {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.org-user-email-pro {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Identity Badge */
+.identity-type-badge-pro {
+  padding: 3px 8px;
+  background: #f3f4f6;
+  color: #374151;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: inline-block;
+  width: fit-content;
+}
+
+/* Roles Container */
+.org-roles-container-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+}
+
+.org-roles-header-pro {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.org-roles-list-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.org-role-item-pro {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px;
+  background: white;
+  border-radius: 4px;
+  border: 1px solid #e5e7eb;
+}
+
+.org-role-badge-pro {
+  padding: 3px 10px;
+  background: #374151;
+  color: white;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  display: inline-block;
+  width: fit-content;
+}
+
+/* ===== REDESIGNED ORG CHART STYLES ===== */
+
+/* Main Container */
+.org-chart-redesign {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  padding: 32px;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  border-radius: 16px;
+}
+
+/* Root Organization Chart */
+.org-chart-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+}
+
+/* Node Card - Tenant/Business */
+.org-node-card {
+  display: flex;
+  gap: 16px;
+  padding: 20px 24px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  min-width: 400px;
+  max-width: 500px;
+}
+
+.org-node-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.org-node-card.tenant-card {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+}
+
+.org-node-card.business-card {
+  border-color: #a855f7;
+  background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%);
+  min-width: 300px;
+  max-width: 350px;
+}
+
+.org-node-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: #dbeafe;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.org-node-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.org-node-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Badges */
+.org-badge {
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tenant-badge {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.business-badge {
+  background: #e9d5ff;
+  color: #6b21a8;
+}
+
+/* Children Container */
+.org-children-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  position: relative;
+  width: 100%;
+}
+
+/* Connector Line - Vertical from parent */
+.org-connector-line {
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(180deg, #3b82f6 0%, #a855f7 100%);
+  margin: 0;
+}
+
+/* Children Grid */
+.org-children-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;
+  width: 100%;
+  max-width: 900px;
+  position: relative;
+}
+
+/* Child Wrapper */
+.org-child-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* Connector from horizontal line to child */
+.org-child-connector {
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(180deg, #a855f7 0%, #c084fc 100%);
+  margin-bottom: 0;
+}
+
+/* Horizontal line connecting siblings */
+.org-children-grid::before {
+  content: '';
+  position: absolute;
+  top: -40px;
+  left: calc(50% - 150px);
+  right: calc(50% - 150px);
+  height: 2px;
+  background: linear-gradient(90deg, #a855f7 0%, #c084fc 50%, #a855f7 100%);
+  min-width: 300px;
+}
+
+/* Details Section */
+.org-details-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.org-section-title {
+  padding-bottom: 16px;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+/* Cards Grid */
+.org-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 24px;
+}
+
+/* Detail Card */
+.org-detail-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.org-detail-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.processor-detail-card {
+  border-color: #c084fc;
+  background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%);
+}
+
+.user-detail-card {
+  border-color: #93c5fd;
+  background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%);
+}
+
+/* Detail Header */
+.org-detail-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.org-detail-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.processor-icon {
+  background: linear-gradient(135deg, #e9d5ff 0%, #f3e8ff 100%);
+}
+
+.org-detail-title {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Status Badge */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.active-badge {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+/* Detail Body */
+.org-detail-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.org-detail-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Scope Badge */
+.scope-badge {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  width: fit-content;
+}
+
+.tenant-scope {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+/* Detail Footer */
+.org-detail-footer {
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 8px;
+}
+
+/* User Avatar */
+.org-user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.avatar-text {
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+}
+
+/* User Info */
+.org-user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.org-user-email {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Identity Badge */
+.identity-type-badge {
+  padding: 6px 12px;
+  background: #fef3c7;
+  color: #92400e;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  width: fit-content;
+}
+
+/* Roles Container */
+.org-roles-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  background: #f9fafb;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.org-roles-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.org-roles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.org-role-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+.org-role-badge {
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);
+  color: white;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-block;
+  width: fit-content;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .org-cards-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .org-children-grid {
+    grid-template-columns: 1fr;
+    max-width: 400px;
+  }
+  
+  .org-children-grid::before {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .org-chart-redesign {
+    padding: 16px;
+    gap: 32px;
+  }
+  
+  .org-node-card {
+    min-width: auto;
+    max-width: 100%;
+  }
+  
+  .org-details-section {
+    padding: 20px;
+  }
+  
+  .org-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+

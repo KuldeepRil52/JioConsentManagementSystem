@@ -1,0 +1,864 @@
+/* ------------------------------
+   COOKIE LOGS MAIN PAGE LAYOUT
+------------------------------ */
+.cookie-logs-page {
+  box-sizing: border-box;
+  margin-left: 2px;
+  padding: 88px 32px 48px 24px;
+  min-height: 100vh;
+  background: #ffffff;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* ------------------------------
+   HEADER SECTION
+------------------------------ */
+.cookie-logs-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 22px;
+}
+
+.cookie-logs-back-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  box-shadow: 0 2px 6px rgba(2, 6, 23, 0.06);
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.cookie-logs-back-btn:hover {
+  background: #f9fafb;
+}
+
+.cookie-logs-header-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.cookie-logs-title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.cookie-logs-domain {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: #f3f4f6;
+  border: 1px solid #e6e8eb;
+  font-size: 13px;
+  color: #111827;
+}
+
+.cookie-logs-select {
+  width: 312px;
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  padding: 0 10px;
+  background: #fff;
+  font-size: 13px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.cookie-logs-select:hover {
+  border-color: #c7cbd1;
+}
+
+/* ------------------------------
+   KPI (SUMMARY CARDS)
+------------------------------ */
+.cookie-logs-kpi-row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.cookie-logs-kpi {
+  width: 214px;
+  height: 90px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(2, 6, 23, 0.04);
+  border: 1px solid #e5e7eb;
+  box-sizing: border-box;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cookie-logs-kpi:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(2, 6, 23, 0.06);
+}
+
+.cookie-logs-kpi-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 24px;
+  background: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 1;
+  gap: 10px;
+}
+
+.cookie-logs-kpi-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.cookie-logs-kpi-value {
+  font-size: 20px;
+  font-weight: 800;
+  color: #111827;
+}
+
+/* KPI card background variations */
+.kpi-default {
+  background: #e7ebf8;
+}
+.kpi-accepted,
+.kpi-partial {
+  background: #e9f7e9;
+}
+.kpi-rejected {
+  background: #fee6ea;
+}
+.kpi-noaction {
+  background: #f5f5f5;
+}
+
+/* ------------------------------
+   TABLE STYLING
+------------------------------ */
+.cookie-logs-table-container {
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  margin-top: 8px;
+}
+
+.cookie-logs-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 920px;
+  font-family: "JioType", sans-serif;
+}
+
+.cookie-logs-table thead tr {
+  background: #f8fafc;
+  color: #334155;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.cookie-logs-table th {
+  padding: 14px 16px;
+  border-right: 1px solid #e2e8f0;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.cookie-logs-table th:last-child {
+  border-right: none;
+}
+
+.cookie-logs-table td {
+  padding: 12px 16px;
+  border-right: 1px solid #f1f5f9;
+  color: #1e293b;
+  font-size: 13px;
+  vertical-align: middle;
+}
+
+.cookie-logs-table td:last-child {
+  border-right: none;
+}
+
+.cookie-logs-table tbody tr {
+  border-bottom: 1px solid #e2e8f0;
+  transition: background-color 0.15s ease;
+}
+
+.cookie-logs-table tbody tr:last-child {
+  border-bottom: none;
+}
+
+.cookie-logs-table tbody tr:nth-child(odd) {
+  background: #ffffff;
+}
+
+.cookie-logs-table tbody tr:nth-child(even) {
+  background: #fafbfc;
+}
+
+.cookie-logs-table tbody tr:hover {
+  background: #e8f4fd !important;
+  transition: background 0.2s ease;
+}
+
+/* ------------------------------
+   STATUS BADGES
+------------------------------ */
+.status-badge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-accepted {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-rejected {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-necessary {
+  background: #e8f0ff;
+  color: #0a3cce;
+}
+
+/* ------------------------------
+   FOOTER
+------------------------------ */
+.cookie-logs-footer {
+  margin-top: 28px;
+  color: #6b7280;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cookie-logs-footer-links {
+  display: flex;
+  gap: 12px;
+}
+
+.cookie-logs-footer-links a {
+  color: #6b7280;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.cookie-logs-footer-links a:hover {
+  color: #111827;
+}
+
+/* ------------------------------
+   RESPONSIVE ADJUSTMENTS
+------------------------------ */
+@media (max-width: 900px) {
+  .cookie-logs-select {
+    width: 100%;
+  }
+
+  .cookie-logs-kpi-row {
+    justify-content: center;
+  }
+
+  .cookie-logs-table {
+    min-width: 100%;
+    font-size: 13px;
+  }
+
+  .cookie-logs-back-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+  }
+}
+
+/* ------------------------------
+   SEARCH + FILTER + DOWNLOAD BAR
+------------------------------ */
+.cookie-logs-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 20px 0 24px;
+}
+
+.cookie-logs-action-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Compact search beside buttons */
+.cookie-logs-search.small {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 30px;
+  padding: 6px 14px;
+  width: 220px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.cookie-logs-search.small input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  font-size: 14px;
+  margin-left: 8px;
+  color: #111827;
+  font-family: inherit;
+}
+
+.cookie-logs-search.small:focus-within {
+  border-color: #0f3cc9;
+  box-shadow: 0 0 0 3px rgba(15, 60, 201, 0.1);
+}
+
+/* Filter / Download buttons */
+.cookie-logs-action-btn {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cookie-logs-action-btn:hover {
+  background: #f9fafb;
+  box-shadow: 0 2px 6px rgba(2, 6, 23, 0.08);
+}
+
+/* Responsive stacking */
+@media (max-width: 700px) {
+  .cookie-logs-actions {
+    justify-content: center;
+  }
+
+  .cookie-logs-action-icons {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .cookie-logs-search.small {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+/* ------------------------------
+   LOADER (SPINNER)
+------------------------------ */
+.cookie-loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  gap: 10px;
+}
+
+.cookie-spinner {
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #0a3cce;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cookie-loader-text {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+}
+/* ------------------------------
+   SEARCH + FILTER + DOWNLOAD BAR
+------------------------------ */
+.cookie-logs-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 20px 0 24px;
+}
+
+.cookie-logs-action-icons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Compact search beside buttons */
+.cookie-logs-search.small {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 30px;
+  padding: 6px 14px;
+  width: 220px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.cookie-logs-search.small input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  font-size: 14px;
+  margin-left: 8px;
+  color: #111827;
+  font-family: inherit;
+}
+
+.cookie-logs-search.small:focus-within {
+  border-color: #0f3cc9;
+  box-shadow: 0 0 0 3px rgba(15, 60, 201, 0.1);
+}
+
+/* Filter / Download buttons */
+.cookie-logs-action-btn {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cookie-logs-action-btn:hover {
+  background: #f9fafb;
+  box-shadow: 0 2px 6px rgba(2, 6, 23, 0.08);
+}
+
+/* Responsive stacking */
+@media (max-width: 700px) {
+  .cookie-logs-actions {
+    justify-content: center;
+  }
+
+  .cookie-logs-action-icons {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .cookie-logs-search.small {
+    width: 100%;
+    max-width: 100%;
+  }
+}
+/* ------------------------------
+   LOADER (SPINNER)
+------------------------------ */
+.cookie-loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  gap: 10px;
+}
+
+.cookie-spinner {
+  border: 3px solid #e5e7eb;
+  border-top: 3px solid #0a3cce;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cookie-loader-text {
+  font-size: 14px;
+  color: #6b7280;
+  font-weight: 500;
+}
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+  text-align: left;
+  color: #1a1a1a;
+  font-weight: 500;
+  padding: 8px 12px;
+  position: relative;
+}
+
+.sort-icon {
+  margin-left: 6px;
+  font-size: 12px;
+  color: #a0a0a0;
+}
+
+.sortable-header.active-sort .sort-icon {
+  color: #0057ff; /* blue from Figma */
+}
+
+.sort-icon .arrow {
+  font-size: 10px;
+  vertical-align: middle;
+}
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+  text-align: left;
+  color: #1a1a1a;
+  font-weight: 500;
+  padding: 8px 12px;
+}
+
+/* Table header inner - keeps label and sort icon on same line */
+.cookie-logs-th-inner {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.cookie-logs-th-inner span {
+  flex-shrink: 0;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.header-label {
+  flex: 1;
+  white-space: nowrap;
+}
+
+.active-sort .header-content svg,
+.active-sort .cookie-logs-th-inner svg {
+  color: #0057ff;
+}
+.status-expired {
+  background-color: #FFE7D9;
+  color: #B93717;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.status-accepted {
+  background-color: #E3FCEF;
+  color: #0F7B42;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.status-rejected {
+  background-color: #FFE0E0;
+  color: #B91C1C;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.status-partial {
+  background-color: #E8F1FF;
+  color: #1C4ED8;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.kpi-expired {
+  background-color: #FFF2EC;
+}
+
+.kpi-rejected {
+  background-color: #FFECEC;
+}
+
+.kpi-accepted {
+  background-color: #E9F8EF;
+}
+/* ===============================
+   FILTER DRAWER OVERLAY
+================================= */
+.cookie-logs-filter-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(2px);
+  z-index: 999;
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ===============================
+   RIGHT DRAWER CONTAINER
+================================= */
+.cookie-logs-filter-drawer {
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 340px;
+  height: 100vh;
+  background: #fff;
+  border-left: 1px solid #e2e2e2;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 18px;
+  gap: 14px;
+  animation: drawerSlideIn 0.25s cubic-bezier(0.2, 0.85, 0.35, 1) forwards;
+}
+
+@keyframes drawerSlideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+/* Header */
+.cookie-logs-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.cookie-logs-filter-title {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.cookie-logs-filter-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+}
+
+/* Content */
+.cookie-logs-filter-content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.cookie-logs-filter-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Status chips */
+.cookie-logs-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cookie-logs-filter-chip {
+  padding: 7px 12px;
+  border-radius: 20px;
+  border: 1px solid #c6c6c6;
+  background: #fafafa;
+  font-size: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #333;
+  transition: all 0.22s ease;
+}
+
+.cookie-logs-filter-chip:hover {
+  background: #f1f1f1;
+}
+
+.cookie-logs-filter-chip.active {
+  background: #205cfd15;
+  border-color: #205cfd;
+  color: #205cfd;
+}
+
+/* Date */
+.cookie-logs-filter-date-range {
+  display: flex;
+  gap: 12px;
+}
+
+.cookie-logs-filter-date-input {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 50%;
+}
+
+.cookie-logs-filter-date-input label {
+  font-size: 11px;
+  color: #666;
+}
+
+.cookie-logs-filter-date-input input {
+  padding: 8px;
+  border: 1px solid #d3d3d3;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+/* FOOTER */
+.cookie-logs-filter-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid #e1e1e1;
+}
+
+/* ===============================
+   FILTER ICON BUTTON & BADGE
+================================= */
+.cookie-logs-filter-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.cookie-logs-filter-btn.active {
+  background: #205cfd15;
+  border-radius: 8px;
+}
+
+.cookie-logs-filter-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #205cfd;
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* SCROLLBAR */
+.cookie-logs-filter-content::-webkit-scrollbar {
+  width: 6px;
+}
+.cookie-logs-filter-content::-webkit-scrollbar-thumb {
+  background: #bfbfbf;
+  border-radius: 10px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .cookie-logs-filter-drawer {
+    width: 90vw;
+  }
+}
+
+/* ===============================
+   FORM 65B DOWNLOAD BUTTON
+================================= */
+.cookie-65b-download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cookie-65b-download-btn:hover {
+  background: #f1f5f9;
+  border-color: #0A3CCE;
+  color: #0A3CCE;
+}
+
+.cookie-65b-download-btn:active {
+  transform: scale(0.95);
+}
+
+/* ===============================
+   EMPTY STATE STYLING
+================================= */
+.cookie-logs-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  gap: 8px;
+}

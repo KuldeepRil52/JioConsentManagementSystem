@@ -1,0 +1,87 @@
+# Test configuration for notification consumer application
+spring:
+  profiles:
+    active: test
+
+  # MongoDB test configuration
+  data:
+    mongodb:
+      # URI will be set dynamically by test containers
+      database: notification-consumer-test
+
+  # Kafka test configuration
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: test-consumer-group
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: true
+      auto-commit-interval: 1000
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+# Kafka topic configurations
+kafka:
+  topics:
+    notification-callback: notification-callback-topic
+    otp-callback: otp-callback-topic
+    template-status: template-status-topic
+    audit: audit-topic
+
+# Application specific test configuration
+notification:
+  gateway:
+    credentials:
+      admin:
+        clientId: test-admin-client
+        clientSecret: test-admin-secret
+    endpoints:
+      token: /oauth/token
+      notification:
+        onboard: /api/notification/onboard
+        approve: /api/notification/approve
+        send: /api/notification/send
+      otp:
+        onboard: /api/otp/onboard
+        approve: /api/otp/approve
+        init: /api/otp/init
+        verify: /api/otp/verify
+
+# Test-specific logging configuration
+logging:
+  level:
+    com.jio.digigov.notification: DEBUG
+    org.springframework.kafka: WARN
+    org.springframework.data.mongodb: WARN
+    org.testcontainers: WARN
+    org.apache.kafka: WARN
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# Circuit breaker test configuration
+circuit-breaker:
+  failure-threshold: 60
+  minimum-requests: 5
+  recovery-timeout: 10  # Shorter timeout for tests
+
+# Cache test configuration
+spring.cache:
+  type: caffeine
+  caffeine:
+    spec: maximumSize=100,expireAfterWrite=10s
+
+# Consumer-specific test configuration
+consumer:
+  processing:
+    retry:
+      max-attempts: 3
+      delay: 1000  # 1 second for tests
+    timeout: 5000  # 5 seconds for tests
+  batch:
+    size: 10
+    timeout: 2000  # 2 seconds for tests

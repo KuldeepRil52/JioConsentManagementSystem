@@ -1,0 +1,670 @@
+/* Professional Tree View Styles */
+
+.professional-tree-view {
+  padding: 40px;
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  border-radius: 16px;
+  min-height: 600px;
+}
+
+/* ========================================
+   Section Title Container
+   ======================================== */
+.section-title-container {
+  margin: 24px 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+/* ========================================
+   Modern Cards Grid Layout
+   ======================================== */
+.modern-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+  margin-top: 16px;
+}
+
+/* ========================================
+   Modern User Card (Purple Theme)
+   ======================================== */
+.modern-user-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  max-width: 400px;
+}
+
+.modern-user-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.modern-user-card .card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f3f4f6;
+  margin-bottom: 12px;
+}
+
+.modern-user-card .user-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #a78bfa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modern-user-card .avatar-initials {
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0px;
+}
+
+.modern-user-card .user-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.modern-user-card .user-email {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  margin-top: 4px;
+}
+
+.modern-user-card .user-email span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.modern-user-card .card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modern-user-card .identity-badge {
+  display: inline-flex;
+  padding: 4px 12px;
+  background: #f3f4f6;
+  color: #374151;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.modern-user-card .roles-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modern-user-card .roles-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.modern-user-card .roles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.modern-user-card .role-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.modern-user-card .role-badge-modern {
+  display: inline-flex;
+  padding: 4px 12px;
+  background: #ede9fe;
+  color: #7c3aed;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.modern-user-card .card-footer {
+  padding-top: 12px;
+  margin-top: 12px;
+  border-top: 1px solid #f3f4f6;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* ========================================
+   Modern Processor Card (Green/Purple Theme)
+   ======================================== */
+.modern-processor-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  max-width: 400px;
+}
+
+.modern-processor-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.modern-processor-card .card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #f3f4f6;
+  margin-bottom: 12px;
+}
+
+.modern-processor-card .processor-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #ede9fe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.modern-processor-card .processor-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.modern-processor-card .processor-status-badge {
+  display: inline-flex;
+  padding: 4px 10px;
+  background: #d1fae5;
+  color: #065f46;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  width: fit-content;
+  margin-top: 4px;
+}
+
+.modern-processor-card .processor-status-badge.active {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.modern-processor-card .card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.modern-processor-card .processor-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.modern-processor-card .tenant-badge {
+  display: inline-flex;
+  padding: 4px 12px;
+  background: #dbeafe;
+  color: #1e40af;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  width: fit-content;
+}
+
+.modern-processor-card .processor-url {
+  padding: 8px;
+  background: #f9fafb;
+  border-radius: 4px;
+  word-break: break-all;
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.modern-processor-card .card-footer {
+  padding-top: 12px;
+  margin-top: 12px;
+  border-top: 1px solid #f3f4f6;
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* Tree Container */
+.tree-container {
+  display: flex;
+  flex-direction: normal;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+/* Tree Root (Legal Entity) */
+.tree-root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Tree Node - Base Styles */
+.tree-node {
+  flex-direction: column;
+  align-items: normal;
+  display: flex;
+  width: -webkit-fill-available;
+}
+
+/* Node Card - Professional Design */
+.node-card {
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 20px 24px;
+  min-width: 350px;
+  max-width: 450px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.node-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 8px 24px rgba(59, 130, 246, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Legal Entity Node */
+.legal-entity-node .node-card {
+  border-color: #3b82f6;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.2);
+  min-width: 400px;
+}
+
+/* Business Node */
+.business-node .node-card {
+  border-color: #a78bfa;
+  background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+  min-width: 350px;
+}
+
+/* Node Header */
+.node-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+.node-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Node Badge */
+.node-badge {
+  padding: 6px 12px;
+  background: #3b82f6;
+  color: white;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.node-badge.tenant {
+  background: #3b82f6;
+  color: white;
+}
+
+.node-badge.business {
+  background: #8b5cf6;
+  color: white;
+}
+
+/* Node Stats */
+.node-stats {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  flex: 1;
+}
+
+/* Node Details - Expandable Section */
+.node-details {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px dashed #e2e8f0;
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+  }
+}
+
+/* Detail Section */
+.detail-section {
+  margin-bottom: 16px;
+}
+
+.detail-section:last-child {
+  margin-bottom: 0;
+}
+
+.detail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+  border-left: 3px solid #3b82f6;
+  transition: all 0.2s;
+}
+
+.detail-item:hover {
+  background: #f1f5f9;
+  transform: translateX(4px);
+}
+
+/* User Roles */
+.user-roles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.role-badge {
+  padding: 4px 10px;
+  background: #e0e7ff;
+  color: #4f46e5;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* Expand Button */
+.expand-button {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  color: #64748b;
+  transition: all 0.2s;
+}
+
+.expand-button:hover {
+  background: #e2e8f0;
+  color: #3b82f6;
+  transform: scale(1.1);
+}
+
+/* Tree Children - Connection Lines */
+.tree-children {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  position: relative;
+  width: 100%;
+}
+
+/* Vertical Connecting Line */
+.tree-line-vertical {
+  width: 3px;
+  height: 40px;
+  background: linear-gradient(180deg, #3b82f6 0%, #10b981 100%);
+  border-radius: 2px;
+}
+
+/* Branches Container */
+.tree-branches-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  position: relative;
+}
+
+/* Tree Branch */
+.tree-branch {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+}
+
+/* Horizontal Connecting Line */
+.tree-line-horizontal {
+  width: 40px;
+  height: 3px;
+  background: #10b981;
+  border-radius: 2px;
+}
+
+/* Vertical Line for Multiple Children */
+.tree-branches-container::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(180deg, #10b981 0%, rgba(16, 185, 129, 0.3) 100%);
+  border-radius: 2px;
+}
+
+.tree-branch::before {
+  content: '';
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  width: 20px;
+  height: 3px;
+  background: #10b981;
+  border-radius: 2px;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  gap: 16px;
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  border: 2px dashed #cbd5e0;
+  border-radius: 16px;
+  min-height: 400px;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .professional-tree-view {
+    padding: 24px;
+    overflow-x: auto;
+  }
+
+  .node-card {
+    min-width: 300px;
+    max-width: 350px;
+  }
+
+  .legal-entity-node .node-card {
+    min-width: 320px;
+  }
+
+  .business-node .node-card {
+    min-width: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .professional-tree-view {
+    padding: 16px;
+  }
+
+  .node-card {
+    min-width: 280px;
+    max-width: 320px;
+    padding: 16px 20px;
+  }
+
+  .node-stats {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .stat-item {
+    justify-content: flex-start;
+  }
+}
+
+/* Print Styles */
+@media print {
+  .professional-tree-view {
+    background: white;
+  }
+
+  .node-card {
+    page-break-inside: avoid;
+  }
+
+  .expand-button {
+    display: none;
+  }
+}
+
+/* Animation for Tree Entrance */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tree-node {
+  animation: fadeInUp 0.4s ease;
+}
+
+.tree-branch:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.tree-branch:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.tree-branch:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Hover Effects on Icons */
+.node-header .jds-icon {
+  transition: transform 0.2s ease;
+}
+
+.node-card:hover .node-header .jds-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* Loading State */
+.tree-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+/* Tooltip for Node Details */
+.node-tooltip {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  padding: 4px 8px;
+  background: #1e293b;
+  color: white;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  z-index: 10;
+}
+

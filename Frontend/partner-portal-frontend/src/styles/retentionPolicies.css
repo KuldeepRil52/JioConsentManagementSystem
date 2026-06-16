@@ -1,0 +1,133 @@
+/* Retention Policies - Single Column Layout */
+
+.retention-single-column {
+  max-width: 100%;
+  width: 100%;
+}
+
+.retention-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  min-height: 300px;
+}
+
+/* Mobile - reduce padding */
+@media (max-width: 768px) {
+  .retention-loading-container {
+    padding: 40px 15px;
+    min-height: 200px;
+  }
+}
+
+.retention-field-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 20px;
+  margin-bottom: 20px;
+  max-width: 700px;
+}
+
+.retention-input-wrapper {
+  flex: 0 0 500px;
+  max-width: 500px;
+  min-width: 0;
+}
+
+.retention-dropdown-wrapper {
+  flex-shrink: 0;
+  width: 180px;
+}
+
+/* Tablet view */
+@media (max-width: 1024px) {
+  .retention-field-row {
+    max-width: 100%;
+    gap: 15px;
+  }
+  
+  .retention-input-wrapper {
+    flex: 1 1 auto;
+    max-width: 400px;
+  }
+  
+  .retention-dropdown-wrapper {
+    width: 150px;
+  }
+}
+
+/* Mobile view - stack vertically */
+@media (max-width: 768px) {
+  .retention-field-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 25px;
+  }
+  
+  .retention-input-wrapper {
+    flex: 1 1 auto;
+    max-width: 100%;
+  }
+  
+  .retention-dropdown-wrapper {
+    width: 100%;
+    margin-bottom: 0;
+  }
+}
+
+/* Small mobile view */
+@media (max-width: 480px) {
+  .retention-field-row {
+    margin-bottom: 20px;
+    gap: 8px;
+  }
+}
+
+.retention-unit-dropdown {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  height: 45px;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+}
+
+.retention-unit-dropdown:hover {
+  border-color: #9ca3af;
+}
+
+.retention-unit-dropdown:focus {
+  outline: none;
+  border-color: #0f3cc9;
+  box-shadow: 0 0 0 3px rgba(15, 60, 201, 0.1);
+}
+
+.retention-unit-dropdown:disabled {
+  background-color: #f3f4f6;
+  cursor: not-allowed;
+}
+
+/* Remove number input arrows */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}

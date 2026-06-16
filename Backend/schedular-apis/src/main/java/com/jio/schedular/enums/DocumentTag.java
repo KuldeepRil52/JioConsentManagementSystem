@@ -1,0 +1,6 @@
+package com.jio.schedular.enums;
+
+public enum DocumentTag {
+
+    AGGREMENT, VENDOR_RISK, VENDOR_RISK_ASSESSMENT, SIGNING_CERTIFICATE, PRIVACY_POLICY, APP_LOGO, COMPANY_LOGO, CERTIFICATE;
+}

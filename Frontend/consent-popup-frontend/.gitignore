@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.parcel-cache/
+.cache/
+.env.dev
+.env.nonprod
+.env.prod
+.env.local
+npm-debug.log*
+yarn-error.log*
+*.local

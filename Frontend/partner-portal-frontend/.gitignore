@@ -1,0 +1,10 @@
+/node_modules
+/dist
+.parcel-cache
+
+
+.env.dev
+.env.nonprod
+.env.prod
+.env.local
+*.local

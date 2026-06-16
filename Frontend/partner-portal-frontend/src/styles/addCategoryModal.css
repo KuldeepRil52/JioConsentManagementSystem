@@ -1,0 +1,43 @@
+.language-tabs-container {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.language-tabs {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  flex-grow: 1;
+  overflow-x: hidden;
+}
+
+.language-tab {
+  padding: 10px 20px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.language-tab.active {
+  border-bottom: 2px solid #0f3cc9;
+  font-weight: bold;
+}
+
+.form-container {
+  margin-top: 20px;
+}
+
+.description-container {
+  margin-top: 20px;
+}
+
+.description-container textarea {
+  width: 100%;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+  padding: 10px;
+}
+
+.arrow-btn {
+  cursor: pointer;
+}

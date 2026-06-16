@@ -1,0 +1,567 @@
+/* ========================================
+   RESPONSIVE UTILITIES
+   Global responsive helper classes
+   ======================================== */
+
+/* Breakpoint definitions:
+   - xs: 320px (small mobile)
+   - sm: 640px (mobile)
+   - md: 768px (tablet)
+   - lg: 1024px (desktop)
+   - xl: 1280px (large desktop)
+   - 2xl: 1536px (extra large desktop)
+*/
+
+/* ========================================
+   CONTAINER UTILITIES
+   ======================================== */
+
+.container-responsive {
+  width: 100%;
+  padding-left: 16px;
+  padding-right: 16px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 640px) {
+  .container-responsive {
+    max-width: 640px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container-responsive {
+    max-width: 768px;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-responsive {
+    max-width: 1024px;
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container-responsive {
+    max-width: 1280px;
+  }
+}
+
+/* ========================================
+   DISPLAY UTILITIES
+   ======================================== */
+
+/* Hide on mobile */
+.hide-mobile {
+  display: block;
+}
+
+@media (max-width: 767px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Show only on mobile */
+.show-mobile {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .show-mobile {
+    display: block !important;
+  }
+}
+
+/* Hide on tablet */
+.hide-tablet {
+  display: block;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hide-tablet {
+    display: none !important;
+  }
+}
+
+/* Show only on tablet */
+.show-tablet {
+  display: none;
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .show-tablet {
+    display: block !important;
+  }
+}
+
+/* Hide on desktop */
+.hide-desktop {
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .hide-desktop {
+    display: none !important;
+  }
+}
+
+/* Show only on desktop */
+.show-desktop {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .show-desktop {
+    display: block !important;
+  }
+}
+
+/* ========================================
+   GRID UTILITIES
+   ======================================== */
+
+.grid-responsive {
+  display: grid;
+  gap: 16px;
+}
+
+/* 2 columns on desktop, 1 on mobile */
+.grid-responsive-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .grid-responsive-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+/* 3 columns on desktop, 2 on tablet, 1 on mobile */
+.grid-responsive-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .grid-responsive-3 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-responsive-3 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+/* 4 columns on desktop, 2 on tablet, 1 on mobile */
+.grid-responsive-4 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 768px) {
+  .grid-responsive-4 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-responsive-4 {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+}
+
+/* ========================================
+   FLEX UTILITIES
+   ======================================== */
+
+.flex-responsive {
+  display: flex;
+  gap: 16px;
+}
+
+/* Stack on mobile */
+.flex-stack-mobile {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+@media (max-width: 767px) {
+  .flex-stack-mobile {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+/* Stack on tablet and mobile */
+.flex-stack-tablet {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+}
+
+@media (max-width: 1023px) {
+  .flex-stack-tablet {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+/* ========================================
+   SPACING UTILITIES
+   ======================================== */
+
+.padding-responsive {
+  padding: 24px;
+}
+
+@media (max-width: 1023px) {
+  .padding-responsive {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .padding-responsive {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 479px) {
+  .padding-responsive {
+    padding: 12px;
+  }
+}
+
+.margin-responsive {
+  margin: 24px;
+}
+
+@media (max-width: 1023px) {
+  .margin-responsive {
+    margin: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .margin-responsive {
+    margin: 16px;
+  }
+}
+
+@media (max-width: 479px) {
+  .margin-responsive {
+    margin: 12px;
+  }
+}
+
+/* ========================================
+   TEXT UTILITIES
+   ======================================== */
+
+.text-responsive-sm {
+  font-size: 14px;
+}
+
+@media (max-width: 767px) {
+  .text-responsive-sm {
+    font-size: 12px;
+  }
+}
+
+.text-responsive-base {
+  font-size: 16px;
+}
+
+@media (max-width: 767px) {
+  .text-responsive-base {
+    font-size: 14px;
+  }
+}
+
+.text-responsive-lg {
+  font-size: 18px;
+}
+
+@media (max-width: 767px) {
+  .text-responsive-lg {
+    font-size: 16px;
+  }
+}
+
+.text-responsive-xl {
+  font-size: 24px;
+}
+
+@media (max-width: 1023px) {
+  .text-responsive-xl {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .text-responsive-xl {
+    font-size: 18px;
+  }
+}
+
+.text-responsive-2xl {
+  font-size: 32px;
+}
+
+@media (max-width: 1023px) {
+  .text-responsive-2xl {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  .text-responsive-2xl {
+    font-size: 24px;
+  }
+}
+
+/* ========================================
+   WIDTH UTILITIES
+   ======================================== */
+
+.width-full-mobile {
+  width: auto;
+}
+
+@media (max-width: 767px) {
+  .width-full-mobile {
+    width: 100% !important;
+  }
+}
+
+.max-width-responsive {
+  max-width: 1200px;
+}
+
+@media (max-width: 1279px) {
+  .max-width-responsive {
+    max-width: 1024px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .max-width-responsive {
+    max-width: 768px;
+  }
+}
+
+@media (max-width: 767px) {
+  .max-width-responsive {
+    max-width: 100%;
+  }
+}
+
+/* ========================================
+   TABLE UTILITIES
+   ======================================== */
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 767px) {
+  .table-responsive table {
+    min-width: 600px;
+    font-size: 12px;
+  }
+  
+  .table-responsive th,
+  .table-responsive td {
+    padding: 8px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* ========================================
+   FORM UTILITIES
+   ======================================== */
+
+.form-responsive {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-row-responsive {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+@media (max-width: 767px) {
+  .form-row-responsive {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+.form-group-responsive {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 767px) {
+  .form-group-responsive {
+    width: 100%;
+  }
+}
+
+/* ========================================
+   BUTTON UTILITIES
+   ======================================== */
+
+.button-group-responsive {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+@media (max-width: 767px) {
+  .button-group-responsive {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+  
+  .button-group-responsive button {
+    width: 100%;
+  }
+}
+
+/* ========================================
+   MODAL UTILITIES
+   ======================================== */
+
+.modal-responsive {
+  width: 600px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@media (max-width: 767px) {
+  .modal-responsive {
+    width: 95vw;
+    max-width: 95vw;
+    max-height: 85vh;
+  }
+}
+
+/* ========================================
+   CARD UTILITIES
+   ======================================== */
+
+.card-responsive {
+  padding: 24px;
+  border-radius: 12px;
+}
+
+@media (max-width: 1023px) {
+  .card-responsive {
+    padding: 20px;
+    border-radius: 10px;
+  }
+}
+
+@media (max-width: 767px) {
+  .card-responsive {
+    padding: 16px;
+    border-radius: 8px;
+  }
+}
+
+/* ========================================
+   OVERFLOW UTILITIES
+   ======================================== */
+
+.scroll-mobile {
+  overflow-x: visible;
+}
+
+@media (max-width: 767px) {
+  .scroll-mobile {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* ========================================
+   SIDEBAR OVERLAY FOR MOBILE
+   ======================================== */
+
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 89;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+@media (max-width: 1024px) {
+  .sidebar-overlay.show {
+    display: block;
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   ACCESSIBILITY
+   ======================================== */
+
+/* Ensure touch targets are large enough on mobile */
+@media (max-width: 767px) {
+  button,
+  a,
+  input[type="button"],
+  input[type="submit"],
+  .clickable {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Prevent text selection on double-tap zoom on mobile */
+@media (max-width: 767px) {
+  * {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+  }
+  
+  input,
+  textarea {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    -webkit-touch-callout: default;
+  }
+}
+

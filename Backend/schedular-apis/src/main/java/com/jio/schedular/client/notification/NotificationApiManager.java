@@ -1,0 +1,26 @@
+package com.jio.schedular.client.notification;
+
+import com.jio.schedular.utils.RestApiManager;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+
+import java.util.Map;
+
+@Component
+public class NotificationApiManager extends RestApiManager {
+
+    @Value("${notification.service.base.url}")
+    private String notificationServiceBaseUrl;
+
+    @Value("${notification.service.endpoints.trigger-event}")
+    private String triggerEventEndpoint;
+
+    public <I, O> ResponseEntity<I> gettriggerEvent(Map<String, String> headers, O requestBody, Class<I> responseType) {
+        return super.get(notificationServiceBaseUrl, triggerEventEndpoint, headers, responseType);
+    }
+
+    public <I, O> ResponseEntity<I> posttriggerEvent(Map<String, String> headers, O requestBody, Class<I> responseType) {
+        return super.post(notificationServiceBaseUrl, triggerEventEndpoint, headers, requestBody, responseType);
+    }
+}
